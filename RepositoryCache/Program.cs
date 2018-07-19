@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CommandLine;
 using Newtonsoft.Json;
+using MultiRepositories.Repositories;
 
 namespace RepositoryCache
 {
@@ -43,9 +44,11 @@ namespace RepositoryCache
             
             var settings = JsonConvert.SerializeObject(opts);
             Console.WriteLine(settings);
+            var applicationProperties = new AppProperties();
+            var availableRepositories = new AvailableRepositoriesRepository(applicationProperties);
 
-
-            var shhtp = new SimpleHTTPServer(opts.Path, opts.Port,opts.LogRequests,opts.Urls,opts.Ignores);
+            var shhtp = new SimpleHTTPServer(applicationProperties,availableRepositories,
+                opts.Path, opts.Port,opts.LogRequests,opts.Urls,opts.Ignores);
 
             while (Console.ReadKey().KeyChar != 'q')
             {

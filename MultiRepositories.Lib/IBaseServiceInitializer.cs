@@ -10,6 +10,6 @@ namespace MultiRepositories
 {
     public interface IBaseServiceInitializer
     {
-        void Initialize(IRepositoryServiceProvider repositoryServiceProvider, AppProperties appProperties, AvailableRepositoriesRepository availableRepositoriesRepository);
+        void Initialize(IRepositoryServiceProvider repositoryServiceProvider, AppProperties appProperties, IAvailableRepositoriesRepository availableRepositoriesRepository);
     }
 }

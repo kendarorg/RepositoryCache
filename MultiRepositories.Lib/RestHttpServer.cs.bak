@@ -64,7 +64,7 @@ namespace MultiRepositories
         {
             ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-            _initializers = initializers;
+            _initializers = initializers ?? new IBaseServiceInitializer[] { };
 
 
             this.Initialize(path, port);

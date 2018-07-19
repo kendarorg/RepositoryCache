@@ -5,10 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MultiRepositories;
+using Repositories;
 
 namespace MultiRepositories.Repositories
 {
-    public class AvailableRepositoriesRepository : InMemoryRepository<AvailableRepositoryEntity>
+    public class AvailableRepositoriesRepository :InMemoryRepository<AvailableRepositoryEntity>, IAvailableRepositoriesRepository
     {
         public AvailableRepositoriesRepository(AppProperties properties) : 
             base(properties)

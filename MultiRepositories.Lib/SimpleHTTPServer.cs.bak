@@ -23,11 +23,12 @@ namespace MultiRepositories
         private void Initialize()
         {
 
-            
-            RegisterApi(new ServicesIndexApi(_applicationPropertes, _availableRepositories));
+            var ap = new AppProperties();
+            var arr = new AvailableRepositoriesRepository(ap);
+            RegisterApi(new ServicesIndexApi(ap, arr));
             foreach (var item in _initializers)
             {
-                item.Initialize(this, _applicationPropertes, _availableRepositories);
+                item.Initialize(this, ap, arr);
             }
         }
         private List<RestAPI> _restApis = new List<RestAPI>();
@@ -62,14 +63,9 @@ namespace MultiRepositories
         /// </summary>
         /// <param name="path">Directory path to serve.</param>
         /// <param name="port">Port of the server.</param>
-        public SimpleHTTPServer(
-            AppProperties appProperties,
-            IAvailableRepositoriesRepository availableRepositories,
-            string path, int port, bool logRequests, IEnumerable<string> urls, IEnumerable<string> ignores,
+        public SimpleHTTPServer(string path, int port, bool logRequests, IEnumerable<string> urls, IEnumerable<string> ignores,
             params IBaseServiceInitializer[] initializers)
         {
-            _applicationPropertes = appProperties;
-            _availableRepositories = availableRepositories;
             _path = path;
             _logRequests = logRequests;
             if (ignores == null || ignores.Count() == 0)
@@ -133,7 +129,6 @@ namespace MultiRepositories
         {
             Initialize();
             _listener = new HttpListener();
-            _local = "http://localhost:" + _port.ToString();
             _listener.Prefixes.Add("http://localhost:" + _port.ToString() + "/");
             _listener.Start();
             while (true)
@@ -237,11 +232,11 @@ namespace MultiRepositories
 
             foreach (var api in _restApis)
             {
-                if (api.CanHandleRequest(serializedRequest.Url))
+                if (api.CanHandleRequest(sr.Url))
                 {
                     try
                     {
-                        res = api.HandleRequest(serializedRequest);
+                        res = api.HandleRequest(sr);
                     }
                     catch (Exception ex)
                     {
@@ -257,47 +252,6 @@ namespace MultiRepositories
                 //File.WriteAllText(_counter + ".1.json", res.Serialize());
             }
 
-            if (res == null)
-            {
-                var lp = serializedRequest.ToLocalPath();
-                if (lp.StartsWith("/http"))
-                {
-                    try
-                    {
-                        res = ReplicateRequest(serializedRequest, res);
-                    }
-                    catch (Exception)
-                    {
-
-                    }
-                }
-
-                if (res == null)
-                {
-                    res = new SerializableResponse
-                    {
-                        ContentType = "text",
-                        Content = Encoding.UTF8.GetBytes("404 not found " + serializedRequest.Url),
-                        HttpCode = 404
-                    };
-                }
-            }
-            context.Response.StatusCode = res.HttpCode;
-            context.Response.ContentType = res.ContentType;
-            foreach (var h in res.Headers)
-            {
-                context.Response.Headers.Add(h.Key, h.Value);
-            }
-            context.Response.ContentLength64 = res.Content.Length;
-            context.Response.OutputStream.Write(res.Content, 0, res.Content.Length);
-            context.Response.OutputStream.Flush();
-            context.Response.OutputStream.Close();
-
-
-        }
-
-        private SerializableResponse ReplicateRequest(SerializableRequest serializedRequest, SerializableResponse res)
-        {
             var uri = new Uri("http://test" + serializedRequest.Url).Segments.Where(a => a != "/").Select(a => a.Trim('/')).ToArray();
             var protocol = uri[0];
             var server = uri[1];
@@ -342,7 +296,27 @@ namespace MultiRepositories
                 }
             }
 
-            return res;
+            if (res == null)
+            {
+                res = new SerializableResponse
+                {
+                    ContentType = "text",
+                    Content = Encoding.UTF8.GetBytes("404 not found " + serializedRequest.Url),
+                    HttpCode = 404
+                };
+            }
+            context.Response.StatusCode = res.HttpCode;
+            context.Response.ContentType = res.ContentType;
+            foreach (var h in res.Headers)
+            {
+                context.Response.Headers.Add(h.Key, h.Value);
+            }
+            context.Response.ContentLength64 = res.Content.Length;
+            context.Response.OutputStream.Write(res.Content, 0, res.Content.Length);
+            context.Response.OutputStream.Flush();
+            context.Response.OutputStream.Close();
+
+
         }
 
         private List<string> _textData = new List<string>
@@ -362,8 +336,6 @@ namespace MultiRepositories
 
         private List<string> _ignoreUrl;
         private string _local;
-        private AppProperties _applicationPropertes;
-        private IAvailableRepositoriesRepository _availableRepositories;
         private string _path;
         private bool _logRequests;
 

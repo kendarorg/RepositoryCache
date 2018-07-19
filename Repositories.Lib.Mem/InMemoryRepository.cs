@@ -10,7 +10,7 @@ using System.IO;
 using Newtonsoft.Json;
 using MultiRepositories;
 
-namespace MultiRepositories.Repositories
+namespace Repositories
 {
     public class InMemoryRepository<T> : IRepository<T> where T : BaseEntity, new()
     {

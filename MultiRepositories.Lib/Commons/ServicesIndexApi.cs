@@ -13,9 +13,9 @@ namespace MultiRepositories.Commons
     public class ServicesIndexApi : RestAPI
     {
         private AppProperties _properties;
-        private AvailableRepositoriesRepository _availableRepositoriesRepository;
+        private IAvailableRepositoriesRepository _availableRepositoriesRepository;
 
-        public ServicesIndexApi(AppProperties properties, AvailableRepositoriesRepository availableRepositoriesRepository) : base("/v1/index.json", null)
+        public ServicesIndexApi(AppProperties properties, IAvailableRepositoriesRepository availableRepositoriesRepository) : base("/v1/index.json", null)
         {
             _properties = properties;
             _availableRepositoriesRepository = availableRepositoriesRepository;

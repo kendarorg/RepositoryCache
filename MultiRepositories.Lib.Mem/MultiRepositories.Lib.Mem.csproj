@@ -4,14 +4,13 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{B20C279E-7034-4A46-9820-1D96296EB36B}</ProjectGuid>
+    <ProjectGuid>{91DE67CE-14C4-4C0F-8E08-6CA96A0C05D9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>MultiRepositories</RootNamespace>
-    <AssemblyName>MultiRepositories.Lib</AssemblyName>
+    <AssemblyName>MultiRepositories.Lib.Mem</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -31,26 +30,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FParsec, Version=1.0.0.0, Culture=neutral, PublicKeyToken=40ccfc0a09edbb5d, processorArchitecture=MSIL">
-      <HintPath>..\packages\FParsec.1.0.1\lib\net40-client\FParsec.dll</HintPath>
-    </Reference>
-    <Reference Include="FParsecCS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=40ccfc0a09edbb5d, processorArchitecture=MSIL">
-      <HintPath>..\packages\FParsec.1.0.1\lib\net40-client\FParsecCS.dll</HintPath>
-    </Reference>
-    <Reference Include="FSharp.Core, Version=4.3.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\FSharp.Core.3.1.2.5\lib\net40\FSharp.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="MarkdownSharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MarkdownSharp.1.13.0.0\lib\35\MarkdownSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="MimeTypeMap, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MediaTypeMap.2.1.0.0\lib\net40\MimeTypeMap.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="Semver, Version=2.0.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Semver.2.0.4\lib\net452\Semver.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -62,31 +43,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AppProperties.cs" />
-    <Compile Include="Commons\ServicesIndexApi.cs" />
-    <Compile Include="IBaseServiceInitializer.cs" />
-    <Compile Include="IRepositoryServiceProvider.cs" />
-    <Compile Include="Models\ServiceModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repositories\AvailableRepositoryEntity.cs" />
-    <Compile Include="Repositories\IAvailableRepositoriesRepository.cs" />
-    <Compile Include="SemVerParser.cs" />
-    <Compile Include="SerializableRequest.cs" />
-    <Compile Include="SerializableResponse.cs" />
-    <Compile Include="Service\FileRestAPI.cs" />
-    <Compile Include="Service\ForwardRestApi.cs" />
-    <Compile Include="Service\RestAPI.cs" />
-    <Compile Include="SimpleHTTPServer.cs" />
+    <Compile Include="Repositories\AvailableRepositoriesRepository.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
+    <ProjectReference Include="..\MultiRepositories.Lib\MultiRepositories.Lib.csproj">
+      <Project>{b20c279e-7034-4a46-9820-1d96296eb36b}</Project>
+      <Name>MultiRepositories.Lib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Repositories.Lib.Mem\Repositories.Lib.Mem.csproj">
+      <Project>{34D3DA85-AC0F-4E8B-8244-835D4A3B77C5}</Project>
+      <Name>Repositories.Lib.Mem</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Repositories.Lib\Repositories.Lib.csproj">
       <Project>{7A5739D6-0966-4C2F-8DD2-07F3E6159212}</Project>
       <Name>Repositories.Lib</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
