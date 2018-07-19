@@ -14,6 +14,8 @@ namespace RepositoryCache
         public int Port { get; set; }
         [Option("logrequests", Default = false, HelpText = "Log requests.")]
         public bool LogRequests { get; set; }
+        [Option("showintray", Default = false, HelpText = "Log requests.")]
+        public bool ShowInTray { get; set; }
         [Option("path", Default = "", HelpText = "Root to service.")]
         public string Path { get; set; }
         [Option("urls", Default = null, HelpText = "Urls to proxy.")]
