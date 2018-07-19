@@ -1,0 +1,14 @@
+﻿{
+  "Port": 9080,
+  "LogRequests": true,
+  "Path": "",
+  "Ignores": [
+    "schema.nuget.org",
+    "www.w3.org"
+  ],
+  "Urls": [
+    "nuget.org",
+    "repo.maven.apache.org",
+    "npmjs.org"
+  ]
+}
