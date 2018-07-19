@@ -87,9 +87,21 @@
     <None Include="settings.json" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\MultiRepositories.Lib.Mem\MultiRepositories.Lib.Mem.csproj">
+      <Project>{91de67ce-14c4-4c0f-8e08-6ca96a0c05d9}</Project>
+      <Name>MultiRepositories.Lib.Mem</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MultiRepositories.Lib\MultiRepositories.Lib.csproj">
       <Project>{b20c279e-7034-4a46-9820-1d96296eb36b}</Project>
       <Name>MultiRepositories.Lib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Repositories.Lib.Mem\Repositories.Lib.Mem.csproj">
+      <Project>{34d3da85-ac0f-4e8b-8244-835d4a3b77c5}</Project>
+      <Name>Repositories.Lib.Mem</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Repositories.Lib\Repositories.Lib.csproj">
+      <Project>{7A5739D6-0966-4C2F-8DD2-07F3E6159212}</Project>
+      <Name>Repositories.Lib</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
