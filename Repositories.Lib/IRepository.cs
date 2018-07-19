@@ -1,4 +1,5 @@
 ﻿
+using Ioc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Repositories
 {
-    public interface IRepository
+    public interface IRepository: ISingleton
     {
         void Initialize();
     }

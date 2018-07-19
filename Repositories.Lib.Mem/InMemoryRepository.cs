@@ -23,8 +23,8 @@ namespace Repositories
         {
             _properties = properties;
 
-            if (!Directory.Exists(_properties.DbDir)){
-                Directory.CreateDirectory(_properties.DbDir);
+            if (!Directory.Exists(_properties.DbConnectionString)){
+                Directory.CreateDirectory(_properties.DbConnectionString);
             }
         }
 
@@ -129,14 +129,14 @@ namespace Repositories
         private void Save()
         {
             var allData = JsonConvert.SerializeObject(_data[_name]);
-            File.WriteAllText(Path.Combine(_properties.DbDir,_name + ".dat"), allData);
+            File.WriteAllText(Path.Combine(_properties.DbConnectionString,_name + ".dat"), allData);
         }
 
         private void Load()
         {
-            if (File.Exists(Path.Combine(_properties.DbDir, _name + ".dat")))
+            if (File.Exists(Path.Combine(_properties.DbConnectionString, _name + ".dat")))
             {
-                var str = File.ReadAllText(Path.Combine(_properties.DbDir, _name + ".dat"));
+                var str = File.ReadAllText(Path.Combine(_properties.DbConnectionString, _name + ".dat"));
                 var data= JsonConvert.DeserializeObject<Dictionary<Guid, T>>(str);
                 foreach(var item in data)
                 {

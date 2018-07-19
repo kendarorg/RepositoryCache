@@ -32,6 +32,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <HintPath>..\packages\Castle.Core.4.2.0\lib\net45\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Windsor, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <HintPath>..\packages\Castle.Windsor.4.1.0\lib\net45\Castle.Windsor.dll</HintPath>
+    </Reference>
     <Reference Include="CommandLine, Version=2.2.1.0, Culture=neutral, PublicKeyToken=de6f01bd326f8c32, processorArchitecture=MSIL">
       <HintPath>..\packages\CommandLineParser.2.2.1\lib\net45\CommandLine.dll</HintPath>
     </Reference>
@@ -66,8 +72,11 @@
       <HintPath>..\packages\Semver.2.0.4\lib\net452\Semver.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Remoting" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -93,6 +102,10 @@
     <None Include="settings.json" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Ioc.Shared\Ioc.Shared.csproj">
+      <Project>{59BA45AE-F80C-440D-BEA1-C1FCA0F00A2B}</Project>
+      <Name>Ioc.Shared</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MultiRepositories.Lib.Mem\MultiRepositories.Lib.Mem.csproj">
       <Project>{91de67ce-14c4-4c0f-8e08-6ca96a0c05d9}</Project>
       <Name>MultiRepositories.Lib.Mem</Name>

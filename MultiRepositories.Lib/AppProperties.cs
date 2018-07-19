@@ -8,18 +8,12 @@ namespace MultiRepositories
 {
     public class AppProperties
     {
-        public AppProperties()
+        public AppProperties(string host, string dbConnectionString)
         {
-            Host = "http://localhost:9080";
-            NupkgDir = @"data\nupkg";
-            DbDir = @"data\db";
-            MaxRegistryPageSize = 64;
-            RunLocal = true;
+            Host = host ?? "http://localhost:9080";
+            DbConnectionString = dbConnectionString ?? @"db";
         }
-        public bool RunLocal { get; private set; }
         public string Host { get; private set; }
-        public string NupkgDir { get; private set; }
-        public string DbDir { get; private set; }
-        public int MaxRegistryPageSize { get; private set; }
+        public string DbConnectionString { get; private set; }
     }
 }

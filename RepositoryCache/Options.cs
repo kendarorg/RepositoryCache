@@ -12,6 +12,8 @@ namespace RepositoryCache
     {
         [Option("port", Default = 9080, HelpText = "Port.")]
         public int Port { get; set; }
+        [Option("host", Default = "localhot", HelpText = "Host.")]
+        public string Host { get; set; }
         [Option("logrequests", Default = false, HelpText = "Log requests.")]
         public bool LogRequests { get; set; }
         [Option("showintray", Default = false, HelpText = "Log requests.")]

@@ -17,19 +17,10 @@ using Newtonsoft.Json;
 
 namespace MultiRepositories
 {
-    public class SimpleHTTPServer : IRepositoryServiceProvider
+    public class SimpleHTTPServer : IRepositoryServiceProvider, ISimpleHTTPServer
     {
         private static int _counter = 0;
-        private void Initialize()
-        {
 
-            
-            RegisterApi(new ServicesIndexApi(_applicationPropertes, _availableRepositories));
-            foreach (var item in _initializers)
-            {
-                item.Initialize(this, _applicationPropertes, _availableRepositories);
-            }
-        }
         private List<RestAPI> _restApis = new List<RestAPI>();
         private readonly string[] _indexFiles = {
             "index.html",
@@ -57,19 +48,26 @@ namespace MultiRepositories
             private set { }
         }
 
+        public SimpleHTTPServer(
+            AppProperties appProperties,
+            IAvailableRepositoriesRepository availableRepositories,
+            List<IPackagesRepository> packagesRepositories
+            )
+        {
+            _applicationPropertes = appProperties;
+            _availableRepositories = availableRepositories;
+            _packagesRepositories = packagesRepositories;
+        }
+
         /// <summary>
         /// Construct server with given port.
         /// </summary>
         /// <param name="path">Directory path to serve.</param>
         /// <param name="port">Port of the server.</param>
-        public SimpleHTTPServer(
-            AppProperties appProperties,
-            IAvailableRepositoriesRepository availableRepositories,
-            string path, int port, bool logRequests, IEnumerable<string> urls, IEnumerable<string> ignores,
-            params IBaseServiceInitializer[] initializers)
+        public void Start(
+            string path, int port, bool logRequests, IEnumerable<string> urls, IEnumerable<string> ignores)
         {
-            _applicationPropertes = appProperties;
-            _availableRepositories = availableRepositories;
+
             _path = path;
             _logRequests = logRequests;
             if (ignores == null || ignores.Count() == 0)
@@ -99,7 +97,7 @@ namespace MultiRepositories
             }
             ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-            _initializers = initializers ?? new IBaseServiceInitializer[] { };
+
 
 
             this.Initialize(path, port);
@@ -131,7 +129,10 @@ namespace MultiRepositories
 
         private void Listen()
         {
-            Initialize();
+            foreach (var item in _packagesRepositories)
+            {
+                item.Initialize(this);
+            }
             _listener = new HttpListener();
             _local = "http://localhost:" + _port.ToString();
             _listener.Prefixes.Add("http://localhost:" + _port.ToString() + "/");
@@ -364,6 +365,7 @@ namespace MultiRepositories
         private string _local;
         private AppProperties _applicationPropertes;
         private IAvailableRepositoriesRepository _availableRepositories;
+        private List<IPackagesRepository> _packagesRepositories;
         private string _path;
         private bool _logRequests;
 

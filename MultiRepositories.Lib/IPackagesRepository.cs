@@ -1,5 +1,4 @@
 ﻿using Ioc;
-using MultiRepositories.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace MultiRepositories
 {
-    public interface IRepositoryServiceProvider: ISingleton
+    public interface IPackagesRepository : ISingleton
     {
-        void RegisterApi(RestAPI api);
+        void Initialize(IRepositoryServiceProvider repositoryServiceProvider);
     }
 }

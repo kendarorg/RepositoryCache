@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{7A5739D6-0966-4C2F-8DD2-07F3E6159212}</ProjectGuid>
+    <ProjectGuid>{59BA45AE-F80C-440D-BEA1-C1FCA0F00A2B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Repositories</RootNamespace>
-    <AssemblyName>Repositories.Lib</AssemblyName>
+    <RootNamespace>Ioc</RootNamespace>
+    <AssemblyName>Ioc.Shared</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -40,17 +40,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BaseEntity.cs" />
-    <Compile Include="IRepository.cs" />
-    <Compile Include="ITransaction.cs" />
-    <Compile Include="ITransactionManager.cs" />
+    <Compile Include="AssemblyUtils.cs" />
+    <Compile Include="IAssemblyUtils.cs" />
+    <Compile Include="ISingleton.cs" />
+    <Compile Include="ITransient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Ioc.Shared\Ioc.Shared.csproj">
-      <Project>{59BA45AE-F80C-440D-BEA1-C1FCA0F00A2B}</Project>
-      <Name>Ioc.Shared</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

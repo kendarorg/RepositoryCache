@@ -47,6 +47,10 @@
     <Compile Include="Repositories\AvailableRepositoriesRepository.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Ioc.Shared\Ioc.Shared.csproj">
+      <Project>{59BA45AE-F80C-440D-BEA1-C1FCA0F00A2B}</Project>
+      <Name>Ioc.Shared</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MultiRepositories.Lib\MultiRepositories.Lib.csproj">
       <Project>{b20c279e-7034-4a46-9820-1d96296eb36b}</Project>
       <Name>MultiRepositories.Lib</Name>

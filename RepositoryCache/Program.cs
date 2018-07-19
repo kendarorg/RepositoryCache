@@ -14,6 +14,10 @@ using System.Drawing;
 using static System.Net.Mime.MediaTypeNames;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
+using Castle.Windsor;
+using Castle.MicroKernel.Registration;
+using System.Reflection;
+using Ioc;
 
 namespace RepositoryCache
 {
@@ -53,10 +57,21 @@ namespace RepositoryCache
             
         }
 
+        static public string AssemblyDirectory
+        {
+            get
+            {
+                var codeBase = Assembly.GetExecutingAssembly().CodeBase;
+                var uri = new UriBuilder(codeBase);
+                var path = Uri.UnescapeDataString(uri.Path);
+                return Path.GetDirectoryName(path);
+            }
+        }
+
         private static void RunOptionsAndReturnExitCode(Options opts)
         {
             var settingsFile = opts.Settings;
-            
+
             if (!string.IsNullOrWhiteSpace(settingsFile) && File.Exists(settingsFile))
             {
                 Console.WriteLine("Reading settings from " + settingsFile);
@@ -67,7 +82,7 @@ namespace RepositoryCache
                 opts.Path = Directory.GetCurrentDirectory();
             }
             opts.Settings = settingsFile;
-            
+
             var settings = JsonConvert.SerializeObject(opts);
             Console.WriteLine(settings);
 
@@ -96,27 +111,53 @@ namespace RepositoryCache
 
                 SetConsoleWindowVisibility(false);
             }
+            if (string.IsNullOrWhiteSpace(opts.Host))
+            {
+                opts.Host = "localhost";
+            }
 
 
-            var applicationProperties = new AppProperties();
-            var availableRepositories = new AvailableRepositoriesRepository(applicationProperties);
+            var container = new WindsorContainer();
 
-            var shhtp = new SimpleHTTPServer(applicationProperties,availableRepositories,
-                opts.Path, opts.Port,opts.LogRequests,opts.Urls,opts.Ignores);
+            RegisterApps(container, new AppProperties(opts.Host,"db"));
+            var shttp= container.Resolve<ISimpleHTTPServer>();
 
-			if (opts.ShowInTray)
+            shttp.Start(opts.Path, opts.Port, opts.LogRequests, opts.Urls, opts.Ignores);
+
+            if (opts.ShowInTray)
             {
                 System.Windows.Forms.Application.Run();
             }
             else
             {
-            while (Console.ReadKey().KeyChar != 'q')
-            {
-                Console.WriteLine("");
-                continue;
+                while (Console.ReadKey().KeyChar != 'q')
+                {
+                    Console.WriteLine("");
+                    continue;
+                }
             }
-            }
-            shhtp.Stop();
+            shttp.Stop();
+        }
+
+        private static void RegisterApps(WindsorContainer container, AppProperties appProperties)
+        {
+            var filter = new AssemblyFilter(AssemblyDirectory);
+            container.Register(
+                Component.For<AppProperties>().Instance(appProperties));
+            container.Register(
+                Classes.FromAssemblyInDirectory(filter)
+                    .BasedOn<AppProperties>());
+            container.Register(
+                Classes.FromAssemblyInDirectory(filter)
+                    .BasedOn<ISingleton>()
+                    .LifestyleSingleton()
+                    .WithServiceDefaultInterfaces());
+            container.Register(
+                Classes.FromAssemblyInDirectory(filter)
+                    .BasedOn<ITransient>()
+                    .LifestyleTransient()
+                    .WithServiceDefaultInterfaces());
+
         }
     }
 }

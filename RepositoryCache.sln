@@ -17,6 +17,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repositories.Lib", "Reposit
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiRepositories.Lib.Mem", "MultiRepositories.Lib.Mem\MultiRepositories.Lib.Mem.csproj", "{91DE67CE-14C4-4C0F-8E08-6CA96A0C05D9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ioc.Shared", "Ioc.Shared\Ioc.Shared.csproj", "{59BA45AE-F80C-440D-BEA1-C1FCA0F00A2B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nuget.Lib", "Nuget.Lib\Nuget.Lib.csproj", "{DC2CD4DF-2A49-4197-AF18-2AB3FC0C3A0A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +55,14 @@ Global
 		{91DE67CE-14C4-4C0F-8E08-6CA96A0C05D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{91DE67CE-14C4-4C0F-8E08-6CA96A0C05D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{91DE67CE-14C4-4C0F-8E08-6CA96A0C05D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{59BA45AE-F80C-440D-BEA1-C1FCA0F00A2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59BA45AE-F80C-440D-BEA1-C1FCA0F00A2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59BA45AE-F80C-440D-BEA1-C1FCA0F00A2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59BA45AE-F80C-440D-BEA1-C1FCA0F00A2B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC2CD4DF-2A49-4197-AF18-2AB3FC0C3A0A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC2CD4DF-2A49-4197-AF18-2AB3FC0C3A0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC2CD4DF-2A49-4197-AF18-2AB3FC0C3A0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC2CD4DF-2A49-4197-AF18-2AB3FC0C3A0A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

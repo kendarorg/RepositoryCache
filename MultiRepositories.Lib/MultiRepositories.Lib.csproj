@@ -65,7 +65,9 @@
     <Compile Include="AppProperties.cs" />
     <Compile Include="Commons\ServicesIndexApi.cs" />
     <Compile Include="IBaseServiceInitializer.cs" />
+    <Compile Include="IPackagesRepository.cs" />
     <Compile Include="IRepositoryServiceProvider.cs" />
+    <Compile Include="ISimpleHTTPServer.cs" />
     <Compile Include="Models\ServiceModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\AvailableRepositoryEntity.cs" />
@@ -76,6 +78,7 @@
     <Compile Include="Service\FileRestAPI.cs" />
     <Compile Include="Service\ForwardRestApi.cs" />
     <Compile Include="Service\RestAPI.cs" />
+    <Compile Include="SharedApi.cs" />
     <Compile Include="SimpleHTTPServer.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -83,6 +86,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Ioc.Shared\Ioc.Shared.csproj">
+      <Project>{59BA45AE-F80C-440D-BEA1-C1FCA0F00A2B}</Project>
+      <Name>Ioc.Shared</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Repositories.Lib\Repositories.Lib.csproj">
       <Project>{7A5739D6-0966-4C2F-8DD2-07F3E6159212}</Project>
       <Name>Repositories.Lib</Name>
