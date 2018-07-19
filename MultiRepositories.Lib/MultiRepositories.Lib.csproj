@@ -75,6 +75,7 @@
     <Compile Include="Repositories\ITransaction.cs" />
     <Compile Include="Repositories\ITransactionManager.cs" />
     <Compile Include="Repositories\AvailableRepositoryEntity.cs" />
+    <Compile Include="RestHttpServer.cs" />
     <Compile Include="SemVerParser.cs" />
     <Compile Include="SerializableRequest.cs" />
     <Compile Include="SerializableResponse.cs" />

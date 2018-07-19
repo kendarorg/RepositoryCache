@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("MultiRepositories")]
+[assembly: AssemblyTitle("NugetProtocol")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("MultiRepositories")]
+[assembly: AssemblyProduct("NugetProtocol")]
 [assembly: AssemblyCopyright("Copyright ©  2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("8c3be498-bd60-480e-ae32-7a684a2ccb39")]
+[assembly: Guid("a55022f2-7fe1-4c27-bf4e-3c0b3d77f7d0")]
 
 // Version information for an assembly consists of the following four values:
 //
