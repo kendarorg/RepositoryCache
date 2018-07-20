@@ -1,4 +1,5 @@
 ﻿using Ioc;
+using Nuget.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +10,17 @@ namespace Nuget.Services
 {
     public class InsertNugetService : IInsertNugetService
     {
+        public InsertNugetService(
+            IQueryRepository  queryRepository, 
+            IRegistrationRepository registrationRepository,
+            IRegistrationPageRepository registrationPageRepository)
+        {
+
+        }
         public void Insert(Guid repoId, string nugetApiKey, byte[] data)
         {
+            var commitId = Guid.NewGuid();
+            var commitTimestamp = DateTime.UtcNow;
             throw new NotImplementedException();
         }
     }

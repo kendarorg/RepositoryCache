@@ -25,8 +25,15 @@ namespace Nuget.Lib.Test.Utils
 
         private static string Beautify(string tob)
         {
-            JToken parsedJson = JToken.Parse(tob);
-            return parsedJson.ToString(Formatting.Indented);
+            try
+            {
+                JToken parsedJson = JToken.Parse(tob);
+                return parsedJson.ToString(Formatting.Indented);
+            }
+            catch (Exception)
+            {
+                return "";
+            }
         }
     }
 }

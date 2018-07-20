@@ -1,4 +1,5 @@
-﻿using MultiRepositories.Repositories;
+﻿using Ioc;
+using MultiRepositories.Repositories;
 using Nuget.Repositories;
 using Nuget.Services;
 using NugetProtocol;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Nuget.Apis
 {
-    public class NugetSearchQueryService : ISearchQueryService
+    public class NugetSearchQueryService : ISearchQueryService, ISingleton
     {
         private readonly IServicesMapper _servicesMapper;
         private readonly IRepositoryEntitiesRepository _repository;

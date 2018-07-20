@@ -28,25 +28,7 @@ namespace Nuget.Lib.Test
         [TestInitialize]
         public void Initialize()
         {
-            /*var au = new AssemblyUtils();
-            var data = au.ReadRes<NugetServicesMapperTest>("nuget.org.settings.json");
-
             
-            var mock = new Mock<IRepositoryEntitiesRepository>();
-            mock.Setup(r => r.GetByType(It.IsAny<string>())).
-                Returns(new List<RepositoryEntity>
-                {
-                    new RepositoryEntity
-                    {
-                        Address = "nuget.org",
-                        Id = repoId,
-                        Mirror = true,
-                        Prefix = "nuget.org",
-                        Settings = data,
-                        Type = "nuget"
-                    }
-                });
-            repo = mock.Object;*/
             _repoId = Guid.NewGuid();
             _queryRepositoryMock = new Mock<IQueryRepository>();
             _queryRepository = _queryRepositoryMock.Object;

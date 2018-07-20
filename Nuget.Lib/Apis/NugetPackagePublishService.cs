@@ -1,4 +1,5 @@
-﻿using Nuget.Repositories;
+﻿using Ioc;
+using Nuget.Repositories;
 using Nuget.Services;
 using NugetProtocol;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Nuget.Apis
 {
-    public class NugetPackagePublishService : IPackagePublishService
+    public class NugetPackagePublishService : IPackagePublishService, ISingleton
     {
         private readonly IInsertNugetService _insertNugetService;
 

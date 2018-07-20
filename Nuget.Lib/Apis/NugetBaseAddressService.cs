@@ -1,4 +1,5 @@
 ﻿
+using Ioc;
 using Nuget.Repositories;
 using Nuget.Services;
 using NugetProtocol;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Nuget.Apis
 {
-    public class NugetBaseAddressService : IPackageBaseAddressService
+    public class NugetBaseAddressService : IPackageBaseAddressService,ISingleton
     {
         private readonly IInsertNugetService _insertNugetService;
 

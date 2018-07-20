@@ -1,11 +1,12 @@
-﻿using MultiRepositories;
+﻿using Ioc;
+using MultiRepositories;
 using NugetProtocol;
 using System;
 using System.Collections.Generic;
 
 namespace Nuget
 {
-    public class NugetServiceIndex : IIndexService
+    public class NugetServiceIndex : IIndexService, ISingleton
     {
         private AppProperties _properties;
         private IServicesMapper _servicesMapper = null;

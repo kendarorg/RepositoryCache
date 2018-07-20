@@ -1,0 +1,37 @@
+﻿{
+  "OId": "nuget.org/PackageDisplayMetadataUriTemplate:/test/1.0.0.json",
+  "OType": [
+    "Package",
+    "nuget.org/*CatalogPermalink/"
+  ],
+  "Listed": true,
+  "Published": "0001-01-01T00:00:12.3456789",
+  "CatalogEntry": "nuget.org/Catalog/3.0.0/data/0001.01.01.00.00.12/test.1.0.0.json",
+  "PackageContent": "nuget.org/PackageBaseAddress/3.0.0/test/1.0.0/test.1.0.0.nupkg",
+  "Registration": "nuget.org/PackageDisplayMetadataUriTemplate//test/index.json",
+  "HiddenVersion": "1.0.0",
+  "OContext": {
+    "OVocab": "nuget.org/*Schema/",
+    "Xsd": "nuget.org/*W3SchemaComment/",
+    "Published": {
+      "OId": null,
+      "OContainer": null,
+      "OType": "xsd:dateTime"
+    },
+    "CatalogEntry": {
+      "OId": null,
+      "OContainer": null,
+      "OType": "@id"
+    },
+    "Registration": {
+      "OId": null,
+      "OContainer": null,
+      "OType": "@id"
+    },
+    "PackageContent": {
+      "OId": null,
+      "OContainer": null,
+      "OType": "@id"
+    }
+  }
+}
