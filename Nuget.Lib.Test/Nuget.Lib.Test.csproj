@@ -50,6 +50,9 @@
     <Reference Include="Moq, Version=4.9.0.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
       <HintPath>..\packages\Moq.4.9.0\lib\net45\Moq.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -67,9 +70,11 @@
     <Compile Include="NugetSearchQueryServiceTest.cs" />
     <Compile Include="NugetServicesMapperTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServicesMapperMock.cs" />
+    <Compile Include="Utils\JsonComp.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="nuget.org.settings.json" />
+    <EmbeddedResource Include="Resources\nuget.org.settings.json" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Ioc.Shared\Ioc.Shared.csproj">
@@ -96,6 +101,8 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+    <EmbeddedResource Include="Resources\ISPToGetReleases.json" />
+    <EmbeddedResource Include="Resources\ISPToGetMajorWhenGreaterThanPreAskingForPre.json" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

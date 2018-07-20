@@ -23,11 +23,11 @@ namespace Nuget.Repositories
         public string Summary { get; set; }
         public string Owner { get; set; }
         public string CsvVersions { get; set; }
-        public string CsvPreVersions { get; set; }
+        public string PreCsvVersion { get; set; }
         public int TotalDownloads { get; set; }
         public bool HasRelease { get; set; }
         public bool HasPreRelease { get; set; }
-
+        /*
         public int Major { get; set; }
         public int Minor { get; set; }
         public int Patch { get; set; }
@@ -38,7 +38,7 @@ namespace Nuget.Repositories
         public int PreMinor { get; set; }
         public int PrePatch { get; set; }
         public string PrePreRelease { get; set; }
-        public string PreBuildMetadata { get; set; }
+        public string PreBuildMetadata { get; set; }*/
         
     }
 }

@@ -7,7 +7,7 @@ namespace SemVer.Test
     public class ExtraTests
     {
         [TestMethod]
-        public void AllowTrailingZeroes()
+        public void SemVerAllowTrailingZeroes()
         {
             var version = SemVersion.Parse("01.02.045-alpha+nightly.23");
 
@@ -19,7 +19,7 @@ namespace SemVer.Test
         }
 
         [TestMethod]
-        public void FillMissingParts()
+        public void SemVerFillMissingParts()
         {
             var version = SemVersion.Parse("1-alpha+nightly.23");
 

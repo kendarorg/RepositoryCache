@@ -1,0 +1,36 @@
+﻿{
+  "OContext": {
+    "OVocab": "nuget.org/Schema/",
+    "OBase": "nuget.org/RegistrationsBaseUrl:/"
+  },
+  "TotalHits": 99999,
+  "Data": [
+    {
+      "Id": "test",
+      "Version": "5",
+      "Versions": [
+        {
+          "OId": "nuget.org/PackageVersionDisplayMetadataUriTemplate:/test/5.json",
+          "Version": "5",
+          "Downloads": 0
+        },
+        {
+          "OId": "nuget.org/PackageVersionDisplayMetadataUriTemplate:/test/6.json",
+          "Version": "6",
+          "Downloads": 0
+        }
+      ],
+      "Description": null,
+      "Authors": [],
+      "IconUrl": null,
+      "LicenseUrl": null,
+      "Owners": [],
+      "ProjectUrl": null,
+      "Summary": null,
+      "Tags": [],
+      "Title": null,
+      "TotalDownloads": 0,
+      "Verified": true
+    }
+  ]
+}

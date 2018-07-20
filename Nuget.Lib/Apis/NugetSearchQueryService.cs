@@ -24,7 +24,7 @@ namespace Nuget.Apis
         {
             _servicesMapper = servicesMapper;
             _repository = repository;
-            this._queryRepository = queryRepository;
+            _queryRepository = queryRepository;
         }
 
         public QueryResult Query(Guid repoId, QueryModel query)
@@ -35,26 +35,31 @@ namespace Nuget.Apis
             {
                 var queryVersions = new List<QueryVersion>();
                 var shownVersion = item.Version;
-
-                if (!query.PreRelease && !string.IsNullOrWhiteSpace(item.CsvVersions))
-                {
-                    queryVersions = AddReleaseVersions(repoId, query,item.CsvVersions,item.PackageId).ToList();
-                }
-                else if (query.PreRelease && !string.IsNullOrWhiteSpace(item.CsvPreVersions))
-                {
-                    queryVersions = AddReleaseVersions(repoId, query, item.CsvPreVersions, item.PackageId).ToList();
-                }
-
+                var isSet = false;
                 if (query.PreRelease && item.HasPreRelease)
                 {
                     shownVersion = item.PreVersion;
+                    queryVersions = AddReleaseVersions(repoId, query, item.PreCsvVersion, item.PackageId).ToList();
+                    isSet = true;
                     if (item.HasRelease)
                     {
                         if (SemVersion.IsGreater(item.Version, item.PreVersion))
                         {
-                            shownVersion = item.PreVersion;
+                            shownVersion = item.Version;
+                            queryVersions = AddReleaseVersions(repoId, query, item.CsvVersions, item.PackageId).ToList();
                         }
                     }
+                }
+                else if (item.HasRelease)
+                {
+                    isSet = true;
+                    shownVersion = item.Version;
+                    queryVersions = AddReleaseVersions(repoId, query, item.CsvVersions, item.PackageId).ToList();
+                }
+
+                if (!isSet)
+                {
+                    continue;
                 }
 
                 var singleResult = new QueryPackage(
@@ -77,7 +82,7 @@ namespace Nuget.Apis
                                 packages);
         }
 
-        private IEnumerable<QueryVersion> AddReleaseVersions(Guid repoId, QueryModel query, string versions,string packageId)
+        private IEnumerable<QueryVersion> AddReleaseVersions(Guid repoId, QueryModel query, string versions, string packageId)
         {
             foreach (var singleVersion in versions.Split(','))
             {

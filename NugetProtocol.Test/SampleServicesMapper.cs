@@ -10,10 +10,10 @@ namespace NugetProtocol
             throw new NotImplementedException();
         }
 
-        public string From(Guid repoId, string resurceId, params string[] pars)
+        public string From(Guid repoId, string resourceId, params string[] pars)
         {
             var result = string.Empty;
-            switch (resurceId)
+            switch (resourceId)
             {
                 case ("*SchemaTime"):
                     result = "http://www.w3.org/2001/XMLSchema#dateTime";
