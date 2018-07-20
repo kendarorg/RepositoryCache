@@ -1,0 +1,155 @@
+﻿[
+  {
+    "id": "PackagePublish/2.0.0",
+    "local": "{repoName}/v2/publish",
+    "remote": "https://www.nuget.org/api/v2/package",
+    "visible": true
+  },
+  {
+    "id": "RegistrationsBaseUrl",
+    "local": "{repoName}/v3/registrationsemver1",
+    "remote": "https://api.nuget.org/v3/registration",
+    "visible": true
+  },
+  {
+    "id": "RegistrationsBaseUrl/3.4.0",
+    "local": "{repoName}/v3/registrationsemver1",
+    "remote": "https://api.nuget.org/v3/registration3-gz",
+    "visible": true
+  },
+  {
+    "id": "RegistrationsBaseUrl/3.6.0",
+    "local": "{repoName}/v3/registrationsemver2",
+    "remote": "https://api.nuget.org/v3/registration3-gz-semver2",
+    "semver": "2.0.0",
+    "visible": true
+  },
+  {
+    "id": "Catalog/3.0.0",
+    "local": "{repoName}/v3/catalog",
+    "remote": "https://api.nuget.org/v3/catalog0",
+    "visible": true
+  },
+  {
+    "id": "SearchQueryService",
+    "local": "{repoName}/v3/query",
+    "remote": "https://api-v2v3search-0.nuget.org/query",
+    "altremote": "https://api-v2v3search-1.nuget.org/query",
+    "visible": true
+  },
+  {
+    "id": "PackageBaseAddress/3.0.0",
+    "local": "{repoName}/v3/container",
+    "remote": "https://api.nuget.org/v3-flatcontainer",
+    "visible": true
+  },
+  {
+    "id": "ReportAbuseUriTemplate",
+    "local": "{repoName}/v3/reportabuse",
+    "remote": "https://www.nuget.org/packages",
+    "visible": true
+  },
+  {
+    "id": "SearchAutocompleteService",
+    "local": "{repoName}/v3/autocomplete",
+    "remote": "https://api-v2v3search-0.nuget.org/autocomplete",
+    "altremote": "https://api-v2v3search-1.nuget.org/autocomplete",
+    "visible": true
+  },
+  {
+    "id": "LegacyGallery",
+    "local": "{repoName}/v2",
+    "remote": "https://www.nuget.org/api/v2",
+    "visible": true
+  },
+  {
+    "id": "SearchGalleryQueryService/3.0.0-rc",
+    "local": "{repoName}/v3",
+    "remote": "https://api-v2v3search-0.nuget.org",
+    "altremote": "https://api-v2v3search-1.nuget.org/",
+    "visible": true
+  },
+  {
+    "id": "LegacyGallery/2.0.0",
+    "ref": "LegacyGallery",
+    "visible": true
+  },
+  {
+    "id": "SearchAutocompleteService/3.0.0-rc",
+    "ref": "SearchAutocompleteService",
+    "visible": true
+  },
+  {
+    "id": "SearchAutocompleteService/3.0.0-beta",
+    "ref": "SearchAutocompleteService",
+    "visible": true
+  },
+  {
+    "id": "ReportAbuseUriTemplate/3.0.0-rc",
+    "ref": "ReportAbuseUriTemplate",
+    "visible": true
+  },
+  {
+    "id": "ReportAbuseUriTemplate/3.0.0-beta",
+    "ref": "ReportAbuseUriTemplate",
+    "visible": true
+  },
+  {
+    "id": "SearchQueryService/3.0.0-rc",
+    "ref": "SearchQueryService",
+    "visible": true
+  },
+  {
+    "id": "SearchQueryService/3.0.0-beta",
+    "ref": "SearchQueryService",
+    "visible": true
+  },
+  {
+    "id": "RegistrationsBaseUrl/3.0.0-beta",
+    "ref": "RegistrationsBaseUrl",
+    "visible": true
+  },
+  {
+    "id": "RegistrationsBaseUrl/3.0.0-rc",
+    "ref": "RegistrationsBaseUrl",
+    "visible": true
+  },
+  {
+    "id": "PackageDisplayMetadataUriTemplate/3.0.0-rc",
+    "ref": "RegistrationsBaseUrl",
+    "visible": true
+  },
+  {
+    "id": "PackageVersionDisplayMetadataUriTemplate/3.0.0-rc",
+    "ref": "RegistrationsBaseUrl",
+    "visible": true
+  },
+  {
+    "id": "RegistrationsBaseUrl",
+    "ref": "RegistrationsBaseUrl/3.6.0",
+    "semver": "2.0.0",
+    "visible": false
+  },
+  {
+    "id": "PackageDisplayMetadataUriTemplate",
+    "ref": "RegistrationsBaseUrl/3.6.0",
+    "semver": "2.0.0",
+    "visible": false
+  },
+  {
+    "id": "PackageVersionDisplayMetadataUriTemplate",
+    "ref": "RegistrationsBaseUrl/3.6.0",
+    "semver": "2.0.0",
+    "visible": false
+  },
+  {
+    "id": "PackageDisplayMetadataUriTemplate",
+    "ref": "RegistrationsBaseUrl",
+    "visible": false
+  },
+  {
+    "id": "PackageVersionDisplayMetadataUriTemplate",
+    "ref": "RegistrationsBaseUrl",
+    "visible": false
+  }
+]

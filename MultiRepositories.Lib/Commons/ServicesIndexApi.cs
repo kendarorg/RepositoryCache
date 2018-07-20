@@ -13,9 +13,9 @@ namespace MultiRepositories.Commons
     public class ServicesIndexApi : RestAPI
     {
         private AppProperties _properties;
-        private IAvailableRepositoriesRepository _availableRepositoriesRepository;
+        private IRepositoryEntitiesRepository _availableRepositoriesRepository;
 
-        public ServicesIndexApi(AppProperties properties, IAvailableRepositoriesRepository availableRepositoriesRepository) : base("/v1/index.json", null)
+        public ServicesIndexApi(AppProperties properties, IRepositoryEntitiesRepository availableRepositoriesRepository) : base("/v1/index.json", null)
         {
             _properties = properties;
             _availableRepositoriesRepository = availableRepositoriesRepository;
@@ -30,7 +30,7 @@ namespace MultiRepositories.Commons
                 result.Add(new ServiceModel
                 {
                     Id = item.Id.ToString(),
-                    Official = item.Official,
+                    Official = item.Mirror,
                     Prefix = item.Prefix,
                     Type = item.Type.ToLowerInvariant(),
                     Address = _properties.Host + "/" + item.Prefix + "/" + item.Address.TrimStart('/')

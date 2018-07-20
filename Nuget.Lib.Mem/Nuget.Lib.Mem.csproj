@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{6D34F0EA-4C37-49A7-8B88-F68713CDE78E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Nuget</RootNamespace>
+    <AssemblyName>Nuget.Lib.Mem</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Services\QueryToLinq.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\QueryRepository.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Ioc.Shared\Ioc.Shared.csproj">
+      <Project>{59BA45AE-F80C-440D-BEA1-C1FCA0F00A2B}</Project>
+      <Name>Ioc.Shared</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MultiRepositories.Lib\MultiRepositories.Lib.csproj">
+      <Project>{B20C279E-7034-4A46-9820-1D96296EB36B}</Project>
+      <Name>MultiRepositories.Lib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Nuget.Lib\Nuget.Lib.csproj">
+      <Project>{DC2CD4DF-2A49-4197-AF18-2AB3FC0C3A0A}</Project>
+      <Name>Nuget.Lib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NugetProtocol\NugetProtocol.csproj">
+      <Project>{A55022F2-7FE1-4C27-BF4E-3C0B3D77F7D0}</Project>
+      <Name>NugetProtocol</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Repositories.Lib.Mem\Repositories.Lib.Mem.csproj">
+      <Project>{34D3DA85-AC0F-4E8B-8244-835D4A3B77C5}</Project>
+      <Name>Repositories.Lib.Mem</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Repositories.Lib\Repositories.Lib.csproj">
+      <Project>{7A5739D6-0966-4C2F-8DD2-07F3E6159212}</Project>
+      <Name>Repositories.Lib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SemVer\SemVer.csproj">
+      <Project>{249c4075-9cfb-4ca1-ba82-290bff361cd7}</Project>
+      <Name>SemVer</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

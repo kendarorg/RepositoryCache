@@ -1,5 +1,5 @@
 ﻿
-using Semver;
+using SemVer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +13,7 @@ namespace MultiRepositories
         public static SemVersion Parse(String version)
         {
             SemVersion result = null;
-            if (!Semver.SemVersion.TryParse(version, out result))
+            if (!SemVersion.TryParse(version, out result))
             {
                 string realVer = null;
                 var exp = version.Split('.');

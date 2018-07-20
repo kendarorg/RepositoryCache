@@ -9,11 +9,12 @@ using System.Threading.Tasks;
 namespace MultiRepositories.Repositories
 {
     
-    public class AvailableRepositoryEntity : BaseEntity
+    public class RepositoryEntity : BaseEntity
     {
         public string Type { get; set; } //nuget/maven
-        public bool Official { get; set; }
+        public bool Mirror { get; set; }
         public string Prefix { get; set; } //nuget.org/nuget.local
         public string Address { get; set; }
+        public string Settings { get; set; }
     }
 }

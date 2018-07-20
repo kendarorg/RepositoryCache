@@ -11,12 +11,12 @@ namespace Nuget
     public class NugetApiInitializer : IPackagesRepository
     {
         private AppProperties _applicationPropertes;
-        private IAvailableRepositoriesRepository _availableRepositories;
+        private IRepositoryEntitiesRepository _availableRepositories;
         private List<IPackagesRepository> _packagesRepositories;
 
         public NugetApiInitializer(
             AppProperties appProperties,
-            IAvailableRepositoriesRepository availableRepositories,
+            IRepositoryEntitiesRepository availableRepositories,
             List<IPackagesRepository> packagesRepositories
             )
         {

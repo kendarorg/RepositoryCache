@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace NugetProtocol
 {
@@ -120,6 +121,16 @@ namespace NugetProtocol
                 default:
                     return From(repoId,resourceId, par);
             }
+        }
+
+        public Dictionary<string, EntryPointDescriptor> GetVisibles(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Refresh()
+        {
+            throw new NotImplementedException();
         }
     }
 }

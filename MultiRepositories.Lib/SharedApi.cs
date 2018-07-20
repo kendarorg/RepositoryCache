@@ -11,12 +11,12 @@ namespace MultiRepositories
     public class SharedApi : IPackagesRepository
     {
         private AppProperties _applicationPropertes;
-        private IAvailableRepositoriesRepository _availableRepositories;
+        private IRepositoryEntitiesRepository _availableRepositories;
         private List<IPackagesRepository> _packagesRepositories;
 
         public SharedApi(
             AppProperties appProperties,
-            IAvailableRepositoriesRepository availableRepositories,
+            IRepositoryEntitiesRepository availableRepositories,
             List<IPackagesRepository> packagesRepositories
             )
         {

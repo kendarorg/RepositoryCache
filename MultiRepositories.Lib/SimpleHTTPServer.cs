@@ -50,7 +50,7 @@ namespace MultiRepositories
 
         public SimpleHTTPServer(
             AppProperties appProperties,
-            IAvailableRepositoriesRepository availableRepositories,
+            IRepositoryEntitiesRepository availableRepositories,
             List<IPackagesRepository> packagesRepositories
             )
         {
@@ -364,7 +364,7 @@ namespace MultiRepositories
         private List<string> _ignoreUrl;
         private string _local;
         private AppProperties _applicationPropertes;
-        private IAvailableRepositoriesRepository _availableRepositories;
+        private IRepositoryEntitiesRepository _availableRepositories;
         private List<IPackagesRepository> _packagesRepositories;
         private string _path;
         private bool _logRequests;

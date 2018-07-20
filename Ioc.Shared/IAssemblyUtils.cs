@@ -9,5 +9,6 @@ namespace Ioc
     public interface IAssemblyUtils : ISingleton
     {
         IEnumerable<Type> LoadAlltypes(params Type[] interfaces);
+        String ReadRes<T>(String name);
     }
 }
