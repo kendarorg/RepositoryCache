@@ -1,39 +1,57 @@
 ﻿
 using Ioc;
+using MultiRepositories.Repositories;
 using Nuget.Repositories;
 using Nuget.Services;
 using NugetProtocol;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Nuget.Apis
 {
-    public class NugetBaseAddressService : IPackageBaseAddressService,ISingleton
+    public class NugetBaseAddressService : IPackageBaseAddressService, ISingleton
     {
         private readonly IInsertNugetService _insertNugetService;
+        private readonly IPackagesRepository _packagesRepository;
+        private readonly IRegistrationRepository _registrationRepository;
+        private readonly IRepositoryEntitiesRepository _repositoryEntitiesRepository;
+        private readonly IPackagesStorage _packagesStorage;
 
-        public NugetBaseAddressService(IInsertNugetService insertNugetService)
+        public NugetBaseAddressService(
+            IPackagesRepository packagesRepository,
+            IRegistrationRepository registrationRepository,
+            IRepositoryEntitiesRepository repositoryEntitiesRepository,
+            IPackagesStorage packagesStorage)
         {
-            this._insertNugetService = insertNugetService;
+            _packagesRepository = packagesRepository;
+            _registrationRepository = registrationRepository;
+            _repositoryEntitiesRepository = repositoryEntitiesRepository;
+            _packagesStorage = packagesStorage;
         }
 
         public byte[] GetNupkg(Guid repoId, string lowerIdlowerVersion)
         {
-            //_insertNugetService.Insert(repoId, nugetApiKey, data);
-            throw new NotImplementedException();
+            var repo = _repositoryEntitiesRepository.GetById(repoId);
+            var package = _packagesRepository.GetByIdVersion(repoId, lowerIdlowerVersion);
+            return _packagesStorage.Load(repo, package);
+            
         }
 
         public string GetNuspec(Guid repoId, string lowerId, string lowerVersion)
         {
-            throw new NotImplementedException();
+            var packageData = _packagesRepository.GetByPackage(repoId, lowerId, lowerVersion);
+            return packageData.Nuspec;
         }
 
         public VersionsResult GetVersions(Guid repoId, string lowerId)
         {
-            throw new NotImplementedException();
+            var versions = _registrationRepository.GetAllByPackageId(repoId, lowerId).
+                Select(a => a.Version).ToList();
+            return new VersionsResult(versions);
         }
     }
 }

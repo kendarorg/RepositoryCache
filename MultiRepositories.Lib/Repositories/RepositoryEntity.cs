@@ -16,5 +16,6 @@ namespace MultiRepositories.Repositories
         public string Prefix { get; set; } //nuget.org/nuget.local
         public string Address { get; set; }
         public string Settings { get; set; }
+        public string PackagesPath { get; set; }
     }
 }
