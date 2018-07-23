@@ -20,8 +20,6 @@ namespace Nuget.Lib.Test
     {
         private IRegistrationRepository _registrationRepository;
         private Mock<IRegistrationRepository> _registrationRepositoryMock;
-        private IRegistrationPageRepository _registrationPageRepository;
-        private Mock<IRegistrationPageRepository> _registrationPageRepositoryMock;
         private ICatalogService _catalogService;
         private Mock<ICatalogService> _catalogServiceMock;
 
@@ -37,37 +35,118 @@ namespace Nuget.Lib.Test
             _registrationRepositoryMock = new Mock<IRegistrationRepository>();
             _registrationRepository = _registrationRepositoryMock.Object;
 
-            _registrationPageRepositoryMock = new Mock<IRegistrationPageRepository>();
-            _registrationPageRepository = _registrationPageRepositoryMock.Object;
-
             _catalogServiceMock = new Mock<ICatalogService>();
             _catalogService = _catalogServiceMock.Object;
-            /*_repoId = Guid.NewGuid();
-            _queryRepositoryMock = new Mock<IQueryRepository>();
-            _queryRepository = _queryRepositoryMock.Object;
-            var repositoryEntitiesRepository = new Mock<IRepositoryEntitiesRepository>();
-            repositoryEntitiesRepository.Setup(r => r.GetByType(It.IsAny<string>())).
-                Returns(new List<RepositoryEntity>
-                {
-                    new RepositoryEntity
-                    {
-                        Address = "nuget.org",
-                        Id = _repoId,
-                        Mirror = true,
-                        Prefix = "nuget.org",
-                        Settings = "",
-                        Type = "nuget"
-                    }
-                });
-            _repositoryEntitiesRepository = repositoryEntitiesRepository.Object;
-            */
+
             _servicesMapper = new ServicesMapperMock("nuget.org", _repoId);
         }
+
+
+        private static List<PackageDetail> GetOnePageCatalogResult()
+        {
+            return new List<PackageDetail>
+            {
+                new PackageDetail("test/1.0.0alpha","pd","registration","test","1.0.0-alpha","content"),
+                new PackageDetail("test/1.1.0","pd","registration","test","1.1.0","content"),
+                new PackageDetail("test/1.2.0","pd","registration","test","1.2.0","content")
+            };
+        }
+
+        private static List<RegistrationEntity> GetOnePageRegistrationResult(DateTime time, DateTime lastTime, Guid lastCommit)
+        {
+            return new List<RegistrationEntity>()
+                {
+                    new RegistrationEntity
+                    {
+                        CommitId = Guid.Parse("ced6c9a6-860f-4eb0-83b2-9b84cdeb0eb1"),
+                        CommitTimestamp = time,
+                        PackageId = "test",
+                        Version = "1.0.0-alpha",
+                        Major=1,
+                        Minor=0,
+                        Patch=0,
+                        PreRelease="alpha"
+                    },
+                    new RegistrationEntity
+                    {
+                        CommitId = Guid.Parse("ced6c9a6-860f-4eb0-83b2-9b84cdeb0eb2"),
+                        CommitTimestamp = time,
+                        PackageId = "test",
+                        Version = "1.1.0",
+                        Major=1,
+                        Minor=1,
+                        Patch=0
+                    },
+                    new RegistrationEntity
+                    {
+                        CommitId =  lastCommit,
+                        CommitTimestamp = lastTime,
+                        PackageId = "test",
+                        Version = "1.2.0",
+                        Major=1,
+                        Minor=2,
+                        Patch=0
+                    }
+                };
+        }
+
+
+
+        private IEnumerable<RegistrationEntity> GetMultiPageRegistrationResult(DateTime time, DateTime lastTime, Guid lastCommit)
+        {
+            var firstPage = new List<RegistrationEntity>();
+            for (int i = 0; i < 64; i++)
+            {
+                yield return new RegistrationEntity
+                {
+                    CommitId = Guid.Parse("ced6c9a6-860f-4eb0-83b2-9b84cdeb0eb1"),
+                    CommitTimestamp = time,
+                    PackageId = "test",
+                    Version = "0.1." + i,
+                    Major = 0,
+                    Minor = 1,
+                    Patch = i
+                };
+            }
+            yield return new RegistrationEntity
+            {
+                CommitId = Guid.Parse("ced6c9a6-860f-4eb0-83b2-9b84cdeb0eb1"),
+                CommitTimestamp = time,
+                PackageId = "test",
+                Version = "1.0.0-alpha",
+                Major = 1,
+                Minor = 0,
+                Patch = 0,
+                PreRelease = "alpha"
+            };
+            yield return new RegistrationEntity
+            {
+                CommitId = Guid.Parse("ced6c9a6-860f-4eb0-83b2-9b84cdeb0eb2"),
+                CommitTimestamp = time,
+                PackageId = "test",
+                Version = "1.1.0",
+                Major = 1,
+                Minor = 1,
+                Patch = 0
+            };
+            yield return new RegistrationEntity
+            {
+                CommitId = lastCommit,
+                CommitTimestamp = lastTime,
+                PackageId = "test",
+                Version = "1.2.0",
+                Major = 1,
+                Minor = 2,
+                Patch = 0
+            };
+        }
+
+
 
         [TestMethod]
         public void ISPTGetLeafNoSemVer()
         {
-            var target = new NugetRegistrationService(_registrationRepository, _registrationPageRepository, _servicesMapper, _catalogService);
+            var target = new NugetRegistrationService(_registrationRepository, _servicesMapper, _catalogService);
             var time = new DateTime(123456789);
             _registrationRepositoryMock.Setup(a => a.GetSpecific(
                 It.Is<Guid>(g => g == _repoId),
@@ -84,6 +163,66 @@ namespace Nuget.Lib.Test
 
             Assert.IsNotNull(result);
             JsonComp.Equals("ISPTGetLeafNoSemVer.json", result);
+        }
+
+        [TestMethod]
+        public void ISPTGetOnePageOnly()
+        {
+
+            var target = new NugetRegistrationService(_registrationRepository, _servicesMapper, _catalogService);
+            var time = new DateTime(123456789);
+            var lastTime = new DateTime(223456789);
+            var lastCommit = Guid.Parse("0006c9a6-860f-4eb0-83b2-9b84cdeb0eb1");
+
+            _registrationRepositoryMock.Setup(a => a.GetAllByPackageId(
+                It.Is<Guid>(g => g == _repoId),
+                It.Is<String>(g => g == "test"))).Returns(GetOnePageRegistrationResult(time, lastTime, lastCommit));
+
+            _registrationRepositoryMock.Setup(a => a.GetRange(
+                It.Is<Guid>(g => g == _repoId),
+                It.Is<String>(g => g == "test"),
+                It.Is<String>(g => g == "1.0.0-alpha"),
+                It.Is<String>(g => g == "1.2.0"))).Returns(GetOnePageRegistrationResult(time, lastTime, lastCommit));
+
+            List<PackageDetail> packDetails = GetOnePageCatalogResult();
+            _catalogServiceMock.Setup(a => a.GetPackageDetailsForRegistration(
+                It.Is<Guid>(g => g == _repoId),
+                It.Is<String>(g => g == "test"),
+                It.IsAny<string>(),
+                It.Is<String>(g => g == "1.0.0-alpha"),
+                It.Is<String>(g => g == "1.1.0"),
+                It.Is<String>(g => g == "1.2.0"))).Returns(packDetails);
+
+
+            var result = target.IndexPage(_repoId, "test", null);
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual(1, result.Count);
+            Assert.AreEqual(1, result.Items.Count);
+            Assert.AreEqual(3, result.Items[0].Count);
+            Assert.AreEqual(3, result.Items[0].Items.Count);
+            JsonComp.Equals("ISPTGetOnePageOnly.json", result);
+        }
+
+        [TestMethod]
+        public void ISPTGetMultipage()
+        {
+
+            var target = new NugetRegistrationService(_registrationRepository, _servicesMapper, _catalogService);
+            var time = new DateTime(123456789);
+            var lastTime = new DateTime(223456789);
+            var lastCommit = Guid.Parse("0006c9a6-860f-4eb0-83b2-9b84cdeb0eb1");
+
+            _registrationRepositoryMock.Setup(a => a.GetAllByPackageId(
+                It.Is<Guid>(g => g == _repoId),
+                It.Is<String>(g => g == "test"))).Returns(GetMultiPageRegistrationResult(time, lastTime, lastCommit));
+
+            var result = target.IndexPage(_repoId, "test", null);
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual(2, result.Count);
+            Assert.AreEqual(2, result.Items.Count);
+            JsonComp.Equals("ISPTGetMultipage.json", result);
         }
     }
 }

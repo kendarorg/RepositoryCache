@@ -12,8 +12,7 @@ namespace Nuget.Services
     {
         public InsertNugetService(
             IQueryRepository  queryRepository, 
-            IRegistrationRepository registrationRepository,
-            IRegistrationPageRepository registrationPageRepository)
+            IRegistrationRepository registrationRepository)
         {
 
         }

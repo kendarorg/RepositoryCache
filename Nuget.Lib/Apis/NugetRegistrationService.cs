@@ -11,7 +11,9 @@ namespace Nuget.Apis
 {
     public class NugetRegistrationService : IRegistrationService, ISingleton
     {
-        static int MAX_PER_PAGE = 64;
+        public static int MAX_PER_PAGE = 64;
+
+        public int MaxPerPage { get { return MAX_PER_PAGE; } }
 
         public NugetRegistrationService(
             IRegistrationRepository registrationRepository,
@@ -70,23 +72,18 @@ namespace Nuget.Apis
                 endVersion = registration.Version;
                 pageRegistrationsCount++;
 
-                if (pageRegistrationsCount == MAX_PER_PAGE)
+                if (pageRegistrationsCount >= MaxPerPage)
                 {
-                    resultPages.Add(new RegistrationPage(
-                        _servicesMapper.FromSemver(repoId, "PackageDisplayMetadataUriTemplate", semVerLevel, lowerId, "page",
-                            startVersion, endVersion + ".json"),
-                        "catalog:CatalogPage",
-                        pageMaxCommitId, pageLastTimestamp,
-                        pageRegistrationsCount, startVersion, endVersion,
-                         _servicesMapper.From(repoId, "PackageDisplayMetadataUriTemplate", semVerLevel, lowerId, "index.json"),
-                         null,
-                         null
-                        ));
+                    resultPages.Add(AddPage(repoId, lowerId, semVerLevel, pageRegistrationsCount, pageMaxCommitId, pageLastTimestamp, startVersion, endVersion));
                     pageRegistrationsCount = 0;
                     pageMaxCommitId = Guid.NewGuid();
                     pageLastTimestamp = DateTime.MinValue;
 
                 }
+            }
+            if (pageRegistrationsCount > 0)
+            {
+                resultPages.Add(AddPage(repoId, lowerId, semVerLevel, pageRegistrationsCount, pageMaxCommitId, pageLastTimestamp, startVersion, endVersion));
             }
 
 
@@ -102,11 +99,26 @@ namespace Nuget.Apis
             {
                 Items = resultPages
             };
-            if (result.Items != null && result.Items.Count == 0 && lastPage != null)
+            if (result.Items != null && result.Items.Count == 1)
             {
-                result.Items[0] = SinglePage(repoId, lowerId, lastPage.Start, lastPage.End, semVerLevel);
+                result.Items[0] = SinglePage(repoId, lowerId, startVersion, endVersion, semVerLevel);
+                result.Items[0].OContext = null;
             }
             return result;
+        }
+
+        private RegistrationPage AddPage(Guid repoId, string lowerId, string semVerLevel, int pageRegistrationsCount, Guid pageMaxCommitId, DateTime pageLastTimestamp, string startVersion, string endVersion)
+        {
+            return new RegistrationPage(
+                                    _servicesMapper.FromSemver(repoId, "PackageDisplayMetadataUriTemplate", semVerLevel, lowerId, "page",
+                                        startVersion, endVersion + ".json"),
+                                    "catalog:CatalogPage",
+                                    pageMaxCommitId, pageLastTimestamp,
+                                    pageRegistrationsCount, startVersion, endVersion,
+                                     _servicesMapper.From(repoId, "PackageDisplayMetadataUriTemplate", semVerLevel, lowerId, "index.json"),
+                                     null,
+                                     null
+                                    );
         }
 
         public RegistrationPage SinglePage(Guid repoId, string lowerId, string versionFrom, string versionTo, string semVerLevel)
@@ -136,7 +148,7 @@ namespace Nuget.Apis
             var result = new RegistrationPage(
                         _servicesMapper.From(repoId, "PackageDisplayMetadataUriTemplate", semVerLevel, lowerId, "page", versionFrom, versionTo + ".json"),
                         "catalog:CatalogPage",
-                        Guid.NewGuid(), DateTime.UtcNow,
+                        maxCommitId, lastTimestamp,
                         data.Count, versionFrom, versionTo,
                         _servicesMapper.From(repoId, "PackageDisplayMetadataUriTemplate", semVerLevel, lowerId, "index.json"),
                         data,

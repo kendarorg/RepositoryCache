@@ -24,7 +24,7 @@ namespace Nuget.Repositories
         {
             var from = SemVerParser.Parse(versionFrom);
             var to = SemVerParser.Parse(versionTo);
-            foreach (var item in GetAll().Where(a => a.RepositoryId == repoId && a.PackageId == lowerId))
+            foreach (var item in GetAllByPackageId(repoId,lowerId))
             {
                 var currver = SemVerParser.Parse(item.Version);
                 if (currver >= from && currver <= to)

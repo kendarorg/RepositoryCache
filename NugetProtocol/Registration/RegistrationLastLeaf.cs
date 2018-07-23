@@ -44,7 +44,7 @@ namespace NugetProtocol
         [JsonProperty("@context")]
         public RegistrationLastLeafContext OContext { get; set; }
 
-
+        [JsonIgnore]
         public string HiddenVersion { get; set; }
     }
 }

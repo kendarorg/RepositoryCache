@@ -14,9 +14,9 @@ namespace Nuget.Lib.Test.Utils
         private static AssemblyUtils _au = new AssemblyUtils();
         public static bool Equals(string resIdExpected, Object result)
         {
-            var expected = Beautify(_au.ReadRes<JsonComp>(resIdExpected));
             var founded = Beautify(JsonConvert.SerializeObject(result));
-            if(expected != founded)
+            var expected = Beautify(_au.ReadRes<JsonComp>(resIdExpected));
+            if (expected != founded)
             {
                 throw new Exception(string.Format("Expected {0}\r\nReal {1}", expected, founded));
             }

@@ -106,6 +106,8 @@
     <EmbeddedResource Include="Resources\ISPToGetReleases.json" />
     <EmbeddedResource Include="Resources\ISPToGetMajorWhenGreaterThanPreAskingForPre.json" />
     <EmbeddedResource Include="Resources\ISPTGetLeafNoSemVer.json" />
+    <EmbeddedResource Include="Resources\ISPTGetOnePageOnly.json" />
+    <EmbeddedResource Include="Resources\ISPTGetMultipage.json" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

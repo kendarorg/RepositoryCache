@@ -39,6 +39,7 @@ namespace NugetProtocol
         [JsonProperty("registration")]
         public string Registration { get; set; }
 
+        [JsonIgnore]
         public string HiddenVersion { get; set; }
     }
 }

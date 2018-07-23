@@ -1,0 +1,130 @@
+﻿{
+  "@id": "nuget.org/PackageDisplayMetadataUriTemplate:/test/index.json",
+  "@type": [
+    "catalog:CatalogRoot",
+    "PackageRegistration",
+    "catalog:Permalink"
+  ],
+  "commitId": "0006c9a6-860f-4eb0-83b2-9b84cdeb0eb1",
+  "commitTimestamp": "0001-01-01T00:00:22.3456789",
+  "count": 1,
+  "items": [
+    {
+      "@id": "nuget.org/PackageDisplayMetadataUriTemplate//test/page/1.0.0-alpha/1.2.0.json",
+      "@type": "catalog:CatalogPage",
+      "commitId": "0006c9a6-860f-4eb0-83b2-9b84cdeb0eb1",
+      "commitTimestamp": "0001-01-01T00:00:22.3456789",
+      "count": 3,
+      "lower": "1.0.0-alpha",
+      "upper": "1.2.0",
+      "parent": "nuget.org/PackageDisplayMetadataUriTemplate//test/index.json",
+      "items": [
+        {
+          "@id": "nuget.org/PackageDisplayMetadataUriTemplate//test/1.0.0-alpha.json",
+          "@type": "Package",
+          "commitId": "ced6c9a6-860f-4eb0-83b2-9b84cdeb0eb1",
+          "commitTimestamp": "0001-01-01T00:00:12.3456789",
+          "catalogEntry": {
+            "@id": "test/1.0.0alpha",
+            "@type": "pd",
+            "registration": "registration",
+            "id": "test",
+            "version": "1.0.0-alpha",
+            "packageContent": "content",
+            "authors": [],
+            "owners": [],
+            "tags": []
+          },
+          "packageContent": "nuget.org/PackageBaseAddress/3.0.0/test/1.0.0-alpha/test.1.0.0-alpha.nupkg",
+          "registration": "nuget.org/PackageDisplayMetadataUriTemplate//test/index.json"
+        },
+        {
+          "@id": "nuget.org/PackageDisplayMetadataUriTemplate//test/1.1.0.json",
+          "@type": "Package",
+          "commitId": "ced6c9a6-860f-4eb0-83b2-9b84cdeb0eb2",
+          "commitTimestamp": "0001-01-01T00:00:12.3456789",
+          "catalogEntry": {
+            "@id": "test/1.1.0",
+            "@type": "pd",
+            "registration": "registration",
+            "id": "test",
+            "version": "1.1.0",
+            "packageContent": "content",
+            "authors": [],
+            "owners": [],
+            "tags": []
+          },
+          "packageContent": "nuget.org/PackageBaseAddress/3.0.0/test/1.1.0/test.1.1.0.nupkg",
+          "registration": "nuget.org/PackageDisplayMetadataUriTemplate//test/index.json"
+        },
+        {
+          "@id": "nuget.org/PackageDisplayMetadataUriTemplate//test/1.2.0.json",
+          "@type": "Package",
+          "commitId": "0006c9a6-860f-4eb0-83b2-9b84cdeb0eb1",
+          "commitTimestamp": "0001-01-01T00:00:22.3456789",
+          "catalogEntry": {
+            "@id": "test/1.2.0",
+            "@type": "pd",
+            "registration": "registration",
+            "id": "test",
+            "version": "1.2.0",
+            "packageContent": "content",
+            "authors": [],
+            "owners": [],
+            "tags": []
+          },
+          "packageContent": "nuget.org/PackageBaseAddress/3.0.0/test/1.2.0/test.1.2.0.nupkg",
+          "registration": "nuget.org/PackageDisplayMetadataUriTemplate//test/index.json"
+        }
+      ]
+    }
+  ],
+  "@context": {
+    "@vocab": "nuget.org/*Schema/",
+    "catalog": "nuget.org/*Catalog/",
+    "xsd": "nuget.org/*W3SchemaComment/",
+    "items": {
+      "@id": "catalog:item",
+      "@container": "@set"
+    },
+    "commitTiemstamp": {
+      "@id": "catalog:commitTimeStamp",
+      "@type": "commitTimeStamp"
+    },
+    "commitId": {
+      "@id": "catalog:commitId"
+    },
+    "count": {
+      "@id": "catalog:count"
+    },
+    "parent": {
+      "@id": "catalog:parent",
+      "@type": "@id"
+    },
+    "tags": {
+      "@id": "tag",
+      "@container": "@set"
+    },
+    "packageTargetFrameworks": {
+      "@id": "packageTargetFramework",
+      "@container": "@set"
+    },
+    "dependencyGroups": {
+      "@id": "dependencyGroup",
+      "@container": "@set"
+    },
+    "dependencies": {
+      "@id": "dependency",
+      "@container": "@set"
+    },
+    "packageContent": {
+      "@type": "@id"
+    },
+    "published": {
+      "@type": "xsd:dateTime"
+    },
+    "registration": {
+      "@type": "@id"
+    }
+  }
+}

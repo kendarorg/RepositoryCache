@@ -48,7 +48,7 @@ namespace NugetProtocol
         public string Parent { get; set; }
         [JsonProperty("items", DefaultValueHandling = DefaultValueHandling.Ignore)]
         public List<RegistrationLeaf> Items { get; set; }
-        [JsonProperty("@context")]
+        [JsonProperty("@context", DefaultValueHandling = DefaultValueHandling.Ignore)]
         public RegistrationContext OContext { get; set; }
     }
 }
