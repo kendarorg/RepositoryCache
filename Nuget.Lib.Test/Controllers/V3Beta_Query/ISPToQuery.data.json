@@ -1,0 +1,3229 @@
+{
+  "@context": {
+    "@vocab": "http://schema.nuget.org/schema#",
+    "@base": "http://localhost:9080/nuget.org/v3/registrationsemver1/"
+  },
+  "totalHits": 111033,
+  "data": [
+    {
+      "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/newtonsoft.json/index.json",
+      "@type": "Package",
+      "registration": "http://localhost:9080/nuget.org/v3/registrationsemver1/newtonsoft.json/index.json",
+      "id": "Newtonsoft.Json",
+      "version": "11.0.2",
+      "versions": [
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/newtonsoft.json/3.5.8.json",
+          "version": "3.5.8",
+          "downloads": 156256
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/newtonsoft.json/4.0.1.json",
+          "version": "4.0.1",
+          "downloads": 72785
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/newtonsoft.json/4.0.2.json",
+          "version": "4.0.2",
+          "downloads": 60337
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/newtonsoft.json/4.0.3.json",
+          "version": "4.0.3",
+          "downloads": 40739
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/newtonsoft.json/4.0.4.json",
+          "version": "4.0.4",
+          "downloads": 32008
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/newtonsoft.json/4.0.5.json",
+          "version": "4.0.5",
+          "downloads": 103991
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/newtonsoft.json/4.0.6.json",
+          "version": "4.0.6",
+          "downloads": 15370
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/newtonsoft.json/4.0.7.json",
+          "version": "4.0.7",
+          "downloads": 262570
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/newtonsoft.json/4.0.8.json",
+          "version": "4.0.8",
+          "downloads": 243221
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/newtonsoft.json/4.5.1.json",
+          "version": "4.5.1",
+          "downloads": 256812
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/newtonsoft.json/4.5.2.json",
+          "version": "4.5.2",
+          "downloads": 15637
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/newtonsoft.json/4.5.3.json",
+          "version": "4.5.3",
+          "downloads": 27699
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/newtonsoft.json/4.5.4.json",
+          "version": "4.5.4",
+          "downloads": 66044
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/newtonsoft.json/4.5.5.json",
+          "version": "4.5.5",
+          "downloads": 70156
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/newtonsoft.json/4.5.6.json",
+          "version": "4.5.6",
+          "downloads": 1347176
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/newtonsoft.json/4.5.7.json",
+          "version": "4.5.7",
+          "downloads": 257489
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/newtonsoft.json/4.5.8.json",
+          "version": "4.5.8",
+          "downloads": 235424
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/newtonsoft.json/4.5.9.json",
+          "version": "4.5.9",
+          "downloads": 194833
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/newtonsoft.json/4.5.10.json",
+          "version": "4.5.10",
+          "downloads": 313011
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/newtonsoft.json/4.5.11.json",
+          "version": "4.5.11",
+          "downloads": 6696938
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/newtonsoft.json/5.0.1.json",
+          "version": "5.0.1",
+          "downloads": 1001204
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/newtonsoft.json/5.0.2.json",
+          "version": "5.0.2",
+          "downloads": 263762
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/newtonsoft.json/5.0.3.json",
+          "version": "5.0.3",
+          "downloads": 290714
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/newtonsoft.json/5.0.4.json",
+          "version": "5.0.4",
+          "downloads": 1222509
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/newtonsoft.json/5.0.5.json",
+          "version": "5.0.5",
+          "downloads": 500010
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/newtonsoft.json/5.0.6.json",
+          "version": "5.0.6",
+          "downloads": 2516809
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/newtonsoft.json/5.0.7.json",
+          "version": "5.0.7",
+          "downloads": 455422
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/newtonsoft.json/5.0.8.json",
+          "version": "5.0.8",
+          "downloads": 2578153
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/newtonsoft.json/6.0.1.json",
+          "version": "6.0.1",
+          "downloads": 1602262
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/newtonsoft.json/6.0.2.json",
+          "version": "6.0.2",
+          "downloads": 750176
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/newtonsoft.json/6.0.3.json",
+          "version": "6.0.3",
+          "downloads": 1895002
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/newtonsoft.json/6.0.4.json",
+          "version": "6.0.4",
+          "downloads": 10438618
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/newtonsoft.json/6.0.5.json",
+          "version": "6.0.5",
+          "downloads": 2027356
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/newtonsoft.json/6.0.6.json",
+          "version": "6.0.6",
+          "downloads": 4001207
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/newtonsoft.json/6.0.7.json",
+          "version": "6.0.7",
+          "downloads": 711485
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/newtonsoft.json/6.0.8.json",
+          "version": "6.0.8",
+          "downloads": 9113999
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/newtonsoft.json/7.0.1.json",
+          "version": "7.0.1",
+          "downloads": 8958451
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/newtonsoft.json/8.0.1.json",
+          "version": "8.0.1",
+          "downloads": 1008010
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/newtonsoft.json/8.0.2.json",
+          "version": "8.0.2",
+          "downloads": 3316655
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/newtonsoft.json/8.0.3.json",
+          "version": "8.0.3",
+          "downloads": 6628799
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/newtonsoft.json/9.0.1.json",
+          "version": "9.0.1",
+          "downloads": 17170803
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/newtonsoft.json/10.0.1.json",
+          "version": "10.0.1",
+          "downloads": 13973835
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/newtonsoft.json/10.0.2.json",
+          "version": "10.0.2",
+          "downloads": 7941411
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/newtonsoft.json/10.0.3.json",
+          "version": "10.0.3",
+          "downloads": 18164811
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/newtonsoft.json/11.0.1.json",
+          "version": "11.0.1",
+          "downloads": 2560692
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/newtonsoft.json/11.0.2.json",
+          "version": "11.0.2",
+          "downloads": 3721968
+        }
+      ],
+      "description": "Json.NET is a popular high-performance JSON framework for .NET",
+      "authors": [ "James Newton-King" ],
+      "iconUrl": "https://www.newtonsoft.com/content/images/nugeticon.png",
+      "licenseUrl": "https://raw.github.com/JamesNK/Newtonsoft.Json/master/LICENSE.md",
+      "owners": [],
+      "projectUrl": "https://www.newtonsoft.com/json",
+      "summary": "",
+      "tags": [ "json" ],
+      "title": "Json.NET",
+      "totalDownloads": 134984301,
+      "verified": true
+    },
+    {
+      "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nunit/index.json",
+      "@type": "Package",
+      "registration": "http://localhost:9080/nuget.org/v3/registrationsemver1/nunit/index.json",
+      "id": "NUnit",
+      "version": "3.10.1",
+      "versions": [
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nunit/2.5.7.10213.json",
+          "version": "2.5.7.10213",
+          "downloads": 88007
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nunit/2.5.9.10348.json",
+          "version": "2.5.9.10348",
+          "downloads": 31940
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nunit/2.5.10.11092.json",
+          "version": "2.5.10.11092",
+          "downloads": 346443
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nunit/2.6.0.12054.json",
+          "version": "2.6.0.12054",
+          "downloads": 358485
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nunit/2.6.1.json",
+          "version": "2.6.1",
+          "downloads": 224228
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nunit/2.6.2.json",
+          "version": "2.6.2",
+          "downloads": 1158616
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nunit/2.6.3.json",
+          "version": "2.6.3",
+          "downloads": 2517183
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nunit/2.6.4.json",
+          "version": "2.6.4",
+          "downloads": 4769067
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nunit/2.6.5.json",
+          "version": "2.6.5",
+          "downloads": 10527
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nunit/2.6.6.json",
+          "version": "2.6.6",
+          "downloads": 3959
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nunit/2.6.7.json",
+          "version": "2.6.7",
+          "downloads": 897
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nunit/3.0.0.json",
+          "version": "3.0.0",
+          "downloads": 279640
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nunit/3.0.1.json",
+          "version": "3.0.1",
+          "downloads": 751532
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nunit/3.2.0.json",
+          "version": "3.2.0",
+          "downloads": 480909
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nunit/3.2.1.json",
+          "version": "3.2.1",
+          "downloads": 616244
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nunit/3.4.0.json",
+          "version": "3.4.0",
+          "downloads": 96505
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nunit/3.4.1.json",
+          "version": "3.4.1",
+          "downloads": 1090692
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nunit/3.5.0.json",
+          "version": "3.5.0",
+          "downloads": 1402653
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nunit/3.6.0.json",
+          "version": "3.6.0",
+          "downloads": 963500
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nunit/3.6.1.json",
+          "version": "3.6.1",
+          "downloads": 1616413
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nunit/3.7.0.json",
+          "version": "3.7.0",
+          "downloads": 140892
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nunit/3.7.1.json",
+          "version": "3.7.1",
+          "downloads": 1355152
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nunit/3.8.0.json",
+          "version": "3.8.0",
+          "downloads": 51282
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nunit/3.8.1.json",
+          "version": "3.8.1",
+          "downloads": 2706351
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nunit/3.9.0.json",
+          "version": "3.9.0",
+          "downloads": 1843692
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nunit/3.10.0.json",
+          "version": "3.10.0",
+          "downloads": 11728
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nunit/3.10.1.json",
+          "version": "3.10.1",
+          "downloads": 1083412
+        }
+      ],
+      "description": "NUnit features a fluent assert syntax, parameterized, generic and theory tests and is user-extensible.\n\nThis package includes the NUnit 3 framework assembly, which is referenced by your tests. You will need to install version 3 of the nunit3-console program or a third-party runner that supports NUnit 3 in order to execute tests. Runners intended for use with NUnit 2.x will not run NUnit 3 tests correctly.\n\nSupported platforms:\n- .NET Framework 2.0+\n- .NET Standard 1.6+\n- .NET Core",
+      "authors": [ "Charlie Poole, Rob Prouse" ],
+      "iconUrl": "https://cdn.rawgit.com/nunit/resources/master/images/icon/nunit_256.png",
+      "licenseUrl": "https://raw.githubusercontent.com/nunit/nunit/master/LICENSE.txt",
+      "owners": [],
+      "projectUrl": "http://nunit.org/",
+      "summary": "NUnit is a unit-testing framework for all .NET languages with a strong TDD focus.",
+      "tags": [ "nunit", "test", "testing", "tdd", "framework", "fluent", "assert", "theory", "plugin", "addin" ],
+      "title": "NUnit",
+      "totalDownloads": 24109537,
+      "verified": true
+    },
+    {
+      "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/entityframework/index.json",
+      "@type": "Package",
+      "registration": "http://localhost:9080/nuget.org/v3/registrationsemver1/entityframework/index.json",
+      "id": "EntityFramework",
+      "version": "6.2.0",
+      "versions": [
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/entityframework/4.1.10311.json",
+          "version": "4.1.10311",
+          "downloads": 90520
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/entityframework/4.1.10331.json",
+          "version": "4.1.10331",
+          "downloads": 718621
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/entityframework/4.1.10715.json",
+          "version": "4.1.10715",
+          "downloads": 783407
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/entityframework/4.2.0.json",
+          "version": "4.2.0",
+          "downloads": 409127
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/entityframework/4.3.0.json",
+          "version": "4.3.0",
+          "downloads": 101706
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/entityframework/4.3.1.json",
+          "version": "4.3.1",
+          "downloads": 501796
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/entityframework/5.0.0.json",
+          "version": "5.0.0",
+          "downloads": 8067100
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/entityframework/6.0.0.json",
+          "version": "6.0.0",
+          "downloads": 3054077
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/entityframework/6.0.1.json",
+          "version": "6.0.1",
+          "downloads": 1136477
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/entityframework/6.0.2.json",
+          "version": "6.0.2",
+          "downloads": 1842954
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/entityframework/6.1.0.json",
+          "version": "6.1.0",
+          "downloads": 2319824
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/entityframework/6.1.1.json",
+          "version": "6.1.1",
+          "downloads": 3392462
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/entityframework/6.1.2.json",
+          "version": "6.1.2",
+          "downloads": 1764211
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/entityframework/6.1.3.json",
+          "version": "6.1.3",
+          "downloads": 17981529
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/entityframework/6.2.0.json",
+          "version": "6.2.0",
+          "downloads": 3295888
+        }
+      ],
+      "description": "Entity Framework is Microsoft's recommended data access technology for new applications.",
+      "authors": [ "Microsoft" ],
+      "iconUrl": "http://go.microsoft.com/fwlink/?LinkID=386613",
+      "licenseUrl": "http://go.microsoft.com/fwlink/?LinkID=262998",
+      "owners": [],
+      "projectUrl": "http://go.microsoft.com/fwlink/?LinkID=263480",
+      "summary": "Entity Framework is Microsoft's recommended data access technology for new applications.",
+      "tags": [ "Microsoft", "EntityFramework", "EF", "Database", "Data", "O/RM", "ADO.NET" ],
+      "title": "EntityFramework",
+      "totalDownloads": 46691125,
+      "verified": true
+    },
+    {
+      "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/mysql.data/index.json",
+      "@type": "Package",
+      "registration": "http://localhost:9080/nuget.org/v3/registrationsemver1/mysql.data/index.json",
+      "id": "MySql.Data",
+      "version": "8.0.11",
+      "versions": [
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/mysql.data/6.7.9.json",
+          "version": "6.7.9",
+          "downloads": 68585
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/mysql.data/6.8.8.json",
+          "version": "6.8.8",
+          "downloads": 47636
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/mysql.data/6.9.12.json",
+          "version": "6.9.12",
+          "downloads": 33733
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/mysql.data/6.10.7.json",
+          "version": "6.10.7",
+          "downloads": 28949
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/mysql.data/8.0.11.json",
+          "version": "8.0.11",
+          "downloads": 173886
+        }
+      ],
+      "description": "MySql.Data.MySqlClient .Net Core Class Library",
+      "authors": [ "Oracle" ],
+      "iconUrl": "http://www.mysql.com/common/logos/logo-mysql-170x115.png",
+      "licenseUrl": "https://downloads.mysql.com/docs/licenses/connector-net-8.0-gpl-en.pdf",
+      "owners": [],
+      "projectUrl": "https://dev.mysql.com/downloads/",
+      "summary": "",
+      "tags": [ "MySql", ".NET", "Connector", "MySql", "Connector/NET", "netcore", ".Net", "Core", "MySql", "Conector/Net", "Core", "coreclr", "C/NET", "C/Net", "Core" ],
+      "title": "MySql.Data",
+      "totalDownloads": 4133771,
+      "verified": true
+    },
+    {
+      "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/bootstrap/index.json",
+      "@type": "Package",
+      "registration": "http://localhost:9080/nuget.org/v3/registrationsemver1/bootstrap/index.json",
+      "id": "bootstrap",
+      "version": "4.1.2",
+      "versions": [
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/bootstrap/1.0.0.json",
+          "version": "1.0.0",
+          "downloads": 6294
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/bootstrap/2.3.1.json",
+          "version": "2.3.1",
+          "downloads": 73857
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/bootstrap/2.3.2.json",
+          "version": "2.3.2",
+          "downloads": 67607
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/bootstrap/3.0.0.json",
+          "version": "3.0.0",
+          "downloads": 7854078
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/bootstrap/3.0.1.json",
+          "version": "3.0.1",
+          "downloads": 255354
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/bootstrap/3.0.2.json",
+          "version": "3.0.2",
+          "downloads": 103082
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/bootstrap/3.0.3.json",
+          "version": "3.0.3",
+          "downloads": 300671
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/bootstrap/3.1.0.json",
+          "version": "3.1.0",
+          "downloads": 74992
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/bootstrap/3.1.1.json",
+          "version": "3.1.1",
+          "downloads": 582914
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/bootstrap/3.2.0.json",
+          "version": "3.2.0",
+          "downloads": 791984
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/bootstrap/3.3.0.json",
+          "version": "3.3.0",
+          "downloads": 253505
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/bootstrap/3.3.1.json",
+          "version": "3.3.1",
+          "downloads": 415933
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/bootstrap/3.3.2.json",
+          "version": "3.3.2",
+          "downloads": 357057
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/bootstrap/3.3.4.json",
+          "version": "3.3.4",
+          "downloads": 841573
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/bootstrap/3.3.5.json",
+          "version": "3.3.5",
+          "downloads": 885067
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/bootstrap/3.3.6.json",
+          "version": "3.3.6",
+          "downloads": 1748496
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/bootstrap/3.3.7.json",
+          "version": "3.3.7",
+          "downloads": 3430728
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/bootstrap/4.0.0.json",
+          "version": "4.0.0",
+          "downloads": 278133
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/bootstrap/4.1.0.json",
+          "version": "4.1.0",
+          "downloads": 61572
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/bootstrap/4.1.1.json",
+          "version": "4.1.1",
+          "downloads": 178585
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/bootstrap/4.1.2.json",
+          "version": "4.1.2",
+          "downloads": 601
+        }
+      ],
+      "description": "The most popular front-end framework for developing responsive, mobile first projects on the web.",
+      "authors": [ "The Bootstrap Authors, Twitter Inc." ],
+      "iconUrl": "https://getbootstrap.com/docs/4.1/assets/img/favicons/apple-touch-icon.png",
+      "licenseUrl": "https://github.com/twbs/bootstrap/blob/master/LICENSE",
+      "owners": [],
+      "projectUrl": "https://getbootstrap.com/",
+      "summary": "Bootstrap framework in CSS. Includes fonts and JavaScript",
+      "tags": [ "css", "mobile-first", "responsive", "front-end", "framework", "web" ],
+      "title": "Bootstrap CSS",
+      "totalDownloads": 18843949
+    },
+    {
+      "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/jquery/index.json",
+      "@type": "Package",
+      "registration": "http://localhost:9080/nuget.org/v3/registrationsemver1/jquery/index.json",
+      "id": "jQuery",
+      "version": "3.3.1",
+      "versions": [
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/jquery/1.4.1.json",
+          "version": "1.4.1",
+          "downloads": 117705
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/jquery/1.4.2.json",
+          "version": "1.4.2",
+          "downloads": 5140
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/jquery/1.4.3.json",
+          "version": "1.4.3",
+          "downloads": 4280
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/jquery/1.4.4.json",
+          "version": "1.4.4",
+          "downloads": 424625
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/jquery/1.5.0.json",
+          "version": "1.5.0",
+          "downloads": 15093
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/jquery/1.5.1.json",
+          "version": "1.5.1",
+          "downloads": 573064
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/jquery/1.5.2.json",
+          "version": "1.5.2",
+          "downloads": 60413
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/jquery/1.6.0.json",
+          "version": "1.6.0",
+          "downloads": 53940
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/jquery/1.6.1.json",
+          "version": "1.6.1",
+          "downloads": 41278
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/jquery/1.6.2.json",
+          "version": "1.6.2",
+          "downloads": 859527
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/jquery/1.6.3.json",
+          "version": "1.6.3",
+          "downloads": 71758
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/jquery/1.6.4.json",
+          "version": "1.6.4",
+          "downloads": 1852192
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/jquery/1.7.0.json",
+          "version": "1.7.0",
+          "downloads": 446211
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/jquery/1.7.1.json",
+          "version": "1.7.1",
+          "downloads": 291552
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/jquery/1.7.1.1.json",
+          "version": "1.7.1.1",
+          "downloads": 1294374
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/jquery/1.7.2.json",
+          "version": "1.7.2",
+          "downloads": 473245
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/jquery/1.8.0.json",
+          "version": "1.8.0",
+          "downloads": 559008
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/jquery/1.8.1.json",
+          "version": "1.8.1",
+          "downloads": 159177
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/jquery/1.8.2.json",
+          "version": "1.8.2",
+          "downloads": 5062882
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/jquery/1.8.3.json",
+          "version": "1.8.3",
+          "downloads": 765328
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/jquery/1.9.0.json",
+          "version": "1.9.0",
+          "downloads": 871712
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/jquery/1.9.1.json",
+          "version": "1.9.1",
+          "downloads": 2795914
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/jquery/1.10.0.json",
+          "version": "1.10.0",
+          "downloads": 428634
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/jquery/1.10.0.1.json",
+          "version": "1.10.0.1",
+          "downloads": 321974
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/jquery/1.10.1.json",
+          "version": "1.10.1",
+          "downloads": 368988
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/jquery/1.10.2.json",
+          "version": "1.10.2",
+          "downloads": 8799312
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/jquery/1.11.0.json",
+          "version": "1.11.0",
+          "downloads": 632214
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/jquery/1.11.1.json",
+          "version": "1.11.1",
+          "downloads": 685828
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/jquery/1.11.2.json",
+          "version": "1.11.2",
+          "downloads": 458095
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/jquery/1.11.3.json",
+          "version": "1.11.3",
+          "downloads": 510132
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/jquery/1.12.0.json",
+          "version": "1.12.0",
+          "downloads": 215814
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/jquery/1.12.1.json",
+          "version": "1.12.1",
+          "downloads": 159423
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/jquery/1.12.2.json",
+          "version": "1.12.2",
+          "downloads": 164872
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/jquery/1.12.3.json",
+          "version": "1.12.3",
+          "downloads": 192477
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/jquery/1.12.4.json",
+          "version": "1.12.4",
+          "downloads": 578889
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/jquery/2.0.0.json",
+          "version": "2.0.0",
+          "downloads": 753804
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/jquery/2.0.1.json",
+          "version": "2.0.1",
+          "downloads": 582135
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/jquery/2.0.1.1.json",
+          "version": "2.0.1.1",
+          "downloads": 649569
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/jquery/2.0.2.json",
+          "version": "2.0.2",
+          "downloads": 722835
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/jquery/2.0.3.json",
+          "version": "2.0.3",
+          "downloads": 1451423
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/jquery/2.1.0.json",
+          "version": "2.1.0",
+          "downloads": 1152347
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/jquery/2.1.1.json",
+          "version": "2.1.1",
+          "downloads": 2073267
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/jquery/2.1.2.json",
+          "version": "2.1.2",
+          "downloads": 434220
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/jquery/2.1.3.json",
+          "version": "2.1.3",
+          "downloads": 1471638
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/jquery/2.1.4.json",
+          "version": "2.1.4",
+          "downloads": 2286946
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/jquery/2.2.0.json",
+          "version": "2.2.0",
+          "downloads": 786029
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/jquery/2.2.1.json",
+          "version": "2.2.1",
+          "downloads": 544929
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/jquery/2.2.2.json",
+          "version": "2.2.2",
+          "downloads": 342246
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/jquery/2.2.3.json",
+          "version": "2.2.3",
+          "downloads": 1090783
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/jquery/2.2.4.json",
+          "version": "2.2.4",
+          "downloads": 561524
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/jquery/3.0.0.json",
+          "version": "3.0.0",
+          "downloads": 350058
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/jquery/3.0.0.1.json",
+          "version": "3.0.0.1",
+          "downloads": 331490
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/jquery/3.1.0.json",
+          "version": "3.1.0",
+          "downloads": 669509
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/jquery/3.1.1.json",
+          "version": "3.1.1",
+          "downloads": 2542401
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/jquery/3.2.1.json",
+          "version": "3.2.1",
+          "downloads": 785238
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/jquery/3.3.1.json",
+          "version": "3.3.1",
+          "downloads": 730045
+        }
+      ],
+      "description": "jQuery is a new kind of JavaScript Library.\n        jQuery is a fast and concise JavaScript Library that simplifies HTML document traversing, event handling, animating, and Ajax interactions for rapid web development. jQuery is designed to change the way that you write JavaScript.\n        NOTE: This package is maintained on behalf of the library owners by the NuGet Community Packages project at http://nugetpackages.codeplex.com/",
+      "authors": [ "jQuery Foundation, Inc." ],
+      "licenseUrl": "http://jquery.org/license",
+      "owners": [],
+      "projectUrl": "http://jquery.com/",
+      "summary": "",
+      "tags": [ "jQuery" ],
+      "title": "jQuery",
+      "totalDownloads": 50627506
+    },
+    {
+      "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nuget.core/index.json",
+      "@type": "Package",
+      "registration": "http://localhost:9080/nuget.org/v3/registrationsemver1/nuget.core/index.json",
+      "id": "NuGet.Core",
+      "version": "2.14.0",
+      "versions": [
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nuget.core/1.0.1120.104.json",
+          "version": "1.0.1120.104",
+          "downloads": 5596
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nuget.core/1.1.229.159.json",
+          "version": "1.1.229.159",
+          "downloads": 1299
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nuget.core/1.2.20325.9034.json",
+          "version": "1.2.20325.9034",
+          "downloads": 1646
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nuget.core/1.3.20419.9005.json",
+          "version": "1.3.20419.9005",
+          "downloads": 2961
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nuget.core/1.4.20615.9012.json",
+          "version": "1.4.20615.9012",
+          "downloads": 5985
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nuget.core/1.5.20818.9011.json",
+          "version": "1.5.20818.9011",
+          "downloads": 1565
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nuget.core/1.5.20902.9023.json",
+          "version": "1.5.20902.9023",
+          "downloads": 684
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nuget.core/1.5.20902.9026.json",
+          "version": "1.5.20902.9026",
+          "downloads": 7995
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nuget.core/1.6.0.json",
+          "version": "1.6.0",
+          "downloads": 6515
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nuget.core/1.6.1.json",
+          "version": "1.6.1",
+          "downloads": 499579
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nuget.core/1.6.2.json",
+          "version": "1.6.2",
+          "downloads": 340415
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nuget.core/1.7.0.json",
+          "version": "1.7.0",
+          "downloads": 6410
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nuget.core/1.8.0.json",
+          "version": "1.8.0",
+          "downloads": 192976
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nuget.core/2.0.0.json",
+          "version": "2.0.0",
+          "downloads": 4856
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nuget.core/2.0.1.json",
+          "version": "2.0.1",
+          "downloads": 57084
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nuget.core/2.1.0.json",
+          "version": "2.1.0",
+          "downloads": 25897
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nuget.core/2.1.1.json",
+          "version": "2.1.1",
+          "downloads": 7047
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nuget.core/2.2.0.json",
+          "version": "2.2.0",
+          "downloads": 24246
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nuget.core/2.5.0.json",
+          "version": "2.5.0",
+          "downloads": 185919
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nuget.core/2.6.0.json",
+          "version": "2.6.0",
+          "downloads": 7492
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nuget.core/2.6.0.1.json",
+          "version": "2.6.0.1",
+          "downloads": 9579
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nuget.core/2.7.0.json",
+          "version": "2.7.0",
+          "downloads": 14811
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nuget.core/2.7.1.json",
+          "version": "2.7.1",
+          "downloads": 12299
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nuget.core/2.7.2.json",
+          "version": "2.7.2",
+          "downloads": 112321
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nuget.core/2.8.0.json",
+          "version": "2.8.0",
+          "downloads": 34916
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nuget.core/2.8.1.json",
+          "version": "2.8.1",
+          "downloads": 24859
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nuget.core/2.8.2.json",
+          "version": "2.8.2",
+          "downloads": 66177
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nuget.core/2.8.3.json",
+          "version": "2.8.3",
+          "downloads": 206086
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nuget.core/2.8.5.json",
+          "version": "2.8.5",
+          "downloads": 71762
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nuget.core/2.8.6.json",
+          "version": "2.8.6",
+          "downloads": 88877
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nuget.core/2.9.0.json",
+          "version": "2.9.0",
+          "downloads": 16076
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nuget.core/2.10.1.json",
+          "version": "2.10.1",
+          "downloads": 92023
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nuget.core/2.11.1.json",
+          "version": "2.11.1",
+          "downloads": 117270
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nuget.core/2.12.0.json",
+          "version": "2.12.0",
+          "downloads": 120570
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nuget.core/2.13.0.json",
+          "version": "2.13.0",
+          "downloads": 7393
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nuget.core/2.14.0.json",
+          "version": "2.14.0",
+          "downloads": 550651
+        }
+      ],
+      "description": "NuGet.Core is the core framework assembly for NuGet that the rest of NuGet builds upon.",
+      "authors": [ "Outercurve Foundation" ],
+      "licenseUrl": "https://raw.githubusercontent.com/NuGet/NuGet2/master/LICENSE.txt",
+      "owners": [],
+      "projectUrl": "https://github.com/NuGet/NuGet2",
+      "summary": "",
+      "tags": [ "nuget" ],
+      "title": "NuGet.Core",
+      "totalDownloads": 2991179,
+      "verified": true
+    },
+    {
+      "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/htmlagilitypack/index.json",
+      "@type": "Package",
+      "registration": "http://localhost:9080/nuget.org/v3/registrationsemver1/htmlagilitypack/index.json",
+      "id": "HtmlAgilityPack",
+      "version": "1.8.5",
+      "versions": [
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/htmlagilitypack/1.3.0.json",
+          "version": "1.3.0",
+          "downloads": 11773
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/htmlagilitypack/1.4.0.json",
+          "version": "1.4.0",
+          "downloads": 56283
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/htmlagilitypack/1.4.1.json",
+          "version": "1.4.1",
+          "downloads": 1154
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/htmlagilitypack/1.4.2.json",
+          "version": "1.4.2",
+          "downloads": 8966
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/htmlagilitypack/1.4.3.json",
+          "version": "1.4.3",
+          "downloads": 308378
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/htmlagilitypack/1.4.4.json",
+          "version": "1.4.4",
+          "downloads": 9066
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/htmlagilitypack/1.4.5.json",
+          "version": "1.4.5",
+          "downloads": 17545
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/htmlagilitypack/1.4.6.json",
+          "version": "1.4.6",
+          "downloads": 1661096
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/htmlagilitypack/1.4.8.json",
+          "version": "1.4.8",
+          "downloads": 32285
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/htmlagilitypack/1.4.9.json",
+          "version": "1.4.9",
+          "downloads": 2488535
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/htmlagilitypack/1.4.9.1.json",
+          "version": "1.4.9.1",
+          "downloads": 40967
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/htmlagilitypack/1.4.9.2.json",
+          "version": "1.4.9.2",
+          "downloads": 41832
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/htmlagilitypack/1.4.9.3.json",
+          "version": "1.4.9.3",
+          "downloads": 43544
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/htmlagilitypack/1.4.9.4.json",
+          "version": "1.4.9.4",
+          "downloads": 115475
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/htmlagilitypack/1.4.9.5.json",
+          "version": "1.4.9.5",
+          "downloads": 1816574
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/htmlagilitypack/1.5.0.json",
+          "version": "1.5.0",
+          "downloads": 33539
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/htmlagilitypack/1.5.1.json",
+          "version": "1.5.1",
+          "downloads": 339750
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/htmlagilitypack/1.5.2.json",
+          "version": "1.5.2",
+          "downloads": 7798
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/htmlagilitypack/1.5.3.json",
+          "version": "1.5.3",
+          "downloads": 4883
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/htmlagilitypack/1.5.4.json",
+          "version": "1.5.4",
+          "downloads": 8133
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/htmlagilitypack/1.5.5.json",
+          "version": "1.5.5",
+          "downloads": 163787
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/htmlagilitypack/1.6.0.json",
+          "version": "1.6.0",
+          "downloads": 48270
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/htmlagilitypack/1.6.1.json",
+          "version": "1.6.1",
+          "downloads": 33381
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/htmlagilitypack/1.6.2.json",
+          "version": "1.6.2",
+          "downloads": 114647
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/htmlagilitypack/1.6.3.json",
+          "version": "1.6.3",
+          "downloads": 66477
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/htmlagilitypack/1.6.4.json",
+          "version": "1.6.4",
+          "downloads": 17599
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/htmlagilitypack/1.6.5.json",
+          "version": "1.6.5",
+          "downloads": 70430
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/htmlagilitypack/1.6.6.json",
+          "version": "1.6.6",
+          "downloads": 65697
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/htmlagilitypack/1.6.7.json",
+          "version": "1.6.7",
+          "downloads": 40692
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/htmlagilitypack/1.6.8.json",
+          "version": "1.6.8",
+          "downloads": 29856
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/htmlagilitypack/1.6.9.json",
+          "version": "1.6.9",
+          "downloads": 883
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/htmlagilitypack/1.6.10.json",
+          "version": "1.6.10",
+          "downloads": 36388
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/htmlagilitypack/1.6.11.json",
+          "version": "1.6.11",
+          "downloads": 24661
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/htmlagilitypack/1.6.12.json",
+          "version": "1.6.12",
+          "downloads": 1435
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/htmlagilitypack/1.6.13.json",
+          "version": "1.6.13",
+          "downloads": 62399
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/htmlagilitypack/1.6.14.json",
+          "version": "1.6.14",
+          "downloads": 324
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/htmlagilitypack/1.6.15.json",
+          "version": "1.6.15",
+          "downloads": 66703
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/htmlagilitypack/1.6.16.json",
+          "version": "1.6.16",
+          "downloads": 54235
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/htmlagilitypack/1.6.17.json",
+          "version": "1.6.17",
+          "downloads": 30662
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/htmlagilitypack/1.7.0.json",
+          "version": "1.7.0",
+          "downloads": 55980
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/htmlagilitypack/1.7.1.json",
+          "version": "1.7.1",
+          "downloads": 90762
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/htmlagilitypack/1.7.2.json",
+          "version": "1.7.2",
+          "downloads": 64119
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/htmlagilitypack/1.7.3.json",
+          "version": "1.7.3",
+          "downloads": 5813
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/htmlagilitypack/1.7.4.json",
+          "version": "1.7.4",
+          "downloads": 22359
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/htmlagilitypack/1.8.0.json",
+          "version": "1.8.0",
+          "downloads": 25367
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/htmlagilitypack/1.8.1.json",
+          "version": "1.8.1",
+          "downloads": 76177
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/htmlagilitypack/1.8.2.json",
+          "version": "1.8.2",
+          "downloads": 60106
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/htmlagilitypack/1.8.3.json",
+          "version": "1.8.3",
+          "downloads": 444
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/htmlagilitypack/1.8.4.json",
+          "version": "1.8.4",
+          "downloads": 105798
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/htmlagilitypack/1.8.5.json",
+          "version": "1.8.5",
+          "downloads": 13870
+        }
+      ],
+      "description": "This is an agile HTML parser that builds a read/write DOM and supports plain XPATH or XSLT (you actually don't HAVE to understand XPATH nor XSLT to use it, don't worry...). It is a .NET code library that allows you to parse \"out of the web\" HTML files. The parser is very tolerant with \"real world\" malformed HTML. The object model is very similar to what proposes System.Xml, but for HTML documents (or streams).",
+      "authors": [ "ZZZ Projects,Simon Mourrier,Jeff Klawiter,Stephan Grell" ],
+      "iconUrl": "https://zzzprojects.github.io/images/logo/logo-64.png",
+      "licenseUrl": "https://github.com/zzzprojects/html-agility-pack/blob/master/LICENSE",
+      "owners": [],
+      "projectUrl": "http://html-agility-pack.net/",
+      "summary": "This is an agile HTML parser that builds a read/write DOM and supports plain XPATH or XSLT (you actually don't HAVE to understand XPATH nor XSLT to use it, don't worry...). It is a .NET code library that allows you to parse \"out of the web\" HTML files. The parser is very tolerant with \"real world\" malformed HTML. The object model is very similar to what proposes System.Xml, but for HTML documents (or streams).",
+      "tags": [ "HTML", "parse", "crawler", "spider", "linq" ],
+      "title": "HtmlAgilityPack",
+      "totalDownloads": 8528488
+    },
+    {
+      "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/microsoft.aspnet.mvc/index.json",
+      "@type": "Package",
+      "registration": "http://localhost:9080/nuget.org/v3/registrationsemver1/microsoft.aspnet.mvc/index.json",
+      "id": "Microsoft.AspNet.Mvc",
+      "version": "5.2.6",
+      "versions": [
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/microsoft.aspnet.mvc/3.0.20105.1.json",
+          "version": "3.0.20105.1",
+          "downloads": 296523
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/microsoft.aspnet.mvc/3.0.50813.1.json",
+          "version": "3.0.50813.1",
+          "downloads": 341306
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/microsoft.aspnet.mvc/4.0.20505.json",
+          "version": "4.0.20505",
+          "downloads": 263536
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/microsoft.aspnet.mvc/4.0.20710.json",
+          "version": "4.0.20710",
+          "downloads": 3443783
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/microsoft.aspnet.mvc/4.0.30506.json",
+          "version": "4.0.30506",
+          "downloads": 5705411
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/microsoft.aspnet.mvc/4.0.40804.json",
+          "version": "4.0.40804",
+          "downloads": 1188699
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/microsoft.aspnet.mvc/5.0.0.json",
+          "version": "5.0.0",
+          "downloads": 2192797
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/microsoft.aspnet.mvc/5.0.1.json",
+          "version": "5.0.1",
+          "downloads": 358912
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/microsoft.aspnet.mvc/5.0.2.json",
+          "version": "5.0.2",
+          "downloads": 293501
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/microsoft.aspnet.mvc/5.1.0.json",
+          "version": "5.1.0",
+          "downloads": 777702
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/microsoft.aspnet.mvc/5.1.1.json",
+          "version": "5.1.1",
+          "downloads": 944591
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/microsoft.aspnet.mvc/5.1.2.json",
+          "version": "5.1.2",
+          "downloads": 1468760
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/microsoft.aspnet.mvc/5.1.3.json",
+          "version": "5.1.3",
+          "downloads": 362819
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/microsoft.aspnet.mvc/5.2.0.json",
+          "version": "5.2.0",
+          "downloads": 1624169
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/microsoft.aspnet.mvc/5.2.2.json",
+          "version": "5.2.2",
+          "downloads": 3318899
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/microsoft.aspnet.mvc/5.2.3.json",
+          "version": "5.2.3",
+          "downloads": 18084348
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/microsoft.aspnet.mvc/5.2.4.json",
+          "version": "5.2.4",
+          "downloads": 752076
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/microsoft.aspnet.mvc/5.2.5.json",
+          "version": "5.2.5",
+          "downloads": 98003
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/microsoft.aspnet.mvc/5.2.6.json",
+          "version": "5.2.6",
+          "downloads": 333665
+        }
+      ],
+      "description": "This package contains the runtime assemblies for ASP.NET MVC. ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that enables a clean separation of concerns and that gives you full control over markup.",
+      "authors": [ "Microsoft" ],
+      "iconUrl": "http://go.microsoft.com/fwlink/?LinkID=288859",
+      "licenseUrl": "http://www.microsoft.com/web/webpi/eula/net_library_eula_ENU.htm",
+      "owners": [],
+      "projectUrl": "https://www.asp.net/mvc",
+      "summary": "This package contains the runtime assemblies for ASP.NET MVC.",
+      "tags": [ "Microsoft", "AspNet", "Mvc", "AspNetMvc" ],
+      "title": "Microsoft ASP.NET MVC",
+      "totalDownloads": 43156565,
+      "verified": true
+    },
+    {
+      "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/dapper/index.json",
+      "@type": "Package",
+      "registration": "http://localhost:9080/nuget.org/v3/registrationsemver1/dapper/index.json",
+      "id": "Dapper",
+      "version": "1.50.5",
+      "versions": [
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/dapper/1.0.0.json",
+          "version": "1.0.0",
+          "downloads": 8615
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/dapper/1.1.0.json",
+          "version": "1.1.0",
+          "downloads": 3237
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/dapper/1.2.0.json",
+          "version": "1.2.0",
+          "downloads": 1175
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/dapper/1.3.0.json",
+          "version": "1.3.0",
+          "downloads": 1660
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/dapper/1.4.0.json",
+          "version": "1.4.0",
+          "downloads": 1737
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/dapper/1.5.0.json",
+          "version": "1.5.0",
+          "downloads": 1829
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/dapper/1.6.0.json",
+          "version": "1.6.0",
+          "downloads": 5961
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/dapper/1.7.0.json",
+          "version": "1.7.0",
+          "downloads": 16585
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/dapper/1.8.0.json",
+          "version": "1.8.0",
+          "downloads": 36588
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/dapper/1.9.0.json",
+          "version": "1.9.0",
+          "downloads": 7801
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/dapper/1.10.0.json",
+          "version": "1.10.0",
+          "downloads": 12533
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/dapper/1.11.0.json",
+          "version": "1.11.0",
+          "downloads": 6295
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/dapper/1.12.0.json",
+          "version": "1.12.0",
+          "downloads": 43412
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/dapper/1.12.1.json",
+          "version": "1.12.1",
+          "downloads": 78056
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/dapper/1.13.0.json",
+          "version": "1.13.0",
+          "downloads": 316430
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/dapper/1.20.0.json",
+          "version": "1.20.0",
+          "downloads": 1799
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/dapper/1.21.0.json",
+          "version": "1.21.0",
+          "downloads": 1070
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/dapper/1.22.0.json",
+          "version": "1.22.0",
+          "downloads": 5419
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/dapper/1.23.0.json",
+          "version": "1.23.0",
+          "downloads": 7323
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/dapper/1.24.0.json",
+          "version": "1.24.0",
+          "downloads": 1518
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/dapper/1.25.0.json",
+          "version": "1.25.0",
+          "downloads": 69152
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/dapper/1.26.0.json",
+          "version": "1.26.0",
+          "downloads": 20445
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/dapper/1.27.0.json",
+          "version": "1.27.0",
+          "downloads": 35700
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/dapper/1.29.0.json",
+          "version": "1.29.0",
+          "downloads": 27966
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/dapper/1.30.0.json",
+          "version": "1.30.0",
+          "downloads": 25910
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/dapper/1.31.0.json",
+          "version": "1.31.0",
+          "downloads": 5531
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/dapper/1.32.0.json",
+          "version": "1.32.0",
+          "downloads": 1430
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/dapper/1.33.0.json",
+          "version": "1.33.0",
+          "downloads": 1395
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/dapper/1.34.0.json",
+          "version": "1.34.0",
+          "downloads": 69934
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/dapper/1.35.0.json",
+          "version": "1.35.0",
+          "downloads": 52496
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/dapper/1.36.0.json",
+          "version": "1.36.0",
+          "downloads": 21573
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/dapper/1.37.0.json",
+          "version": "1.37.0",
+          "downloads": 46308
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/dapper/1.38.0.json",
+          "version": "1.38.0",
+          "downloads": 406319
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/dapper/1.39.0.json",
+          "version": "1.39.0",
+          "downloads": 43424
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/dapper/1.40.0.json",
+          "version": "1.40.0",
+          "downloads": 170131
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/dapper/1.42.0.json",
+          "version": "1.42.0",
+          "downloads": 1419766
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/dapper/1.50.0.json",
+          "version": "1.50.0",
+          "downloads": 174325
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/dapper/1.50.1.json",
+          "version": "1.50.1",
+          "downloads": 571575
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/dapper/1.50.2.json",
+          "version": "1.50.2",
+          "downloads": 3384347
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/dapper/1.50.4.json",
+          "version": "1.50.4",
+          "downloads": 1376620
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/dapper/1.50.5.json",
+          "version": "1.50.5",
+          "downloads": 292982
+        }
+      ],
+      "description": "A high performance Micro-ORM supporting SQL Server, MySQL, Sqlite, SqlCE, Firebird etc..",
+      "authors": [ "Sam Saffron,Marc Gravell,Nick Craver" ],
+      "licenseUrl": "http://www.apache.org/licenses/LICENSE-2.0",
+      "owners": [],
+      "projectUrl": "https://github.com/StackExchange/Dapper",
+      "summary": "",
+      "tags": [ "orm", "sql", "micro-orm" ],
+      "title": "Dapper",
+      "totalDownloads": 8906473
+    },
+    {
+      "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nlog/index.json",
+      "@type": "Package",
+      "registration": "http://localhost:9080/nuget.org/v3/registrationsemver1/nlog/index.json",
+      "id": "NLog",
+      "version": "4.5.7",
+      "versions": [
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nlog/1.0.0.505.json",
+          "version": "1.0.0.505",
+          "downloads": 83573
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nlog/2.0.0.2000.json",
+          "version": "2.0.0.2000",
+          "downloads": 582260
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nlog/2.0.1.2.json",
+          "version": "2.0.1.2",
+          "downloads": 382189
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nlog/2.1.0.json",
+          "version": "2.1.0",
+          "downloads": 562786
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nlog/3.0.0.json",
+          "version": "3.0.0",
+          "downloads": 109748
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nlog/3.1.0.json",
+          "version": "3.1.0",
+          "downloads": 688452
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nlog/3.2.0.json",
+          "version": "3.2.0",
+          "downloads": 643284
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nlog/3.2.1.json",
+          "version": "3.2.1",
+          "downloads": 276985
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nlog/4.0.0.json",
+          "version": "4.0.0",
+          "downloads": 186780
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nlog/4.0.1.json",
+          "version": "4.0.1",
+          "downloads": 355333
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nlog/4.1.0.json",
+          "version": "4.1.0",
+          "downloads": 92982
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nlog/4.1.1.json",
+          "version": "4.1.1",
+          "downloads": 52803
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nlog/4.1.2.json",
+          "version": "4.1.2",
+          "downloads": 317163
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nlog/4.2.0.json",
+          "version": "4.2.0",
+          "downloads": 182093
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nlog/4.2.1.json",
+          "version": "4.2.1",
+          "downloads": 80263
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nlog/4.2.2.json",
+          "version": "4.2.2",
+          "downloads": 123285
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nlog/4.2.3.json",
+          "version": "4.2.3",
+          "downloads": 650895
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nlog/4.3.0.json",
+          "version": "4.3.0",
+          "downloads": 34754
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nlog/4.3.1.json",
+          "version": "4.3.1",
+          "downloads": 59525
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nlog/4.3.2.json",
+          "version": "4.3.2",
+          "downloads": 41793
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nlog/4.3.3.json",
+          "version": "4.3.3",
+          "downloads": 128253
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nlog/4.3.4.json",
+          "version": "4.3.4",
+          "downloads": 299051
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nlog/4.3.5.json",
+          "version": "4.3.5",
+          "downloads": 384526
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nlog/4.3.6.json",
+          "version": "4.3.6",
+          "downloads": 140288
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nlog/4.3.7.json",
+          "version": "4.3.7",
+          "downloads": 262940
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nlog/4.3.8.json",
+          "version": "4.3.8",
+          "downloads": 243435
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nlog/4.3.9.json",
+          "version": "4.3.9",
+          "downloads": 213162
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nlog/4.3.10.json",
+          "version": "4.3.10",
+          "downloads": 264191
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nlog/4.3.11.json",
+          "version": "4.3.11",
+          "downloads": 390610
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nlog/4.4.0.json",
+          "version": "4.4.0",
+          "downloads": 124280
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nlog/4.4.1.json",
+          "version": "4.4.1",
+          "downloads": 356492
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nlog/4.4.2.json",
+          "version": "4.4.2",
+          "downloads": 150408
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nlog/4.4.3.json",
+          "version": "4.4.3",
+          "downloads": 251733
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nlog/4.4.4.json",
+          "version": "4.4.4",
+          "downloads": 158443
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nlog/4.4.5.json",
+          "version": "4.4.5",
+          "downloads": 169934
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nlog/4.4.6.json",
+          "version": "4.4.6",
+          "downloads": 101839
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nlog/4.4.7.json",
+          "version": "4.4.7",
+          "downloads": 42183
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nlog/4.4.8.json",
+          "version": "4.4.8",
+          "downloads": 55506
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nlog/4.4.9.json",
+          "version": "4.4.9",
+          "downloads": 278917
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nlog/4.4.10.json",
+          "version": "4.4.10",
+          "downloads": 153834
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nlog/4.4.11.json",
+          "version": "4.4.11",
+          "downloads": 464581
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nlog/4.4.12.json",
+          "version": "4.4.12",
+          "downloads": 1316957
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nlog/4.4.13.json",
+          "version": "4.4.13",
+          "downloads": 147651
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nlog/4.5.0.json",
+          "version": "4.5.0",
+          "downloads": 166143
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nlog/4.5.1.json",
+          "version": "4.5.1",
+          "downloads": 36606
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nlog/4.5.2.json",
+          "version": "4.5.2",
+          "downloads": 165813
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nlog/4.5.3.json",
+          "version": "4.5.3",
+          "downloads": 163720
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nlog/4.5.4.json",
+          "version": "4.5.4",
+          "downloads": 200526
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nlog/4.5.5.json",
+          "version": "4.5.5",
+          "downloads": 38238
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nlog/4.5.6.json",
+          "version": "4.5.6",
+          "downloads": 208018
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/nlog/4.5.7.json",
+          "version": "4.5.7",
+          "downloads": 1305
+        }
+      ],
+      "description": "NLog is a logging platform for .NET with rich log routing and management capabilities.\nNLog supports traditional logging, structured logging and the combination of both.\n\nSupported platforms:\n\n- .NET Framework 3.5, 4, 4.5, 4.6 & 4.7\n- .NET Standard 1.3+ and 2.0+;\n- .NET Framework 4 client profile\n- Xamarin Android, Xamarin iOs\n- UWP\n- Windows Phone 8\n- Silverlight 4 and 5\n- Mono 4\n\nFor ASP.NET Core, check: https://www.nuget.org/packages/NLog.Web.AspNetCore",
+      "authors": [ "Jarek Kowalski,Kim Christensen,Julian Verdurmen" ],
+      "iconUrl": "http://nlog-project.org/N.png",
+      "licenseUrl": "https://github.com/NLog/NLog/blob/master/LICENSE.txt",
+      "owners": [],
+      "projectUrl": "http://nlog-project.org/",
+      "summary": "",
+      "tags": [ "NLog", "logging", "log", "structured", "tracing", "logfiles", "database", "eventlog", "email", "wcf", "console" ],
+      "title": "NLog for .NET Framework and .NET Standard",
+      "totalDownloads": 14783822,
+      "verified": true
+    },
+    {
+      "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/log4net/index.json",
+      "@type": "Package",
+      "registration": "http://localhost:9080/nuget.org/v3/registrationsemver1/log4net/index.json",
+      "id": "log4net",
+      "version": "2.0.8",
+      "versions": [
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/log4net/1.2.10.json",
+          "version": "1.2.10",
+          "downloads": 1635100
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/log4net/2.0.0.json",
+          "version": "2.0.0",
+          "downloads": 1373444
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/log4net/2.0.1.json",
+          "version": "2.0.1",
+          "downloads": 101105
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/log4net/2.0.2.json",
+          "version": "2.0.2",
+          "downloads": 225153
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/log4net/2.0.3.json",
+          "version": "2.0.3",
+          "downloads": 4451988
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/log4net/2.0.4.json",
+          "version": "2.0.4",
+          "downloads": 293819
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/log4net/2.0.5.json",
+          "version": "2.0.5",
+          "downloads": 4135264
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/log4net/2.0.6.json",
+          "version": "2.0.6",
+          "downloads": 149627
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/log4net/2.0.7.json",
+          "version": "2.0.7",
+          "downloads": 883513
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/log4net/2.0.8.json",
+          "version": "2.0.8",
+          "downloads": 4840227
+        }
+      ],
+      "description": "log4net is a tool to help the programmer output log statements to a variety of output targets. In case of problems with an application, it is helpful to enable logging so that the problem can be located. With log4net it is possible to enable logging at runtime without modifying the application binary. The log4net package is designed so that log statements can remain in shipped code without incurring a high performance cost. It follows that the speed of logging (or rather not logging) is crucial. \n\nAt the same time, log output can be so voluminous that it quickly becomes overwhelming. One of the distinctive features of log4net is the notion of hierarchical loggers. Using these loggers it is possible to selectively control which log statements are output at arbitrary granularity. \n\nlog4net is designed with two distinct goals in mind: speed and flexibility",
+      "authors": [ "The Apache Software Foundation" ],
+      "iconUrl": "https://www.apache.org/images/feather.png",
+      "licenseUrl": "http://logging.apache.org/log4net/license.html",
+      "owners": [],
+      "projectUrl": "http://logging.apache.org/log4net/",
+      "summary": "The Apache log4net library is a tool to help the programmer output log statements to a variety of output targets.",
+      "tags": [ "logging", "log", "tracing", "logfiles" ],
+      "title": "Apache log4net",
+      "totalDownloads": 18317497
+    },
+    {
+      "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/microsoft.web.xdt/index.json",
+      "@type": "Package",
+      "registration": "http://localhost:9080/nuget.org/v3/registrationsemver1/microsoft.web.xdt/index.json",
+      "id": "Microsoft.Web.Xdt",
+      "version": "2.1.2",
+      "versions": [
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/microsoft.web.xdt/1.0.0.json",
+          "version": "1.0.0",
+          "downloads": 276857
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/microsoft.web.xdt/1.4.0.json",
+          "version": "1.4.0",
+          "downloads": 37136
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/microsoft.web.xdt/2.1.1.json",
+          "version": "2.1.1",
+          "downloads": 1537791
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/microsoft.web.xdt/2.1.2.json",
+          "version": "2.1.2",
+          "downloads": 62061
+        }
+      ],
+      "description": "Microsoft Xml Document Transformation (XDT) library. For more info on XDT please visit http://msdn.microsoft.com/en-us/library/dd465326.aspx.",
+      "authors": [ "Microsoft Corporation" ],
+      "licenseUrl": "https://www.microsoft.com/web/webpi/eula/net_library_eula_enu.htm",
+      "owners": [],
+      "projectUrl": "https://xdt.codeplex.com/",
+      "summary": "Microsoft Xml Document Transformation (XDT) enables transformig XML files. This is the same technology used to transform web.config files for Visual Studio web projects.",
+      "tags": [ "Microsoft", "Xdt", "XmlDocumentTransform", "XmlTransform" ],
+      "title": "Microsoft Xml Document Transformation",
+      "totalDownloads": 2047307,
+      "verified": true
+    },
+    {
+      "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/index.json",
+      "@type": "Package",
+      "registration": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/index.json",
+      "id": "Selenium.WebDriver",
+      "version": "3.13.1",
+      "versions": [
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/2.2.0.json",
+          "version": "2.2.0",
+          "downloads": 5123
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/2.3.0.json",
+          "version": "2.3.0",
+          "downloads": 804
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/2.4.0.json",
+          "version": "2.4.0",
+          "downloads": 568
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/2.4.1.json",
+          "version": "2.4.1",
+          "downloads": 814
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/2.5.0.json",
+          "version": "2.5.0",
+          "downloads": 762
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/2.5.1.json",
+          "version": "2.5.1",
+          "downloads": 2565
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/2.6.0.json",
+          "version": "2.6.0",
+          "downloads": 908
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/2.7.0.json",
+          "version": "2.7.0",
+          "downloads": 1633
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/2.8.0.json",
+          "version": "2.8.0",
+          "downloads": 1889
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/2.9.0.json",
+          "version": "2.9.0",
+          "downloads": 1026
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/2.10.0.json",
+          "version": "2.10.0",
+          "downloads": 636
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/2.11.0.json",
+          "version": "2.11.0",
+          "downloads": 1171
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/2.12.0.json",
+          "version": "2.12.0",
+          "downloads": 1362
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/2.13.0.json",
+          "version": "2.13.0",
+          "downloads": 2694
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/2.14.0.json",
+          "version": "2.14.0",
+          "downloads": 1021
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/2.15.0.json",
+          "version": "2.15.0",
+          "downloads": 1761
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/2.16.0.json",
+          "version": "2.16.0",
+          "downloads": 4984
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/2.17.0.json",
+          "version": "2.17.0",
+          "downloads": 2508
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/2.18.0.json",
+          "version": "2.18.0",
+          "downloads": 997
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/2.18.1.json",
+          "version": "2.18.1",
+          "downloads": 1206
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/2.19.0.json",
+          "version": "2.19.0",
+          "downloads": 2582
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/2.20.0.json",
+          "version": "2.20.0",
+          "downloads": 6447
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/2.21.0.json",
+          "version": "2.21.0",
+          "downloads": 8051
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/2.22.0.json",
+          "version": "2.22.0",
+          "downloads": 3484
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/2.22.1.json",
+          "version": "2.22.1",
+          "downloads": 701
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/2.23.0.json",
+          "version": "2.23.0",
+          "downloads": 3000
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/2.24.0.json",
+          "version": "2.24.0",
+          "downloads": 7150
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/2.25.0.json",
+          "version": "2.25.0",
+          "downloads": 2134
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/2.25.1.json",
+          "version": "2.25.1",
+          "downloads": 39759
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/2.26.0.json",
+          "version": "2.26.0",
+          "downloads": 11156
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/2.27.0.json",
+          "version": "2.27.0",
+          "downloads": 1290
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/2.27.1.json",
+          "version": "2.27.1",
+          "downloads": 1214
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/2.28.0.json",
+          "version": "2.28.0",
+          "downloads": 10473
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/2.29.0.json",
+          "version": "2.29.0",
+          "downloads": 617
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/2.29.1.json",
+          "version": "2.29.1",
+          "downloads": 14057
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/2.30.0.json",
+          "version": "2.30.0",
+          "downloads": 10523
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/2.31.0.json",
+          "version": "2.31.0",
+          "downloads": 1194
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/2.31.1.json",
+          "version": "2.31.1",
+          "downloads": 3664
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/2.31.2.json",
+          "version": "2.31.2",
+          "downloads": 18754
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/2.32.0.json",
+          "version": "2.32.0",
+          "downloads": 42252
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/2.32.1.json",
+          "version": "2.32.1",
+          "downloads": 14995
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/2.33.0.json",
+          "version": "2.33.0",
+          "downloads": 38483
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/2.34.0.json",
+          "version": "2.34.0",
+          "downloads": 4243
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/2.35.0.json",
+          "version": "2.35.0",
+          "downloads": 57265
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/2.36.0.json",
+          "version": "2.36.0",
+          "downloads": 795
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/2.37.0.json",
+          "version": "2.37.0",
+          "downloads": 51612
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/2.38.0.json",
+          "version": "2.38.0",
+          "downloads": 10693
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/2.39.0.json",
+          "version": "2.39.0",
+          "downloads": 82555
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/2.40.0.json",
+          "version": "2.40.0",
+          "downloads": 58738
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/2.41.0.json",
+          "version": "2.41.0",
+          "downloads": 65877
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/2.42.0.json",
+          "version": "2.42.0",
+          "downloads": 86174
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/2.43.0.json",
+          "version": "2.43.0",
+          "downloads": 13092
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/2.43.1.json",
+          "version": "2.43.1",
+          "downloads": 50485
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/2.44.0.json",
+          "version": "2.44.0",
+          "downloads": 180255
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/2.45.0.json",
+          "version": "2.45.0",
+          "downloads": 212037
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/2.46.0.json",
+          "version": "2.46.0",
+          "downloads": 139548
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/2.47.0.json",
+          "version": "2.47.0",
+          "downloads": 156693
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/2.48.0.json",
+          "version": "2.48.0",
+          "downloads": 107812
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/2.48.1.json",
+          "version": "2.48.1",
+          "downloads": 44768
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/2.48.2.json",
+          "version": "2.48.2",
+          "downloads": 127623
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/2.49.0.json",
+          "version": "2.49.0",
+          "downloads": 22707
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/2.50.0.json",
+          "version": "2.50.0",
+          "downloads": 3038
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/2.50.1.json",
+          "version": "2.50.1",
+          "downloads": 23771
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/2.51.0.json",
+          "version": "2.51.0",
+          "downloads": 21557
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/2.52.0.json",
+          "version": "2.52.0",
+          "downloads": 145655
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/2.53.0.json",
+          "version": "2.53.0",
+          "downloads": 422051
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/2.53.1.json",
+          "version": "2.53.1",
+          "downloads": 520608
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/3.0.0.json",
+          "version": "3.0.0",
+          "downloads": 182708
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/3.0.1.json",
+          "version": "3.0.1",
+          "downloads": 478294
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/3.1.0.json",
+          "version": "3.1.0",
+          "downloads": 39536
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/3.2.0.json",
+          "version": "3.2.0",
+          "downloads": 61027
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/3.3.0.json",
+          "version": "3.3.0",
+          "downloads": 297266
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/3.4.0.json",
+          "version": "3.4.0",
+          "downloads": 498044
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/3.5.0.json",
+          "version": "3.5.0",
+          "downloads": 30188
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/3.5.1.json",
+          "version": "3.5.1",
+          "downloads": 73280
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/3.5.2.json",
+          "version": "3.5.2",
+          "downloads": 165453
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/3.6.0.json",
+          "version": "3.6.0",
+          "downloads": 276877
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/3.7.0.json",
+          "version": "3.7.0",
+          "downloads": 201985
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/3.8.0.json",
+          "version": "3.8.0",
+          "downloads": 431987
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/3.9.0.json",
+          "version": "3.9.0",
+          "downloads": 33317
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/3.9.1.json",
+          "version": "3.9.1",
+          "downloads": 161640
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/3.10.0.json",
+          "version": "3.10.0",
+          "downloads": 74912
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/3.11.0.json",
+          "version": "3.11.0",
+          "downloads": 168356
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/3.11.1.json",
+          "version": "3.11.1",
+          "downloads": 44016
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/3.11.2.json",
+          "version": "3.11.2",
+          "downloads": 157301
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/3.12.0.json",
+          "version": "3.12.0",
+          "downloads": 88386
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/3.12.1.json",
+          "version": "3.12.1",
+          "downloads": 108023
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/3.13.0.json",
+          "version": "3.13.0",
+          "downloads": 15798
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/selenium.webdriver/3.13.1.json",
+          "version": "3.13.1",
+          "downloads": 38923
+        }
+      ],
+      "description": "Selenium is a set of different software tools each with a different approach\n      to supporting browser automation. These tools are highly flexible, allowing\n      many options for locating and manipulating elements within a browser, and one\n      of its key features is the support for automating multiple browser platforms.\n      This package contains the .NET bindings for the concise and object-based\n      Selenium WebDriver API, which uses native OS-level events to manipulate the\n      browser, bypassing the JavaScript sandbox, and does not require the Selenium\n      Server to automate the browser.",
+      "authors": [ "Selenium Committers" ],
+      "iconUrl": "http://seleniumhq.org/images/big-logo.png",
+      "licenseUrl": "http://www.apache.org/licenses/LICENSE-2.0",
+      "owners": [],
+      "projectUrl": "https://www.seleniumhq.org/",
+      "summary": ".NET bindings for the Selenium WebDriver API",
+      "tags": [ "selenium", "webdriver", "browser", "automation" ],
+      "title": "Selenium WebDriver",
+      "totalDownloads": 6529810
+    },
+    {
+      "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/microsoft.aspnet.webapi/index.json",
+      "@type": "Package",
+      "registration": "http://localhost:9080/nuget.org/v3/registrationsemver1/microsoft.aspnet.webapi/index.json",
+      "id": "Microsoft.AspNet.WebApi",
+      "version": "5.2.6",
+      "versions": [
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/microsoft.aspnet.webapi/4.0.20505.json",
+          "version": "4.0.20505",
+          "downloads": 192191
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/microsoft.aspnet.webapi/4.0.20710.json",
+          "version": "4.0.20710",
+          "downloads": 2870078
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/microsoft.aspnet.webapi/4.0.30506.json",
+          "version": "4.0.30506",
+          "downloads": 5239269
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/microsoft.aspnet.webapi/5.0.0.json",
+          "version": "5.0.0",
+          "downloads": 1542248
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/microsoft.aspnet.webapi/5.0.1.json",
+          "version": "5.0.1",
+          "downloads": 285158
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/microsoft.aspnet.webapi/5.1.0.json",
+          "version": "5.1.0",
+          "downloads": 366437
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/microsoft.aspnet.webapi/5.1.1.json",
+          "version": "5.1.1",
+          "downloads": 541127
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/microsoft.aspnet.webapi/5.1.2.json",
+          "version": "5.1.2",
+          "downloads": 845090
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/microsoft.aspnet.webapi/5.2.0.json",
+          "version": "5.2.0",
+          "downloads": 1055873
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/microsoft.aspnet.webapi/5.2.2.json",
+          "version": "5.2.2",
+          "downloads": 2315883
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/microsoft.aspnet.webapi/5.2.3.json",
+          "version": "5.2.3",
+          "downloads": 14952811
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/microsoft.aspnet.webapi/5.2.4.json",
+          "version": "5.2.4",
+          "downloads": 637174
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/microsoft.aspnet.webapi/5.2.5.json",
+          "version": "5.2.5",
+          "downloads": 81393
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/microsoft.aspnet.webapi/5.2.6.json",
+          "version": "5.2.6",
+          "downloads": 264004
+        }
+      ],
+      "description": "This package contains everything you need to host ASP.NET Web API on IIS. ASP.NET Web API is a framework that makes it easy to build HTTP services that reach a broad range of clients, including browsers and mobile devices. ASP.NET Web API is an ideal platform for building RESTful applications on the .NET Framework.",
+      "authors": [ "Microsoft" ],
+      "iconUrl": "http://go.microsoft.com/fwlink/?LinkID=288859",
+      "licenseUrl": "http://www.microsoft.com/web/webpi/eula/net_library_eula_ENU.htm",
+      "owners": [],
+      "projectUrl": "https://www.asp.net/web-api",
+      "summary": "This package contains everything you need to host ASP.NET Web API on IIS.",
+      "tags": [ "Microsoft", "AspNet", "WebApi", "AspNetWebApi" ],
+      "title": "Microsoft ASP.NET Web API 2.2",
+      "totalDownloads": 31440967,
+      "verified": true
+    },
+    {
+      "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/epplus/index.json",
+      "@type": "Package",
+      "registration": "http://localhost:9080/nuget.org/v3/registrationsemver1/epplus/index.json",
+      "id": "EPPlus",
+      "version": "4.5.2.1",
+      "versions": [
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/epplus/2.8.0.2.json",
+          "version": "2.8.0.2",
+          "downloads": 6372
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/epplus/2.9.0.1.json",
+          "version": "2.9.0.1",
+          "downloads": 7554
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/epplus/3.0.0.1.json",
+          "version": "3.0.0.1",
+          "downloads": 570
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/epplus/3.0.0.2.json",
+          "version": "3.0.0.2",
+          "downloads": 35168
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/epplus/3.1.1.json",
+          "version": "3.1.1",
+          "downloads": 5797
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/epplus/3.1.2.json",
+          "version": "3.1.2",
+          "downloads": 50258
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/epplus/3.1.3.json",
+          "version": "3.1.3",
+          "downloads": 14898
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/epplus/3.1.3.2.json",
+          "version": "3.1.3.2",
+          "downloads": 499
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/epplus/3.1.3.3.json",
+          "version": "3.1.3.3",
+          "downloads": 409272
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/epplus/4.0.1.1.json",
+          "version": "4.0.1.1",
+          "downloads": 43644
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/epplus/4.0.2.json",
+          "version": "4.0.2",
+          "downloads": 42247
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/epplus/4.0.3.json",
+          "version": "4.0.3",
+          "downloads": 106280
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/epplus/4.0.4.json",
+          "version": "4.0.4",
+          "downloads": 456328
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/epplus/4.0.5.json",
+          "version": "4.0.5",
+          "downloads": 608715
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/epplus/4.1.0.json",
+          "version": "4.1.0",
+          "downloads": 1441241
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/epplus/4.1.1.json",
+          "version": "4.1.1",
+          "downloads": 402919
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/epplus/4.5.1.json",
+          "version": "4.5.1",
+          "downloads": 136512
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/epplus/4.5.2.json",
+          "version": "4.5.2",
+          "downloads": 14499
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/epplus/4.5.2.1.json",
+          "version": "4.5.2.1",
+          "downloads": 71571
+        }
+      ],
+      "description": "Create advanced Excel spreadsheets using .NET",
+      "authors": [ "Jan Källman" ],
+      "licenseUrl": "https://www.gnu.org/licenses/lgpl-3.0.en.html",
+      "owners": [],
+      "projectUrl": "https://github.com/JanKallman/EPPlus",
+      "summary": "",
+      "tags": [ "Excel", "ooxml" ],
+      "title": "EPPlus",
+      "totalDownloads": 3905523
+    },
+    {
+      "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/restsharp/index.json",
+      "@type": "Package",
+      "registration": "http://localhost:9080/nuget.org/v3/registrationsemver1/restsharp/index.json",
+      "id": "RestSharp",
+      "version": "106.3.1",
+      "versions": [
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/restsharp/104.0.0.json",
+          "version": "104.0.0",
+          "downloads": 63303
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/restsharp/104.1.0.json",
+          "version": "104.1.0",
+          "downloads": 518063
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/restsharp/104.2.0.json",
+          "version": "104.2.0",
+          "downloads": 69976
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/restsharp/104.3.3.json",
+          "version": "104.3.3",
+          "downloads": 85587
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/restsharp/104.4.0.json",
+          "version": "104.4.0",
+          "downloads": 785636
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/restsharp/104.5.0.json",
+          "version": "104.5.0",
+          "downloads": 69418
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/restsharp/105.0.0.json",
+          "version": "105.0.0",
+          "downloads": 91209
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/restsharp/105.0.1.json",
+          "version": "105.0.1",
+          "downloads": 944453
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/restsharp/105.1.0.json",
+          "version": "105.1.0",
+          "downloads": 701283
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/restsharp/105.2.1.json",
+          "version": "105.2.1",
+          "downloads": 37198
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/restsharp/105.2.2.json",
+          "version": "105.2.2",
+          "downloads": 577325
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/restsharp/105.2.3.json",
+          "version": "105.2.3",
+          "downloads": 5253308
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/restsharp/106.0.0.json",
+          "version": "106.0.0",
+          "downloads": 216847
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/restsharp/106.0.1.json",
+          "version": "106.0.1",
+          "downloads": 64232
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/restsharp/106.1.0.json",
+          "version": "106.1.0",
+          "downloads": 267361
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/restsharp/106.2.0.json",
+          "version": "106.2.0",
+          "downloads": 47048
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/restsharp/106.2.1.json",
+          "version": "106.2.1",
+          "downloads": 621587
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/restsharp/106.2.2.json",
+          "version": "106.2.2",
+          "downloads": 180559
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/restsharp/106.3.0.json",
+          "version": "106.3.0",
+          "downloads": 48510
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/restsharp/106.3.1.json",
+          "version": "106.3.1",
+          "downloads": 108526
+        }
+      ],
+      "description": "Simple REST and HTTP API Client",
+      "authors": [ "John Sheehan, RestSharp Community" ],
+      "iconUrl": "https://raw.githubusercontent.com/restsharp/RestSharp/develop/restsharp.png",
+      "licenseUrl": "https://github.com/restsharp/RestSharp/blob/master/LICENSE.txt",
+      "owners": [],
+      "projectUrl": "http://restsharp.org/",
+      "summary": "",
+      "tags": [],
+      "title": "RestSharp",
+      "totalDownloads": 10961893
+    },
+    {
+      "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/microsoft.aspnet.webapi.client/index.json",
+      "@type": "Package",
+      "registration": "http://localhost:9080/nuget.org/v3/registrationsemver1/microsoft.aspnet.webapi.client/index.json",
+      "id": "Microsoft.AspNet.WebApi.Client",
+      "version": "5.2.6",
+      "versions": [
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/microsoft.aspnet.webapi.client/4.0.20505.json",
+          "version": "4.0.20505",
+          "downloads": 258444
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/microsoft.aspnet.webapi.client/4.0.20710.json",
+          "version": "4.0.20710",
+          "downloads": 3449177
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/microsoft.aspnet.webapi.client/4.0.30506.json",
+          "version": "4.0.30506",
+          "downloads": 5684158
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/microsoft.aspnet.webapi.client/5.0.0.json",
+          "version": "5.0.0",
+          "downloads": 1656407
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/microsoft.aspnet.webapi.client/5.1.0.json",
+          "version": "5.1.0",
+          "downloads": 554658
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/microsoft.aspnet.webapi.client/5.1.1.json",
+          "version": "5.1.1",
+          "downloads": 699681
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/microsoft.aspnet.webapi.client/5.1.2.json",
+          "version": "5.1.2",
+          "downloads": 1070025
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/microsoft.aspnet.webapi.client/5.2.0.json",
+          "version": "5.2.0",
+          "downloads": 1176363
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/microsoft.aspnet.webapi.client/5.2.2.json",
+          "version": "5.2.2",
+          "downloads": 3259578
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/microsoft.aspnet.webapi.client/5.2.3.json",
+          "version": "5.2.3",
+          "downloads": 21633508
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/microsoft.aspnet.webapi.client/5.2.4.json",
+          "version": "5.2.4",
+          "downloads": 1466863
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/microsoft.aspnet.webapi.client/5.2.5.json",
+          "version": "5.2.5",
+          "downloads": 159753
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/microsoft.aspnet.webapi.client/5.2.6.json",
+          "version": "5.2.6",
+          "downloads": 645935
+        }
+      ],
+      "description": "This package adds support for formatting and content negotiation to System.Net.Http. It includes support for JSON, XML, and form URL encoded data.",
+      "authors": [ "Microsoft" ],
+      "iconUrl": "http://go.microsoft.com/fwlink/?LinkID=288859",
+      "licenseUrl": "http://www.microsoft.com/web/webpi/eula/net_library_eula_ENU.htm",
+      "owners": [],
+      "projectUrl": "https://www.asp.net/web-api",
+      "summary": "This package adds support for formatting and content negotiation to System.Net.Http.",
+      "tags": [ "Microsoft", "AspNet", "WebApi", "AspNetWebApi", "HttpClient" ],
+      "title": "Microsoft ASP.NET Web API 2.2 Client Libraries",
+      "totalDownloads": 42171735,
+      "verified": true
+    },
+    {
+      "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/slowcheetah.xdt/index.json",
+      "@type": "Package",
+      "registration": "http://localhost:9080/nuget.org/v3/registrationsemver1/slowcheetah.xdt/index.json",
+      "id": "SlowCheetah.Xdt",
+      "version": "1.1.1",
+      "versions": [
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/slowcheetah.xdt/1.1.1.json",
+          "version": "1.1.1",
+          "downloads": 73556
+        }
+      ],
+      "description": "This package contains extensions for XDT (XML Document Transforms). Included here is an MSBuild task as well as other extensions.",
+      "authors": [ "Sayed Ibrahim Hashimi" ],
+      "licenseUrl": "http://www.apache.org/licenses/LICENSE-2.0",
+      "owners": [],
+      "projectUrl": "https://github.com/sayedihashimi/package-web/",
+      "summary": "",
+      "tags": [ "XDT", "web.config", "transform", "xml", "web.config", "SlowCheetah", "Slow", "Cheetah", "Visual", "Studio" ],
+      "title": "SlowCheetah.Xdt",
+      "totalDownloads": 128049
+    },
+    {
+      "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/automapper/index.json",
+      "@type": "Package",
+      "registration": "http://localhost:9080/nuget.org/v3/registrationsemver1/automapper/index.json",
+      "id": "AutoMapper",
+      "version": "7.0.1",
+      "versions": [
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/automapper/1.1.0.118.json",
+          "version": "1.1.0.118",
+          "downloads": 122501
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/automapper/1.1.2.json",
+          "version": "1.1.2",
+          "downloads": 3153
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/automapper/2.0.0.json",
+          "version": "2.0.0",
+          "downloads": 121398
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/automapper/2.1.1.json",
+          "version": "2.1.1",
+          "downloads": 4036
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/automapper/2.1.262.json",
+          "version": "2.1.262",
+          "downloads": 1863
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/automapper/2.1.265.json",
+          "version": "2.1.265",
+          "downloads": 27705
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/automapper/2.1.266.json",
+          "version": "2.1.266",
+          "downloads": 24285
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/automapper/2.1.267.json",
+          "version": "2.1.267",
+          "downloads": 216221
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/automapper/2.2.0.json",
+          "version": "2.2.0",
+          "downloads": 233802
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/automapper/2.2.1.json",
+          "version": "2.2.1",
+          "downloads": 518423
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/automapper/3.0.0.json",
+          "version": "3.0.0",
+          "downloads": 489923
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/automapper/3.1.0.json",
+          "version": "3.1.0",
+          "downloads": 118359
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/automapper/3.1.1.json",
+          "version": "3.1.1",
+          "downloads": 396263
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/automapper/3.2.1.json",
+          "version": "3.2.1",
+          "downloads": 893752
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/automapper/3.3.0.json",
+          "version": "3.3.0",
+          "downloads": 330088
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/automapper/3.3.1.json",
+          "version": "3.3.1",
+          "downloads": 1884787
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/automapper/4.0.4.json",
+          "version": "4.0.4",
+          "downloads": 662250
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/automapper/4.1.1.json",
+          "version": "4.1.1",
+          "downloads": 1206594
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/automapper/4.2.0.json",
+          "version": "4.2.0",
+          "downloads": 417392
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/automapper/4.2.1.json",
+          "version": "4.2.1",
+          "downloads": 1865830
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/automapper/5.0.2.json",
+          "version": "5.0.2",
+          "downloads": 533220
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/automapper/5.1.1.json",
+          "version": "5.1.1",
+          "downloads": 1419931
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/automapper/5.2.0.json",
+          "version": "5.2.0",
+          "downloads": 1604721
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/automapper/6.0.2.json",
+          "version": "6.0.2",
+          "downloads": 1237920
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/automapper/6.1.0.json",
+          "version": "6.1.0",
+          "downloads": 223411
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/automapper/6.1.1.json",
+          "version": "6.1.1",
+          "downloads": 2567825
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/automapper/6.2.0.json",
+          "version": "6.2.0",
+          "downloads": 122244
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/automapper/6.2.1.json",
+          "version": "6.2.1",
+          "downloads": 403982
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/automapper/6.2.2.json",
+          "version": "6.2.2",
+          "downloads": 2250285
+        },
+        {
+          "@id": "http://localhost:9080/nuget.org/v3/registrationsemver1/automapper/7.0.1.json",
+          "version": "7.0.1",
+          "downloads": 185126
+        }
+      ],
+      "description": "A convention-based object-object mapper.",
+      "authors": [ "Jimmy Bogard" ],
+      "iconUrl": "https://s3.amazonaws.com/automapper/icon.png",
+      "licenseUrl": "https://github.com/AutoMapper/AutoMapper/blob/master/LICENSE.txt",
+      "owners": [],
+      "projectUrl": "http://automapper.org/",
+      "summary": "",
+      "tags": [],
+      "title": "AutoMapper",
+      "totalDownloads": 20979825,
+      "verified": true
+    }
+  ]
+}

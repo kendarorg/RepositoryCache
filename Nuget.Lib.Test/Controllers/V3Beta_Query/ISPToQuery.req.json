@@ -1,0 +1,18 @@
+{
+	"Protocol": "http",
+	"Url": "/nuget.org/v3/query",
+	"Method": null,
+	"ContentType": null,
+	"Headers": {
+		"Host": "api-v2v3search-0.nuget.org"
+	},
+	"PathParams": {
+		"repo": "nuget.org"
+	},
+	"Content": "",
+	"QueryParams": {
+	},
+	"Host": "localhost:9080",
+	"Log": true,
+	"RealUrl": "https://api-v2v3search-0.nuget.org/query"
+}

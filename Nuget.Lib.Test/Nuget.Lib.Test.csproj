@@ -104,6 +104,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <EmbeddedResource Include="Controllers\V3Beta_Query\ISPToQuery.req.json" />
+    <EmbeddedResource Include="Controllers\V3Beta_Query\ISPToQuery.data.json" />
+    <EmbeddedResource Include="Controllers\V3Beta_Query\ISPToQuery.res.json" />
     <None Include="packages.config" />
     <EmbeddedResource Include="Resources\ISPToGetReleases.json" />
     <EmbeddedResource Include="Resources\ISPToGetMajorWhenGreaterThanPreAskingForPre.json" />

@@ -1,4 +1,5 @@
-﻿using MultiRepositories.Repositories;
+﻿using MultiRepositories;
+using MultiRepositories.Repositories;
 using Newtonsoft.Json;
 using NugetProtocol;
 using System;
@@ -11,6 +12,7 @@ namespace Nuget
     public class NugetServicesMapper : IServicesMapper
     {
         private IRepositoryEntitiesRepository _availableRepositories;
+        private AppProperties _appProperites;
         private ConcurrentDictionary<Guid, RepositoryEntity> _repositories =
             new ConcurrentDictionary<Guid, RepositoryEntity>();
         private ConcurrentDictionary<Guid, Dictionary<string, EntryPointDescriptor>> _entryPoints =
@@ -27,10 +29,10 @@ namespace Nuget
             return _shownApis[id];
         }
 
-        public NugetServicesMapper(IRepositoryEntitiesRepository availableRepositories)
+        public NugetServicesMapper(IRepositoryEntitiesRepository availableRepositories, AppProperties appProperites)
         {
             _availableRepositories = availableRepositories;
-            
+            _appProperites = appProperites;
             Refresh();
         }
 
@@ -119,7 +121,13 @@ namespace Nuget
         {
             var result = new Dictionary<string, EntryPointDescriptor>(StringComparer.InvariantCultureIgnoreCase);
             var settings = JsonConvert.DeserializeObject<List<EntryPointDescriptor>>(repo.Settings);
-
+            foreach (var descriptor in settings)
+            {
+                if (!string.IsNullOrWhiteSpace(descriptor.Local))
+                {
+                    descriptor.Local = _appProperites.Host.TrimEnd('/') + "/" + descriptor.Local.TrimStart('/');
+                }
+            }
             //Setup main items
             foreach (var descriptor in settings.Where(a => string.IsNullOrWhiteSpace(a.Ref)))
             {
@@ -191,7 +199,7 @@ namespace Nuget
             foreach (var item in _toNugetApi[repoId])
             {
                 var remoCmp = item.Remote.TrimEnd('/') + "/";
-                var localCmp= item.Local.Replace("{repoName}", repo.Prefix).TrimEnd('/') + "/";
+                var localCmp = item.Local.Replace("{repoName}", repo.Prefix).TrimEnd('/') + "/";
 
                 if (srcCompare.StartsWith(localCmp))
                 {
@@ -209,10 +217,10 @@ namespace Nuget
             foreach (var item in _fromNugetApi[repoId])
             {
                 var remoCmp = item.Remote.TrimEnd('/') + "/";
-                var remoAltCmp = (item.RemoteAlternative??"").TrimEnd('/') + "/";
+                var remoAltCmp = (item.RemoteAlternative ?? "").TrimEnd('/') + "/";
                 var localCmp = item.Local.Replace("{repoName}", repo.Prefix).TrimEnd('/') + "/";
 
-                
+
                 if (srcCompare.StartsWith(remoCmp))
                 {
                     return src.Replace(item.Remote, item.Local.Replace("{repoName}", repo.Prefix));

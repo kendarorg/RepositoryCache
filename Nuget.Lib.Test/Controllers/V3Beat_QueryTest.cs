@@ -1,8 +1,11 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Ioc;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using MultiRepositories;
 using MultiRepositories.Repositories;
+using Newtonsoft.Json;
 using Nuget.Controllers;
+using Nuget.Lib.Test.Utils;
 using NugetProtocol;
 using System;
 using System.Collections.Generic;
@@ -21,29 +24,71 @@ namespace Nuget.Lib.Test.Controllers
         private AppProperties _properties;
         private Mock<IRepositoryEntitiesRepository> _repsMock;
         private IRepositoryEntitiesRepository _reps;
-        private ServicesMapperMock _servicesMapper;
+        private IServicesMapper _servicesMapper;
+        private AssemblyUtils _assemblyUtils;
 
         [TestInitialize]
         public void Initialize()
         {
+            _assemblyUtils = new AssemblyUtils();
+            var data = _assemblyUtils.ReadRes<NugetServicesMapperTest>("nuget.org.settings.json");
             _repoId = Guid.NewGuid();
             _nugetServiceMock = new Mock<ISearchQueryService>();
             _nugetService = _nugetServiceMock.Object;
-            _properties = new AppProperties("localhost", "");
+            _properties = new AppProperties(null, null);
             _repsMock = new Mock<IRepositoryEntitiesRepository>();
+            var repo = new RepositoryEntity
+            {
+                Address = "nuget.org",
+                Id = _repoId,
+                Mirror = true,
+                Prefix = "nuget.org",
+                Settings = data,
+                Type = "nuget"
+            };
+            _repsMock.Setup(r => r.GetByType(It.IsAny<string>())).
+                Returns(new List<RepositoryEntity>
+                {
+                    repo
+                });
+            _repsMock.Setup(r => r.GetByName(It.IsAny<string>())).
+                Returns(repo);
             _reps = _repsMock.Object;
-            _servicesMapper = new ServicesMapperMock("nuget.org", _repoId);
+            _servicesMapper = new NugetServicesMapper(_reps, _properties);
         }
 
         [TestMethod]
-        public void ISPToQuery()
+        public void ISPToQueryRemote()
         {
-            var target = new V3beta_Query("test", _nugetService, _properties, _reps, _servicesMapper);
+            var target = new V3beta_Query("/{repo}/v3/query", _nugetService, _properties, _reps, _servicesMapper);
+
+            target.RequestData = (a, b) => HandleRequest("ISPToQuery", a, b);
 
             var serializableRequest = new SerializableRequest
             {
-
+                Log = true,
+                Protocol = "http",
+                Url = "/nuget.org/v3/query",
+                Host = "localhost:9080",
+                PathParams = new Dictionary<string, string>
+                {
+                    {"repo","nuget.org" }
+                }
             };
+
+            var result = target.HandleRequest(serializableRequest);
+            Assert.IsNotNull(result);
+            var response = JsonConvert.DeserializeObject<QueryResult>(Encoding.UTF8.GetString(result.Content));
+            JsonComp.Equals("ISPToQuery" + ".data.json", response);
+
+        }
+
+        private SerializableResponse HandleRequest(string file, string realUrl, SerializableRequest req)
+        {
+            JsonComp.Equals(file + ".req.json", req);
+            return JsonConvert.DeserializeObject<SerializableResponse>(
+                _assemblyUtils.ReadRes<NugetServicesMapperTest>(file + ".res.json"));
+
         }
     }
 }

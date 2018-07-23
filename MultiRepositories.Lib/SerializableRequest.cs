@@ -19,7 +19,9 @@ namespace MultiRepositories
                 Host = this.Host,
                 Method = this.Method,
                 Url = this.Url,
-                Protocol = this.Protocol
+                Protocol = this.Protocol,
+                Log = this.Log,
+                RealUrl = this.RealUrl
             };
             CloneHash(c.Headers, Headers);
             CloneHash(c.PathParams, PathParams);
@@ -30,9 +32,10 @@ namespace MultiRepositories
         public string ToLocalPath(String fileName = null)
         {
             var res = Url.Trim('/').Replace("/", "\\");
-            
-            if (QueryParams != null && QueryParams.Any()) {
-                res = res +"\\"+ CalculateMD5Hash(JsonConvert.SerializeObject(QueryParams));
+
+            if (QueryParams != null && QueryParams.Any())
+            {
+                res = res + "\\" + CalculateMD5Hash(JsonConvert.SerializeObject(QueryParams));
             }
             if (fileName == null) return res;
             return res + "\\" + fileName;
@@ -92,6 +95,8 @@ namespace MultiRepositories
         public byte[] Content { get; set; }
         public Dictionary<string, string> QueryParams { get; set; }
         public string Host { get; set; }
+        public bool Log { get; set; }
+        public string RealUrl { get; set; }
 
         public string Serialize()
         {

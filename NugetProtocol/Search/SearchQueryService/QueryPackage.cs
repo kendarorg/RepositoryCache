@@ -19,8 +19,8 @@ namespace NugetProtocol
             List<string> owners = null, string projectUrl = null,
             string summary = null, List<string> tags = null, string title = null, int totalDownloads = 0, bool verified = true)
         {
-            Oid = oid;
-            Otype = otype;
+            OId = oid;
+            OType = otype;
             Registration = registration;
             Id = id;
             Version = version;
@@ -39,9 +39,9 @@ namespace NugetProtocol
         }
 
         [JsonProperty("@id")]
-        public string Oid { get; set; }
+        public string OId { get; set; }
         [JsonProperty("@type")]
-        public string Otype { get; set; }
+        public string OType { get; set; }
         [JsonProperty("registration")]
         public string Registration { get; set; }
         [JsonProperty("id")]

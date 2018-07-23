@@ -10,6 +10,7 @@ namespace Ioc
 {
     public class AssemblyUtils : IAssemblyUtils
     {
+        private readonly string _byteOrderMarkUtf8 = Encoding.UTF8.GetString(Encoding.UTF8.GetPreamble());
         public String ReadRes<T>(String name)
         {
             var asm = Assembly.GetAssembly(typeof(T));
@@ -23,12 +24,18 @@ namespace Ioc
                     break;
                 }
             }
-            using (Stream str = asm.GetManifestResourceStream(rs))
+
+            using (Stream resFilestream = asm.GetManifestResourceStream(rs))
             {
-                using (StreamReader sr = new StreamReader(str))
+                if (resFilestream == null) return null;
+                byte[] ba = new byte[resFilestream.Length];
+                resFilestream.Read(ba, 0, ba.Length);
+                var result= Encoding.UTF8.GetString(ba);
+                /*if (result.StartsWith(_byteOrderMarkUtf8, StringComparison.Ordinal))
                 {
-                    return sr.ReadToEnd();
-                }
+                    result = result.Remove(0, _byteOrderMarkUtf8.Length);
+                }*/
+                return result;
             }
         }
 

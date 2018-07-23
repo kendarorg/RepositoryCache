@@ -1,5 +1,7 @@
 ﻿
+using Newtonsoft.Json;
 using System;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -10,16 +12,36 @@ namespace MultiRepositories.Service
     {
         protected AppProperties _properties;
 
-        public ForwardRestApi(AppProperties properties,string path, Func<SerializableRequest, SerializableResponse> handler) : base(path, handler)
+
+        public Func<String, SerializableRequest, SerializableResponse> RequestData { get; set; }
+
+        public ForwardRestApi(AppProperties properties, string path, Func<SerializableRequest, SerializableResponse> handler) : base(path, handler)
         {
             _properties = properties;
         }
 
         protected SerializableResponse RemoteRequest(String realUrl, SerializableRequest sr)
         {
+            if (RequestData != null)
+            {
+                sr.RealUrl = realUrl;
+                return RequestData(realUrl, sr);
+            }
             if (sr.QueryParams.ContainsKey("runlocal"))
             {
                 throw new Exception();
+            }
+
+            if (sr.Log)
+            {
+                sr.RealUrl = realUrl;
+                var path = sr.ToLocalPath() + "\\req.json";
+                var dir = Path.GetDirectoryName(path);
+                if (!Directory.Exists(dir))
+                {
+                    Directory.CreateDirectory(dir);
+                }
+                File.WriteAllText(path, JsonConvert.SerializeObject(sr));
             }
             //throw new Exception();
             var res = new SerializableResponse();
@@ -33,7 +55,7 @@ namespace MultiRepositories.Service
             {
                 qp = "?" + string.Join("&", sr.QueryParams.Select(kvp => kvp.Key + "=" + kvp.Value));
             }
-            
+
             var requestMessage = new HttpRequestMessage(method, realUrl + qp);
             foreach (var reqh in sr.Headers)
             {
@@ -60,13 +82,32 @@ namespace MultiRepositories.Service
             result.Wait();
             var resh = result.Result;
 
-            res.ContentType = resh.Content.Headers.ContentType.MediaType;
+
 
             res.Headers["Date"] = DateTime.Now.ToString("r");
             res.Headers["Last-Modified"] = DateTime.Now.ToString("r");
             var rb = resh.Content.ReadAsByteArrayAsync();
             rb.Wait();
             res.Content = rb.Result;
+            try
+            {
+                res.ContentType = resh.Content.Headers.ContentType.MediaType;
+            }
+            catch (Exception)
+            {
+
+            }
+            if (sr.Log)
+            {
+                res.RealUrl = realUrl;
+                var path = sr.ToLocalPath() + "\\res.json";
+                var dir = Path.GetDirectoryName(path);
+                if (!Directory.Exists(dir))
+                {
+                    Directory.CreateDirectory(dir);
+                }
+                File.WriteAllText(path, JsonConvert.SerializeObject(res));
+            }
             return res;
         }
     }

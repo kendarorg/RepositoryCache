@@ -19,11 +19,22 @@ namespace Nuget.Lib.Test.Utils
 
         public static bool EqualsString(string resIdExpected, string result)
         {
-            var founded = Beautify(result);
-            var expected = Beautify(_au.ReadRes<JsonComp>(resIdExpected));
-            if (expected != founded)
+            var founded = Beautify(result).Trim();
+            var expected = Beautify(_au.ReadRes<JsonComp>(resIdExpected)).Trim();
+
+            var foundedSplitted = founded.Split('\r', '\n', '\f').Where(r => r.Trim().Length > 0).ToArray();
+            var expectedSplitted = founded.Split('\r', '\n', '\f').Where(r => r.Trim().Length > 0).ToArray();
+
+            if (foundedSplitted.Length != expectedSplitted.Length)
             {
-                throw new Exception(string.Format("Expected {0}\r\nReal {1}", expected, founded));
+                throw new Exception(string.Format("Expected Length {0}\r\nReal Length {1}", expectedSplitted.Length, foundedSplitted.Length));
+            }
+            for (int i = 0; i < expectedSplitted.Length; i++)
+            {
+                if (expectedSplitted[i] != foundedSplitted[i])
+                {
+                    throw new Exception(string.Format("Expected {0}\r\nReal {1}\r\nLine {2}", expectedSplitted[i], foundedSplitted[i], i));
+                }
             }
             return true;
         }

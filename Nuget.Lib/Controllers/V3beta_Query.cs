@@ -78,6 +78,7 @@ namespace Nuget.Controllers
             foreach (var item in result.Data)
             {
                 item.Id = _servicesMapper.FromNuget(repo.Id, item.Id);
+                item.OId = _servicesMapper.FromNuget(repo.Id, item.OId);
                 item.Registration = _servicesMapper.FromNuget(repo.Id, item.Registration);
                 foreach (var ver in item.Versions)
                 {

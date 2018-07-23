@@ -1,70 +1,70 @@
 ﻿[
   {
     "id": "PackagePublish/2.0.0",
-    "local": "{repoName}/v2/publish",
+    "local": "/{repoName}/v2/publish",
     "remote": "https://www.nuget.org/api/v2/package",
     "visible": true
   },
   {
     "id": "RegistrationsBaseUrl",
-    "local": "{repoName}/v3/registrationsemver1",
-    "remote": "https://api.nuget.org/v3/registration",
+    "local": "/{repoName}/v3/registrationsemver1",
+    "remote": "https://api.nuget.org/v3/registration3",
     "visible": true
   },
   {
     "id": "RegistrationsBaseUrl/3.4.0",
-    "local": "{repoName}/v3/registrationsemver1",
+    "local": "/{repoName}/v3/registrationsemver1",
     "remote": "https://api.nuget.org/v3/registration3-gz",
     "visible": true
   },
   {
     "id": "RegistrationsBaseUrl/3.6.0",
-    "local": "{repoName}/v3/registrationsemver2",
+    "local": "/{repoName}/v3/registrationsemver2",
     "remote": "https://api.nuget.org/v3/registration3-gz-semver2",
     "semver": "2.0.0",
     "visible": true
   },
   {
     "id": "Catalog/3.0.0",
-    "local": "{repoName}/v3/catalog",
+    "local": "/{repoName}/v3/catalog",
     "remote": "https://api.nuget.org/v3/catalog0",
     "visible": true
   },
   {
     "id": "SearchQueryService",
-    "local": "{repoName}/v3/query",
+    "local": "/{repoName}/v3/query",
     "remote": "https://api-v2v3search-0.nuget.org/query",
     "altremote": "https://api-v2v3search-1.nuget.org/query",
     "visible": true
   },
   {
     "id": "PackageBaseAddress/3.0.0",
-    "local": "{repoName}/v3/container",
+    "local": "/{repoName}/v3/container",
     "remote": "https://api.nuget.org/v3-flatcontainer",
     "visible": true
   },
   {
     "id": "ReportAbuseUriTemplate",
-    "local": "{repoName}/v3/reportabuse",
+    "local": "/{repoName}/v3/reportabuse",
     "remote": "https://www.nuget.org/packages",
     "visible": true
   },
   {
     "id": "SearchAutocompleteService",
-    "local": "{repoName}/v3/autocomplete",
+    "local": "/{repoName}/v3/autocomplete",
     "remote": "https://api-v2v3search-0.nuget.org/autocomplete",
     "altremote": "https://api-v2v3search-1.nuget.org/autocomplete",
     "visible": true
   },
   {
     "id": "LegacyGallery",
-    "local": "{repoName}/v2",
+    "local": "/{repoName}/v2",
     "remote": "https://www.nuget.org/api/v2",
     "visible": true
   },
   {
     "id": "SearchGalleryQueryService/3.0.0-rc",
-    "local": "{repoName}/v3",
+    "local": "/{repoName}/v3",
     "remote": "https://api-v2v3search-0.nuget.org",
     "altremote": "https://api-v2v3search-1.nuget.org/",
     "visible": true

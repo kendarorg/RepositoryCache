@@ -5,6 +5,7 @@ using MultiRepositories.Repositories;
 using Repositories;
 using System.Collections.Generic;
 using Moq;
+using MultiRepositories;
 
 namespace Nuget.Lib.Test
 {
@@ -12,6 +13,7 @@ namespace Nuget.Lib.Test
     public class NugetServicesMapperTest
     {
         private IRepositoryEntitiesRepository _repository;
+        private AppProperties _properties;
         private Guid _repositoryId;
 
         [TestInitialize]
@@ -19,7 +21,7 @@ namespace Nuget.Lib.Test
         {
             var au = new AssemblyUtils();
             var data = au.ReadRes<NugetServicesMapperTest>("nuget.org.settings.json");
-
+            _properties = new AppProperties(null,null);
             _repositoryId = Guid.NewGuid();
             var mock = new Mock<IRepositoryEntitiesRepository>();
             mock.Setup(r => r.GetByType(It.IsAny<string>())).
@@ -43,35 +45,35 @@ namespace Nuget.Lib.Test
         {
             var au = new AssemblyUtils();
             //
-            var target = new NugetServicesMapper(_repository);
+            var target = new NugetServicesMapper(_repository, _properties);
             target.Refresh();
 
             var packagePublish = target.From(_repositoryId, "PackagePublish/2.0.0");
-            Assert.AreEqual("nuget.org/v2/publish", packagePublish);
+            Assert.AreEqual("http://localhost:9080/nuget.org/v2/publish", packagePublish);
         }
 
         [TestMethod]
         public void ISPToLoadRefItemNoVersion()
         {
             var au = new AssemblyUtils();
-            var target = new NugetServicesMapper(_repository);
+            var target = new NugetServicesMapper(_repository,_properties);
             target.Refresh();
 
             var packagePublish = target.From(_repositoryId, "PackageVersionDisplayMetadataUriTemplate");
             Assert.IsTrue(
-                "nuget.org/v3/registrationsemver1" == packagePublish ||
-                "nuget.org/v3/registrationsemver2" == packagePublish);
+                "http://localhost:9080/nuget.org/v3/registrationsemver1" == packagePublish ||
+                "http://localhost:9080/nuget.org/v3/registrationsemver2" == packagePublish);
         }
 
         [TestMethod]
         public void ISPToLoadRefItemNullVersion()
         {
             var au = new AssemblyUtils();
-            var target = new NugetServicesMapper(_repository);
+            var target = new NugetServicesMapper(_repository, _properties);
             target.Refresh();
 
             var packagePublish = target.FromSemver(_repositoryId, "PackageVersionDisplayMetadataUriTemplate", null);
-            Assert.AreEqual("nuget.org/v3/registrationsemver1", packagePublish);
+            Assert.AreEqual("http://localhost:9080/nuget.org/v3/registrationsemver1", packagePublish);
         }
 
 
@@ -80,11 +82,11 @@ namespace Nuget.Lib.Test
         {
             var au = new AssemblyUtils();
 
-            var target = new NugetServicesMapper(_repository);
+            var target = new NugetServicesMapper(_repository, _properties);
             target.Refresh();
 
             var packagePublish = target.FromSemver(_repositoryId, "PackageVersionDisplayMetadataUriTemplate", "1.0.0");
-            Assert.AreEqual("nuget.org/v3/registrationsemver1", packagePublish);
+            Assert.AreEqual("http://localhost:9080/nuget.org/v3/registrationsemver1", packagePublish);
         }
 
 
@@ -93,11 +95,11 @@ namespace Nuget.Lib.Test
         {
             var au = new AssemblyUtils();
 
-            var target = new NugetServicesMapper(_repository);
+            var target = new NugetServicesMapper(_repository, _properties);
             target.Refresh();
 
             var packagePublish = target.FromSemver(_repositoryId, "PackageVersionDisplayMetadataUriTemplate", "3.0.0");
-            Assert.AreEqual("nuget.org/v3/registrationsemver1", packagePublish);
+            Assert.AreEqual("http://localhost:9080/nuget.org/v3/registrationsemver1", packagePublish);
         }
 
         [TestMethod]
@@ -105,11 +107,11 @@ namespace Nuget.Lib.Test
         {
             var au = new AssemblyUtils();
 
-            var target = new NugetServicesMapper(_repository);
+            var target = new NugetServicesMapper(_repository, _properties);
             target.Refresh();
 
             var packagePublish = target.FromSemver(_repositoryId, "PackageVersionDisplayMetadataUriTemplate", "2.0.0");
-            Assert.AreEqual("nuget.org/v3/registrationsemver2", packagePublish);
+            Assert.AreEqual("http://localhost:9080/nuget.org/v3/registrationsemver2", packagePublish);
         }
 
 
@@ -118,7 +120,7 @@ namespace Nuget.Lib.Test
         {
             var au = new AssemblyUtils();
 
-            var target = new NugetServicesMapper(_repository);
+            var target = new NugetServicesMapper(_repository, _properties);
             target.Refresh();
             var visibles = target.GetVisibles(_repositoryId);
 
@@ -130,11 +132,11 @@ namespace Nuget.Lib.Test
         {
             var au = new AssemblyUtils();
             //
-            var target = new NugetServicesMapper(_repository);
+            var target = new NugetServicesMapper(_repository, _properties);
             target.Refresh();
 
             var packagePublish = target.FromNuget(_repositoryId, "https://api.nuget.org/v3/registration3-gz/test/index.json");
-            Assert.AreEqual("nuget.org/v3/registrationsemver1/test/index.json", packagePublish);
+            Assert.AreEqual("http://localhost:9080/nuget.org/v3/registrationsemver1/test/index.json", packagePublish);
         }
 
 
@@ -143,10 +145,10 @@ namespace Nuget.Lib.Test
         {
             var au = new AssemblyUtils();
             //
-            var target = new NugetServicesMapper(_repository);
+            var target = new NugetServicesMapper(_repository, _properties);
             target.Refresh();
 
-            var packagePublish = target.ToNuget(_repositoryId, "nuget.org/v3/registrationsemver1/test/index.json");
+            var packagePublish = target.ToNuget(_repositoryId, "http://localhost:9080/nuget.org/v3/registrationsemver1/test/index.json");
             Assert.AreEqual("https://api.nuget.org/v3/registration3-gz/test/index.json", packagePublish);
         }
     }

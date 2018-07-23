@@ -35,6 +35,7 @@ namespace MultiRepositories
         public string ContentType { get; set; }
         public Dictionary<string, string> Headers { get; set; }
         public byte[] Content { get; set; }
+        public string RealUrl { get; set; }
 
         public string Serialize()
         {
