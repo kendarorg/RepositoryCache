@@ -11,5 +11,6 @@ namespace Nuget.Repositories
     {
         IEnumerable<RegistrationEntity> GetRange(Guid repoId, string lowerId, string versionFrom, string versionTo);
         RegistrationEntity GetSpecific(Guid repoId, string lowerId, string version);
+        IEnumerable<RegistrationEntity> GetAllByPackageId(Guid repoId, string lowerId);
     }
 }

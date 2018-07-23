@@ -1,4 +1,6 @@
-﻿namespace NugetProtocol
+﻿using Newtonsoft.Json;
+
+namespace NugetProtocol
 {
     public class AutocompleteContext
     {
@@ -11,6 +13,7 @@
             OVocab = ovocab;
         }
 
+        [JsonProperty("@vocab")]
         public string OVocab { get; }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace NugetProtocol
+﻿using Newtonsoft.Json;
+
+namespace NugetProtocol
 {
     public class QueryContext
     {
@@ -11,7 +13,9 @@
             OVocab = ovocab;
             OBase = obase;
         }
+        [JsonProperty("@vocab")]
         public string OVocab { get; set; }
+        [JsonProperty("@base")]
         public string OBase { get; set; }
     }
 }

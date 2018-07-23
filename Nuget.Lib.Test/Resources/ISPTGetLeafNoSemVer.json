@@ -1,37 +1,29 @@
 ﻿{
-  "OId": "nuget.org/PackageDisplayMetadataUriTemplate:/test/1.0.0.json",
-  "OType": [
+  "@id": "nuget.org/PackageDisplayMetadataUriTemplate:/test/1.0.0.json",
+  "@type": [
     "Package",
     "nuget.org/*CatalogPermalink/"
   ],
-  "Listed": true,
-  "Published": "0001-01-01T00:00:12.3456789",
-  "CatalogEntry": "nuget.org/Catalog/3.0.0/data/0001.01.01.00.00.12/test.1.0.0.json",
-  "PackageContent": "nuget.org/PackageBaseAddress/3.0.0/test/1.0.0/test.1.0.0.nupkg",
-  "Registration": "nuget.org/PackageDisplayMetadataUriTemplate//test/index.json",
-  "HiddenVersion": "1.0.0",
-  "OContext": {
-    "OVocab": "nuget.org/*Schema/",
-    "Xsd": "nuget.org/*W3SchemaComment/",
-    "Published": {
-      "OId": null,
-      "OContainer": null,
-      "OType": "xsd:dateTime"
+  "listed": true,
+  "published": "0001-01-01T00:00:12.3456789",
+  "catalogEntry": "nuget.org/Catalog/3.0.0/data/0001.01.01.00.00.12/test.1.0.0.json",
+  "packageContent": "nuget.org/PackageBaseAddress/3.0.0/test/1.0.0/test.1.0.0.nupkg",
+  "registration": "nuget.org/PackageDisplayMetadataUriTemplate//test/index.json",
+  "@context": {
+    "@vocab": "nuget.org/*Schema/",
+    "xsd": "nuget.org/*W3SchemaComment/",
+    "published": {
+      "@type": "xsd:dateTime"
     },
-    "CatalogEntry": {
-      "OId": null,
-      "OContainer": null,
-      "OType": "@id"
+    "catalogEntry": {
+      "@type": "@id"
     },
-    "Registration": {
-      "OId": null,
-      "OContainer": null,
-      "OType": "@id"
+    "registration": {
+      "@type": "@id"
     },
-    "PackageContent": {
-      "OId": null,
-      "OContainer": null,
-      "OType": "@id"
+    "packageContent": {
+      "@type": "@id"
     }
-  }
+  },
+  "HiddenVersion": "1.0.0"
 }

@@ -1,4 +1,6 @@
-﻿namespace NugetProtocol
+﻿using Newtonsoft.Json;
+
+namespace NugetProtocol
 {
     public class RegistrationLastLeafContext
     {
@@ -18,11 +20,18 @@
             PackageContent = new ContextObject { OType = "@id" };
         }
 
+        [JsonProperty("@vocab")]
         public string OVocab { get; set; }
+        [JsonProperty("xsd")]
         public string Xsd { get; set; }
+        [JsonProperty("published")]
         public ContextObject Published { get; set; }
+        [JsonProperty("catalogEntry")]
         public ContextObject CatalogEntry { get; set; }
+        [JsonProperty("registration")]
         public ContextObject Registration { get; set; }
+        [JsonProperty("packageContent")]
         public ContextObject PackageContent { get; set; }
+        
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace NugetProtocol
+﻿using Newtonsoft.Json;
+
+namespace NugetProtocol
 {
     public class QueryVersion
     {
@@ -13,8 +15,11 @@
             Downloads = downloads;
         }
 
+        [JsonProperty("@id")]
         public string OId { get; set; }
+        [JsonProperty("version")]
         public string Version { get; set; }
+        [JsonProperty("downloads")]
         public int Downloads { get; set; }
     }
 }

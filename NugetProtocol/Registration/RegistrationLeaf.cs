@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 
 namespace NugetProtocol
 {
@@ -23,13 +24,21 @@ namespace NugetProtocol
             HiddenVersion = hiddenVersion;
         }
 
+        [JsonProperty("@id")]
         public string OId { get; set; }
+        [JsonProperty("@type")]
         public string OType { get; set; }
+        [JsonProperty("commitId")]
         public Guid CommitId { get; set; }
+        [JsonProperty("commitTimestamp")]
         public DateTime CommitTimestamp { get; set; }
+        [JsonProperty("catalogEntry")]
         public PackageDetail CatalogEntry { get; set; }
+        [JsonProperty("packageContent")]
         public string PackageContent { get; set; }
+        [JsonProperty("registration")]
         public string Registration { get; set; }
+
         public string HiddenVersion { get; set; }
     }
 }

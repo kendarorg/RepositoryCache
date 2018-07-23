@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 
 namespace NugetProtocol
@@ -19,10 +20,15 @@ namespace NugetProtocol
             Data = data;
         }
 
+        [JsonProperty("@context")]
         public AutocompleteContext OContext { get; }
+        [JsonProperty("totalHits")]
         public int TotalHits { get; }
+        [JsonProperty("lastReopen")]
         public DateTime LastReopen { get; }
+        [JsonProperty("index")]
         public string Index { get; }
+        [JsonProperty("data", DefaultValueHandling = DefaultValueHandling.Ignore)]
         public List<string> Data { get; }
     }
 }

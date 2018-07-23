@@ -1,4 +1,6 @@
-﻿namespace NugetProtocol
+﻿using Newtonsoft.Json;
+
+namespace NugetProtocol
 {
     public class RegistrationContext
     {
@@ -25,20 +27,35 @@
             Published = new ContextObject { OType = "xsd:dateTime" };
             Registration = new ContextObject { OType = "@id" };
         }
+        [JsonProperty("@vocab")]
         public string OVocab { get; set; }
+        [JsonProperty("catalog")]
         public string Catalog { get; set; }
+        [JsonProperty("xsd")]
         public string Xsd { get; set; }
+        [JsonProperty("items")]
         public ContextObject Items { get; set; }
+        [JsonProperty("commitTiemstamp")]
         public ContextObject CommitTimestamp { get; set; }
+        [JsonProperty("commitId")]
         public ContextObject CommitId { get; set; }
+        [JsonProperty("count")]
         public ContextObject Count { get; set; }
+        [JsonProperty("parent")]
         public ContextObject Parent { get; set; }
+        [JsonProperty("tags")]
         public ContextObject Tags { get; set; }
+        [JsonProperty("packageTargetFrameworks")]
         public ContextObject PackageTargetFrameworks { get; set; }
+        [JsonProperty("dependencyGroups")]
         public ContextObject DependencyGroups { get; set; }
+        [JsonProperty("dependencies")]
         public ContextObject Dependencies { get; set; }
+        [JsonProperty("packageContent")]
         public ContextObject PackageContent { get; set; }
+        [JsonProperty("published")]
         public ContextObject Published { get; set; }
+        [JsonProperty("registration")]
         public ContextObject Registration { get; set; }
     }
 }

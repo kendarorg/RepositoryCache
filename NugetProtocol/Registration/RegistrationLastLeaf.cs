@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 
 namespace NugetProtocol
@@ -26,14 +27,24 @@ namespace NugetProtocol
             OContext = context;
         }
 
+        [JsonProperty("@id")]
         public string OId { get; set; }
+        [JsonProperty("@type")]
         public List<string> OType { get; set; }
+        [JsonProperty("listed")]
         public bool Listed { get; set; }
+        [JsonProperty("published", DefaultValueHandling = DefaultValueHandling.Ignore)]
         public DateTime Published { get; set; }
+        [JsonProperty("catalogEntry")]
         public string CatalogEntry { get; set; }
+        [JsonProperty("packageContent")]
         public string PackageContent { get; set; }
-        public string Registration { get; set; }
-        public string HiddenVersion { get; set; }
+        [JsonProperty("registration")]
+        public string Registration { get; set; }        
+        [JsonProperty("@context")]
         public RegistrationLastLeafContext OContext { get; set; }
+
+
+        public string HiddenVersion { get; set; }
     }
 }

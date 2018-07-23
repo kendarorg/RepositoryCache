@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace NugetProtocol
 {
@@ -15,11 +16,14 @@ namespace NugetProtocol
             Data = data;
         }
 
+        [JsonProperty("@context")]
         public QueryContext OContext { get; set; }
         /// <summary>
         /// Count for the query
         /// </summary>
+        [JsonProperty("totalHits")]
         public int TotalHits { get; set; }
+        [JsonProperty("data")]
         public List<QueryPackage> Data { get; set; }
     }
 }

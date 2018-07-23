@@ -11,19 +11,18 @@ namespace Nuget.Apis
 {
     public class NugetRegistrationService : IRegistrationService, ISingleton
     {
+        static int MAX_PER_PAGE = 64;
+
         public NugetRegistrationService(
             IRegistrationRepository registrationRepository,
-            IRegistrationPageRepository registrationPageRepository,
             IServicesMapper servicesMapper, ICatalogService catalogService)
         {
             _registrationRepository = registrationRepository;
-            _registrationPageRepository = registrationPageRepository;
             _servicesMapper = servicesMapper;
             _catalogService = catalogService;
         }
 
         private IRegistrationRepository _registrationRepository;
-        private IRegistrationPageRepository _registrationPageRepository;
         private IServicesMapper _servicesMapper;
         private ICatalogService _catalogService;
 
@@ -41,26 +40,60 @@ namespace Nuget.Apis
         public RegistrationIndex IndexPage(Guid repoId, string lowerId, string semVerLevel)
         {
             var resultPages = new List<RegistrationPage>();
-            RegistrationPageEntity lastPage = null;
-            foreach (var page in _registrationPageRepository.GetAllByPackageId(repoId, lowerId))
+            var pageRegistrationsCount = 0;
+            var maxCommitId = Guid.NewGuid();
+            var lastTimestamp = DateTime.MinValue;
+            var pageMaxCommitId = Guid.NewGuid();
+            var pageLastTimestamp = DateTime.MinValue;
+            var startVersion = "start";
+            var endVersion = "end";
+
+
+            foreach (var registration in _registrationRepository.GetAllByPackageId(repoId, lowerId))
             {
-                lastPage = page;
-                resultPages.Add(new RegistrationPage(
-                        _servicesMapper.FromSemver(repoId, "PackageDisplayMetadataUriTemplate", semVerLevel, lowerId, "page", page.Start, page.End + ".json"),
+                if (registration.CommitTimestamp > lastTimestamp)
+                {
+                    lastTimestamp = registration.CommitTimestamp;
+                    maxCommitId = registration.CommitId;
+                }
+                if (registration.CommitTimestamp > pageLastTimestamp)
+                {
+                    pageLastTimestamp = registration.CommitTimestamp;
+                    pageMaxCommitId = registration.CommitId;
+                }
+                if (pageRegistrationsCount == 0)
+                {
+                    pageLastTimestamp = registration.CommitTimestamp;
+                    pageMaxCommitId = registration.CommitId;
+                    startVersion = registration.Version;
+                }
+                endVersion = registration.Version;
+                pageRegistrationsCount++;
+
+                if (pageRegistrationsCount == MAX_PER_PAGE)
+                {
+                    resultPages.Add(new RegistrationPage(
+                        _servicesMapper.FromSemver(repoId, "PackageDisplayMetadataUriTemplate", semVerLevel, lowerId, "page",
+                            startVersion, endVersion + ".json"),
                         "catalog:CatalogPage",
-                        page.CommitId, page.CommitTimestamp,
-                        page.Count, page.Start, page.End,
+                        pageMaxCommitId, pageLastTimestamp,
+                        pageRegistrationsCount, startVersion, endVersion,
                          _servicesMapper.From(repoId, "PackageDisplayMetadataUriTemplate", semVerLevel, lowerId, "index.json"),
                          null,
                          null
                         ));
+                    pageRegistrationsCount = 0;
+                    pageMaxCommitId = Guid.NewGuid();
+                    pageLastTimestamp = DateTime.MinValue;
+
+                }
             }
 
 
             var result = new RegistrationIndex(
                 _servicesMapper.FromSemver(repoId, "PackageDisplayMetadataUriTemplate", semVerLevel, lowerId, "index.json"),
                 new List<string> { "catalog:CatalogRoot", "PackageRegistration", "catalog:Permalink" },
-                Guid.NewGuid(), DateTime.UtcNow,
+                maxCommitId, lastTimestamp,
                 resultPages.Count, new List<RegistrationPage>(),
                 new RegistrationContext(
                     _servicesMapper.From(repoId, "*Schema"), _servicesMapper.From(repoId, "*Catalog"),

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 
 namespace NugetProtocol
@@ -23,12 +24,19 @@ namespace NugetProtocol
             Ocontext = ocontext;
         }
 
+        [JsonProperty("@id")]
         public string OId { get; set; }
+        [JsonProperty("@type")]
         public List<string> OType { get; set; }
+        [JsonProperty("commitId")]
         public Guid CommitId { get; set; }
+        [JsonProperty("commitTimestamp")]
         public DateTime CommitTimestamp { get; set; }
+        [JsonProperty("count")]
         public int Count { get; set; }
+        [JsonProperty("items")]
         public List<RegistrationPage> Items { get; set; }
+        [JsonProperty("@context")]
         public RegistrationContext Ocontext { get; set; }
     }
 }

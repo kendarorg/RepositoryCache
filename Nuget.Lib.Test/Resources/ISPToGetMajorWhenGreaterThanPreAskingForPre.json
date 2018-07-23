@@ -1,36 +1,32 @@
 ﻿{
-  "OContext": {
-    "OVocab": "nuget.org/Schema/",
-    "OBase": "nuget.org/RegistrationsBaseUrl:/"
+  "@context": {
+    "@vocab": "nuget.org/Schema/",
+    "@base": "nuget.org/RegistrationsBaseUrl:/"
   },
-  "TotalHits": 99999,
-  "Data": [
+  "totalHits": 99999,
+  "data": [
     {
-      "Id": "test",
-      "Version": "5",
-      "Versions": [
+      "@id": "nuget.org/PackageDisplayMetadataUriTemplate:/test/index.json",
+      "@type": "Package",
+      "registration": "nuget.org/PackageDisplayMetadataUriTemplate:/test/index.json",
+      "id": "test",
+      "version": "5",
+      "versions": [
         {
-          "OId": "nuget.org/PackageVersionDisplayMetadataUriTemplate:/test/5.json",
-          "Version": "5",
-          "Downloads": 0
+          "@id": "nuget.org/PackageVersionDisplayMetadataUriTemplate:/test/5.json",
+          "version": "5",
+          "downloads": 0
         },
         {
-          "OId": "nuget.org/PackageVersionDisplayMetadataUriTemplate:/test/6.json",
-          "Version": "6",
-          "Downloads": 0
+          "@id": "nuget.org/PackageVersionDisplayMetadataUriTemplate:/test/6.json",
+          "version": "6",
+          "downloads": 0
         }
       ],
-      "Description": null,
-      "Authors": [],
-      "IconUrl": null,
-      "LicenseUrl": null,
-      "Owners": [],
-      "ProjectUrl": null,
-      "Summary": null,
-      "Tags": [],
-      "Title": null,
-      "TotalDownloads": 0,
-      "Verified": true
+      "authors": [],
+      "owners": [],
+      "tags": [],
+      "verified": true
     }
   ]
 }

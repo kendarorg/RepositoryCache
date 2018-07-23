@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,10 +22,15 @@ namespace NugetProtocol
             SemVerLevel = semVerLevel;
         }
 
+        [JsonProperty("query")]
         public string Query { get; set; }
+        [JsonProperty("skip")]
         public int Skip { get; set; }
+        [JsonProperty("take")]
         public int Take { get; set; }
+        [JsonProperty("prerelease")]
         public bool PreRelease { get; set; }
+        [JsonProperty("semverlevel")]
         public string SemVerLevel { get; set; }
     }
 }

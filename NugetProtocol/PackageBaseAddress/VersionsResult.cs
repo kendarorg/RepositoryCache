@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace NugetProtocol
 {
@@ -13,6 +14,7 @@ namespace NugetProtocol
             Versions = versions;
         }
 
+        [JsonProperty("versions")]
         public List<string> Versions { get; }
     }
 }

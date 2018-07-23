@@ -51,10 +51,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Apis\NugetServiceIndex.cs" />
     <Compile Include="Repositories\IQueryRepository.cs" />
-    <Compile Include="Repositories\IRegistrationPageRepository.cs" />
     <Compile Include="Repositories\IRegistrationRepository.cs" />
     <Compile Include="Repositories\QueryEntity.cs" />
-    <Compile Include="Repositories\RegistrationPageEntity.cs" />
     <Compile Include="Repositories\RegistrationEntity.cs" />
     <Compile Include="Services\IInsertNugetService.cs" />
     <Compile Include="Services\InsertNugetService.cs" />
