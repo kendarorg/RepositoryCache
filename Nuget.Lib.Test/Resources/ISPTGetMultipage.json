@@ -17,7 +17,7 @@
       "count": 64,
       "lower": "0.1.0",
       "upper": "0.1.63",
-      "parent": "nuget.org/PackageDisplayMetadataUriTemplate//test/index.json"
+      "parent": "nuget.org/PackageDisplayMetadataUriTemplate/test/index.json"
     },
     {
       "@id": "nuget.org/PackageDisplayMetadataUriTemplate:/test/page/1.0.0-alpha/1.2.0.json",
@@ -27,7 +27,7 @@
       "count": 3,
       "lower": "1.0.0-alpha",
       "upper": "1.2.0",
-      "parent": "nuget.org/PackageDisplayMetadataUriTemplate//test/index.json"
+      "parent": "nuget.org/PackageDisplayMetadataUriTemplate/test/index.json"
     }
   ],
   "@context": {

@@ -21,13 +21,13 @@ namespace Nuget.Lib.Test
         public string From(Guid repoId, string resourceId, params string[] par)
         {
             if (repoId != _repoId) throw new Exception();
-            return _repoName + "/" + resourceId + "/" + string.Join("/", par);
+            return _repoName + "/" + resourceId + "/" + string.Join("/", par).Trim('/');
         }
 
         public string FromSemver(Guid repoId, string resourceId, string semVerLevel, params string[] par)
         {
             if (repoId != _repoId) throw new Exception();
-            return _repoName + "/" + resourceId + ":" + (semVerLevel ?? "") + "/" + string.Join("/", par);
+            return _repoName + "/" + resourceId + ":" + (semVerLevel ?? "") + "/" + string.Join("/", par).Trim('/');
         }
 
         public Dictionary<string, EntryPointDescriptor> GetVisibles(Guid id)

@@ -224,5 +224,43 @@ namespace Nuget.Lib.Test
             Assert.AreEqual(2, result.Items.Count);
             JsonComp.Equals("ISPTGetMultipage.json", result);
         }
+
+
+        [TestMethod]
+        public void ISPTGetSinglePage()
+        {
+
+            var target = new NugetRegistrationService(_registrationRepository, _servicesMapper, _catalogService);
+            var time = new DateTime(123456789);
+            var lastTime = new DateTime(223456789);
+            var lastCommit = Guid.Parse("0006c9a6-860f-4eb0-83b2-9b84cdeb0eb1");
+
+            _registrationRepositoryMock.Setup(a => a.GetAllByPackageId(
+                It.Is<Guid>(g => g == _repoId),
+                It.Is<String>(g => g == "test"))).Returns(GetOnePageRegistrationResult(time, lastTime, lastCommit));
+
+            _registrationRepositoryMock.Setup(a => a.GetRange(
+                It.Is<Guid>(g => g == _repoId),
+                It.Is<String>(g => g == "test"),
+                It.Is<String>(g => g == "1.0.0-alpha"),
+                It.Is<String>(g => g == "1.2.0"))).Returns(GetOnePageRegistrationResult(time, lastTime, lastCommit));
+
+            List<PackageDetail> packDetails = GetOnePageCatalogResult();
+            _catalogServiceMock.Setup(a => a.GetPackageDetailsForRegistration(
+                It.Is<Guid>(g => g == _repoId),
+                It.Is<String>(g => g == "test"),
+                It.IsAny<string>(),
+                It.Is<String>(g => g == "1.0.0-alpha"),
+                It.Is<String>(g => g == "1.1.0"),
+                It.Is<String>(g => g == "1.2.0"))).Returns(packDetails);
+
+
+            var result = target.SinglePage(_repoId, "test","1.0.0-alpha","1.2.0", null);
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual(3, result.Count);
+            Assert.AreEqual(3, result.Items.Count);
+            JsonComp.Equals("ISPTGetSinglePage.json", result);
+        }
     }
 }
