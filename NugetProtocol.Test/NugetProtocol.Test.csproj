@@ -51,6 +51,9 @@
     <Reference Include="Moq, Version=4.9.0.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
       <HintPath>..\packages\Moq.4.9.0\lib\net45\Moq.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -73,14 +76,21 @@
     <Compile Include="SampleServiceIndex.cs" />
     <Compile Include="SampleServicesMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ShouldCorrespondWithApi.cs" />
+    <Compile Include="Utils\JsonComp.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Ioc.Shared\Ioc.Shared.csproj">
+      <Project>{59BA45AE-F80C-440D-BEA1-C1FCA0F00A2B}</Project>
+      <Name>Ioc.Shared</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NugetProtocol\NugetProtocol.csproj">
       <Project>{a55022f2-7fe1-4c27-bf4e-3c0b3d77f7d0}</Project>
       <Name>NugetProtocol</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="apinugetorg.v3.index.json" />
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
