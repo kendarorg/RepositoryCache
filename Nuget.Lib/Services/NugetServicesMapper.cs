@@ -17,6 +17,10 @@ namespace Nuget
             new ConcurrentDictionary<Guid, Dictionary<string, EntryPointDescriptor>>();
         private ConcurrentDictionary<Guid, Dictionary<string, EntryPointDescriptor>> _shownApis =
             new ConcurrentDictionary<Guid, Dictionary<string, EntryPointDescriptor>>();
+        private ConcurrentDictionary<Guid, List<EntryPointDescriptor>> _toNugetApi =
+            new ConcurrentDictionary<Guid, List<EntryPointDescriptor>>();
+        private ConcurrentDictionary<Guid, List<EntryPointDescriptor>> _fromNugetApi =
+            new ConcurrentDictionary<Guid, List<EntryPointDescriptor>>();
 
         public Dictionary<string, EntryPointDescriptor> GetVisibles(Guid id)
         {
@@ -26,20 +30,37 @@ namespace Nuget
         public NugetServicesMapper(IRepositoryEntitiesRepository availableRepositories)
         {
             _availableRepositories = availableRepositories;
+            
             Refresh();
         }
 
         public void Refresh()
         {
+            _repositories.Clear();
+            _entryPoints.Clear();
+            _shownApis.Clear();
+            _toNugetApi.Clear();
+            _fromNugetApi.Clear();
+
+
             foreach (var repo in _availableRepositories.GetByType("nuget"))
             {
                 _repositories[repo.Id] = repo;
 
                 _entryPoints[repo.Id] = ExpandDescriptors(repo);
                 _shownApis[repo.Id] = GetShown(_entryPoints[repo.Id]);
+                _toNugetApi[repo.Id] = new List<EntryPointDescriptor>();
+                foreach (var item in _shownApis[repo.Id].Values.OrderByDescending(a => a.Local))
+                {
+                    _toNugetApi[repo.Id].Add(item);
+                }
+                _fromNugetApi[repo.Id] = new List<EntryPointDescriptor>();
+                foreach (var item in _shownApis[repo.Id].Values.OrderByDescending(a => a.Remote))
+                {
+                    _fromNugetApi[repo.Id].Add(item);
+                }
             }
         }
-
 
         public string From(Guid repoId, string resourceId, params string[] pars)
         {
@@ -159,6 +180,49 @@ namespace Nuget
                 }
             }
             return result;
+        }
+
+        public string ToNuget(Guid repoId, String src)
+        {
+            if (src == null) return null;
+            var srcCompare = src.TrimEnd('/') + "/";
+            var repo = _repositories[repoId];
+
+            foreach (var item in _toNugetApi[repoId])
+            {
+                var remoCmp = item.Remote.TrimEnd('/') + "/";
+                var localCmp= item.Local.Replace("{repoName}", repo.Prefix).TrimEnd('/') + "/";
+
+                if (srcCompare.StartsWith(localCmp))
+                {
+                    return src.Replace(item.Local.Replace("{repoName}", repo.Prefix), item.Remote);
+                }
+            }
+            return src;
+        }
+
+        public string FromNuget(Guid repoId, string src)
+        {
+            if (src == null) return null;
+            var srcCompare = src.TrimEnd('/') + "/";
+            var repo = _repositories[repoId];
+            foreach (var item in _fromNugetApi[repoId])
+            {
+                var remoCmp = item.Remote.TrimEnd('/') + "/";
+                var remoAltCmp = (item.RemoteAlternative??"").TrimEnd('/') + "/";
+                var localCmp = item.Local.Replace("{repoName}", repo.Prefix).TrimEnd('/') + "/";
+
+                
+                if (srcCompare.StartsWith(remoCmp))
+                {
+                    return src.Replace(item.Remote, item.Local.Replace("{repoName}", repo.Prefix));
+                }
+                else if (!string.IsNullOrWhiteSpace(remoAltCmp) && srcCompare.StartsWith(remoAltCmp))
+                {
+                    return src.Replace(item.RemoteAlternative, item.Local.Replace("{repoName}", repo.Prefix));
+                }
+            }
+            return src;
         }
     }
 }

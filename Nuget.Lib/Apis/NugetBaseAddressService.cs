@@ -15,7 +15,6 @@ namespace Nuget.Apis
 {
     public class NugetBaseAddressService : IPackageBaseAddressService, ISingleton
     {
-        private readonly IInsertNugetService _insertNugetService;
         private readonly IPackagesRepository _packagesRepository;
         private readonly IRegistrationRepository _registrationRepository;
         private readonly IRepositoryEntitiesRepository _repositoryEntitiesRepository;

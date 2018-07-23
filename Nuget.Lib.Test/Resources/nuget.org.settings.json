@@ -8,7 +8,7 @@
   {
     "id": "RegistrationsBaseUrl",
     "local": "{repoName}/v3/registrationsemver1",
-    "remote": "https://api.nuget.org/v3/registration",
+    "remote": "https://api.nuget.org/v3/registration3",
     "visible": true
   },
   {

@@ -124,5 +124,30 @@ namespace Nuget.Lib.Test
 
             Assert.AreEqual(21, visibles.Count);
         }
+        
+        [TestMethod]
+        public void ISPToLoadFromNuget()
+        {
+            var au = new AssemblyUtils();
+            //
+            var target = new NugetServicesMapper(_repository);
+            target.Refresh();
+
+            var packagePublish = target.FromNuget(_repositoryId, "https://api.nuget.org/v3/registration3-gz/test/index.json");
+            Assert.AreEqual("nuget.org/v3/registrationsemver1/test/index.json", packagePublish);
+        }
+
+
+        [TestMethod]
+        public void ISPToLoadToNuget()
+        {
+            var au = new AssemblyUtils();
+            //
+            var target = new NugetServicesMapper(_repository);
+            target.Refresh();
+
+            var packagePublish = target.ToNuget(_repositoryId, "nuget.org/v3/registrationsemver1/test/index.json");
+            Assert.AreEqual("https://api.nuget.org/v3/registration3-gz/test/index.json", packagePublish);
+        }
     }
 }

@@ -84,6 +84,11 @@ namespace NugetProtocol
             return result + "/" + string.Join("/", pars);
         }
 
+        public string FromNuget(Guid repoId, string src)
+        {
+            throw new NotImplementedException();
+        }
+
         public string FromSemver(Guid repoId, string resourceId, string semVerLevel, params string[] par)
         {
             switch (resourceId)
@@ -129,6 +134,11 @@ namespace NugetProtocol
         }
 
         public void Refresh()
+        {
+            throw new NotImplementedException();
+        }
+
+        public string ToNuget(Guid repoId, string src)
         {
             throw new NotImplementedException();
         }

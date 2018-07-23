@@ -67,13 +67,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="NugetBaseAddressServiceTest.cs" />
-    <Compile Include="NugetRegistrationServiceTest.cs" />
-    <Compile Include="NugetSearchQueryServiceTest.cs" />
-    <Compile Include="NugetServicesMapperTest.cs" />
+    <Compile Include="Apis\NugetBaseAddressServiceTest.cs" />
+    <Compile Include="Apis\NugetRegistrationServiceTest.cs" />
+    <Compile Include="Apis\NugetSearchQueryServiceTest.cs" />
+    <Compile Include="Controllers\V3Beat_QueryTest.cs" />
+    <Compile Include="Services\NugetServicesMapperTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="QueryBuilderTest.cs" />
-    <Compile Include="ServicesMapperMock.cs" />
+    <Compile Include="Services\QueryBuilderTest.cs" />
+    <Compile Include="Utils\ServicesMapperMock.cs" />
     <Compile Include="Utils\JsonComp.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -24,6 +24,11 @@ namespace Nuget.Lib.Test
             return _repoName + "/" + resourceId + "/" + string.Join("/", par).Trim('/');
         }
 
+        public string FromNuget(Guid repoId, string src)
+        {
+            throw new NotImplementedException();
+        }
+
         public string FromSemver(Guid repoId, string resourceId, string semVerLevel, params string[] par)
         {
             if (repoId != _repoId) throw new Exception();
@@ -38,6 +43,11 @@ namespace Nuget.Lib.Test
         public void Refresh()
         {
             
+        }
+
+        public string ToNuget(Guid repoId, string src)
+        {
+            throw new NotImplementedException();
         }
     }
 }
