@@ -52,6 +52,7 @@
     <Compile Include="Catalog\Dependency.cs" />
     <Compile Include="Catalog\DependencyGroup.cs" />
     <Compile Include="Catalog\FrameworkAssemblyGroup.cs" />
+    <Compile Include="PackageXml.cs" />
     <Compile Include="PackageBaseAddress\VersionsResult.cs" />
     <Compile Include="Registration\RegistrationContext.cs" />
     <Compile Include="Registration\RegistrationIndex.cs" />
