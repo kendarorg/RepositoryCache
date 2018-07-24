@@ -72,12 +72,15 @@ namespace Nuget.Lib.Test.Apis
 
             var data = new InsertData
             {
+                RepoId = Guid.Parse("2226c9a6-860f-4eb0-83b2-9b84cdeb0eb1"),
                 CommitId = Guid.Parse("0006c9a6-860f-4eb0-83b2-9b84cdeb0eb1"),
                 Nuspec = Deserialize(packageXml),
                 Sha = "123456==",
                 ShaAlgorithm = "SHA512",
                 Size = 100,
-                Timestamp = new DateTime(1000)
+                Timestamp = new DateTime(1000),
+                Id= "System.Security.Principal.Windows",
+                Version= "4.5.0"
             };
             return data;
         }

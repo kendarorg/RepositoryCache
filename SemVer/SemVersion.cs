@@ -24,6 +24,7 @@ namespace SemVer
             new Regex(@"^(?<major>\d+)" +
                 @"(\.(?<minor>\d+))?" +
                 @"(\.(?<patch>\d+))?" +
+                @"(\.(?<extra>\d+))?" +
                 @"(\-(?<pre>[0-9A-Za-z\-\.]+))?" +
                 @"(\+(?<build>[0-9A-Za-z\-\.]+))?$",
 #if NETSTANDARD
@@ -46,6 +47,7 @@ namespace SemVer
             Major = semVersion.Major;
             Minor = semVersion.Minor;
             Patch = semVersion.Patch;
+            Extra = semVersion.Extra;
             Prerelease = semVersion.Prerelease;
             Build = semVersion.Build;
         }
@@ -59,11 +61,12 @@ namespace SemVer
         /// <param name="patch">The patch version.</param>
         /// <param name="prerelease">The prerelease version (eg. "alpha").</param>
         /// <param name="build">The build eg ("nightly.232").</param>
-        public SemVersion(int major, int minor = 0, int patch = 0, string prerelease = "", string build = "")
+        public SemVersion(int major, int minor = 0, int patch = 0, string prerelease = "", string build = "", int? extra = null)
         {
             this.Major = major;
             this.Minor = minor;
             this.Patch = patch;
+            this.Extra = extra;
 
             this.Prerelease = prerelease ?? "";
             this.Build = build ?? "";
@@ -148,10 +151,25 @@ namespace SemVer
                 throw new InvalidOperationException("Invalid version (no patch version given in strict mode)");
             }
 
+            var extraMatch = match.Groups["extra"];
+            int? extra = null;
+            if (extraMatch.Success)
+            {
+                if (strict)
+                {
+                    throw new InvalidOperationException("Invalid version (no extra version given in strict mode)");
+                }
+#if NETSTANDARD
+                patch = int.Parse(extraMatch.Value);
+#else
+                extra = int.Parse(extraMatch.Value, CultureInfo.InvariantCulture);
+#endif
+            }
+
             var prerelease = match.Groups["pre"].Value;
             var build = match.Groups["build"].Value;
 
-            return new SemVersion(major, minor, patch, prerelease, build);
+            return new SemVersion(major, minor, patch, prerelease, build, extra);
         }
 
         /// <summary>
@@ -204,7 +222,7 @@ namespace SemVer
             return versionA.CompareTo(versionB);
         }
 
-        public static bool IsGreater(string versionA,string versionB)
+        public static bool IsGreater(string versionA, string versionB)
         {
             return SemVersion.Parse(versionA) > SemVersion.Parse(versionB);
         }
@@ -219,14 +237,15 @@ namespace SemVer
         /// <param name="build">The build text.</param>
         /// <returns>The new version object.</returns>
         public SemVersion Change(int? major = null, int? minor = null, int? patch = null,
-            string prerelease = null, string build = null)
+            string prerelease = null, string build = null, int? extra = null)
         {
             return new SemVersion(
                 major ?? this.Major,
                 minor ?? this.Minor,
                 patch ?? this.Patch,
                 prerelease ?? this.Prerelease,
-                build ?? this.Build);
+                build ?? this.Build,
+                extra ?? this.Extra);
         }
 
         /// <summary>
@@ -254,6 +273,14 @@ namespace SemVer
         public int Patch { get; private set; }
 
         /// <summary>
+        /// Gets the old build version.
+        /// </summary>
+        /// <value>
+        /// The old build version.
+        /// </value>
+        public int? Extra { get; private set; }
+
+        /// <summary>
         /// Gets the pre-release version.
         /// </summary>
         /// <value>
@@ -278,6 +305,8 @@ namespace SemVer
         public override string ToString()
         {
             var version = "" + Major + "." + Minor + "." + Patch;
+            if (Extra != null)
+                version += "." + Extra;
             if (!String.IsNullOrEmpty(Prerelease))
                 version += "-" + Prerelease;
             if (!String.IsNullOrEmpty(Build))
@@ -288,6 +317,8 @@ namespace SemVer
         public string ToNormalizedVersion()
         {
             var version = "" + Major + "." + Minor + "." + Patch;
+            if (Extra != null)
+                version += "." + Extra;
             if (!String.IsNullOrEmpty(Prerelease))
                 version += "-" + Prerelease;
             return version;
@@ -372,6 +403,11 @@ namespace SemVer
             r = this.Patch.CompareTo(other.Patch);
             if (r != 0) return r;
 
+            var lExtra = this.Extra ?? 0;
+            var rExtra = other.Extra ?? 0;
+            r = lExtra.CompareTo(rExtra);
+            if (r != 0) return r;
+
             r = CompareComponent(this.Prerelease, other.Prerelease, true);
             return r;
         }
@@ -440,6 +476,7 @@ namespace SemVer
             return this.Major == other.Major &&
                 this.Minor == other.Minor &&
                 this.Patch == other.Patch &&
+                this.Extra == other.Extra &&
                 string.Equals(this.Prerelease, other.Prerelease, StringComparison.Ordinal) &&
                 string.Equals(this.Build, other.Build, StringComparison.Ordinal);
         }
@@ -458,6 +495,10 @@ namespace SemVer
                 result = result * 31 + this.Minor.GetHashCode();
                 result = result * 31 + this.Patch.GetHashCode();
                 result = result * 31 + this.Prerelease.GetHashCode();
+                if (Extra != null)
+                {
+                    result = result * 31 + this.Extra.Value.GetHashCode();
+                }
                 result = result * 31 + this.Build.GetHashCode();
                 return result;
             }

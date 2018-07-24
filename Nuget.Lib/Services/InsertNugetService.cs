@@ -117,7 +117,10 @@ namespace Nuget.Services
                 Sha = CalculateSha512(content),
                 ShaAlgorithm = "SHA512",
                 Size = content.Length,
+                RepoId = repoId
             };
+            data.Id = data.Nuspec.Metadata.Id;
+            data.Version = data.Nuspec.Metadata.Version;
             data.Timestamp = commitTimestamp;
 
             InsertQuery(data);
@@ -150,11 +153,77 @@ namespace Nuget.Services
 
         public void InsertDependencies(InsertData data)
         {
+            foreach (var item in _nugetDependencies.GetDependencies(data.RepoId, data.Id, data.Version).ToList())
+            {
+                _nugetDependencies.Delete(item.Id);
+            }
+
+            var metadata = data.Nuspec.Metadata;
+            if (metadata.Dependencies != null &&
+                metadata.Dependencies.Dependency != null &&
+               metadata.Dependencies.Dependency.Count > 0)
+            {
+                foreach (var asm in metadata.Dependencies.Dependency)
+                {
+                    _nugetDependencies.Save(new NugetDependency
+                    {
+                        PackageId = asm.Id,
+                        Range = asm.Version,
+                        TargetFramework = null,
+                        OwnerPackageId = data.Id,
+                        OwnerVersion = data.Version
+                    });
+                }
+            }
+            if (metadata.Dependencies != null &&
+                metadata.Dependencies.Group != null &&
+               metadata.Dependencies.Group.Count > 0)
+            {
+                foreach (var group in metadata.Dependencies.Group)
+                {
+                    var targetFw = string.IsNullOrWhiteSpace(group.TargetFramework) ? null : group.TargetFramework;
+                    foreach (var asm in group.Dependency)
+                    {
+                        _nugetDependencies.Save(new NugetDependency
+                        {
+                            PackageId = asm.Id,
+                            Range = asm.Version,
+                            TargetFramework = targetFw,
+                            OwnerPackageId = data.Id,
+                            OwnerVersion = data.Version
+                        });
+                    }
+                }
+            }
             throw new NotImplementedException();
         }
 
         public void InsertAssemblies(InsertData data)
         {
+
+            foreach (var item in _nugetAssemblies.GetGroups(data.RepoId, data.Id, data.Version).ToList())
+            {
+                _nugetAssemblies.Delete(item.Id);
+            }
+
+            var metadata = data.Nuspec.Metadata;
+            if (metadata.FrameworkAssemblies == null ||
+                metadata.FrameworkAssemblies.FrameworkAssembly == null ||
+               metadata.FrameworkAssemblies.FrameworkAssembly.Count == 0)
+            {
+                return;
+            }
+
+            foreach (var asm in metadata.FrameworkAssemblies.FrameworkAssembly)
+            {
+                _nugetAssemblies.Save(new NugetAssemblyGroup
+                {
+                    AssemblyName = asm.AssemblyName,
+                    TargetFramework = string.IsNullOrWhiteSpace(asm.TargetFramework) ? null : asm.TargetFramework,
+                    OwnerPackageId = data.Id,
+                    OwnerVersion = data.Version
+                });
+            }
             throw new NotImplementedException();
         }
     }

@@ -11,5 +11,8 @@ namespace Nuget.Services
         public int Size { get; set; }
         public DateTime Timestamp { get; set; }
         public Guid CommitId { get;  set; }
+        public string Version { get;  set; }
+        public string Id { get;  set; }
+        public Guid RepoId { get;  set; }
     }
 }
