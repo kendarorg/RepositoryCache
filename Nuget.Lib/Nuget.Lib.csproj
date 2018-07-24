@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="Apis\NugetBaseAddressService.cs" />
     <Compile Include="Apis\NugetPackagePublishService.cs" />
+    <Compile Include="Apis\NugetAutocompleteService.cs" />
     <Compile Include="Apis\NugetRegistrationService.cs" />
     <Compile Include="Apis\NugetSearchQueryService.cs" />
     <Compile Include="Apis\NugetCatalogService.cs" />

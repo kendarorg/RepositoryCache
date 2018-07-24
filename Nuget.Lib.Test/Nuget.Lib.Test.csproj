@@ -70,6 +70,7 @@
     <Compile Include="Apis\NugetCatalogServiceTest.cs" />
     <Compile Include="Apis\NugetBaseAddressServiceTest.cs" />
     <Compile Include="Apis\NugetRegistrationServiceTest.cs" />
+    <Compile Include="Apis\NugetAutocompleteServiceTest.cs" />
     <Compile Include="Apis\NugetSearchQueryServiceTest.cs" />
     <Compile Include="Controllers\BaseControllersTest.cs" />
     <Compile Include="Controllers\V3Beat_QueryTest.cs" />
@@ -124,6 +125,10 @@
     <EmbeddedResource Include="Resources\ISPToGetPackageFwDepsCatalog.json" />
     <EmbeddedResource Include="Resources\ISPToGetPackageEmptyDepsCatalog.json" />
     <EmbeddedResource Include="Resources\ISPToGetPackageListCatalogWithDeps.json" />
+    <EmbeddedResource Include="Resources\ISPToGetMajorWhenGreaterThanPreAskingForPreAuto.json" />
+    <EmbeddedResource Include="Resources\ISPToGetReleasesAuto.json" />
+    <EmbeddedResource Include="Resources\ISPToGetPreReleasesVersionsToo.json" />
+    <EmbeddedResource Include="Resources\ISPToGetReleasesVersionsOnly.json" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

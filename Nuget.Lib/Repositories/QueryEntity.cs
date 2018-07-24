@@ -27,18 +27,20 @@ namespace Nuget.Repositories
         public int TotalDownloads { get; set; }
         public bool HasRelease { get; set; }
         public bool HasPreRelease { get; set; }
+        public Guid CommitId { get; set; }
+        public DateTime CommitTimestamp { get; set; }
         /*
-        public int Major { get; set; }
-        public int Minor { get; set; }
-        public int Patch { get; set; }
-        public string PreRelease { get; set; }
-        public string BuildMetadata { get; set; }
+public int Major { get; set; }
+public int Minor { get; set; }
+public int Patch { get; set; }
+public string PreRelease { get; set; }
+public string BuildMetadata { get; set; }
 
-        public int PreMajor { get; set; }
-        public int PreMinor { get; set; }
-        public int PrePatch { get; set; }
-        public string PrePreRelease { get; set; }
-        public string PreBuildMetadata { get; set; }*/
-        
+public int PreMajor { get; set; }
+public int PreMinor { get; set; }
+public int PrePatch { get; set; }
+public string PrePreRelease { get; set; }
+public string PreBuildMetadata { get; set; }*/
+
     }
 }

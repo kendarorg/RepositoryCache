@@ -32,5 +32,11 @@ namespace Nuget.Repositories
                 a.PackageId == lowerId &&
                 a.Version == lowerVersion);
         }
+
+        public IEnumerable<PackageEntity> GetByPackageId(Guid repoId,string lowerId)
+        {
+            return GetAll().Where(a => a.RepositoryId == repoId &&
+               a.PackageId == lowerId );
+        }
     }
 }
