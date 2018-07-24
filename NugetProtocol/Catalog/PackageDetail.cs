@@ -16,11 +16,12 @@ namespace NugetProtocol
             Tags = new List<string>();
         }
 
-        public PackageDetail(string oid,string otype, string registration, 
-            string id, string version,string packageContent,
+        public PackageDetail(string oid, string otype, string registration,
+            string id, string version, string packageContent,
             string description = null, List<string> authors = null, string iconUrl = null, string licenseUrl = null,
             List<string> owners = null, string projectUrl = null,
-            string summary = null, List<string> tags = null, string title = null, int totalDownloads = 0, bool verified = false)
+            string summary = null, List<string> tags = null, string title = null, int totalDownloads = 0, bool verified = false,
+            List<DependencyGroup> dependencyGroups = null)
         {
             OId = oid;
             OType = otype;
@@ -39,6 +40,7 @@ namespace NugetProtocol
             Title = title;
             TotalDownloads = totalDownloads;
             Verified = verified;
+            DependencyGroups = dependencyGroups;
         }
 
         [JsonProperty("@id")]
@@ -75,5 +77,7 @@ namespace NugetProtocol
         public int TotalDownloads { get; set; }
         [JsonProperty("verified", DefaultValueHandling = DefaultValueHandling.Ignore)]
         public bool Verified { get; set; }
+        [JsonProperty("dependencyGroups", DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public List<DependencyGroup> DependencyGroups { get; set; }
     }
 }

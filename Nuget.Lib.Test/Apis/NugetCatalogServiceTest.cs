@@ -350,5 +350,61 @@ namespace Nuget.Lib.Test
             Assert.IsNotNull(result);
             JsonComp.Equals("ISPToGetPackageEmptyDepsCatalog.json", result);
         }
+
+
+        [TestMethod]
+        public void ISPToGetPackageListCatalogWithDeps()
+        {
+
+            var target = new NugetCatalogService(
+                _registrationRepository,
+                _servicesMapper,
+                _packagesRepository,
+                _nugetDependencies,
+                _nugetAssemblies);
+
+            var package = new PackageEntity()
+            {
+                CommitTimestamp = new DateTime(1998, 12, 31, 12, 12, 12),
+                PackageId = "test",
+                Version = "1.0.0",
+                PackageIdAndVersion = "test.1.0.0",
+                CommitId = Guid.Parse("ced6c9a6-860f-4eb0-83b2-9b84cdeb0e10"),
+                HashAlgorithm = "SHA256",
+                HashKey = "123456===",
+                Size = 1000,
+
+            };
+            _packagesRepositoryMock.Setup(a => a.GetByIdVersions(It.IsAny<Guid>(),
+                It.Is<string>(x => x == "test"),
+                It.Is<string[]>(x => x[0] == "1.0.0")
+                )).
+                Returns(new List<PackageEntity>
+                {
+                    package
+                });
+
+            _nugetDependenciesMock.Setup(a => a.GetDependencies(It.IsAny<Guid>(),
+                It.Is<string>(x => x == "test"),
+                It.Is<string>(x => x == "1.0.0")
+                )).
+                Returns(new List<NugetDependency>
+                {
+                    new NugetDependency
+                    {
+                        TargetFramework= ".net45"
+                    },
+                    new NugetDependency
+                    {
+                        PackageId="sub.dep",
+                        Range ="3.0.0",
+                        TargetFramework= ".net31"
+                    }
+                });
+
+            var result = target.GetPackageDetailsForRegistration(_repoId, "test", null, "1.0.0");
+            Assert.IsNotNull(result);
+            JsonComp.Equals("ISPToGetPackageListCatalogWithDeps.json", result);
+        }
     }
 }

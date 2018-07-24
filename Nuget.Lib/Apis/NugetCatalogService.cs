@@ -205,7 +205,7 @@ namespace Nuget.Apis
                 if (item.Value.Count == 1 && string.IsNullOrWhiteSpace(item.Value[0].PackageId))
                 {
                     var dependencyGroupAddressEmpty = _servicesMapper.From(repoId, "Catalog/3.0.0", "data", timestamp,
-                                    idLower + "." + versionLower + ".json" + "#dependencygroup/"+item.Key);
+                                    idLower + "." + versionLower + ".json" + "#dependencygroup/" + item.Key);
                     var fwagEmpty = new DependencyGroup(
                          dependencyGroupAddressEmpty,
                          "PackageDependencyGroup", null, item.Key);
@@ -262,6 +262,7 @@ namespace Nuget.Apis
 
             foreach (var item in _packagesRepository.GetByIdVersions(repoId, lowerId, lowerVersions))
             {
+                var dependencies = FindDependencies(repoId, item.CommitTimestamp.ToString("yyyy.MM.dd.HH.mm.ss"), item.Version, item.PackageId);
                 yield return new PackageDetail(
                         _servicesMapper.From(repoId, "Catalog/3.0.0",
                             "data", item.CommitTimestamp.ToString("yyyy.MM.dd.HH.mm.ss"), lowerId + "." + item.Version + ".json"),
@@ -270,7 +271,8 @@ namespace Nuget.Apis
                             lowerId, "index.json"),
                         lowerId, item.Version,
                         _servicesMapper.From(repoId, "PackageBaseAddress/3.0.0",
-                            lowerId, item.Version, lowerId + "." + item.Version + ".nupkg")
+                            lowerId, item.Version, lowerId + "." + item.Version + ".nupkg"),
+                        dependencyGroups: dependencies
                         );
             }
         }

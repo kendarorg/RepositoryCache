@@ -1,0 +1,33 @@
+﻿[
+  {
+    "@id": "nuget.org/Catalog/3.0.0/data/1998.12.31.12.12.12/test.1.0.0.json",
+    "@type": "PackageDetails",
+    "registration": "nuget.org/PackageDisplayMetadataUriTemplate:/test/index.json",
+    "id": "test",
+    "version": "1.0.0",
+    "packageContent": "nuget.org/PackageBaseAddress/3.0.0/test/1.0.0/test.1.0.0.nupkg",
+    "authors": [],
+    "owners": [],
+    "tags": [],
+    "dependencyGroups": [
+      {
+        "@id": "nuget.org/Catalog/3.0.0/data/1998.12.31.12.12.12/test.1.0.0.json#dependencygroup/.net45",
+        "@type": "PackageDependencyGroup",
+        "targetFramework": ".net45"
+      },
+      {
+        "@id": "nuget.org/Catalog/3.0.0/data/1998.12.31.12.12.12/test.1.0.0.json#dependencygroup/.net31",
+        "@type": "PackageDependencyGroup",
+        "dependencies": [
+          {
+            "@id": "nuget.org/Catalog/3.0.0/data/1998.12.31.12.12.12/test.1.0.0.json#dependencygroup/.net31/sub.dep",
+            "@type": "PackageDependency",
+            "id": "sub.dep",
+            "range": "[3.0.0,)"
+          }
+        ],
+        "targetFramework": ".net31"
+      }
+    ]
+  }
+]
