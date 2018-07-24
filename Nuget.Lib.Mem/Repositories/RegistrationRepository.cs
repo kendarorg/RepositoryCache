@@ -20,6 +20,16 @@ namespace Nuget.Repositories
                 OrderBy(a=>a.Major).OrderBy(a => a.Minor).OrderBy(a => a.Patch).OrderBy(a => a.PreRelease);
         }
 
+        public IEnumerable<RegistrationEntity> GetAllOrderByDate(Guid repoId)
+        {
+            return GetAll().Where(a=>a.RepositoryId==repoId).OrderBy(a => a.CommitTimestamp);
+        }
+
+        public IEnumerable<RegistrationEntity> GetPage(Guid repoId, int skip,int take)
+        {
+            return GetAllOrderByDate(repoId).Skip(skip).Take(take);
+        }
+
         public IEnumerable<RegistrationEntity> GetRange(Guid repoId, string lowerId, string versionFrom, string versionTo)
         {
             var from = SemVerParser.Parse(versionFrom);

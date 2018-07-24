@@ -20,7 +20,7 @@ namespace NugetProtocol
         public string OId { get; set; }
         [JsonProperty("targetFramework")]
         public string TargetFramework { get; set; }
-        [JsonProperty("assembly", DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonProperty("assembly")]
         public List<string> Assembly { get; set; }
     }
 }

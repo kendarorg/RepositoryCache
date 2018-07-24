@@ -28,7 +28,7 @@ namespace Nuget.Lib.Test
         [TestInitialize]
         public void Initialize()
         {
-            
+
             _repoId = Guid.NewGuid();
             _queryRepositoryMock = new Mock<IQueryRepository>();
             _queryRepository = _queryRepositoryMock.Object;
@@ -48,7 +48,7 @@ namespace Nuget.Lib.Test
                 });
             _repositoryEntitiesRepository = repositoryEntitiesRepository.Object;
 
-            _servicesMapper = new ServicesMapperMock("nuget.org", _repoId);
+            _servicesMapper = new ServicesMapperMock("nuget.org", _repoId, 5, 10);
         }
 
         [TestMethod]
@@ -148,7 +148,7 @@ namespace Nuget.Lib.Test
             _queryRepositoryMock.Setup(a => a.Query(It.IsAny<Guid>(), It.IsAny<QueryModel>())).
                 Returns(new List<QueryEntity>
                 {
-                    new QueryEntity 
+                    new QueryEntity
                     {
                         Version="1",
                         CsvVersions="1,2",

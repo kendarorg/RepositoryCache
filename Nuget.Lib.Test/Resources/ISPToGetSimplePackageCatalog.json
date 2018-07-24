@@ -1,0 +1,54 @@
+﻿{
+  "@id": "nuget.org/Catalog/3.0.0/data/1998.12.31.12.12.12/test.1.0.0.json",
+  "@type": [
+    "PackageDetails",
+    "catalog:Permalink"
+  ],
+  "catalog:commitId": "ced6c9a6-860f-4eb0-83b2-9b84cdeb0e10",
+  "catalog:commitTimestamp": "1998-12-31T12:12:12",
+  "id": "test",
+  "published": "1998-12-31T12:12:12",
+  "version": "1.0.0",
+  "packageHash": "123456===",
+  "packageHashAlgorithm": "SHA256",
+  "packageSize": 1000,
+  "@context": {
+    "@vocab": "nuget.org/*Schema/",
+    "catalog": "nuget.org/*Catalog/",
+    "xsd": "nuget.org/*W3SchemaComment/",
+    "dependencyGroups": {
+      "@id": "dependencyGroup",
+      "@container": "@set"
+    },
+    "dependencies": {
+      "@id": "dependency",
+      "@container": "@set"
+    },
+    "packageEntries": {
+      "@id": "packageEntry",
+      "@container": "@set"
+    },
+    "supportedFrameworks": {
+      "@id": "supportedFramework",
+      "@container": "@set"
+    },
+    "tags": {
+      "@id": "tag",
+      "@container": "@set"
+    },
+    "published": {
+      "@type": "xsd:dateTime"
+    },
+    "created": {
+      "@type": "xsd:dateTime"
+    },
+    "lastEdited": {
+      "@type": "xsd:dateTime"
+    },
+    "catalog:commitTimestamp": {
+      "@type": "xsd:dateTime"
+    }
+  },
+  "frameworkAssemblyGroup": [],
+  "verified": true
+}

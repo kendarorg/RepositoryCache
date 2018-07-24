@@ -11,9 +11,7 @@ namespace Nuget.Apis
 {
     public class NugetRegistrationService : IRegistrationService, ISingleton
     {
-        public static int MAX_PER_PAGE = 64;
-
-        public int MaxPerPage { get { return MAX_PER_PAGE; } }
+        
 
         public NugetRegistrationService(
             IRegistrationRepository registrationRepository,
@@ -49,7 +47,7 @@ namespace Nuget.Apis
             var pageLastTimestamp = DateTime.MinValue;
             var startVersion = "start";
             var endVersion = "end";
-
+            var maxPages = _servicesMapper.MaxCatalogPages(repoId);
 
             foreach (var registration in _registrationRepository.GetAllByPackageId(repoId, lowerId))
             {
@@ -72,7 +70,7 @@ namespace Nuget.Apis
                 endVersion = registration.Version;
                 pageRegistrationsCount++;
 
-                if (pageRegistrationsCount >= MaxPerPage)
+                if (pageRegistrationsCount >= maxPages)
                 {
                     resultPages.Add(AddPage(repoId, lowerId, semVerLevel, pageRegistrationsCount, pageMaxCommitId, pageLastTimestamp, startVersion, endVersion));
                     pageRegistrationsCount = 0;

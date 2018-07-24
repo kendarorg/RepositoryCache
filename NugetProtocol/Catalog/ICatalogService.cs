@@ -8,13 +8,6 @@ namespace NugetProtocol
 {
     public interface ICatalogService
     {
-        /// <summary>
-        /// GET: /data/{timestamp}/{packageIdVersionLower}.json
-        /// </summary>
-        /// <param name="timestamp">2018.12.31.23.59.59</param>
-        /// <param name="packageIdVersionLower"></param>
-        /// <returns></returns>
-        CatalogEntry GetPackageCatalog(Guid repoId,string timestamp, string packageIdVersionLower);
 
         /// <summary>
         /// List all catalog pages
@@ -29,7 +22,15 @@ namespace NugetProtocol
         /// </summary>
         /// <param name="page"></param>
         /// <returns></returns>
-        CatalogPage GetCatalogPage(Guid repoId,int page);
+        CatalogPage GetCatalogPage(Guid repoId, int page);
+
+        /// <summary>
+        /// GET: /data/{timestamp}/{packageIdVersionLower}.json
+        /// </summary>
+        /// <param name="timestamp">2018.12.31.23.59.59</param>
+        /// <param name="packageIdVersionLower"></param>
+        /// <returns></returns>
+        CatalogEntry GetPackageCatalog(Guid repoId,string timestamp, string packageIdVersionLower);
 
         /// <summary>
         /// Internal usage

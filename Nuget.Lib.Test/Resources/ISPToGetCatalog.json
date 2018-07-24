@@ -1,0 +1,53 @@
+﻿{
+  "@id": "nuget.org/Catalog/3.0.0/index.json",
+  "type": [
+    "CatalogRoot",
+    "AppendOnlyCatalog",
+    "Permalink"
+  ],
+  "commitId": "ced6c9a6-860f-4eb0-83b2-9b84cdeb0eb6",
+  "commitTimestamp": "0001-01-01T00:00:00.0100006",
+  "count": 2,
+  "items": [
+    {
+      "@id": "nuget.org/Catalog/3.0.0/index0.json",
+      "@type": "CatalogPage",
+      "commitId": "ced6c9a6-860f-4eb0-83b2-9b84cdeb0eb0",
+      "commitTimestamp": "0001-01-01T00:00:00.01",
+      "count": 5
+    },
+    {
+      "@id": "nuget.org/Catalog/3.0.0/index0.json",
+      "@type": "CatalogPage",
+      "commitId": "ced6c9a6-860f-4eb0-83b2-9b84cdeb0eb5",
+      "commitTimestamp": "0001-01-01T00:00:00.0100005",
+      "count": 2
+    }
+  ],
+  "@context": {
+    "@vocab": "nuget.org/*Catalog/",
+    "nuget": "nuget.org/*Schema/",
+    "items": {
+      "@id": "item",
+      "@container": "@set"
+    },
+    "parent": {
+      "@type": "@id"
+    },
+    "commitTimestamp": {
+      "@type": "nuget.org/*SchemaTime/"
+    },
+    "nuget:lastCreated": {
+      "@type": "nuget.org/*SchemaTime/"
+    },
+    "nuget:lastEdited": {
+      "@type": "nuget.org/*SchemaTime/"
+    },
+    "nuget:lastDeleted": {
+      "@type": "nuget.org/*SchemaTime/"
+    }
+  },
+  "nuget:lastCreated": "0001-01-01T00:00:00.0100006",
+  "nuget:lastEdited": "0001-01-01T00:00:00.0100006",
+  "nuget:lastDeleted": "0001-01-01T00:00:00.0100006"
+}

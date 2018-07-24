@@ -14,5 +14,7 @@ namespace NugetProtocol
         Dictionary<string, EntryPointDescriptor> GetVisibles(Guid id);
         string ToNuget(Guid repoId, string src);
         string FromNuget(Guid repoId, string src);
+        int MaxRegistrationPages(Guid repoId);
+        int MaxCatalogPages(Guid repoId);
     }
 }

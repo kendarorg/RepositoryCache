@@ -19,6 +19,13 @@ namespace Nuget.Repositories
             return GetAll().FirstOrDefault(a => a.RepositoryId == repoId && a.PackageIdAndVersion == lowerIdlowerVersion);
         }
 
+        public IEnumerable<PackageEntity> GetByIdVersions(Guid repoId, string lowerId, string[] lowerVersions)
+        {
+            return GetAll().Where(a => a.RepositoryId == repoId &&
+               a.PackageId == lowerId &&
+              lowerVersions.Contains(a.Version));
+        }
+
         public PackageEntity GetByPackage(Guid repoId, string lowerId, string lowerVersion)
         {
             return GetAll().FirstOrDefault(a => a.RepositoryId == repoId &&

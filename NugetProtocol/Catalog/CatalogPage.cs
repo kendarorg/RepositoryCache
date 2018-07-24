@@ -35,11 +35,11 @@ namespace NugetProtocol
         public DateTime CommitTimeStamp { get; set; }
         [JsonProperty("count")]
         public int Count { get; set; }
-        [JsonProperty("parent")]
+        [JsonProperty("parent", DefaultValueHandling = DefaultValueHandling.Ignore)]
         public string Parent { get; set; }
-        [JsonProperty("@context")]
+        [JsonProperty("@context", DefaultValueHandling = DefaultValueHandling.Ignore)]
         public CatalogContext OContext { get; set; }
-        [JsonProperty("items")]
+        [JsonProperty("items", DefaultValueHandling = DefaultValueHandling.Ignore)]
         public List<CatalogPageItem> Items { get; set; }
     }
 }

@@ -67,9 +67,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Apis\NugetCatalogServiceTest.cs" />
     <Compile Include="Apis\NugetBaseAddressServiceTest.cs" />
     <Compile Include="Apis\NugetRegistrationServiceTest.cs" />
     <Compile Include="Apis\NugetSearchQueryServiceTest.cs" />
+    <Compile Include="Controllers\BaseControllersTest.cs" />
     <Compile Include="Controllers\V3Beat_QueryTest.cs" />
     <Compile Include="Services\NugetServicesMapperTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -115,6 +117,9 @@
     <EmbeddedResource Include="Resources\ISPTGetMultipage.json" />
     <EmbeddedResource Include="Resources\ISPTGetSinglePage.json" />
     <EmbeddedResource Include="Resources\ISPToGetNugetVersion.json" />
+    <EmbeddedResource Include="Resources\ISPToGetCatalog.json" />
+    <EmbeddedResource Include="Resources\ISPToGetCatalogPage.json" />
+    <EmbeddedResource Include="Resources\ISPToGetSimplePackageCatalog.json" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -133,6 +133,16 @@ namespace NugetProtocol
             throw new NotImplementedException();
         }
 
+        public int MaxCatalogPages(Guid repoId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int MaxRegistrationPages(Guid repoId)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Refresh()
         {
             throw new NotImplementedException();

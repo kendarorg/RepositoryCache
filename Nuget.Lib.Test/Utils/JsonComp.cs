@@ -23,7 +23,7 @@ namespace Nuget.Lib.Test.Utils
             var expected = Beautify(_au.ReadRes<JsonComp>(resIdExpected)).Trim();
 
             var foundedSplitted = founded.Split('\r', '\n', '\f').Where(r => r.Trim().Length > 0).ToArray();
-            var expectedSplitted = founded.Split('\r', '\n', '\f').Where(r => r.Trim().Length > 0).ToArray();
+            var expectedSplitted = expected.Split('\r', '\n', '\f').Where(r => r.Trim().Length > 0).ToArray();
 
             if (foundedSplitted.Length != expectedSplitted.Length)
             {

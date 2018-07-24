@@ -1,0 +1,73 @@
+﻿{
+  "@id": "nuget.org/Catalog/3.0.0/index1.json",
+  "@type": "CatalogPage",
+  "commitId": "ced6c9a6-860f-4eb0-83b2-9b84cdeb0e14",
+  "commitTimestamp": "0001-01-01T00:00:00.0100004",
+  "count": 5,
+  "parent": "nuget.org/Catalog/3.0.0/index.json",
+  "@context": {
+    "@vocab": "nuget.org/*Catalog/",
+    "nuget": "nuget.org/*Schema/",
+    "items": {
+      "@id": "item",
+      "@container": "@set"
+    },
+    "parent": {
+      "@type": "@id"
+    },
+    "commitTimestamp": {
+      "@type": "nuget.org/*SchemaTime/"
+    },
+    "nuget:lastCreated": {
+      "@type": "nuget.org/*SchemaTime/"
+    },
+    "nuget:lastEdited": {
+      "@type": "nuget.org/*SchemaTime/"
+    },
+    "nuget:lastDeleted": {
+      "@type": "nuget.org/*SchemaTime/"
+    }
+  },
+  "items": [
+    {
+      "@id": "nuget.org/Catalog/3.0.0/data/0001.01.01.00.00.00/test0.1.0.0.json",
+      "@type": "nuget:PackageDetails",
+      "commitId": "ced6c9a6-860f-4eb0-83b2-9b84cdeb0e10",
+      "commitTimestamp": "0001-01-01T00:00:00.01",
+      "nuget:id": "test0",
+      "nuget:version": "1.0.0"
+    },
+    {
+      "@id": "nuget.org/Catalog/3.0.0/data/0001.01.01.00.00.00/test1.1.0.0.json",
+      "@type": "nuget:PackageDetails",
+      "commitId": "ced6c9a6-860f-4eb0-83b2-9b84cdeb0e11",
+      "commitTimestamp": "0001-01-01T00:00:00.0100001",
+      "nuget:id": "test1",
+      "nuget:version": "1.0.0"
+    },
+    {
+      "@id": "nuget.org/Catalog/3.0.0/data/0001.01.01.00.00.00/test2.1.0.0.json",
+      "@type": "nuget:PackageDetails",
+      "commitId": "ced6c9a6-860f-4eb0-83b2-9b84cdeb0e12",
+      "commitTimestamp": "0001-01-01T00:00:00.0100002",
+      "nuget:id": "test2",
+      "nuget:version": "1.0.0"
+    },
+    {
+      "@id": "nuget.org/Catalog/3.0.0/data/0001.01.01.00.00.00/test3.1.0.0.json",
+      "@type": "nuget:PackageDetails",
+      "commitId": "ced6c9a6-860f-4eb0-83b2-9b84cdeb0e13",
+      "commitTimestamp": "0001-01-01T00:00:00.0100003",
+      "nuget:id": "test3",
+      "nuget:version": "1.0.0"
+    },
+    {
+      "@id": "nuget.org/Catalog/3.0.0/data/0001.01.01.00.00.00/test4.1.0.0.json",
+      "@type": "nuget:PackageDetails",
+      "commitId": "ced6c9a6-860f-4eb0-83b2-9b84cdeb0e14",
+      "commitTimestamp": "0001-01-01T00:00:00.0100004",
+      "nuget:id": "test4",
+      "nuget:version": "1.0.0"
+    }
+  ]
+}

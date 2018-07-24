@@ -10,5 +10,10 @@ namespace Nuget.Repositories
         public string PackageId { get; set; }
         public string Version { get; set; }
         public Guid RepositoryId { get; set; }
+        public DateTime CommitTimestamp { get;  set; }
+        public Guid CommitId { get; set; }
+        public string HashKey { get; set; }
+        public string HashAlgorithm { get; set; }
+        public int Size { get; set; }
     }
 }

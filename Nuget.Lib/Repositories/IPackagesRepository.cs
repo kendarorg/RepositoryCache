@@ -11,5 +11,6 @@ namespace Nuget.Repositories
     {
         PackageEntity GetByPackage(Guid repoId, string lowerId, string lowerVersion);
         PackageEntity GetByIdVersion(Guid repoId, string lowerIdlowerVersion);
+        IEnumerable<PackageEntity> GetByIdVersions(Guid repoId,string lowerId, string[] lowerVersions);
     }
 }

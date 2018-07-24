@@ -11,11 +11,15 @@ namespace Nuget.Lib.Test
     {
         private string _repoName;
         private readonly Guid _repoId;
+        private int _maxReg;
+        private int _maxCatalog;
 
-        public ServicesMapperMock(string v, Guid repoId)
+        public ServicesMapperMock(string v, Guid repoId,int maxCat,int maxReg)
         {
             this._repoName = v;
             _repoId = repoId;
+            _maxCatalog = maxCat;
+            _maxReg = maxReg;
         }
 
         public string From(Guid repoId, string resourceId, params string[] par)
@@ -38,6 +42,16 @@ namespace Nuget.Lib.Test
         public Dictionary<string, EntryPointDescriptor> GetVisibles(Guid id)
         {
             return new Dictionary<string, EntryPointDescriptor>();
+        }
+
+        public int MaxCatalogPages(Guid repoId)
+        {
+            return _maxCatalog;
+        }
+
+        public int MaxRegistrationPages(Guid repoId)
+        {
+            return _maxReg;
         }
 
         public void Refresh()

@@ -81,6 +81,7 @@
     <Compile Include="Search\SearchQueryService\QueryPackage.cs" />
     <Compile Include="Search\SearchQueryService\QueryResult.cs" />
     <Compile Include="Search\SearchQueryService\QueryVersion.cs" />
+    <Compile Include="Utils\NugetSettings.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

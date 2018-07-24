@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 namespace Nuget.Lib.Test.Controllers
 {
     [TestClass]
-    public class V3Beat_QueryTest
+    public class V3Beat_QueryTest : BaseControllersTest
     {
         private Guid _repoId;
         private Mock<ISearchQueryService> _nugetServiceMock;
@@ -60,9 +60,10 @@ namespace Nuget.Lib.Test.Controllers
         [TestMethod]
         public void ISPToQueryRemote()
         {
-            var target = new V3beta_Query("/{repo}/v3/query", _nugetService, _properties, _reps, _servicesMapper);
-
-            target.RequestData = (a, b) => HandleRequest("ISPToQuery", a, b);
+            var target = new V3beta_Query("/{repo}/v3/query", _nugetService, _properties, _reps, _servicesMapper)
+            {
+                RequestData = (a, b) => HandleRequest("ISPToQuery", a, b)
+            };
 
             var serializableRequest = new SerializableRequest
             {
@@ -77,18 +78,8 @@ namespace Nuget.Lib.Test.Controllers
             };
 
             var result = target.HandleRequest(serializableRequest);
-            Assert.IsNotNull(result);
-            var response = JsonConvert.DeserializeObject<QueryResult>(Encoding.UTF8.GetString(result.Content));
-            JsonComp.Equals("ISPToQuery" + ".data.json", response);
 
-        }
-
-        private SerializableResponse HandleRequest(string file, string realUrl, SerializableRequest req)
-        {
-            JsonComp.Equals(file + ".req.json", req);
-            return JsonConvert.DeserializeObject<SerializableResponse>(
-                _assemblyUtils.ReadRes<NugetServicesMapperTest>(file + ".res.json"));
-
+            AreEquals<QueryResult>("ISTToQuery", result);
         }
     }
 }

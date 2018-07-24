@@ -31,10 +31,10 @@ namespace Ioc
                 byte[] ba = new byte[resFilestream.Length];
                 resFilestream.Read(ba, 0, ba.Length);
                 var result= Encoding.UTF8.GetString(ba);
-                /*if (result.StartsWith(_byteOrderMarkUtf8, StringComparison.Ordinal))
+                if (result.StartsWith(_byteOrderMarkUtf8, StringComparison.Ordinal))
                 {
                     result = result.Remove(0, _byteOrderMarkUtf8.Length);
-                }*/
+                }
                 return result;
             }
         }

@@ -14,7 +14,9 @@ namespace Nuget.Services
             IQueryRepository  queryRepository, 
             IRegistrationRepository registrationRepository,
             IPackagesRepository packagesRepository,
-            IPackagesStorage packagesStorage)
+            IPackagesStorage packagesStorage,
+            INugetDependenciesRepository nugetDependencies,
+            INugetAssembliesRepository nugetAssemblies)
         {
 
         }

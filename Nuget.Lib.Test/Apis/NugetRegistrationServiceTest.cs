@@ -30,7 +30,7 @@ namespace Nuget.Lib.Test
         public void Initialize()
         {
             _repoId = Guid.NewGuid();
-            _servicesMapper = new ServicesMapperMock("nuget.org", _repoId);
+            _servicesMapper = new ServicesMapperMock("nuget.org", _repoId,0,5);
 
             _registrationRepositoryMock = new Mock<IRegistrationRepository>();
             _registrationRepository = _registrationRepositoryMock.Object;
@@ -38,7 +38,7 @@ namespace Nuget.Lib.Test
             _catalogServiceMock = new Mock<ICatalogService>();
             _catalogService = _catalogServiceMock.Object;
 
-            _servicesMapper = new ServicesMapperMock("nuget.org", _repoId);
+            _servicesMapper = new ServicesMapperMock("nuget.org", _repoId,5,10);
         }
 
 
@@ -92,10 +92,10 @@ namespace Nuget.Lib.Test
 
 
 
-        private IEnumerable<RegistrationEntity> GetMultiPageRegistrationResult(DateTime time, DateTime lastTime, Guid lastCommit)
+        private IEnumerable<RegistrationEntity> GetMultiPageRegistrationResult(int maxRegPages,DateTime time, DateTime lastTime, Guid lastCommit)
         {
             var firstPage = new List<RegistrationEntity>();
-            for (int i = 0; i < 64; i++)
+            for (int i = 0; i < maxRegPages; i++)
             {
                 yield return new RegistrationEntity
                 {
@@ -215,13 +215,15 @@ namespace Nuget.Lib.Test
 
             _registrationRepositoryMock.Setup(a => a.GetAllByPackageId(
                 It.Is<Guid>(g => g == _repoId),
-                It.Is<String>(g => g == "test"))).Returns(GetMultiPageRegistrationResult(time, lastTime, lastCommit));
+                It.Is<String>(g => g == "test"))).Returns(GetMultiPageRegistrationResult(
+                    _servicesMapper.MaxRegistrationPages(_repoId),
+                    time, lastTime, lastCommit));
 
             var result = target.IndexPage(_repoId, "test", null);
 
             Assert.IsNotNull(result);
-            Assert.AreEqual(2, result.Count);
-            Assert.AreEqual(2, result.Items.Count);
+            Assert.AreEqual(3, result.Count);
+            Assert.AreEqual(3, result.Items.Count);
             JsonComp.Equals("ISPTGetMultipage.json", result);
         }
 

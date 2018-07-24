@@ -2,6 +2,7 @@
 using MultiRepositories.Repositories;
 using Newtonsoft.Json;
 using NugetProtocol;
+using NugetProtocol.Utils;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -23,6 +24,8 @@ namespace Nuget
             new ConcurrentDictionary<Guid, List<EntryPointDescriptor>>();
         private ConcurrentDictionary<Guid, List<EntryPointDescriptor>> _fromNugetApi =
             new ConcurrentDictionary<Guid, List<EntryPointDescriptor>>();
+        private ConcurrentDictionary<Guid, NugetSettings> _settings =
+            new ConcurrentDictionary<Guid, NugetSettings>();
 
         public Dictionary<string, EntryPointDescriptor> GetVisibles(Guid id)
         {
@@ -43,7 +46,7 @@ namespace Nuget
             _shownApis.Clear();
             _toNugetApi.Clear();
             _fromNugetApi.Clear();
-
+            _settings.Clear();
 
             foreach (var repo in _availableRepositories.GetByType("nuget"))
             {
@@ -120,8 +123,10 @@ namespace Nuget
         private Dictionary<string, EntryPointDescriptor> ExpandDescriptors(RepositoryEntity repo)
         {
             var result = new Dictionary<string, EntryPointDescriptor>(StringComparer.InvariantCultureIgnoreCase);
-            var settings = JsonConvert.DeserializeObject<List<EntryPointDescriptor>>(repo.Settings);
-            foreach (var descriptor in settings)
+            var fullSettings = JsonConvert.DeserializeObject<NugetSettings>(repo.Settings);
+            _settings[repo.Id] = fullSettings;
+            var services = fullSettings.Services;
+            foreach (var descriptor in services)
             {
                 if (!string.IsNullOrWhiteSpace(descriptor.Local))
                 {
@@ -129,14 +134,14 @@ namespace Nuget
                 }
             }
             //Setup main items
-            foreach (var descriptor in settings.Where(a => string.IsNullOrWhiteSpace(a.Ref)))
+            foreach (var descriptor in services.Where(a => string.IsNullOrWhiteSpace(a.Ref)))
             {
                 var copy = Clone(descriptor);
                 result[copy.Id + ":" + copy.SemVer ?? ""] = copy;
             }
 
             //Setup ref items
-            foreach (var descriptor in settings.Where(a => !string.IsNullOrWhiteSpace(a.Ref)))
+            foreach (var descriptor in services.Where(a => !string.IsNullOrWhiteSpace(a.Ref)))
             {
                 var copy = Clone(descriptor);
                 var referenceId = "";
@@ -231,6 +236,16 @@ namespace Nuget
                 }
             }
             return src;
+        }
+
+        public int MaxRegistrationPages(Guid repoId)
+        {
+            return _settings[repoId].RegistrationPageSize;
+        }
+
+        public int MaxCatalogPages(Guid repoId)
+        {
+            return _settings[repoId].CatalogPageSize;
         }
     }
 }
