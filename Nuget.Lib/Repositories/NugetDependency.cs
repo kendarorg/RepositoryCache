@@ -4,7 +4,10 @@ namespace Nuget.Repositories
 {
     public class NugetDependency : BaseEntity
     {
-        public string PackageId { get; internal set; }
-        public string Version { get; internal set; }
+        public string OwnerPackageId { get; set; }
+        public string OwnerVersion { get; set; }
+        public string PackageId { get; set; }
+        public string Range { get; set; }
+        public string TargetFramework { get; set; }
     }
 }

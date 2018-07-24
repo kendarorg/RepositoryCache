@@ -9,11 +9,12 @@ namespace NugetProtocol
         {
 
         }
-        public DependencyGroup(string oid,string otype,List<Dependency> dependencies)
+        public DependencyGroup(string oid,string otype,List<Dependency> dependencies,string targetFramework=null)
         {
             OId = oid;
             OType = otype;
             Dependencies = dependencies;
+            TargetFramework = targetFramework;
         }
 
         [JsonProperty("@id")]
@@ -22,5 +23,7 @@ namespace NugetProtocol
         public string OType { get; set; }
         [JsonProperty("dependencies", DefaultValueHandling = DefaultValueHandling.Ignore)]
         public List<Dependency> Dependencies { get; set; }
+        [JsonProperty("targetFramework", DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public string TargetFramework { get; set; }
     }
 }

@@ -176,11 +176,11 @@ namespace Nuget.Lib.Test
                 PackageId = "test",
                 Version = "1.0.0",
                 PackageIdAndVersion = "test.1.0.0",
-                CommitId= Guid.Parse("ced6c9a6-860f-4eb0-83b2-9b84cdeb0e10"),
-                HashAlgorithm ="SHA256",
-                HashKey="123456===",
-                Size=1000,
-                
+                CommitId = Guid.Parse("ced6c9a6-860f-4eb0-83b2-9b84cdeb0e10"),
+                HashAlgorithm = "SHA256",
+                HashKey = "123456===",
+                Size = 1000,
+
             };
             _packagesRepositoryMock.Setup(a => a.GetByIdVersion(It.IsAny<Guid>(),
                 It.Is<string>(x => x == "test.1.0.0")
@@ -190,6 +190,113 @@ namespace Nuget.Lib.Test
             var result = target.GetPackageCatalog(_repoId, "1998.12.31.12.12.12", "test.1.0.0");
             Assert.IsNotNull(result);
             JsonComp.Equals("ISPToGetSimplePackageCatalog.json", result);
+        }
+
+
+        [TestMethod]
+        public void ISPToGetPackageDepsCatalog()
+        {
+
+            var target = new NugetCatalogService(
+                _registrationRepository,
+                _servicesMapper,
+                _packagesRepository,
+                _nugetDependencies,
+                _nugetAssemblies);
+
+            var package = new PackageEntity()
+            {
+                CommitTimestamp = new DateTime(1998, 12, 31, 12, 12, 12),
+                PackageId = "test",
+                Version = "1.0.0",
+                PackageIdAndVersion = "test.1.0.0",
+                CommitId = Guid.Parse("ced6c9a6-860f-4eb0-83b2-9b84cdeb0e10"),
+                HashAlgorithm = "SHA256",
+                HashKey = "123456===",
+                Size = 1000,
+
+            };
+            _packagesRepositoryMock.Setup(a => a.GetByIdVersion(It.IsAny<Guid>(),
+                It.Is<string>(x => x == "test.1.0.0")
+                )).
+                Returns(package);
+
+            _nugetDependenciesMock.Setup(a => a.GetDependencies(It.IsAny<Guid>(),
+                It.Is<string>(x => x == "test"),
+                It.Is<string>(x => x == "1.0.0")
+                )).
+                Returns(new List<NugetDependency>
+                {
+                    new NugetDependency
+                    {
+                        PackageId="sub.dep",
+                        Range ="2.0.0",
+                        TargetFramework= ".net45"
+                    },
+                    new NugetDependency
+                    {
+                        PackageId="sub.dep",
+                        Range ="3.0.0",
+                        TargetFramework= ".net31"
+                    }
+                });
+
+            var result = target.GetPackageCatalog(_repoId, "1998.12.31.12.12.12", "test.1.0.0");
+            Assert.IsNotNull(result);
+            JsonComp.Equals("ISPToGetPackageDepsCatalog.json", result);
+        }
+
+        //https://api.nuget.org/v3/catalog0/data/2018.05.29.20.29.29/system.security.principal.windows.4.5.0.json
+
+        [TestMethod]
+        public void ISPToGetPackageFwDepsCatalog()
+        {
+
+            var target = new NugetCatalogService(
+                _registrationRepository,
+                _servicesMapper,
+                _packagesRepository,
+                _nugetDependencies,
+                _nugetAssemblies);
+
+            var package = new PackageEntity()
+            {
+                CommitTimestamp = new DateTime(1998, 12, 31, 12, 12, 12),
+                PackageId = "test",
+                Version = "1.0.0",
+                PackageIdAndVersion = "test.1.0.0",
+                CommitId = Guid.Parse("ced6c9a6-860f-4eb0-83b2-9b84cdeb0e10"),
+                HashAlgorithm = "SHA256",
+                HashKey = "123456===",
+                Size = 1000,
+
+            };
+            _packagesRepositoryMock.Setup(a => a.GetByIdVersion(It.IsAny<Guid>(),
+                It.Is<string>(x => x == "test.1.0.0")
+                )).
+                Returns(package);
+
+            _nugetAssembliesMock.Setup(a => a.GetGroups(It.IsAny<Guid>(),
+                It.Is<string>(x => x == "test"),
+                It.Is<string>(x => x == "1.0.0")
+                )).
+                Returns(new List<NugetAssemblyGroup>
+                {
+                    new NugetAssemblyGroup
+                    {
+                        AssemblyName="System.Web",
+                        TargetFramework=".net35",
+                    },
+                    new NugetAssemblyGroup
+                    {
+                        AssemblyName="System.Admin",
+                        TargetFramework=".net40",
+                    }
+                });
+
+            var result = target.GetPackageCatalog(_repoId, "1998.12.31.12.12.12", "test.1.0.0");
+            Assert.IsNotNull(result);
+            JsonComp.Equals("ISPToGetPackageFwDepsCatalog.json", result);
         }
     }
 }

@@ -49,5 +49,21 @@
       "@type": "xsd:dateTime"
     }
   },
+  "frameworkAssemblyGroup": [
+    {
+      "@id": "nuget.org/Catalog/3.0.0/data/1998.12.31.12.12.12/test.1.0.0.json#frameworkassemblygroup/.net35",
+      "targetFramework": ".net35",
+      "assembly": [
+        "System.Web"
+      ]
+    },
+    {
+      "@id": "nuget.org/Catalog/3.0.0/data/1998.12.31.12.12.12/test.1.0.0.json#frameworkassemblygroup/.net40",
+      "targetFramework": ".net40",
+      "assembly": [
+        "System.Admin"
+      ]
+    }
+  ],
   "verified": true
 }

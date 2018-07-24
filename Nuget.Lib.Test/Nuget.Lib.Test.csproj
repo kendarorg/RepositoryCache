@@ -120,6 +120,8 @@
     <EmbeddedResource Include="Resources\ISPToGetCatalog.json" />
     <EmbeddedResource Include="Resources\ISPToGetCatalogPage.json" />
     <EmbeddedResource Include="Resources\ISPToGetSimplePackageCatalog.json" />
+    <EmbeddedResource Include="Resources\ISPToGetPackageDepsCatalog.json" />
+    <EmbeddedResource Include="Resources\ISPToGetPackageFwDepsCatalog.json" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

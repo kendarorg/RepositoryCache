@@ -182,54 +182,83 @@ namespace Nuget.Apis
 
             foreach (var item in assembliesGroup)
             {
+                var fwagAddress = _servicesMapper.From(repoId, "Catalog/3.0.0", "data", timestamp,
+                                    idLower + "." + versionLower + ".json" + "#frameworkassemblygroup");
+                if (!string.IsNullOrWhiteSpace(item.Key))
+                {
+                    fwagAddress = _servicesMapper.From(repoId, "Catalog/3.0.0", "data", timestamp,
+                                       idLower + "." + versionLower + ".json" + "#frameworkassemblygroup/" +
+                                       item.Key);
+
+                }
+                string targetFramework = string.IsNullOrWhiteSpace(item.Key) ? null : item.Key;
                 var fwag = new FrameworkAssemblyGroup(
-                         _servicesMapper.From(repoId, "Catalog/3.0.0", "data", timestamp,
-                                    idLower + "." + versionLower + ".json" + "#frameworkassemblygroup/" +
-                                    item.Key),
-                         item.Key,
+                         fwagAddress,
+                         targetFramework,
                          item.Value.Select(a => a.AssemblyName).ToList()
                          );
                 result.Add(fwag);
             }
 
-            return result;
+            return result.Count == 0 ? null : result;
         }
 
         private List<DependencyGroup> FindDependencies(Guid repoId, string timestamp, string versionLower, string idLower)
         {
-            var dependencies = _nugetDependencies.GetDependencies(repoId, idLower, versionLower);
-            List<DependencyGroup> dependencyGroups = null;
-            if (dependencies.Any())
+            var assembliesGroup = new Dictionary<string, List<NugetDependency>>(StringComparer.InvariantCultureIgnoreCase);
+            foreach (var asm in _nugetDependencies.GetDependencies(repoId, idLower, versionLower))
             {
-                var internalDeps = new List<Dependency>();
-                foreach (var dependency in dependencies)
+                var targetFramework = asm.TargetFramework ?? string.Empty;
+                if (!assembliesGroup.ContainsKey(targetFramework))
                 {
-                    string range = dependency.Version;
+                    assembliesGroup[targetFramework] = new List<NugetDependency>();
+                }
+                assembliesGroup[targetFramework].Add(asm);
+            }
+            var result = new List<DependencyGroup>();
+
+            foreach (var item in assembliesGroup)
+            {
+
+                var dependencies = new List<Dependency>();
+                foreach (var subItem in item.Value)
+                {
+                    string range = subItem.Range;
                     if (!(range.Contains("[") || range.Contains("]") ||
                         range.Contains("(") || range.Contains(")")))
                     {
-                        range = "[" + range + ")";
+                        range = "[" + range + ",)";
                     }
-                    internalDeps.Add(new Dependency(
-                                 _servicesMapper.From(repoId, "Catalog/3.0.0", "data", timestamp,
+                    var dependencyAddress = _servicesMapper.From(repoId, "Catalog/3.0.0", "data", timestamp,
                                     idLower + "." + versionLower + ".json" + "#dependencygroup/" +
-                                    "packageId"),
+                                    subItem.PackageId);
+                    if (!string.IsNullOrWhiteSpace(item.Key))
+                    {
+                        dependencyAddress = dependencyAddress = _servicesMapper.From(repoId, "Catalog/3.0.0", "data", timestamp,
+                                    idLower + "." + versionLower + ".json" + "#dependencygroup/" +
+                                    item.Key + "/" +
+                                    subItem.PackageId);
+                    }
+                    dependencies.Add(new Dependency(
+                                 dependencyAddress,
                                  "PackageDependency",
-                                 dependency.PackageId,
+                                 subItem.PackageId,
                                  range));
                 }
-
-                dependencyGroups = new List<DependencyGroup>
+                var dependencyGroupAddress = _servicesMapper.From(repoId, "Catalog/3.0.0", "data", timestamp,
+                                    idLower + "." + versionLower + ".json" + "#dependencygroup");
+                if (!string.IsNullOrWhiteSpace(item.Key))
                 {
-                    new DependencyGroup(
-                         _servicesMapper.From(repoId, "Catalog/3.0.0", "data", timestamp,
-                                    idLower + "." + versionLower + ".json" + "#dependencygroup"),
-                         "PackageDependencyGroup", internalDeps)
-                };
-
+                    dependencyGroupAddress += "/" + item.Key;
+                }
+                string targetFramework = string.IsNullOrWhiteSpace(item.Key) ? null : item.Key;
+                var fwag = new DependencyGroup(
+                         dependencyGroupAddress,
+                         "PackageDependencyGroup", dependencies, targetFramework);
+                result.Add(fwag);
             }
 
-            return dependencyGroups;
+            return result.Count == 0 ? null : result;
         }
     }
 }
