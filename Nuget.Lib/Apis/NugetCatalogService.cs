@@ -121,24 +121,6 @@ namespace Nuget.Apis
         }
 
 
-        public IEnumerable<PackageDetail> GetPackageDetailsForRegistration(Guid repoId, string lowerId, string semVerLevel, params string[] lowerVersions)
-        {
-
-            foreach (var item in _packagesRepository.GetByIdVersions(repoId, lowerId, lowerVersions))
-            {
-                yield return new PackageDetail(
-                        _servicesMapper.From(repoId, "Catalog/3.0.0",
-                            "data", item.CommitTimestamp.ToString("yyyy.MM.dd.HH.mm.ss"), lowerId + "." + item.Version + ".json"),
-                        "PackageDetails",
-                        _servicesMapper.FromSemver(repoId, "PackageDisplayMetadataUriTemplate", semVerLevel,
-                            lowerId, "index.json"),
-                        lowerId, item.Version,
-                        _servicesMapper.From(repoId, "PackageBaseAddress/3.0.0",
-                            lowerId, item.Version, lowerId + "." + item.Version + ".nupkg")
-                        );
-            }
-        }
-
         public CatalogEntry GetPackageCatalog(Guid repoId, string timestamp, string idLowerVersionLower)
         {
             var entry = _packagesRepository.GetByIdVersion(repoId, idLowerVersionLower);
@@ -220,9 +202,21 @@ namespace Nuget.Apis
             foreach (var item in assembliesGroup)
             {
 
+                if (item.Value.Count == 1 && string.IsNullOrWhiteSpace(item.Value[0].PackageId))
+                {
+                    var dependencyGroupAddressEmpty = _servicesMapper.From(repoId, "Catalog/3.0.0", "data", timestamp,
+                                    idLower + "." + versionLower + ".json" + "#dependencygroup/"+item.Key);
+                    var fwagEmpty = new DependencyGroup(
+                         dependencyGroupAddressEmpty,
+                         "PackageDependencyGroup", null, item.Key);
+                    result.Add(fwagEmpty);
+                    continue;
+                }
+
                 var dependencies = new List<Dependency>();
                 foreach (var subItem in item.Value)
                 {
+
                     string range = subItem.Range;
                     if (!(range.Contains("[") || range.Contains("]") ||
                         range.Contains("(") || range.Contains(")")))
@@ -259,6 +253,26 @@ namespace Nuget.Apis
             }
 
             return result.Count == 0 ? null : result;
+        }
+
+
+        //https://api.nuget.org/v3/registration3/system.security.principal.windows/index.json
+        public IEnumerable<PackageDetail> GetPackageDetailsForRegistration(Guid repoId, string lowerId, string semVerLevel, params string[] lowerVersions)
+        {
+
+            foreach (var item in _packagesRepository.GetByIdVersions(repoId, lowerId, lowerVersions))
+            {
+                yield return new PackageDetail(
+                        _servicesMapper.From(repoId, "Catalog/3.0.0",
+                            "data", item.CommitTimestamp.ToString("yyyy.MM.dd.HH.mm.ss"), lowerId + "." + item.Version + ".json"),
+                        "PackageDetails",
+                        _servicesMapper.FromSemver(repoId, "PackageDisplayMetadataUriTemplate", semVerLevel,
+                            lowerId, "index.json"),
+                        lowerId, item.Version,
+                        _servicesMapper.From(repoId, "PackageBaseAddress/3.0.0",
+                            lowerId, item.Version, lowerId + "." + item.Version + ".nupkg")
+                        );
+            }
         }
     }
 }

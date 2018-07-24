@@ -2,6 +2,7 @@
 
 namespace Nuget.Repositories
 {
+    //WARNING: Can be target framework only!!
     public class NugetDependency : BaseEntity
     {
         public string OwnerPackageId { get; set; }
