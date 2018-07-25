@@ -10,85 +10,75 @@ using System.Text;
 using System.Threading.Tasks;
 using MultiRepositories.Repositories;
 using MultiRepositories.Service;
+using NugetProtocol;
+using MultiRepositories;
 
 namespace Nuget.Controllers
 {
     public class V3_Registration_Package_Version : ForwardRestApi
     {
-        private AvailableRepositoriesRepository _reps;
-        private UrlConverter _converter;
-        private PackageRootRepository _packageRootRepository;
+        private IServicesMapper _servicesMapper;
+        private IRegistrationService _registrationService;
+        private IRepositoryEntitiesRepository _reps;
 
-        public V3_Registration_Package_Version(
-            PackageRootRepository queryRepository,
-            AppProperties properties, UrlConverter converter, MultiRepositories.Repositories.AvailableRepositoriesRepository reps) : 
-            base(properties, "/{repo}/v3/registration/{packageid}/{version}.json", null)
+        public V3_Registration_Package_Version(AppProperties properties,
+            IRepositoryEntitiesRepository reps,
+            IRegistrationService registrationService,
+            IServicesMapper servicesMapper, params string[] paths) :
+            base(properties,  null,paths)
         {
+            _servicesMapper = servicesMapper;
+            _registrationService = registrationService;
             _reps = reps;
-            _converter = converter;
-            _packageRootRepository = queryRepository;
             SetHandler(Handle);
         }
 
-        private SerializableResponse Handle(SerializableRequest arg)
+        private SerializableResponse Handle(SerializableRequest localRequest)
         {
-            var repo = _reps.GetByName(arg.PathParams["repo"]);
-            //PackageEntry
-            var remote = arg.Clone();
-            var convertedUrl = _converter.ToNuget(repo.Prefix,arg.Protocol + "://" + arg.Host + arg.Url);
-            remote.Headers["Host"] = new Uri(convertedUrl).Host;
+            var semVerLevel = localRequest.PathParams.ContainsKey("semver") ?
+                 localRequest.QueryParams["semver"] : null;
 
-            if (repo.Official && (!_properties.RunLocal ||arg.QueryParams.ContainsKey("runremote")))
+
+            var repo = _reps.GetByName(localRequest.PathParams["repo"]);
+            RegistrationLastLeaf result = null;
+            //Registration340Entry
+            if (repo.Mirror)
             {
                 try
                 {
-                    return CreateRemote(arg, repo, remote, convertedUrl);
+                    result = LeafRemote(localRequest, repo);
                 }
                 catch (Exception)
                 {
-                    return CreateLocal(arg, repo);
+
                 }
             }
-            else
+            if (result == null)
             {
-                return CreateLocal(arg, repo);
+                var lowerIdVersion = localRequest.PathParams["packageid"]+"."+localRequest.PathParams["version"];
+                result = _registrationService.Leaf(repo.Id, 
+                    localRequest.PathParams["packageid"], localRequest.PathParams["version"], lowerIdVersion,
+                    semVerLevel);
             }
-        }
-
-        private SerializableResponse CreateLocal(SerializableRequest arg, AvailableRepositoryEntity repo)
-        {
-            var pack = _packageRootRepository.GetByVersionId(repo.Id, arg.PathParams["packageid"], arg.PathParams["version"]);
-
-            var date = pack.Published.ToString("yyyy.MM.dd.HH.mm.ss");
-
-
-            var response = new PackageEntry()
-            {
-                Id = _converter.LocalByType(repo.Prefix, "RegistrationsBaseUrl") + "/" + arg.PathParams["packageid"] + "/" + arg.PathParams["version"] + ".json",
-                CatalogEntry = _converter.LocalByType(repo.Prefix, "Catalog/3.0.0") + "/data/" + date + "/" + arg.PathParams["packageid"] + "." + arg.PathParams["version"] + ".json",
-                PackageContent = _converter.LocalByType(repo.Prefix, "PackageBaseAddress/3.0.0") + "/" + arg.PathParams["packageid"] + "/" + arg.PathParams["version"] + "/" +
-                        arg.PathParams["packageid"] + "." + arg.PathParams["version"] + ".nupkg",
-                Registration = _converter.LocalByType(repo.Prefix, "RegistrationsBaseUrl") + "/" + arg.PathParams["packageid"] + "/index.json"
-            };
-            response.Context.Vocab = _converter.LocalByType(repo.Prefix, "Schema/3.0.0");
-            response.Context.Xsd = _converter.LocalByType(repo.Prefix, "Xsd/3.0.0");
-            return JsonResponse(response);
-        }
-
-        private SerializableResponse CreateRemote(SerializableRequest arg, AvailableRepositoryEntity repo, SerializableRequest remote, string convertedUrl)
-        {
-            SerializableResponse remoteRes = null;
-            var path = arg.ToLocalPath();
-            remoteRes = RemoteRequest(convertedUrl, remote);
-            //Directory.CreateDirectory(Path.GetDirectoryName(path));
-            //File.WriteAllBytes(path, remoteRes.Content);
-            var result = JsonConvert.DeserializeObject<PackageEntry>(Encoding.UTF8.GetString(remoteRes.Content));
-            result.Id = _converter.FromNuget(repo.Prefix, result.Id);
-            result.CatalogEntry = _converter.FromNuget(repo.Prefix, result.CatalogEntry);
-            result.PackageContent = _converter.FromNuget(repo.Prefix, result.PackageContent);
-            result.Registration = _converter.FromNuget(repo.Prefix, result.Registration);
-
             return JsonResponse(result);
+        }
+
+        private RegistrationLastLeaf LeafRemote(SerializableRequest localRequest, RepositoryEntity repo)
+        {
+            RegistrationLastLeaf result;
+            var remoteRequest = localRequest.Clone();
+            var convertedUrl = _servicesMapper.ToNuget(repo.Id, localRequest.Protocol + "://" + localRequest.Host + localRequest.Url);
+            remoteRequest.Headers["Host"] = new Uri(convertedUrl).Host;
+
+            var path = localRequest.ToLocalPath("index.json");
+            var remoteRes = RemoteRequest(convertedUrl, remoteRequest);
+
+            result = JsonConvert.DeserializeObject<RegistrationLastLeaf>(Encoding.UTF8.GetString(remoteRes.Content));
+            result.OId = _servicesMapper.FromNuget(repo.Id, result.OId);
+            result.CatalogEntry = _servicesMapper.FromNuget(repo.Id, result.CatalogEntry);
+            result.PackageContent = _servicesMapper.FromNuget(repo.Id, result.PackageContent);
+            result.Registration = _servicesMapper.FromNuget(repo.Id, result.Registration);
+            return result;
         }
     }
 }

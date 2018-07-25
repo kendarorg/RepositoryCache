@@ -15,13 +15,13 @@ using MultiRepositories;
 
 namespace Nuget.Controllers
 {
-    public class V340_Registration_Package_Page : ForwardRestApi
+    public class V3_Registration_Package_Page : ForwardRestApi
     {
         private IRepositoryEntitiesRepository _reps;
         private IRegistrationService _registrationPageRepository;
         private IServicesMapper _converter;
 
-        public V340_Registration_Package_Page(
+        public V3_Registration_Package_Page(
             AppProperties properties,
             IRegistrationService registrationPageRepository,
              IServicesMapper converter, IRepositoryEntitiesRepository reps,
@@ -36,8 +36,8 @@ namespace Nuget.Controllers
 
         private SerializableResponse Handle(SerializableRequest localRequest)
         {
-            var semVerLevel = localRequest.QueryParams.ContainsKey("semVerLevel") ?
-                 localRequest.QueryParams["semVerLevel"] : null;
+            var semVerLevel = localRequest.PathParams.ContainsKey("semver") ?
+                 localRequest.QueryParams["semver"] : null;
 
 
             var repo = _reps.GetByName(localRequest.PathParams["repo"]);

@@ -14,13 +14,13 @@ using NugetProtocol;
 
 namespace Nuget.Controllers
 {
-    public class V3beta_Query : ForwardRestApi
+    public class V3_Query : ForwardRestApi
     {
         private IRepositoryEntitiesRepository _reps;
         private ISearchQueryService _searchQueryService;
         private IServicesMapper _servicesMapper;
 
-        public V3beta_Query(
+        public V3_Query(
             ISearchQueryService searchQueryService, AppProperties properties, IRepositoryEntitiesRepository reps,
             IServicesMapper servicesMapper,params string[]paths) :
             base(properties,  null,paths)
