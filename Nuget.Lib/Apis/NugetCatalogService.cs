@@ -123,6 +123,7 @@ namespace Nuget.Apis
 
         public CatalogEntry GetPackageCatalog(Guid repoId, string timestamp, string idLowerVersionLower)
         {
+            idLowerVersionLower = idLowerVersionLower.ToLowerInvariant();
             var entry = _packagesRepository.GetByIdVersion(repoId, idLowerVersionLower);
 
 
@@ -151,8 +152,11 @@ namespace Nuget.Apis
                 entry.Title,entry.TotalDownloads,entry.Verified,entry.ReleaseNotes,entry.FullVersion);
         }
 
-        private List<FrameworkAssemblyGroup> FindAssemblyGroups(Guid repoId, string timestamp, string versionLower, string idLower)
+        private List<FrameworkAssemblyGroup> FindAssemblyGroups(Guid repoId, string timestamp, 
+            string versionLower, string idLower)
         {
+            versionLower = versionLower.ToLowerInvariant();
+            idLower = idLower.ToLowerInvariant();
             var assembliesGroup = new Dictionary<string, List<NugetAssemblyGroup>>(StringComparer.InvariantCultureIgnoreCase);
             foreach (var asm in _nugetAssemblies.GetGroups(repoId, idLower, versionLower))
             {
@@ -188,8 +192,11 @@ namespace Nuget.Apis
             return result.Count == 0 ? null : result;
         }
 
-        private List<DependencyGroup> FindDependencies(Guid repoId, string timestamp, string versionLower, string idLower)
+        private List<DependencyGroup> FindDependencies(Guid repoId, string timestamp, 
+            string versionLower, string idLower)
         {
+            versionLower = versionLower.ToLowerInvariant();
+            idLower = idLower.ToLowerInvariant();
             var assembliesGroup = new Dictionary<string, List<NugetDependency>>(StringComparer.InvariantCultureIgnoreCase);
             foreach (var asm in _nugetDependencies.GetDependencies(repoId, idLower, versionLower))
             {
@@ -262,7 +269,7 @@ namespace Nuget.Apis
         //https://api.nuget.org/v3/registration3/system.security.principal.windows/index.json
         public IEnumerable<PackageDetail> GetPackageDetailsForRegistration(Guid repoId, string lowerId, string semVerLevel, params string[] lowerVersions)
         {
-
+            lowerId = lowerId.ToLowerInvariant();
             foreach (var item in _packagesRepository.GetByIdVersions(repoId, lowerId, lowerVersions))
             {
                 var dependencies = FindDependencies(repoId, item.CommitTimestamp.ToString("yyyy.MM.dd.HH.mm.ss"), item.Version, item.PackageId);

@@ -34,6 +34,7 @@ namespace Nuget.Apis
 
         public byte[] GetNupkg(Guid repoId, string lowerIdlowerVersion)
         {
+            lowerIdlowerVersion = lowerIdlowerVersion.ToLowerInvariant();
             var repo = _repositoryEntitiesRepository.GetById(repoId);
             var package = _packagesRepository.GetByIdVersion(repoId, lowerIdlowerVersion);
             return _packagesStorage.Load(repo, package.PackageId, package.Version);
@@ -42,12 +43,15 @@ namespace Nuget.Apis
 
         public string GetNuspec(Guid repoId, string lowerId, string lowerVersion)
         {
+            lowerId = lowerId.ToLowerInvariant();
+            lowerVersion = lowerVersion.ToLowerInvariant();
             var packageData = _packagesRepository.GetByPackage(repoId, lowerId, lowerVersion);
             return packageData.Nuspec;
         }
 
         public VersionsResult GetVersions(Guid repoId, string lowerId)
         {
+            lowerId = lowerId.ToLowerInvariant();
             var versions = _registrationRepository.GetAllByPackageId(repoId, lowerId).
                 Select(a => a.Version).ToList();
             return new VersionsResult(versions);

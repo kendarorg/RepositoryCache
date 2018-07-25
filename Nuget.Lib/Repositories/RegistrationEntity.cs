@@ -21,5 +21,6 @@ namespace Nuget.Repositories
         public int Patch { get; set; }
 
         public string PreRelease { get; set; }
+        public int? Extra { get; set; }
     }
 }

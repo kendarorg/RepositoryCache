@@ -15,6 +15,6 @@ namespace Nuget.Services
         public string Id { get;  set; }
         public Guid RepoId { get;  set; }
         public string OriginalVersion { get; set; }
-        public bool Verified { get; internal set; }
+        public bool Verified { get; set; }
     }
 }

@@ -112,11 +112,11 @@ namespace Nuget.Services
                 HashKey = CalculateSha512(content),
                 HashAlgorithm = "SHA512",
                 Size = content.Length,
-                RepoId = repoId
+                RepoId = repoId,
             };
             data.Id = data.Nuspec.Metadata.Id;
-            data.Version = SemVer.SemVersion.Parse(data.Nuspec.Metadata.Version).ToNormalizedVersion();
-            data.OriginalVersion = SemVer.SemVersion.Parse(data.Nuspec.Metadata.Version).ToString();
+            data.Version = SemVer.SemVersion.Parse(data.Nuspec.Metadata.Version).ToNormalizedVersion().ToLowerInvariant();
+            data.OriginalVersion = SemVer.SemVersion.Parse(data.Nuspec.Metadata.Version).ToString().ToLowerInvariant();
             data.Timestamp = commitTimestamp;
 
             using (var transaction = _transactionManager.BeginTransaction())
@@ -139,11 +139,6 @@ namespace Nuget.Services
             }
         }
 
-        public void InsertQuery(InsertData data, ITransaction transaction)
-        {
-            throw new NotImplementedException();
-        }
-
         public void InsertDependencies(InsertData data, ITransaction transaction)
         {
             foreach (var item in _nugetDependencies.GetDependencies(data.RepoId, data.Id, data.Version).ToList())
@@ -163,8 +158,8 @@ namespace Nuget.Services
                         PackageId = asm.Id,
                         Range = asm.Version,
                         TargetFramework = null,
-                        OwnerPackageId = data.Id,
-                        OwnerVersion = data.Version
+                        OwnerPackageId = data.Id.ToLowerInvariant(),
+                        OwnerVersion = data.Version.ToLowerInvariant()
                     }, transaction);
                 }
             }
@@ -174,7 +169,7 @@ namespace Nuget.Services
             {
                 foreach (var group in metadata.Dependencies.Group)
                 {
-                    var targetFw = string.IsNullOrWhiteSpace(group.TargetFramework) ? null : group.TargetFramework;
+                    var targetFw = string.IsNullOrWhiteSpace(group.TargetFramework) ? null : group.TargetFramework.ToLowerInvariant();
                     foreach (var asm in group.Dependency)
                     {
                         _nugetDependencies.Save(new NugetDependency
@@ -182,13 +177,12 @@ namespace Nuget.Services
                             PackageId = asm.Id,
                             Range = asm.Version,
                             TargetFramework = targetFw,
-                            OwnerPackageId = data.Id,
-                            OwnerVersion = data.Version
+                            OwnerPackageId = data.Id.ToLowerInvariant(),
+                            OwnerVersion = data.Version.ToLowerInvariant()
                         }, transaction);
                     }
                 }
             }
-            throw new NotImplementedException();
         }
 
         public void InsertAssemblies(InsertData data, ITransaction transaction)
@@ -212,12 +206,11 @@ namespace Nuget.Services
                 _nugetAssemblies.Save(new NugetAssemblyGroup
                 {
                     AssemblyName = asm.AssemblyName,
-                    TargetFramework = string.IsNullOrWhiteSpace(asm.TargetFramework) ? null : asm.TargetFramework,
-                    OwnerPackageId = data.Id,
-                    OwnerVersion = data.Version
+                    TargetFramework = string.IsNullOrWhiteSpace(asm.TargetFramework) ? null : asm.TargetFramework.ToLowerInvariant(),
+                    OwnerPackageId = data.Id.ToLowerInvariant(),
+                    OwnerVersion = data.Version.ToLowerInvariant()
                 }, transaction);
             }
-            throw new NotImplementedException();
         }
 
         public void InsertPackages(InsertData data, ITransaction transaction)
@@ -246,22 +239,22 @@ namespace Nuget.Services
             p.CommitTimestamp = data.Timestamp;
             p.FullVersion = data.OriginalVersion;
             p.HashAlgorithm = data.HashAlgorithm;
-            p.HashKey = data.HashKey;
+            p.HashKey = data.HashKey.ToUpperInvariant();
             p.Nuspec = data.Nuspec.ToString();
-            p.PackageId = data.Id;
-            p.PackageIdAndVersion = data.Id + "." + data.Version;
+            p.PackageId = data.Id.ToLowerInvariant();
+            p.PackageIdAndVersion = (data.Id + "." + data.Version).ToLowerInvariant();
             p.RepositoryId = data.RepoId;
             p.Size = data.Size;
-            p.Version = data.Version;
+            p.Version = data.Version.ToLowerInvariant();
 
             //WARNING new since here
             p.Authors = metadata.Authors;
             p.Copyright = metadata.Copyright;
             p.Description = metadata.Description;
             p.IconUrl = metadata.IconUrl;
-            p.Language = metadata.Language;
+            p.Language = metadata.Language.ToUpperInvariant();
             p.LicenseUrl = metadata.LicenseUrl;
-            p.MinClientVersion = metadata.MinClientVersion;
+            p.MinClientVersion = metadata.MinClientVersion.ToLowerInvariant();
             p.Owners = metadata.Owners;
             p.ProjectUrl = metadata.ProjectUrl;
             p.ReleaseNotes = metadata.ReleaseNotes;
@@ -291,7 +284,7 @@ namespace Nuget.Services
             var repo = _repositoryEntitiesRepository.GetById(data.RepoId);
             _packagesStorage.Save(repo, data.Id, data.Version, content);
         }
-        
+
         public void InsertRegistration(InsertData data, ITransaction transaction)
         {
             var metadata = data.Nuspec.Metadata;
@@ -301,9 +294,63 @@ namespace Nuget.Services
             {
                 r = new RegistrationEntity();
             }
+            var version = SemVersion.Parse(data.OriginalVersion);
             r.CommitId = data.CommitId;
             r.CommitTimestamp = data.Timestamp;
-            r.Major
+            r.Major = version.Major;
+            r.Minor = version.Minor;
+            r.Major = version.Patch;
+            r.PreRelease = version.Prerelease;
+            if (version.Extra != null)
+            {
+                r.Extra = version.Extra;
+            }
+            r.Version = version.ToNormalizedVersion();
+            if (isNew)
+            {
+                _registrationRepository.Save(r, transaction);
+            }
+            else
+            {
+                _registrationRepository.Update(r, transaction);
+            }
+        }
+        
+        public void InsertQuery(InsertData data, ITransaction transaction)
+        {
+            var metadata = data.Nuspec.Metadata;
+            var p = _queryRepository.GetByPackage(data.RepoId, data.Id, data.Version);
+            var isNew = p == null;
+            if (isNew)
+            {
+                p = new QueryEntity();
+            }
+            p.CommitId = data.CommitId;
+            p.CommitTimestamp = data.Timestamp;
+            p.PackageId = data.Id.ToLowerInvariant();
+            p.RepositoryId = data.RepoId;
+            p.Version = data.Version.ToLowerInvariant();
+            p.Summary = metadata.Summary;
+            p.Tags = metadata.Tags;
+            p.Title = metadata.Title;
+            p.Author = metadata.Authors;
+            p.Description = metadata.Description;
+            p.Owner = metadata.Owners;
+            
+            p.IconUrl = metadata.IconUrl;
+            p.LicenseUrl = metadata.LicenseUrl;
+            p.ProjectUrl = metadata.ProjectUrl;
+            p.Verified = data.Verified;
+
+            if (isNew)
+            {
+                p.Listed = true;
+                _queryRepository.Save(p, transaction);
+            }
+            else
+            {
+                _queryRepository.Update(p, transaction);
+            }
         }
     }
 }

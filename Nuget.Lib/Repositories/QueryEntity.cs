@@ -29,6 +29,11 @@ namespace Nuget.Repositories
         public bool HasPreRelease { get; set; }
         public Guid CommitId { get; set; }
         public DateTime CommitTimestamp { get; set; }
+        public string IconUrl { get;  set; }
+        public string LicenseUrl { get;  set; }
+        public string ProjectUrl { get;  set; }
+        public bool Verified { get;  set; }
+        public bool Listed { get; set; }
         /*
 public int Major { get; set; }
 public int Minor { get; set; }

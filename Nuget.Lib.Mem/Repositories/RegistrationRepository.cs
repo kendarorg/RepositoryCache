@@ -17,15 +17,17 @@ namespace Nuget.Repositories
         public IEnumerable<RegistrationEntity> GetAllByPackageId(Guid repoId, string lowerId)
         {
             return GetAll().Where(a => a.RepositoryId == repoId).
-                OrderBy(a=>a.Major).OrderBy(a => a.Minor).OrderBy(a => a.Patch).OrderBy(a => a.PreRelease);
+                OrderBy(a => a.Major).OrderBy(a => a.Minor).OrderBy(a => a.Patch).
+                OrderBy(a => a.Extra ?? 0).
+                OrderBy(a => a.PreRelease);
         }
 
         public IEnumerable<RegistrationEntity> GetAllOrderByDate(Guid repoId)
         {
-            return GetAll().Where(a=>a.RepositoryId==repoId).OrderBy(a => a.CommitTimestamp);
+            return GetAll().Where(a => a.RepositoryId == repoId).OrderBy(a => a.CommitTimestamp);
         }
 
-        public IEnumerable<RegistrationEntity> GetPage(Guid repoId, int skip,int take)
+        public IEnumerable<RegistrationEntity> GetPage(Guid repoId, int skip, int take)
         {
             return GetAllOrderByDate(repoId).Skip(skip).Take(take);
         }
@@ -34,7 +36,7 @@ namespace Nuget.Repositories
         {
             var from = SemVerParser.Parse(versionFrom);
             var to = SemVerParser.Parse(versionTo);
-            foreach (var item in GetAllByPackageId(repoId,lowerId))
+            foreach (var item in GetAllByPackageId(repoId, lowerId))
             {
                 var currver = SemVerParser.Parse(item.Version);
                 if (currver >= from && currver <= to)
