@@ -58,7 +58,7 @@ namespace Nuget.Lib.Test
                 {
                     repo
                 });*/
-            repositoryEntitiesRepository.Setup(r => r.GetById(It.IsAny<Guid>(),It.IsAny<ITransaction>())).
+            repositoryEntitiesRepository.Setup(r => r.GetById(It.IsAny<Guid>(), It.IsAny<ITransaction>())).
                 Returns(repo);
             _repositoryEntitiesRepository = repositoryEntitiesRepository.Object;
 
@@ -121,12 +121,17 @@ namespace Nuget.Lib.Test
             var lastTime = new DateTime(223456789);
             var lastCommit = Guid.Parse("0006c9a6-860f-4eb0-83b2-9b84cdeb0eb1");
             _packagesRepositoryMock.Setup(r => r.GetByIdVersion(
-                It.Is<Guid>(a=>a==_repoId),
+                It.Is<Guid>(a => a == _repoId),
                 It.Is<string>(a => a == "test.1.0.0"))).
-                Returns(new PackageEntity());
+                Returns(new PackageEntity()
+                {
+                    Version = "1.0.0",
+                    PackageId = "test"
+                });
             _packagesStorageMock.Setup(a => a.Load(
                 It.IsAny<RepositoryEntity>(),
-                It.IsAny<PackageEntity>()
+                It.Is<string>(k => k == "test"),
+                It.Is<string>(k => k == "1.0.0")
                 )).Returns(new byte[] { 0, 0 });
 
             var result = target.GetNupkg(_repoId, "test.1.0.0");

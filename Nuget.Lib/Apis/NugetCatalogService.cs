@@ -145,7 +145,10 @@ namespace Nuget.Apis
                     _servicesMapper.From(repoId, "*Schema"), _servicesMapper.From(repoId, "*Catalog"),
                     _servicesMapper.From(repoId, "*W3SchemaComment")),
                 dependencyGroups,
-                assemblyGroups);
+                assemblyGroups,entry.Description,entry.Authors,entry.IconUrl,
+                entry.LicenseUrl,entry.ProjectUrl,entry.RequireLicenseAcceptance,entry.Summary,
+                string.IsNullOrWhiteSpace(entry.Tags)?null:entry.Tags.Split(',').ToList(),
+                entry.Title,entry.TotalDownloads,entry.Verified,entry.ReleaseNotes,entry.FullVersion);
         }
 
         private List<FrameworkAssemblyGroup> FindAssemblyGroups(Guid repoId, string timestamp, string versionLower, string idLower)

@@ -6,15 +6,15 @@ namespace Nuget.Services
 {
     public class PackagesStorage : IPackagesStorage
     {
-        public byte[] Load(RepositoryEntity repo, PackageEntity package)
+        public byte[] Load(RepositoryEntity repo, string id, string normalVersion)
         {
-            var path = Path.Combine(GetPath(repo), package.PackageId, package.PackageId + "." + package.Version + "nupkg");
+            var path = Path.Combine(GetPath(repo), id, id + "." + normalVersion + "nupkg");
             return File.ReadAllBytes(path);
         }
 
-        public void Save(RepositoryEntity repo, PackageEntity package, byte[] data)
+        public void Save(RepositoryEntity repo, string id, string normalVersion, byte[] data)
         {
-            var path = Path.Combine(GetPath(repo), package.PackageId, package.PackageId + "." + package.Version + "nupkg");
+            var path = Path.Combine(GetPath(repo), id, id + "." + normalVersion + "nupkg");
             File.WriteAllBytes(path, data);
         }
 

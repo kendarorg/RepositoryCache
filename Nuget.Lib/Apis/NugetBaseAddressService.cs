@@ -36,8 +36,8 @@ namespace Nuget.Apis
         {
             var repo = _repositoryEntitiesRepository.GetById(repoId);
             var package = _packagesRepository.GetByIdVersion(repoId, lowerIdlowerVersion);
-            return _packagesStorage.Load(repo, package);
-            
+            return _packagesStorage.Load(repo, package.PackageId, package.Version);
+
         }
 
         public string GetNuspec(Guid repoId, string lowerId, string lowerVersion)

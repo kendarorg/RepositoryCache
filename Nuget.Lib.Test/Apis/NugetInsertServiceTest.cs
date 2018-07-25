@@ -13,15 +13,17 @@ using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 using System.Xml;
 using System.IO;
+using Repositories;
 
 namespace Nuget.Lib.Test.Apis
 {
     [TestClass]
     public class NugetInsertServiceTest
     {
-        private IRegistrationRepository _registrationRepository;
+/*        private IRegistrationRepository _registrationRepository;
         private ServicesMapperMock _servicesMapper;
         private AssemblyUtils _as;
+        private ITransaction _tx;
         private Mock<IRegistrationRepository> _registrationRepositoryMock;
 
         private Guid _repoId;
@@ -64,6 +66,7 @@ namespace Nuget.Lib.Test.Apis
 
             _servicesMapper = new ServicesMapperMock("nuget.org", _repoId, 5, 0);
             _as = new AssemblyUtils();
+            _tx = new Mock<ITransaction>().Object;
         }
 
         private InsertData SetupData()
@@ -75,8 +78,8 @@ namespace Nuget.Lib.Test.Apis
                 RepoId = Guid.Parse("2226c9a6-860f-4eb0-83b2-9b84cdeb0eb1"),
                 CommitId = Guid.Parse("0006c9a6-860f-4eb0-83b2-9b84cdeb0eb1"),
                 Nuspec = Deserialize(packageXml),
-                Sha = "123456==",
-                ShaAlgorithm = "SHA512",
+                HashKey = "123456==",
+                HashAlgorithm = "SHA512",
                 Size = 100,
                 Timestamp = new DateTime(1000),
                 Id= "System.Security.Principal.Windows",
@@ -112,7 +115,7 @@ namespace Nuget.Lib.Test.Apis
                 _packagesRepository, _packagesStorage, _nugetDependencies, _nugetAssemblies);
             InsertData data = SetupData();
 
-            target.InsertQuery(data);
+            target.InsertQuery(data, _tx);
         }
 
         [TestMethod]
@@ -124,7 +127,7 @@ namespace Nuget.Lib.Test.Apis
                 _packagesRepository, _packagesStorage, _nugetDependencies, _nugetAssemblies);
             InsertData data = SetupData();
 
-            target.InsertRegistration(data);
+            target.InsertRegistration(data_tx);
         }
 
         [TestMethod]
@@ -136,7 +139,7 @@ namespace Nuget.Lib.Test.Apis
                 _packagesRepository, _packagesStorage, _nugetDependencies, _nugetAssemblies);
             InsertData data = SetupData();
 
-            target.InsertPackages(data);
+            target.InsertPackages(data, _tx);
         }
 
         [TestMethod]
@@ -160,7 +163,7 @@ namespace Nuget.Lib.Test.Apis
                 _packagesRepository, _packagesStorage, _nugetDependencies, _nugetAssemblies);
             InsertData data = SetupData();
 
-            target.InsertDependencies(data);
+            target.InsertDependencies(data, _tx);
         }
 
         [TestMethod]
@@ -172,7 +175,7 @@ namespace Nuget.Lib.Test.Apis
                 _packagesRepository, _packagesStorage, _nugetDependencies, _nugetAssemblies);
             InsertData data = SetupData();
 
-            target.InsertAssemblies(data);
-        }
+            target.InsertAssemblies(data, _tx);
+        }*/
     }
 }
