@@ -52,6 +52,7 @@
     <Compile Include="Apis\NugetRegistrationService.cs" />
     <Compile Include="Apis\NugetSearchQueryService.cs" />
     <Compile Include="Apis\NugetCatalogService.cs" />
+    <Compile Include="Controllers\Custom_Load.cs" />
     <Compile Include="Controllers\V3_Catalog_PackageId.cs" />
     <Compile Include="Controllers\V3_Registration_Package.cs" />
     <Compile Include="Controllers\V3_Registration_Package_Page.cs" />

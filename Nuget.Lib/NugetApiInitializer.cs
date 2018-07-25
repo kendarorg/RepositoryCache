@@ -110,7 +110,8 @@ namespace Nuget
                 _applicationPropertes, _catalogService, _repositoryEntitiesRepository, _registrationService, _servicesMapper,
                 "/{repo}/v3/catalog/data/{date}/{fullPackage}.json"));
 
-
+            repositoryServiceProvider.RegisterApi(new Custom_Load(_insertNugetService, _repositoryEntitiesRepository,
+                "/{repo}/custom/load"));
             /*repositoryServiceProvider.RegisterApi(new V3_Catalog_PackageId(pr, de, ap, uc, reps));*/
         }
     }
