@@ -74,6 +74,8 @@
     <Compile Include="Registration\IRegistrationService.cs" />
     <Compile Include="Search\SearchQueryService\ISearchQueryService.cs" />
     <Compile Include="Index\IIndexService.cs" />
+    <Compile Include="SingleOrArrayConverter.cs" />
+    <Compile Include="StringListConverter.cs" />
     <Compile Include="Utils\EntryPointDescriptor.cs" />
     <Compile Include="Utils\IServicesMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

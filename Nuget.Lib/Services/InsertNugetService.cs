@@ -17,7 +17,7 @@ using System.Xml.Serialization;
 
 namespace Nuget.Services
 {
-    public class InsertNugetService : IInsertNugetService
+    public class InsertNugetService : IInsertNugetService, ISingleton
     {
         private readonly ITransactionManager _transactionManager;
         private readonly IRepositoryEntitiesRepository _repositoryEntitiesRepository;
@@ -155,6 +155,7 @@ namespace Nuget.Services
                 {
                     _nugetDependencies.Save(new NugetDependency
                     {
+                        RepositoryId =  data.RepoId,
                         PackageId = asm.Id,
                         Range = asm.Version,
                         TargetFramework = null,
@@ -205,6 +206,7 @@ namespace Nuget.Services
             {
                 _nugetAssemblies.Save(new NugetAssemblyGroup
                 {
+                    RepositoryId = data.RepoId,
                     AssemblyName = asm.AssemblyName,
                     TargetFramework = string.IsNullOrWhiteSpace(asm.TargetFramework) ? null : asm.TargetFramework.ToLowerInvariant(),
                     OwnerPackageId = data.Id.ToLowerInvariant(),
@@ -252,9 +254,15 @@ namespace Nuget.Services
             p.Copyright = metadata.Copyright;
             p.Description = metadata.Description;
             p.IconUrl = metadata.IconUrl;
-            p.Language = metadata.Language.ToUpperInvariant();
+            if (!string.IsNullOrWhiteSpace(metadata.Language))
+            {
+                p.Language = metadata.Language.ToUpperInvariant();
+            }
             p.LicenseUrl = metadata.LicenseUrl;
-            p.MinClientVersion = metadata.MinClientVersion.ToLowerInvariant();
+            if (!string.IsNullOrWhiteSpace(metadata.MinClientVersion))
+            {
+                p.MinClientVersion = metadata.MinClientVersion.ToLowerInvariant();
+            }
             p.Owners = metadata.Owners;
             p.ProjectUrl = metadata.ProjectUrl;
             p.ReleaseNotes = metadata.ReleaseNotes;
@@ -268,7 +276,7 @@ namespace Nuget.Services
             p.Tags = metadata.Tags;
             p.Title = metadata.Title;
             p.Verified = data.Verified;
-
+            p.RepositoryId = data.RepoId;
             if (isNew)
             {
                 _packagesRepository.Save(p, transaction);
@@ -301,6 +309,7 @@ namespace Nuget.Services
             r.Minor = version.Minor;
             r.Major = version.Patch;
             r.PreRelease = version.Prerelease;
+            r.RepositoryId = data.RepoId;
             if (version.Extra != null)
             {
                 r.Extra = version.Extra;
@@ -325,6 +334,7 @@ namespace Nuget.Services
             {
                 p = new QueryEntity();
             }
+            p.RepositoryId = data.RepoId;
             p.CommitId = data.CommitId;
             p.CommitTimestamp = data.Timestamp;
             p.PackageId = data.Id.ToLowerInvariant();

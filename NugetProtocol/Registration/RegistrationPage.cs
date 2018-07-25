@@ -44,7 +44,7 @@ namespace NugetProtocol
         public string Lower { get; set; }
         [JsonProperty("upper")]
         public string Upper { get; set; }
-        [JsonProperty("parent")]
+        [JsonProperty("parent", DefaultValueHandling = DefaultValueHandling.Ignore)]
         public string Parent { get; set; }
         [JsonProperty("items", DefaultValueHandling = DefaultValueHandling.Ignore)]
         public List<RegistrationLeaf> Items { get; set; }

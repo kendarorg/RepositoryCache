@@ -12,9 +12,9 @@ namespace Nuget.Repositories
 {
     public class QueryRepository : InMemoryRepository<QueryEntity>, IQueryRepository
     {
-        private QueryToLinq _queryToLinq;
+        private IQueryToLinq _queryToLinq;
 
-        public QueryRepository(QueryToLinq queryToLinq, AppProperties properties) : base(properties)
+        public QueryRepository(IQueryToLinq queryToLinq, AppProperties properties) : base(properties)
         {
             _queryToLinq = queryToLinq;
         }

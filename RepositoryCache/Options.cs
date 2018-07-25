@@ -10,9 +10,13 @@ namespace RepositoryCache
 {
     public class Options
     {
+#if DEBUG
+        [Option("port", Default = 9088, HelpText = "Port.")]
+#else
         [Option("port", Default = 9080, HelpText = "Port.")]
+#endif
         public int Port { get; set; }
-        [Option("host", Default = "localhot", HelpText = "Host.")]
+        [Option("host", Default = null, HelpText = "Host.")]
         public string Host { get; set; }
         [Option("logrequests", Default = false, HelpText = "Log requests.")]
         public bool LogRequests { get; set; }

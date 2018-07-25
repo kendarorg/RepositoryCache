@@ -10,7 +10,7 @@
     },
     {
       "id": "RegistrationsBaseUrl",
-      "local": "/{repoName}/v3/registrations/1.0.0",
+      "local": "/{repoName}/v3/registration/1.0.0",
       "remote": "https://api.nuget.org/v3/registration3",
       "visible": true
     },

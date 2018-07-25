@@ -1,4 +1,5 @@
-﻿using Repositories;
+﻿using System;
+using Repositories;
 
 namespace Nuget.Repositories
 {
@@ -8,5 +9,6 @@ namespace Nuget.Repositories
         public string OwnerVersion { get; set; }
         public string TargetFramework { get; set; }
         public string AssemblyName { get; set; }
+        public Guid RepositoryId { get;  set; }
     }
 }

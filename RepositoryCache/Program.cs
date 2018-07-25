@@ -18,6 +18,7 @@ using Castle.Windsor;
 using Castle.MicroKernel.Registration;
 using System.Reflection;
 using Ioc;
+using Castle.MicroKernel.Resolvers.SpecializedResolvers;
 
 namespace RepositoryCache
 {
@@ -64,7 +65,8 @@ namespace RepositoryCache
                 var codeBase = Assembly.GetExecutingAssembly().CodeBase;
                 var uri = new UriBuilder(codeBase);
                 var path = Uri.UnescapeDataString(uri.Path);
-                return Path.GetDirectoryName(path);
+                var assemblyDir = Path.GetDirectoryName(path);
+                return assemblyDir;
             }
         }
 
@@ -113,7 +115,7 @@ namespace RepositoryCache
             }
             if (string.IsNullOrWhiteSpace(opts.Host))
             {
-                opts.Host = "localhost";
+                opts.Host = "http://localhost:"+opts.Port;
             }
 
 
@@ -141,22 +143,26 @@ namespace RepositoryCache
 
         private static void RegisterApps(WindsorContainer container, AppProperties appProperties)
         {
+            //container.Kernel.Resolver.AddSubResolver(new ArrayResolver(container.Kernel));
+            container.Kernel.Resolver.AddSubResolver(new ListResolver(container.Kernel,true));
+            container.Kernel.Resolver.AddSubResolver(new CollectionResolver(container.Kernel,true));
+
             var filter = new AssemblyFilter(AssemblyDirectory);
             container.Register(
                 Component.For<AppProperties>().Instance(appProperties));
-            container.Register(
+            /*container.Register(
                 Classes.FromAssemblyInDirectory(filter)
-                    .BasedOn<AppProperties>());
+                    .BasedOn<AppProperties>());*/
             container.Register(
                 Classes.FromAssemblyInDirectory(filter)
                     .BasedOn<ISingleton>()
                     .LifestyleSingleton()
-                    .WithServiceDefaultInterfaces());
+                    .WithServiceAllInterfaces());
             container.Register(
                 Classes.FromAssemblyInDirectory(filter)
                     .BasedOn<ITransient>()
                     .LifestyleTransient()
-                    .WithServiceDefaultInterfaces());
+                    .WithServiceAllInterfaces());
 
         }
     }

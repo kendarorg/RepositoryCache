@@ -23,7 +23,8 @@ namespace MultiRepositories.Repositories
 
         public IEnumerable<RepositoryEntity> GetByType(string type)
         {
-            throw new NotImplementedException();
+            type = type.ToLowerInvariant();
+            return GetAll().Where(a => a.Type.ToLowerInvariant() == type);
         }
     }
 }

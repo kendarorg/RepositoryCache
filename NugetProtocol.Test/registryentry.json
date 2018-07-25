@@ -1,0 +1,42 @@
+﻿{
+  "@id": "https://api.nuget.org/v3/catalog0/data/2018.05.02.13.36.08/ravendb.database.1.0.965-unstable.json",
+  "@type": "PackageDetails",
+  "authors": "Hibernating Rhinos",
+  "dependencyGroups": [
+    {
+      "@id": "https://api.nuget.org/v3/catalog0/data/2018.05.02.13.36.08/ravendb.database.1.0.965-unstable.json#dependencygroup",
+      "@type": "PackageDependencyGroup",
+      "dependencies": [
+        {
+          "@id": "https://api.nuget.org/v3/catalog0/data/2018.05.02.13.36.08/ravendb.database.1.0.965-unstable.json#dependencygroup/newtonsoft.json",
+          "@type": "PackageDependency",
+          "id": "Newtonsoft.Json",
+          "range": "[4.0.8, 4.0.8]",
+          "registration": "https://api.nuget.org/v3/registration3-gz/newtonsoft.json/index.json"
+        },
+        {
+          "@id": "https://api.nuget.org/v3/catalog0/data/2018.05.02.13.36.08/ravendb.database.1.0.965-unstable.json#dependencygroup/nlog",
+          "@type": "PackageDependency",
+          "id": "NLog",
+          "range": "[2.0.0.2000, 2.0.0.2000]",
+          "registration": "https://api.nuget.org/v3/registration3-gz/nlog/index.json"
+        }
+      ]
+    }
+  ],
+  "description": "Use this package if you want extend RavenDB. Don't use this package if you just want to work with existing RavenDB server, in order to so just use the client API which is in the RavenDB.Client package. RavenDB is a document database for the .NET platform, offering a flexible data model design to fit the needs of real world systems.",
+  "iconUrl": "http://static.ravendb.net/logo-for-nuget.png",
+  "id": "RavenDB.Database",
+  "language": "en-US",
+  "licenseUrl": "http://www.ravendb.net/licensing",
+  "listed": false,
+  "minClientVersion": "",
+  "packageContent": "https://api.nuget.org/v3-flatcontainer/ravendb.database/1.0.965-unstable/ravendb.database.1.0.965-unstable.nupkg",
+  "projectUrl": "http://www.ravendb.net/",
+  "published": "1900-01-01T00:00:00+00:00",
+  "requireLicenseAcceptance": true,
+  "summary": "This package allows you to extend RavenDB database.",
+  "tags": [ "nosql", "document", "ravendb", "database", "raven" ],
+  "title": "RavenDB Database",
+  "version": "1.0.965-Unstable"
+}

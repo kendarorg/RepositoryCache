@@ -53,7 +53,7 @@
     <Compile Include="AppProperties.cs" />
     <Compile Include="Commons\ServicesIndexApi.cs" />
     <Compile Include="IBaseServiceInitializer.cs" />
-    <Compile Include="IPackagesRepository.cs" />
+    <Compile Include="IPackagesProviderRepository.cs" />
     <Compile Include="IRepositoryServiceProvider.cs" />
     <Compile Include="ISimpleHTTPServer.cs" />
     <Compile Include="Models\ServiceModel.cs" />

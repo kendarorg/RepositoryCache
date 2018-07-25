@@ -41,7 +41,7 @@ namespace Nuget.Controllers
         private SerializableResponse Handle(SerializableRequest localRequest)
         {
             var semVerLevel = localRequest.PathParams.ContainsKey("semver") ?
-                 localRequest.QueryParams["semver"] : null;
+                 localRequest.PathParams["semver"] : null;
 
 
             var repo = _reps.GetByName(localRequest.PathParams["repo"]);

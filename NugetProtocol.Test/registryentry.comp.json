@@ -1,0 +1,37 @@
+﻿{
+  "@id": "https://api.nuget.org/v3/catalog0/data/2018.05.02.13.36.08/ravendb.database.1.0.965-unstable.json",
+  "@type": "PackageDetails",
+  "registration": null,
+  "id": "RavenDB.Database",
+  "version": "1.0.965-Unstable",
+  "packageContent": "https://api.nuget.org/v3-flatcontainer/ravendb.database/1.0.965-unstable/ravendb.database.1.0.965-unstable.nupkg",
+  "description": "Use this package if you want extend RavenDB. Don't use this package if you just want to work with existing RavenDB server, in order to so just use the client API which is in the RavenDB.Client package. RavenDB is a document database for the .NET platform, offering a flexible data model design to fit the needs of real world systems.",
+  "authors": [ "Hibernating Rhinos" ],
+  "iconUrl": "http://static.ravendb.net/logo-for-nuget.png",
+  "licenseUrl": "http://www.ravendb.net/licensing",
+  "owners": [],
+  "projectUrl": "http://www.ravendb.net/",
+  "summary": "This package allows you to extend RavenDB database.",
+  "tags": [ "nosql", "document", "ravendb", "database", "raven" ],
+  "title": "RavenDB Database",
+  "dependencyGroups": [
+    {
+      "@id": "https://api.nuget.org/v3/catalog0/data/2018.05.02.13.36.08/ravendb.database.1.0.965-unstable.json#dependencygroup",
+      "@type": "PackageDependencyGroup",
+      "dependencies": [
+        {
+          "@id": "https://api.nuget.org/v3/catalog0/data/2018.05.02.13.36.08/ravendb.database.1.0.965-unstable.json#dependencygroup/newtonsoft.json",
+          "@type": "PackageDependency",
+          "id": "Newtonsoft.Json",
+          "range": "[4.0.8, 4.0.8]"
+        },
+        {
+          "@id": "https://api.nuget.org/v3/catalog0/data/2018.05.02.13.36.08/ravendb.database.1.0.965-unstable.json#dependencygroup/nlog",
+          "@type": "PackageDependency",
+          "id": "NLog",
+          "range": "[2.0.0.2000, 2.0.0.2000]"
+        }
+      ]
+    }
+  ]
+}

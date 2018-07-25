@@ -2,6 +2,7 @@
 using MultiRepositories;
 using MultiRepositories.Repositories;
 using Nuget.Controllers;
+using Nuget.Repositories;
 using Nuget.Services;
 using NugetProtocol;
 using System;
@@ -12,10 +13,10 @@ using System.Threading.Tasks;
 
 namespace Nuget
 {
-    public class NugetApiInitializer : IPackagesRepository
+    public class NugetApiInitializer : IApiProvider
     {
         private ICatalogService _catalogService;
-        private Repositories.IPackagesRepository _repositoryOfPackages;
+        private IPackagesRepository _repositoryOfPackages;
         private IPackageBaseAddressService _packageBaseAddressService;
         private IInsertNugetService _insertNugetService;
         private IRegistrationService _registrationService;
@@ -24,7 +25,6 @@ namespace Nuget
         private IIndexService _indexService;
         private AppProperties _applicationPropertes;
         private IRepositoryEntitiesRepository _availableRepositories;
-        private List<IPackagesRepository> _packagesRepositories;
         private IRepositoryEntitiesRepository _repositoryEntitiesRepository;
         private IAssemblyUtils _assemblyUtils;
 
@@ -33,7 +33,6 @@ namespace Nuget
             IRepositoryEntitiesRepository repositoryEntitiesRepository,
             AppProperties appProperties,
             IRepositoryEntitiesRepository availableRepositories,
-            List<IPackagesRepository> packagesRepositories,
             IAssemblyUtils assemblyUtils,
             IIndexService indexService,
             ISearchQueryService searchQueryService,
@@ -41,7 +40,7 @@ namespace Nuget
             IRegistrationService registrationService,
             IInsertNugetService insertNugetService,
             IPackageBaseAddressService packageBaseAddressService,
-            Repositories.IPackagesRepository repositoryOfPackages
+            IPackagesRepository repositoryOfPackages
             )
         {
             _catalogService = catalogService;
@@ -54,7 +53,6 @@ namespace Nuget
             _indexService = indexService;
             _applicationPropertes = appProperties;
             _availableRepositories = availableRepositories;
-            _packagesRepositories = packagesRepositories;
             _repositoryEntitiesRepository = repositoryEntitiesRepository;
             _assemblyUtils = assemblyUtils;
         }
@@ -76,6 +74,7 @@ namespace Nuget
                     Settings = data
                 };
                 _repositoryEntitiesRepository.Save(avail);
+                _servicesMapper.Refresh();
             };
             repositoryServiceProvider.RegisterApi(new V3_Index_Json(
                 _indexService, _applicationPropertes, _repositoryEntitiesRepository,

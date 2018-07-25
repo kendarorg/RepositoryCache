@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MultiRepositories
 {
-    public interface IPackagesRepository : ISingleton
+    public interface IApiProvider : ISingleton
     {
         void Initialize(IRepositoryServiceProvider repositoryServiceProvider);
     }

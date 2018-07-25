@@ -1,4 +1,5 @@
-﻿using MultiRepositories.Commons;
+﻿using Ioc;
+using MultiRepositories.Commons;
 using MultiRepositories.Repositories;
 using System;
 using System.Collections.Generic;
@@ -8,21 +9,18 @@ using System.Threading.Tasks;
 
 namespace MultiRepositories
 {
-    public class SharedApi : IPackagesRepository
+    public class SharedApi : IApiProvider
     {
         private AppProperties _applicationPropertes;
         private IRepositoryEntitiesRepository _availableRepositories;
-        private List<IPackagesRepository> _packagesRepositories;
 
         public SharedApi(
             AppProperties appProperties,
-            IRepositoryEntitiesRepository availableRepositories,
-            List<IPackagesRepository> packagesRepositories
+            IRepositoryEntitiesRepository availableRepositories
             )
         {
             _applicationPropertes = appProperties;
             _availableRepositories = availableRepositories;
-            _packagesRepositories = packagesRepositories;
         }
 
         public void Initialize(IRepositoryServiceProvider repositoryServiceProvider)

@@ -99,6 +99,18 @@
       <Project>{b20c279e-7034-4a46-9820-1d96296eb36b}</Project>
       <Name>MultiRepositories.Lib</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Nuget.Lib.Mem\Nuget.Lib.Mem.csproj">
+      <Project>{6d34f0ea-4c37-49a7-8b88-f68713cde78e}</Project>
+      <Name>Nuget.Lib.Mem</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Nuget.Lib\Nuget.Lib.csproj">
+      <Project>{dc2cd4df-2a49-4197-af18-2ab3fc0c3a0a}</Project>
+      <Name>Nuget.Lib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NugetProtocol\NugetProtocol.csproj">
+      <Project>{a55022f2-7fe1-4c27-bf4e-3c0b3d77f7d0}</Project>
+      <Name>NugetProtocol</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Repositories.Lib.Mem\Repositories.Lib.Mem.csproj">
       <Project>{34d3da85-ac0f-4e8b-8244-835d4a3b77c5}</Project>
       <Name>Repositories.Lib.Mem</Name>
@@ -106,6 +118,10 @@
     <ProjectReference Include="..\Repositories.Lib\Repositories.Lib.csproj">
       <Project>{7A5739D6-0966-4C2F-8DD2-07F3E6159212}</Project>
       <Name>Repositories.Lib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SemVer\SemVer.csproj">
+      <Project>{249c4075-9cfb-4ca1-ba82-290bff361cd7}</Project>
+      <Name>SemVer</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

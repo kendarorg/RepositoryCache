@@ -28,6 +28,17 @@ namespace Nuget.Lib.Test.Utils
             return true;
         }
 
+        public static bool EqualsSimple(string resIdExpected, string result)
+        {
+            var founded = Beautify(result);
+            var expected = Beautify(resIdExpected);
+            if (expected != founded)
+            {
+                throw new Exception(string.Format("Expected {0}\r\nReal {1}", expected, founded));
+            }
+            return true;
+        }
+
         public static string Beautify(string tob)
         {
             try

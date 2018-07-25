@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Nuget.Lib.Mem
 {
-    public class QueryToLinq:ISingleton
+    public class QueryToLinq : ISingleton, IQueryToLinq
     {
         private IQueryBuilder _queryBuilder;
 

@@ -40,7 +40,7 @@ namespace MultiRepositories
         private string _rootDirectory;
         private HttpListener _listener;
         private int _port;
-        private IBaseServiceInitializer[] _initializers;
+        //private IBaseServiceInitializer[] _initializers;
 
         public int Port
         {
@@ -50,13 +50,11 @@ namespace MultiRepositories
 
         public SimpleHTTPServer(
             AppProperties appProperties,
-            IRepositoryEntitiesRepository availableRepositories,
-            List<IPackagesRepository> packagesRepositories
+            IEnumerable<IApiProvider> apiProviders
             )
         {
             _applicationPropertes = appProperties;
-            _availableRepositories = availableRepositories;
-            _packagesRepositories = packagesRepositories;
+            _apiProviders = apiProviders.ToList();
         }
 
         /// <summary>
@@ -107,7 +105,7 @@ namespace MultiRepositories
         /// Construct server with suitable port.
         /// </summary>
         /// <param name="path">Directory path to serve.</param>
-        public SimpleHTTPServer(string path, params IBaseServiceInitializer[] initializers)
+        /*public SimpleHTTPServer(string path, params IBaseServiceInitializer[] initializers)
         {
             _initializers = initializers;
             //get an empty port
@@ -116,7 +114,7 @@ namespace MultiRepositories
             int port = ((IPEndPoint)l.LocalEndpoint).Port;
             l.Stop();
             this.Initialize(path, port);
-        }
+        }*/
 
         /// <summary>
         /// Stop server and dispose all functions.
@@ -129,7 +127,7 @@ namespace MultiRepositories
 
         private void Listen()
         {
-            foreach (var item in _packagesRepositories)
+            foreach (var item in _apiProviders)
             {
                 item.Initialize(this);
             }
@@ -364,8 +362,7 @@ namespace MultiRepositories
         private List<string> _ignoreUrl;
         private string _local;
         private AppProperties _applicationPropertes;
-        private IRepositoryEntitiesRepository _availableRepositories;
-        private List<IPackagesRepository> _packagesRepositories;
+        private List<IApiProvider> _apiProviders;
         private string _path;
         private bool _logRequests;
 

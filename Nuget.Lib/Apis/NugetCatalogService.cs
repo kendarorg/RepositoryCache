@@ -1,4 +1,5 @@
-﻿using Nuget.Repositories;
+﻿using Ioc;
+using Nuget.Repositories;
 using NugetProtocol;
 using System;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ using System.Linq;
 
 namespace Nuget.Apis
 {
-    public class NugetCatalogService : ICatalogService
+    public class NugetCatalogService : ICatalogService, ISingleton
     {
         public NugetCatalogService(
             IRegistrationRepository registrationRepository,

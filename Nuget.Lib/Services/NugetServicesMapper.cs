@@ -1,4 +1,5 @@
-﻿using MultiRepositories;
+﻿using Ioc;
+using MultiRepositories;
 using MultiRepositories.Repositories;
 using Newtonsoft.Json;
 using NugetProtocol;
@@ -10,7 +11,7 @@ using System.Linq;
 
 namespace Nuget
 {
-    public class NugetServicesMapper : IServicesMapper
+    public class NugetServicesMapper : IServicesMapper, ISingleton
     {
         private IRepositoryEntitiesRepository _availableRepositories;
         private AppProperties _appProperites;

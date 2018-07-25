@@ -6,19 +6,15 @@ namespace NugetProtocol
 {
     public class CatalogEntry
     {
-        public CatalogEntry()
-        {
-
-        }
-
+        
         public CatalogEntry(string oid, List<string> otype,
             Guid catalog_CommitId, DateTime catalog_CommitTimestamp,
             string id,
             DateTime published, string version,
             string packageHash, string packageHashAlgorithm, int packageSize,
             CatalogEntryContext context,
-            List<DependencyGroup> dependencyGroups = null,
-            List<FrameworkAssemblyGroup> frameworkAssemblyGroup = null,
+            List<DependencyGroup> dependencyGroups ,
+            List<FrameworkAssemblyGroup> frameworkAssemblyGroup,
             string description = null, string authors = null, string iconUrl = null,
             string licenseUrl = null, string projectUrl = null,
             bool requireLicenseAcceptance = false,
@@ -75,10 +71,15 @@ namespace NugetProtocol
         public int PackageSize { get; set; }
         [JsonProperty("@context")]
         public CatalogEntryContext OContext { get; set; }
+
         [JsonProperty("dependencyGroups", DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonConverter(typeof(SingleOrArrayConverter<DependencyGroup>))]
         public List<DependencyGroup> DependencyGroups { get; set; }
+
         [JsonProperty("frameworkAssemblyGroup", DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonConverter(typeof(SingleOrArrayConverter<FrameworkAssemblyGroup>))]
         public List<FrameworkAssemblyGroup> FrameworkAssemblyGroup { get; set; }
+
         [JsonProperty("description", DefaultValueHandling = DefaultValueHandling.Ignore)]
         public string Description { get; set; }
         [JsonProperty("authors", DefaultValueHandling = DefaultValueHandling.Ignore)]
@@ -94,6 +95,7 @@ namespace NugetProtocol
         [JsonProperty("summary", DefaultValueHandling = DefaultValueHandling.Ignore)]
         public string Summary { get; set; }
         [JsonProperty("tags", DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonConverter(typeof(SingleOrArrayConverter<string>))]
         public List<string> Tags { get; set; }
         [JsonProperty("title", DefaultValueHandling = DefaultValueHandling.Ignore)]
         public string Title { get; set; }

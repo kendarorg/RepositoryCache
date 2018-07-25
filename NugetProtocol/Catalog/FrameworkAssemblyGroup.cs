@@ -21,6 +21,7 @@ namespace NugetProtocol
         [JsonProperty("targetFramework", DefaultValueHandling = DefaultValueHandling.Ignore)]
         public string TargetFramework { get; set; }
         [JsonProperty("assembly")]
+        [JsonConverter(typeof(SingleOrArrayConverter<string>))]
         public List<string> Assembly { get; set; }
     }
 }

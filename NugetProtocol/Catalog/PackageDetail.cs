@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -58,18 +59,21 @@ namespace NugetProtocol
         [JsonProperty("description", DefaultValueHandling = DefaultValueHandling.Ignore)]
         public string Description { get; set; }
         [JsonProperty("authors", DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonConverter(typeof(SingleOrArrayConverter<string>))]
         public List<string> Authors { get; set; }
         [JsonProperty("iconUrl", DefaultValueHandling = DefaultValueHandling.Ignore)]
         public string IconUrl { get; set; }
         [JsonProperty("licenseUrl", DefaultValueHandling = DefaultValueHandling.Ignore)]
         public string LicenseUrl { get; set; }
         [JsonProperty("owners", DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonConverter(typeof(SingleOrArrayConverter<string>))]
         public List<string> Owners { get; set; }
         [JsonProperty("projectUrl", DefaultValueHandling = DefaultValueHandling.Ignore)]
         public string ProjectUrl { get; set; }
         [JsonProperty("summary", DefaultValueHandling = DefaultValueHandling.Ignore)]
         public string Summary { get; set; }
         [JsonProperty("tags", DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonConverter(typeof(SingleOrArrayConverter<string>))]
         public List<string> Tags { get; set; }
         [JsonProperty("title", DefaultValueHandling = DefaultValueHandling.Ignore)]
         public string Title { get; set; }

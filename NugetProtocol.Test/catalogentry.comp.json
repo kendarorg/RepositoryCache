@@ -1,0 +1,97 @@
+﻿{
+  "@id": "https://api.nuget.org/v3/catalog0/data/2018.05.02.13.34.24/ravendb.database.1.0.728-unstable.json",
+  "@type": [
+    "PackageDetails",
+    "catalog:Permalink"
+  ],
+  "catalog:commitId": "f4be2270-840d-447c-8ea4-739c576ffefb",
+  "catalog:commitTimestamp": "2018-05-02T13:34:24.8460046Z",
+  "id": "RavenDB.Database",
+  "published": "1900-01-01T00:00:00Z",
+  "version": "1.0.728-Unstable",
+  "packageHash": "N/jcc1L0b2cY1lbAnCoyWl/yzHAT2N9QzkRkUxvdTyUqmt2DOCTJe+U85JzHJrdbnzPooOiV5D/vdUBCvk1HWg==",
+  "packageHashAlgorithm": "SHA512",
+  "packageSize": 9273114,
+  "@context": {
+    "@vocab": "http://schema.nuget.org/schema#",
+    "catalog": "http://schema.nuget.org/catalog#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dependencyGroups": {
+      "@id": "dependencyGroup",
+      "@container": "@set"
+    },
+    "dependencies": {
+      "@id": "dependency",
+      "@container": "@set"
+    },
+    "packageEntries": {
+      "@id": "packageEntry",
+      "@container": "@set"
+    },
+    "supportedFrameworks": {
+      "@id": "supportedFramework",
+      "@container": "@set"
+    },
+    "tags": {
+      "@id": "tag",
+      "@container": "@set"
+    },
+    "published": {
+      "@type": "xsd:dateTime"
+    },
+    "created": {
+      "@type": "xsd:dateTime"
+    },
+    "lastEdited": {
+      "@type": "xsd:dateTime"
+    },
+    "catalog:commitTimestamp": {
+      "@type": "xsd:dateTime"
+    }
+  },
+  "dependencyGroups": [
+    {
+      "@id": "https://api.nuget.org/v3/catalog0/data/2018.05.02.13.34.24/ravendb.database.1.0.728-unstable.json#dependencygroup",
+      "@type": "PackageDependencyGroup",
+      "dependencies": [
+        {
+          "@id": "https://api.nuget.org/v3/catalog0/data/2018.05.02.13.34.24/ravendb.database.1.0.728-unstable.json#dependencygroup/newtonsoft.json",
+          "@type": "PackageDependency",
+          "id": "Newtonsoft.Json",
+          "range": "[4.0.8, 4.0.8]"
+        },
+        {
+          "@id": "https://api.nuget.org/v3/catalog0/data/2018.05.02.13.34.24/ravendb.database.1.0.728-unstable.json#dependencygroup/nlog",
+          "@type": "PackageDependency",
+          "id": "NLog",
+          "range": "[2.0.0.2000, 2.0.0.2000]"
+        }
+      ]
+    }
+  ],
+  "frameworkAssemblyGroup": [
+    {
+      "@id": "https://api.nuget.org/v3/catalog0/data/2018.05.02.13.34.24/ravendb.database.1.0.728-unstable.json#frameworkassemblygroup/.netframework4.0",
+      "targetFramework": ".NETFramework4.0",
+      "assembly": [
+        "System.ComponentModel.Composition"
+      ]
+    }
+  ],
+  "description": "Use this package if you want to run RavenDB binaries in your application folder. Don't use this pakcage if you just want to work with existing RavenDB server, in order to so just use the client API which is in the RavenDB.Client package. RavenDB is a document database for the .NET/Windows platform, offering a flexible data model design to fit the needs of real world systems.",
+  "authors": "Hibernating Rhinos",
+  "iconUrl": "http://static.ravendb.net/logo-for-nuget.png",
+  "licenseUrl": "http://www.ravendb.net/licensing",
+  "projectUrl": "http://www.ravendb.net/",
+  "requireLicenseAcceptance": true,
+  "summary": "This package include the RavenDB database binraies.",
+  "tags": [
+    "nosql",
+    "ravendb",
+    "raven",
+    "document",
+    "database"
+  ],
+  "title": "RavenDB Database",
+  "verbatimVersion": "1.0.728-Unstable"
+}

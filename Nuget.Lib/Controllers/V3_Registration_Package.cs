@@ -36,7 +36,7 @@ namespace Nuget.Controllers
         private SerializableResponse Handle(SerializableRequest localRequest)
         {
             var semVerLevel = localRequest.PathParams.ContainsKey("semver") ?
-                 localRequest.QueryParams["semver"] : null;
+                 localRequest.PathParams["semver"] : null;
 
 
             var repo = _reps.GetByName(localRequest.PathParams["repo"]);
@@ -77,23 +77,26 @@ namespace Nuget.Controllers
             foreach (var item in result.Items)
             {
                 item.OId = _servicesMapper.FromNuget(repo.Id, item.OId);
-                foreach (var ver in item.Items)
+                if (item.Items != null)
                 {
-                    ver.OId = _servicesMapper.FromNuget(repo.Id, ver.OId);
-                    ver.CatalogEntry.Id = _servicesMapper.FromNuget(repo.Id, ver.CatalogEntry.Id);
-                    ver.CatalogEntry.PackageContent = _servicesMapper.FromNuget(repo.Id, ver.CatalogEntry.PackageContent);
-                    ver.Registration = _servicesMapper.FromNuget(repo.Id, ver.Registration);
-                    ver.PackageContent = _servicesMapper.FromNuget(repo.Id, ver.PackageContent);
-                    if (ver.CatalogEntry.DependencyGroups != null)
+                    foreach (var ver in item.Items)
                     {
-                        foreach (var dg in ver.CatalogEntry.DependencyGroups)
+                        ver.OId = _servicesMapper.FromNuget(repo.Id, ver.OId);
+                        ver.CatalogEntry.Id = _servicesMapper.FromNuget(repo.Id, ver.CatalogEntry.Id);
+                        ver.CatalogEntry.PackageContent = _servicesMapper.FromNuget(repo.Id, ver.CatalogEntry.PackageContent);
+                        ver.Registration = _servicesMapper.FromNuget(repo.Id, ver.Registration);
+                        ver.PackageContent = _servicesMapper.FromNuget(repo.Id, ver.PackageContent);
+                        if (ver.CatalogEntry.DependencyGroups != null)
                         {
-                            dg.OId = _servicesMapper.FromNuget(repo.Id, dg.OId);
-                            if (dg.Dependencies != null)
+                            foreach (var dg in ver.CatalogEntry.DependencyGroups)
                             {
-                                foreach (var de in dg.Dependencies)
+                                dg.OId = _servicesMapper.FromNuget(repo.Id, dg.OId);
+                                if (dg.Dependencies != null)
                                 {
-                                    de.Id = _servicesMapper.FromNuget(repo.Id, de.Id);
+                                    foreach (var de in dg.Dependencies)
+                                    {
+                                        de.Id = _servicesMapper.FromNuget(repo.Id, de.Id);
+                                    }
                                 }
                             }
                         }

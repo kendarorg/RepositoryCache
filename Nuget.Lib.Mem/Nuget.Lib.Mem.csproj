@@ -40,8 +40,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Repositories\NugetAssembliesRepository.cs" />
+    <Compile Include="Repositories\NugetDependenciesRepository.cs" />
     <Compile Include="Repositories\PackagesRepository.cs" />
     <Compile Include="Repositories\RegistrationRepository.cs" />
+    <Compile Include="Services\IQueryToLinq.cs" />
     <Compile Include="Services\QueryToLinq.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\QueryRepository.cs" />

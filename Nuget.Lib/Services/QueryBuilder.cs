@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Ioc;
+using System;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 namespace Nuget.Services
 {
 
-    public class QueryBuilder : IQueryBuilder
+    public class QueryBuilder : IQueryBuilder, ISingleton
     {
         public ParsedQuery ParseQuery(String q)
         {

@@ -1,10 +1,11 @@
-﻿using MultiRepositories.Repositories;
+﻿using Ioc;
+using MultiRepositories.Repositories;
 using Nuget.Repositories;
 using System.IO;
 
 namespace Nuget.Services
 {
-    public class PackagesStorage : IPackagesStorage
+    public class PackagesStorage : IPackagesStorage, ISingleton
     {
         public byte[] Load(RepositoryEntity repo, string id, string normalVersion)
         {
@@ -15,6 +16,11 @@ namespace Nuget.Services
         public void Save(RepositoryEntity repo, string id, string normalVersion, byte[] data)
         {
             var path = Path.Combine(GetPath(repo), id, id + "." + normalVersion + "nupkg");
+            var dir = Path.GetDirectoryName(path);
+            if (!Directory.Exists(dir))
+            {
+                Directory.CreateDirectory(dir);
+            }
             File.WriteAllBytes(path, data);
         }
 
