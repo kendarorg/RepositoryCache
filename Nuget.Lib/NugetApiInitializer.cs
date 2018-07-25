@@ -14,6 +14,7 @@ namespace Nuget
 {
     public class NugetApiInitializer : IPackagesRepository
     {
+        private ICatalogService _catalogService;
         private Repositories.IPackagesRepository _repositoryOfPackages;
         private IPackageBaseAddressService _packageBaseAddressService;
         private IInsertNugetService _insertNugetService;
@@ -28,6 +29,7 @@ namespace Nuget
         private IAssemblyUtils _assemblyUtils;
 
         public NugetApiInitializer(
+            ICatalogService catalogService,
             IRepositoryEntitiesRepository repositoryEntitiesRepository,
             AppProperties appProperties,
             IRepositoryEntitiesRepository availableRepositories,
@@ -42,6 +44,7 @@ namespace Nuget
             Repositories.IPackagesRepository repositoryOfPackages
             )
         {
+            _catalogService = catalogService;
             _repositoryOfPackages = repositoryOfPackages;
             _packageBaseAddressService = packageBaseAddressService;
             _insertNugetService = insertNugetService;
@@ -103,6 +106,10 @@ namespace Nuget
                 _applicationPropertes, _servicesMapper, _repositoryEntitiesRepository, _packageBaseAddressService,
                 "/{repo}/v3/container/{packageid}/index.json"));
 
+
+            repositoryServiceProvider.RegisterApi(new V3_Catalog_PackageId(
+                _applicationPropertes, _catalogService, _repositoryEntitiesRepository, _registrationService, _servicesMapper,
+                "/{repo}/v3/catalog/data/{date}/{fullPackage}.json"));
 
 
             /*repositoryServiceProvider.RegisterApi(new V3_Catalog_PackageId(pr, de, ap, uc, reps));*/
