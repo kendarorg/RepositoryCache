@@ -1,4 +1,5 @@
 ﻿using Ioc;
+using MultiRepositories.Repositories;
 using Nuget.Repositories;
 using Nuget.Services;
 using NugetProtocol;
@@ -12,13 +13,16 @@ namespace Nuget.Apis
 {
     public class NugetPackagePublishService : IPackagePublishService, ISingleton
     {
+        private readonly IRepositoryEntitiesRepository _repositoryEntitiesRepository;
         private readonly IQueryRepository _queryRepository;
         private readonly IInsertNugetService _insertNugetService;
 
         public NugetPackagePublishService(
             IInsertNugetService insertNugetService,
-            IQueryRepository queryRepository)
+            IQueryRepository queryRepository,
+            IRepositoryEntitiesRepository repositoryEntitiesRepository)
         {
+            _repositoryEntitiesRepository = repositoryEntitiesRepository;
             _queryRepository = queryRepository;
             this._insertNugetService = insertNugetService;
         }
@@ -43,7 +47,7 @@ namespace Nuget.Apis
         }
 
         public void Relist(Guid repoId, string nugetApiKey, string id, string version)
-        {
+        {            
             nugetApiKey = nugetApiKey.ToUpperInvariant();
             id = id.ToLowerInvariant();
             version = version.ToLowerInvariant();

@@ -21,7 +21,7 @@ namespace NugetProtocol
             CommitTimestamp = commitTimestamp;
             Count = count;
             Items = items;
-            Ocontext = ocontext;
+            OContext = ocontext;
         }
 
         [JsonProperty("@id")]
@@ -37,6 +37,6 @@ namespace NugetProtocol
         [JsonProperty("items")]
         public List<RegistrationPage> Items { get; set; }
         [JsonProperty("@context")]
-        public RegistrationContext Ocontext { get; set; }
+        public RegistrationContext OContext { get; set; }
     }
 }

@@ -20,10 +20,10 @@ namespace Nuget.Controllers
         private ISearchQueryService _searchQueryService;
         private IServicesMapper _servicesMapper;
 
-        public V3beta_Query(string path,
+        public V3beta_Query(
             ISearchQueryService searchQueryService, AppProperties properties, IRepositoryEntitiesRepository reps,
-            IServicesMapper servicesMapper) :
-            base(properties, path, null)
+            IServicesMapper servicesMapper,params string[]paths) :
+            base(properties,  null,paths)
         {
             _reps = reps;
             _searchQueryService = searchQueryService;

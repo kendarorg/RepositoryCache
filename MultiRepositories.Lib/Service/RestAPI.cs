@@ -9,7 +9,7 @@ namespace MultiRepositories.Service
 {
     public abstract class RestAPI
     {
-        private string[] _realPath;
+        private List<string[]> _realPaths;
         private Func<SerializableRequest, SerializableResponse> _handler;
 
         protected void SetHandler(Func<SerializableRequest, SerializableResponse> handler)
@@ -17,70 +17,88 @@ namespace MultiRepositories.Service
             _handler = handler;
         }
 
-        public RestAPI(String path, Func<SerializableRequest, SerializableResponse> handler)
+        public RestAPI( Func<SerializableRequest, SerializableResponse> handler,params string[]paths)
         {
-            _realPath = path.TrimStart('/').Split('/');
+            _realPaths = new List<string[]>();
+            foreach (var path in paths)
+            {
+                _realPaths.Add(path.TrimStart('/').Split('/'));
+            }
             _handler = handler;
         }
 
         public bool CanHandleRequest(String url)
         {
             var splittedUrl = url.TrimStart('/').Split('/');
-            if (splittedUrl.Length != _realPath.Length) return false;
-            for (int i = 0; i < splittedUrl.Length; i++)
+            
+            foreach (var realPath in _realPaths)
             {
-                var spl = splittedUrl[i];
-                var mtc = _realPath[i];
-                if (string.Compare(spl, mtc, true) == 0) continue;
-                var start = mtc.IndexOf("{");
-                var end = mtc.IndexOf("}");
-                if (start >= 0 && end > start) continue;
-                return false;
+                var isGood = true;
+                if (splittedUrl.Length != realPath.Length) continue;
+                for (int i = 0; i < splittedUrl.Length; i++)
+                {
+                    var spl = splittedUrl[i];
+                    var mtc = realPath[i];
+                    if (string.Compare(spl, mtc, true) == 0) continue;
+                    var start = mtc.IndexOf("{");
+                    var end = mtc.IndexOf("}");
+                    if (start >= 0 && end > start) continue;
+                    isGood = false;
+                    break;
+                }
+                if (isGood) return true;
             }
-
-            return true;
+            return false;
         }
 
         public SerializableResponse HandleRequest(SerializableRequest request)
         {
             var res = new Dictionary<string, string>();
             var splittedUrl = request.Url.TrimStart('/').Split('/');
-            if (splittedUrl.Length != _realPath.Length)
+            foreach (var realPath in _realPaths)
             {
-                throw new Exception();
-            }
-            for (int i = 0; i < splittedUrl.Length; i++)
-            {
-                var spl = splittedUrl[i];
-                var mtc = _realPath[i];
-                if (string.Compare(spl, mtc, true) == 0)
+                var isGood = true;
+                if (splittedUrl.Length != realPath.Length)
                 {
                     continue;
                 }
-                var start = mtc.IndexOf("{");
-                var end = mtc.IndexOf("}");
-                var pre = start > 0 ? mtc.Substring(0, start) : "";
-                var post = mtc.Substring(end+1);
-                if (spl.StartsWith(pre) && spl.EndsWith(post))
+                for (int i = 0; i < splittedUrl.Length; i++)
                 {
-                    if (pre.Length > 0)
+                    var spl = splittedUrl[i];
+                    var mtc = realPath[i];
+                    if (string.Compare(spl, mtc, true) == 0)
                     {
-                        spl = spl.Substring(pre.Length);
-                        mtc = mtc.Substring(pre.Length);
+                        continue;
                     }
-                    if (post.Length > 0)
+                    var start = mtc.IndexOf("{");
+                    var end = mtc.IndexOf("}");
+                    var pre = start > 0 ? mtc.Substring(0, start) : "";
+                    var post = mtc.Substring(end + 1);
+                    if (spl.StartsWith(pre) && spl.EndsWith(post))
                     {
-                        spl = spl.Substring(0, spl.Length - post.Length);
-                        mtc = mtc.Substring(0, mtc.Length - post.Length);
+                        if (pre.Length > 0)
+                        {
+                            spl = spl.Substring(pre.Length);
+                            mtc = mtc.Substring(pre.Length);
+                        }
+                        if (post.Length > 0)
+                        {
+                            spl = spl.Substring(0, spl.Length - post.Length);
+                            mtc = mtc.Substring(0, mtc.Length - post.Length);
+                        }
+                        res.Add(mtc.Trim('{', '}'), spl);
+                        continue;
                     }
-                    res.Add(mtc.Trim('{', '}'), spl);
-                    continue;
+                    isGood = false;
+                    break;
                 }
-
-                throw new Exception();
+                if (isGood)
+                {
+                    request.PathParams = res;
+                    return _handler(request);
+                }
             }
-            request.PathParams = res;
-            return _handler(request);
+            throw new Exception();
         }
 
         protected SerializableResponse JsonResponse(Object data)

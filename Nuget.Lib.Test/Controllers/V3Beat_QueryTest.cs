@@ -60,7 +60,8 @@ namespace Nuget.Lib.Test.Controllers
         [TestMethod]
         public void ISPToQueryRemote()
         {
-            var target = new V3beta_Query("/{repo}/v3/query", _nugetService, _properties, _reps, _servicesMapper)
+            var target = new V3beta_Query(_nugetService, _properties, _reps, _servicesMapper,
+                "/{repo}/v3/query")
             {
                 RequestData = (a, b) => HandleRequest("ISPToQuery", a, b)
             };

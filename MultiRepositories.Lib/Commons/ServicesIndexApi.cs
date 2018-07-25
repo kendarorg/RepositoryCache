@@ -15,7 +15,7 @@ namespace MultiRepositories.Commons
         private AppProperties _properties;
         private IRepositoryEntitiesRepository _availableRepositoriesRepository;
 
-        public ServicesIndexApi(AppProperties properties, IRepositoryEntitiesRepository availableRepositoriesRepository) : base("/v1/index.json", null)
+        public ServicesIndexApi(AppProperties properties, IRepositoryEntitiesRepository availableRepositoriesRepository,params string[]paths) : base(null,paths)
         {
             _properties = properties;
             _availableRepositoriesRepository = availableRepositoriesRepository;

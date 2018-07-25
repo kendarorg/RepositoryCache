@@ -8,7 +8,7 @@ namespace MultiRepositories.Service
 {
     public class FileRestAPI : RestAPI
     {
-        public FileRestAPI() : base("", (a)=> { return null; } )
+        public FileRestAPI(params string[] paths) : base((a)=> { return null; }, paths)
         {
         }
     }

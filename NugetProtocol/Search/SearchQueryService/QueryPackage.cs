@@ -26,13 +26,13 @@ namespace NugetProtocol
             Version = version;
             Versions = versions.ToList();
             Description = description;
-            Authors = authors ?? new List<string>();
+            Authors = authors ?? null;
             IconUrl = iconUrl;
             LicenseUrl = licenseUrl;
-            Owners = owners ?? new List<string>();
+            Owners = owners ?? null;
             ProjectUrl = projectUrl;
             Summary = summary;
-            Tags = tags ?? new List<string>();
+            Tags = tags ?? null;
             Title = title;
             TotalDownloads = totalDownloads;
             Verified = verified;

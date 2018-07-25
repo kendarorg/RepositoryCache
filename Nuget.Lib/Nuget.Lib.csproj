@@ -52,7 +52,11 @@
     <Compile Include="Apis\NugetRegistrationService.cs" />
     <Compile Include="Apis\NugetSearchQueryService.cs" />
     <Compile Include="Apis\NugetCatalogService.cs" />
+    <Compile Include="Controllers\V340_Registration_Package.cs" />
+    <Compile Include="Controllers\V340_Registration_Package_Page.cs" />
     <Compile Include="Controllers\V3beta_Query.cs" />
+    <Compile Include="Controllers\V3_FlatContainer_Package.cs" />
+    <Compile Include="Controllers\V3_FlatContainer_Package_Version_Nupkg.cs" />
     <Compile Include="Controllers\V3_Index_Json.cs" />
     <Compile Include="NugetApiInitializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

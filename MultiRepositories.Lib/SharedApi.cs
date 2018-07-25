@@ -27,7 +27,9 @@ namespace MultiRepositories
 
         public void Initialize(IRepositoryServiceProvider repositoryServiceProvider)
         {
-            repositoryServiceProvider.RegisterApi(new ServicesIndexApi(_applicationPropertes, _availableRepositories));
+            repositoryServiceProvider.RegisterApi(new ServicesIndexApi(
+                _applicationPropertes, _availableRepositories,
+                "/v1/index.json"));
 
         }
     }

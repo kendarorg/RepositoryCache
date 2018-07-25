@@ -2,6 +2,7 @@
 using MultiRepositories;
 using MultiRepositories.Repositories;
 using Nuget.Controllers;
+using Nuget.Services;
 using NugetProtocol;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,10 @@ namespace Nuget
 {
     public class NugetApiInitializer : IPackagesRepository
     {
+        private Repositories.IPackagesRepository _repositoryOfPackages;
+        private IPackageBaseAddressService _packageBaseAddressService;
+        private IInsertNugetService _insertNugetService;
+        private IRegistrationService _registrationService;
         private IServicesMapper _servicesMapper;
         private ISearchQueryService _searchQueryService;
         private IIndexService _indexService;
@@ -30,9 +35,17 @@ namespace Nuget
             IAssemblyUtils assemblyUtils,
             IIndexService indexService,
             ISearchQueryService searchQueryService,
-            IServicesMapper servicesMapper
+            IServicesMapper servicesMapper,
+            IRegistrationService  registrationService,
+            IInsertNugetService insertNugetService,
+            IPackageBaseAddressService packageBaseAddressService,
+            Repositories.IPackagesRepository repositoryOfPackages
             )
         {
+            _repositoryOfPackages = repositoryOfPackages;
+            _packageBaseAddressService = packageBaseAddressService;
+            _insertNugetService = insertNugetService;
+            _registrationService = registrationService;
             _servicesMapper = servicesMapper;
             _searchQueryService = searchQueryService;
             _indexService = indexService;
@@ -61,18 +74,31 @@ namespace Nuget
                 };
                 _repositoryEntitiesRepository.Save(avail);
             };
-            repositoryServiceProvider.RegisterApi(new V3_Index_Json(_indexService,_applicationPropertes,_repositoryEntitiesRepository));
+            repositoryServiceProvider.RegisterApi(new V3_Index_Json(
+                _indexService,_applicationPropertes,_repositoryEntitiesRepository,
+                "/{repo}/v3/index.json"));
 
-            repositoryServiceProvider.RegisterApi(new V3beta_Query("/{repo}/v3/query", _searchQueryService,_applicationPropertes,_repositoryEntitiesRepository, _servicesMapper));
-            repositoryServiceProvider.RegisterApi(new V3beta_Query("/{repo}/v3rc/query", _searchQueryService, _applicationPropertes, _repositoryEntitiesRepository, _servicesMapper));
-            repositoryServiceProvider.RegisterApi(new V3beta_Query("/{repo}/v3beta/query", _searchQueryService,_applicationPropertes,_repositoryEntitiesRepository, _servicesMapper));
+            repositoryServiceProvider.RegisterApi(new V3beta_Query( 
+                _searchQueryService,_applicationPropertes,_repositoryEntitiesRepository, _servicesMapper,
+                "/{repo}/v3/query"));
 
-            /*repositoryServiceProvider.RegisterApi(new V340_Registration_Package(pr, rp, ap, uc, reps));
+            repositoryServiceProvider.RegisterApi(new V340_Registration_Package(
+                _applicationPropertes,_repositoryEntitiesRepository, _registrationService,_servicesMapper,
+                "/{repo}/v3/registrationsemver1/{packageid}/index.json"));
 
-            repositoryServiceProvider.RegisterApi(new V3_FlatContainer_Package_Version_Nupkg(ns, ap, uc, reps));
-            repositoryServiceProvider.RegisterApi(new V3_FlatContainer_Package(ap, uc, reps));
-            repositoryServiceProvider.RegisterApi(new V340_Registration_Package_Page(q, rp, ap, uc, reps));
-            repositoryServiceProvider.RegisterApi(new V3_Registration_Package(rp, ap, uc, reps));
+            repositoryServiceProvider.RegisterApi(new V3_FlatContainer_Package_Version_Nupkg(
+                _applicationPropertes, _insertNugetService, _repositoryOfPackages, 
+                _packageBaseAddressService,_servicesMapper, _repositoryEntitiesRepository,
+                "/{repo}/v3/container/{idLower}/{versionLower}/{fullversion}.nupkg"));
+
+            repositoryServiceProvider.RegisterApi(new V3_FlatContainer_Package(
+                _applicationPropertes,_servicesMapper,_repositoryEntitiesRepository,_packageBaseAddressService,
+                "/{repo}/v3/container/{packageid}/index.json"));
+            
+            repositoryServiceProvider.RegisterApi(new V340_Registration_Package_Page(
+                _applicationPropertes,_registrationService,_servicesMapper,_repositoryEntitiesRepository,
+                "/{repo}/v3/registrationsemver1/{packageid}/page/{from}/{to}.json"));
+            /*repositoryServiceProvider.RegisterApi(new V3_Registration_Package(rp, ap, uc, reps));
             repositoryServiceProvider.RegisterApi(new V3_Registration_Package_Version(pr, ap, uc, reps));
             repositoryServiceProvider.RegisterApi(new V3_Catalog_PackageId(pr, de, ap, uc, reps));*/
         }

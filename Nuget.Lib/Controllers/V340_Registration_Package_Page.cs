@@ -10,173 +10,99 @@ using System.Text;
 using System.Threading.Tasks;
 using MultiRepositories.Repositories;
 using MultiRepositories.Service;
+using NugetProtocol;
+using MultiRepositories;
 
 namespace Nuget.Controllers
 {
     public class V340_Registration_Package_Page : ForwardRestApi
     {
-        private AvailableRepositoriesRepository _reps;
-        private QueryRepository _queryRepository;
-        private RegistrationPageRepository _registrationPageRepository;
-        private UrlConverter _converter;
+        private IRepositoryEntitiesRepository _reps;
+        private IRegistrationService _registrationPageRepository;
+        private IServicesMapper _converter;
 
         public V340_Registration_Package_Page(
-            QueryRepository queryRepository,
-            RegistrationPageRepository registrationPageRepository,
-            AppProperties properties, UrlConverter converter, MultiRepositories.Repositories.AvailableRepositoriesRepository reps) :
-            base(properties, "/{repo}/v340/registration/{packageid}/page/{from}/{to}.json", null)
+            AppProperties properties,
+            IRegistrationService registrationPageRepository,
+             IServicesMapper converter, IRepositoryEntitiesRepository reps,
+            params string[] paths) :
+            base(properties, null, paths)
         {
             _reps = reps;
-            _queryRepository = queryRepository;
             _registrationPageRepository = registrationPageRepository;
             _converter = converter;
             SetHandler(Handle);
         }
 
-        private SerializableResponse Handle(SerializableRequest arg)
+        private SerializableResponse Handle(SerializableRequest localRequest)
         {
-            var repo = _reps.GetByName(arg.PathParams["repo"]);
-            //Registration340Entry
-            var remote = arg.Clone();
-            var convertedUrl = _converter.ToNuget(repo.Prefix, arg.Protocol + "://" + arg.Host + arg.Url);
-            remote.Headers["Host"] = new Uri(convertedUrl).Host;
+            var semVerLevel = localRequest.QueryParams.ContainsKey("semVerLevel") ?
+                 localRequest.QueryParams["semVerLevel"] : null;
 
-            if (repo.Official && (!_properties.RunLocal ||arg.QueryParams.ContainsKey("runremote")))
+
+            var repo = _reps.GetByName(localRequest.PathParams["repo"]);
+            RegistrationPage result = null;
+            //Registration340Entry
+            if (repo.Mirror)
             {
                 try
                 {
-                    return CreateRemote(arg, repo, remote, convertedUrl);
+                    result = SinglePageRemote(localRequest, repo);
                 }
                 catch (Exception)
                 {
-                    return CreateLocal(arg, repo);
+
                 }
             }
-            else
+            if (result == null)
             {
-                return CreateLocal(arg, repo);
+                result = _registrationPageRepository.SinglePage(
+                    repo.Id, localRequest.PathParams["packageid"]
+                    , localRequest.PathParams["from"], localRequest.PathParams["to"], semVerLevel);
             }
-            /*if (File.Exists(path))
-            {
-                remoteRes = new SerializableResponse()
-                {
-                    Content = File.ReadAllBytes(path),
-                    HttpCode = 200
-                };
-            }
-            else
-            {
-                throw ex;
-            }*/
-
-
+            return JsonResponse(result);
         }
 
-        private SerializableResponse CreateLocal(SerializableRequest arg, AvailableRepositoryEntity repo)
+        private RegistrationPage SinglePageRemote(SerializableRequest localRequest, RepositoryEntity repo)
         {
-            var entry = new Registration340Entry();
-            entry.Context = new Context
-            {
-                Vocab = _converter.LocalByType(repo.Prefix, "Schema/3.0.0"),
-                Catalog = _converter.LocalByType(repo.Prefix, "CatalogSchema/3.0.0"),
-                Xsd = _converter.LocalByType(repo.Prefix, "Xsd/3.0.0"),
-                Tags = new Dictionary<string, string> { { "@id", "catalog:tag" }, { "@container", "@set" } },
-                PackageTargetFrameworks = new Dictionary<string, string> { { "@id", "packageTargetFramework" }, { "@container", "@set" } },
-                DependencyGroups = new Dictionary<string, string> { { "@id", "dependencyGroup" }, { "@container", "@set" } },
-                Dependencies = new Dictionary<string, string> { { "@id", "dependency" }, { "@container", "@set" } },
-                Items = new Dictionary<string, string> { { "@id", "catalog:item" }, { "@container", "@set" } },
-                CommitTimeStamp = new Dictionary<string, string> { { "@id", "catalog:commitTimeStamp" }, { "@type", "xsd:dateTime" } },
-                CommitId = new CommitId { Id = "catalog:commitId" },
-                Count = new CommitId { Id = "catalog:count" },
-                Parent = new Dictionary<string, string> { { "@id", "catalog:parent" }, { "@type", "@id" } },
-                PackageContent = new CatalogEntry { Type = "@id" },
-                Published = new CatalogEntry { Type = "xsd:dateTime" },
-                Registration = new CatalogEntry { Type = "@id" }
-            };
-            entry.Type = new string[] { "catalog:CatalogRoot", "PackageRegistration", "catalog:Permalink" };
+            RegistrationPage result;
+            var remoteRequest = localRequest.Clone();
+            var convertedUrl = _converter.ToNuget(repo.Id, localRequest.Protocol + "://" + localRequest.Host + localRequest.Url);
+            remoteRequest.Headers["Host"] = new Uri(convertedUrl).Host;
 
-            var item = _registrationPageRepository.GetByPackageIdVersion(repo.Id,
-                arg.PathParams["packageid"],
-                arg.PathParams["from"],
-                arg.PathParams["to"]);
-            entry.Count = 1;
-            entry.CommitTimeStamp = item.Timestamp;
-            entry.CommitId = item.CommitId;
-            entry.Items = new List<Registration340EntryItem>();
-            RegistrationPageEntity lastPage = null;
-            lastPage = item;
-            entry.Items.Add(new Registration340EntryItem
-            {
-                CommitId = item.CommitId,
-                CommitTimeStamp = item.Timestamp,
-                Count = item.Count,
-                Lower = item.StartVersion,
-                Upper = item.EndVersion,
-                Parent = arg.Protocol + "://" + arg.Host + arg.Url,
-                Type = "catalog:CatalogPage",
-                Id = _converter.LocalByType(repo.Prefix, "RegistrationsBaseUrl/3.4.0") + "/" + arg.PathParams["packageid"] +
-                        "/page/" + item.StartVersion + "/" + item.EndVersion + ".json"
-            });
+            var path = localRequest.ToLocalPath("index.json");
+            var remoteRes = RemoteRequest(convertedUrl, remoteRequest);
 
-            var first = entry.Items.First();
-            first.Items = new List<Registration340SubItem>();
-            foreach (var subITem in _queryRepository.GetByPackageIdVersions(repo.Id, arg.PathParams["packageid"], item.StartVersion, item.EndVersion))
-            {
-                first.Items.Add(new Registration340SubItem
-                {
-                    Id = _converter.LocalByType(repo.Prefix, "RegistrationsBaseUrl/3.4.0") +
-                        "/" + arg.PathParams["packageid"] + "/" + subITem.Version + ".json",
-                    Type = "Package",
-                    CommitId = Guid.NewGuid().ToString(),
-                    CommitTimeStamp = DateTime.UtcNow,
-                    PackageContent = _converter.LocalByType(repo.Prefix, "PackageBaseAddress/3.0.0") +
-                        "/" + arg.PathParams["packageid"] + "/" + subITem.Version + "/" + arg.PathParams["packageid"] + "." + subITem.Version + ".nupkg",
-                    Registration = _converter.LocalByType(repo.Prefix, "RegistrationsBaseUrl/3.4.0") +
-                        "/" + arg.PathParams["packageid"] + "/index.json",
-                });
-            }
-            return JsonResponse(entry);
-        }
-
-        private SerializableResponse CreateRemote(SerializableRequest arg, AvailableRepositoryEntity repo, SerializableRequest remote, string convertedUrl)
-        {
-            SerializableResponse remoteRes = null;
-            var path = arg.ToLocalPath();
-            remoteRes = RemoteRequest(convertedUrl, remote);
-            // Directory.CreateDirectory(Path.GetDirectoryName(path));
-            // File.WriteAllBytes(path, remoteRes.Content);
-            var result = JsonConvert.DeserializeObject<Registration340Entry>(Encoding.UTF8.GetString(remoteRes.Content));
-            result.Context.Base = _converter.FromNuget(repo.Prefix, result.Context.Base);
-            result.Id = _converter.FromNuget(repo.Prefix, result.Id);
+            result = JsonConvert.DeserializeObject<RegistrationPage>(Encoding.UTF8.GetString(remoteRes.Content));
+            //result.OContext.Base = _converter.FromNuget(repo.Id, result.Context.Base);
+            result.OId = _converter.FromNuget(repo.Id, result.OId);
             foreach (var item in result.Items)
             {
-                item.Id = _converter.FromNuget(repo.Prefix, item.Id);
-                foreach (var ver in item.Items)
+                item.OId = _converter.FromNuget(repo.Id, item.OId);
+                var ver = item;
+
+                ver.OId = _converter.FromNuget(repo.Id, ver.OId);
+                ver.CatalogEntry.OId = _converter.FromNuget(repo.Id, ver.CatalogEntry.OId);
+                ver.CatalogEntry.PackageContent = _converter.FromNuget(repo.Id, ver.CatalogEntry.PackageContent);
+                ver.Registration = _converter.FromNuget(repo.Id, ver.Registration);
+                ver.PackageContent = _converter.FromNuget(repo.Id, ver.PackageContent);
+                if (ver.CatalogEntry.DependencyGroups != null)
                 {
-                    ver.Id = _converter.FromNuget(repo.Prefix, ver.Id);
-                    ver.CatalogEntry.CatalogEntryId = _converter.FromNuget(repo.Prefix, ver.CatalogEntry.CatalogEntryId);
-                    ver.CatalogEntry.PackageContent = _converter.FromNuget(repo.Prefix, ver.CatalogEntry.PackageContent);
-                    ver.Registration = _converter.FromNuget(repo.Prefix, ver.Registration);
-                    ver.PackageContent = _converter.FromNuget(repo.Prefix, ver.PackageContent);
-                    if (ver.CatalogEntry.DependencyGroups != null)
+                    foreach (var dg in ver.CatalogEntry.DependencyGroups)
                     {
-                        foreach (var dg in ver.CatalogEntry.DependencyGroups)
+                        dg.OId = _converter.FromNuget(repo.Id, dg.OId);
+                        if (dg.Dependencies != null)
                         {
-                            dg.Id = _converter.FromNuget(repo.Prefix, dg.Id);
-                            if (dg.Dependencies != null)
+                            foreach (var de in dg.Dependencies)
                             {
-                                foreach (var de in dg.Dependencies)
-                                {
-                                    de.Id = _converter.FromNuget(repo.Prefix, de.Id);
-                                    de.Registration = _converter.FromNuget(repo.Prefix, de.Registration);
-                                }
+                                de.Id = _converter.FromNuget(repo.Id, de.Id);
                             }
                         }
                     }
                 }
-            }
 
-            return JsonResponse(result);
+            }
+            return result;
         }
     }
 }

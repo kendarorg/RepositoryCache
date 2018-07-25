@@ -17,8 +17,8 @@ namespace Nuget.Controllers
         private IRepositoryEntitiesRepository _reps;
         private IIndexService _indexService;
 
-        public V3_Index_Json(IIndexService indexService, AppProperties properties, IRepositoryEntitiesRepository reps) :
-            base(properties, "/{repo}/v3/index.json", null)
+        public V3_Index_Json(IIndexService indexService, AppProperties properties, IRepositoryEntitiesRepository reps, params string[] paths) :
+            base(properties, null, paths)
         {
             _reps = reps;
             _indexService = indexService;

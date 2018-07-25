@@ -11,66 +11,92 @@ using System.Text;
 using System.Threading.Tasks;
 using MultiRepositories.Repositories;
 using MultiRepositories.Service;
+using NugetProtocol;
+using MultiRepositories;
+using Nuget.Services;
 
 namespace Nuget.Controllers
 {
     public class V3_FlatContainer_Package_Version_Nupkg : ForwardRestApi
     {
-
-        private readonly NugetService _nugetService;
-        private readonly UrlConverter _converter;
-        private readonly AvailableRepositoriesRepository _reps;
+        private readonly IInsertNugetService _insertNugetService;
+        private readonly Nuget.Repositories.IPackagesRepository _packagesRepository;
+        private readonly IPackageBaseAddressService _nugetService;
+        private readonly IServicesMapper _converter;
+        private readonly IRepositoryEntitiesRepository _reps;
 
         public V3_FlatContainer_Package_Version_Nupkg(
-            NugetService nugetService,
-            AppProperties properties, UrlConverter converter, MultiRepositories.Repositories.AvailableRepositoriesRepository reps) :
-            base(properties, "/{repo}/v3/flatcontainer/{id-lower}/{version-lower}/{fullversion}.nupkg", null)
+            AppProperties properties,
+            IInsertNugetService insertNugetService,
+            Nuget.Repositories.IPackagesRepository packagesRepository,
+            IPackageBaseAddressService nugetService,
+             IServicesMapper converter, IRepositoryEntitiesRepository reps,params string[]paths) :
+            base(properties, null,paths)
         {
+            _insertNugetService = insertNugetService;
+            _packagesRepository = packagesRepository;
             this._nugetService = nugetService;
             this._converter = converter;
             _reps = reps;
             SetHandler(Handle);
         }
 
-        private SerializableResponse Handle(SerializableRequest arg)
+        private SerializableResponse Handle(SerializableRequest localRequest)
         {
-            //Nupackage
-            var repo = _reps.GetByName(arg.PathParams["repo"]);
-            var packageId = arg.PathParams["id-lower"];
-            var fullversion = arg.PathParams["fullversion"];
-            var remote = arg.Clone();
-            var convertedUrl = _converter.ToNuget(repo.Prefix, arg.Protocol + "://" + arg.Host + arg.Url);
-            SerializableResponse remoteRes = null;
-            var path = arg.ToLocalPath();
+            var semVerLevel = localRequest.QueryParams.ContainsKey("semVerLevel") ?
+                 localRequest.QueryParams["semVerLevel"] : null;
 
-            var fileName = Path.Combine(_properties.NupkgDir, repo.Id.ToString(), packageId, fullversion+".nupkg");
 
-            if (repo.Official && (!_properties.RunLocal ||arg.QueryParams.ContainsKey("runremote")))
+            var repo = _reps.GetByName(localRequest.PathParams["repo"]);
+            byte[] result = null;
+            //Registration340Entry
+            if (repo.Mirror)
             {
                 try
                 {
-                    remoteRes = RemoteRequest(convertedUrl, remote);
-                    _nugetService.InsertNuget(remoteRes.Content, repo);
+                    result = GetNupkgRemote(localRequest, repo);
+                    var previous = _packagesRepository.GetByIdVersion(repo.Id, localRequest.PathParams["fullversion"]);
+                    if (previous == null)
+                    {
+                        _insertNugetService.Insert(repo.Id, null, result);
+                    }
+                    else if (previous.Size != result.Length)
+                    {
+                        try
+                        {
+                            _insertNugetService.Insert(repo.Id, null, result);
+                        }
+                        catch (Exception)
+                        {
+
+                        }
+                    }
                 }
                 catch (Exception)
                 {
-                    remoteRes = new SerializableResponse()
-                    {
-                        Content = File.ReadAllBytes(fileName),
-                        HttpCode = 200
-                    };
+
                 }
             }
-            else
+            if (result == null)
             {
-                remoteRes = new SerializableResponse()
-                {
-                    Content = File.ReadAllBytes(fileName),
-                    HttpCode = 200
-                };
+                result = _nugetService.GetNupkg(repo.Id, localRequest.PathParams["fullversion"]);
             }
-            return remoteRes;
+            return new SerializableResponse()
+            {
+                Content = result,
+                HttpCode = 200
+            };
         }
 
+        private byte[] GetNupkgRemote(SerializableRequest localRequest, RepositoryEntity repo)
+        {
+            var remoteRequest = localRequest.Clone();
+            var convertedUrl = _converter.ToNuget(repo.Id, localRequest.Protocol + "://" + localRequest.Host + localRequest.Url);
+            remoteRequest.Headers["Host"] = new Uri(convertedUrl).Host;
+
+            var path = localRequest.ToLocalPath("index.json");
+            var remoteRes = RemoteRequest(convertedUrl, remoteRequest);
+            return remoteRes.Content;
+        }
     }
 }

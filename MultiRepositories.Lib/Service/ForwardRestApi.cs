@@ -15,7 +15,7 @@ namespace MultiRepositories.Service
 
         public Func<String, SerializableRequest, SerializableResponse> RequestData { get; set; }
 
-        public ForwardRestApi(AppProperties properties, string path, Func<SerializableRequest, SerializableResponse> handler) : base(path, handler)
+        public ForwardRestApi(AppProperties properties, Func<SerializableRequest, SerializableResponse> handler,params string[]paths) : base( handler,paths)
         {
             _properties = properties;
         }
