@@ -24,7 +24,6 @@ namespace Nuget
         private ISearchQueryService _searchQueryService;
         private IIndexService _indexService;
         private AppProperties _applicationPropertes;
-        private IRepositoryEntitiesRepository _availableRepositories;
         private IRepositoryEntitiesRepository _repositoryEntitiesRepository;
         private IAssemblyUtils _assemblyUtils;
 
@@ -52,7 +51,6 @@ namespace Nuget
             _searchQueryService = searchQueryService;
             _indexService = indexService;
             _applicationPropertes = appProperties;
-            _availableRepositories = availableRepositories;
             _repositoryEntitiesRepository = repositoryEntitiesRepository;
             _assemblyUtils = assemblyUtils;
         }
@@ -76,7 +74,7 @@ namespace Nuget
                 _repositoryEntitiesRepository.Save(avail);
             };
 
-            var local = _repositoryEntitiesRepository.GetAll().FirstOrDefault(a => a.Prefix == "local");
+            var local = _repositoryEntitiesRepository.GetAll().FirstOrDefault(a => a.Prefix == "nuget.local");
 
             if (local == null)
             {
@@ -84,10 +82,10 @@ namespace Nuget
                 local = new RepositoryEntity
                 {
                     Mirror = false,
-                    Prefix = "local",
+                    Prefix = "nuget.local",
                     Type = "nuget",
-                    Address = "/local/v3/index.json",
-                    PackagesPath = "local",
+                    Address = "/nuget.local/v3/index.json",
+                    PackagesPath = "nuget.local",
                     Settings = data
                 };
                 _repositoryEntitiesRepository.Save(local);

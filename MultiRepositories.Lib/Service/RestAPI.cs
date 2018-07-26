@@ -44,9 +44,17 @@ namespace MultiRepositories.Service
         {
             var splittedUrl = url.Trim('/').Split('/');
             var data = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);
-            if (realPath.Count(a => a.StartsWith("{*")) > 1)
+            var stars = realPath.Count(a => a.StartsWith("{*"));
+            if (stars > 1)
             {
                 throw new Exception("Invlid Url");
+            }
+            else if (stars == 0)
+            {
+                if (splittedUrl.Length != realPath.Length)
+                {
+                    return null;
+                }
             }
 
             var realIndex = 0;

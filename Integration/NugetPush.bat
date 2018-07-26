@@ -12,3 +12,4 @@ dir ..\src\data\packages\*.nupkg
 
 
 cd ..
+pause

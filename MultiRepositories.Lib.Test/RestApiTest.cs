@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace MultiRepositories
 {
     [TestClass]
-    public class UnitTest1
+    public class RestApiTest
     {
         [TestMethod]
         public void ISBPToHandleSimpleUrls()
@@ -50,7 +50,7 @@ namespace MultiRepositories
             };
             var result = mockRest.HandleRequest(req);
             Assert.IsTrue(req.PathParams.ContainsKey("first"));
-            Assert.AreEqual("data",req.PathParams["first"]);
+            Assert.AreEqual("data", req.PathParams["first"]);
             Assert.IsTrue(viewed);
             Assert.IsNotNull(result);
         }
@@ -173,6 +173,18 @@ namespace MultiRepositories
             Assert.AreEqual("test/cicca", req.PathParams["*first"]);
             Assert.IsTrue(viewed);
             Assert.IsNotNull(result);
+        }
+
+
+
+        [TestMethod]
+        public void ISBPShouldNotHandleMissing()
+        {
+            var mockRest = new MockRestApi((a) => null, "test/prova.json");
+
+            var url = "test/prova.json/fuffa";
+            var result = mockRest.CanHandleRequest(url);
+            Assert.IsFalse(result);
         }
     }
 }
