@@ -11,6 +11,6 @@ namespace Nuget.Repositories
     public interface IQueryRepository : IRepository<QueryEntity>
     {
         IEnumerable<QueryEntity> Query(Guid repoId, QueryModel model);
-        QueryEntity GetByPackage(Guid repoId, string id, string version);
+        QueryEntity GetByPackage(Guid repoId, string id);
     }
 }

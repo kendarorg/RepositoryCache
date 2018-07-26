@@ -7,6 +7,7 @@ using Nuget.Apis;
 using Nuget.Lib.Test.Utils;
 using Nuget.Repositories;
 using NugetProtocol;
+using Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,22 +34,28 @@ namespace Nuget.Lib.Test
             _queryRepositoryMock = new Mock<IQueryRepository>();
             _queryRepository = _queryRepositoryMock.Object;
             var repositoryEntitiesRepository = new Mock<IRepositoryEntitiesRepository>();
+
+            var repo = new RepositoryEntity
+            {
+                Address = "nuget.org",
+                Id = _repoId,
+                Mirror = true,
+                Prefix = "nuget.org",
+                Settings = "",
+                Type = "nuget",
+                PackagesPath = "path"
+            };
+            repositoryEntitiesRepository.Setup(r => r.GetById(It.IsAny<Guid>(), It.IsAny<ITransaction>())).
+                Returns(repo);
+
             repositoryEntitiesRepository.Setup(r => r.GetByType(It.IsAny<string>())).
                 Returns(new List<RepositoryEntity>
                 {
-                    new RepositoryEntity
-                    {
-                        Address = "nuget.org",
-                        Id = _repoId,
-                        Mirror = true,
-                        Prefix = "nuget.org",
-                        Settings = "",
-                        Type = "nuget"
-                    }
+                    repo
                 });
             _repositoryEntitiesRepository = repositoryEntitiesRepository.Object;
 
-            _servicesMapper = new ServicesMapperMock("nuget.org", _repoId, 5, 10);
+            _servicesMapper = new ServicesMapperMock("nuget.org", _repoId, 5, 10, 3);
         }
 
         [TestMethod]
@@ -100,7 +107,7 @@ namespace Nuget.Lib.Test
                         CsvVersions="1,2",
                         HasRelease=true,
                         PreVersion="2",
-                        PreCsvVersion="3,4",
+                        PreCsvVersions="3,4",
                         PackageId="test",
                         HasPreRelease=true
                     }
@@ -123,7 +130,7 @@ namespace Nuget.Lib.Test
                     new QueryEntity //Prerelase
                     {
                         PreVersion="1",
-                        PreCsvVersion="1,2",
+                        PreCsvVersions="1,2",
                         PackageId="test",
                         HasPreRelease=true
                     }
@@ -182,7 +189,7 @@ namespace Nuget.Lib.Test
                         CsvVersions="5,6",
                         HasRelease=true,
                         PreVersion="2",
-                        PreCsvVersion="3,4",
+                        PreCsvVersions="3,4",
                         PackageId="test",
                         HasPreRelease=true
                     }
@@ -212,7 +219,7 @@ namespace Nuget.Lib.Test
                         CsvVersions="3.4",
                         HasRelease=true,
                         PreVersion="5",
-                        PreCsvVersion="5,6",
+                        PreCsvVersions="5,6",
                         PackageId="test",
                         HasPreRelease=true
                     }

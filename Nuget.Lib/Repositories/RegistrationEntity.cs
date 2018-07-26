@@ -19,8 +19,10 @@ namespace Nuget.Repositories
         public int Major { get; set; }
         public int Minor { get; set; }
         public int Patch { get; set; }
+        public long TotalDownloads { get; set; }
 
         public string PreRelease { get; set; }
         public int? Extra { get; set; }
+        public bool Listed { get; set; }
     }
 }

@@ -138,6 +138,11 @@ namespace NugetProtocol
             throw new NotImplementedException();
         }
 
+        public int MaxQueryPage(Guid repoId)
+        {
+            throw new NotImplementedException();
+        }
+
         public int MaxRegistrationPages(Guid repoId)
         {
             throw new NotImplementedException();

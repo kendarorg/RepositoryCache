@@ -16,5 +16,6 @@ namespace NugetProtocol
         string FromNuget(Guid repoId, string src);
         int MaxRegistrationPages(Guid repoId);
         int MaxCatalogPages(Guid repoId);
+        int MaxQueryPage(Guid repoId);
     }
 }

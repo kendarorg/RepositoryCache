@@ -52,14 +52,14 @@ namespace Nuget.Lib.Test
                 });
             _repositoryEntitiesRepository = repositoryEntitiesRepository.Object;
 
-            _servicesMapper = new ServicesMapperMock("nuget.org", _repoId, 5, 10);
+            _servicesMapper = new ServicesMapperMock("nuget.org", _repoId, 5, 10, 3);
         }
 
         [TestMethod]
         public void ISPTogetEmptyResultAuto()
         {
             var au = new AssemblyUtils();
-            var target = new NugetAutocompleteService(_queryRepository, _servicesMapper,_packageRepository);
+            var target = new NugetAutocompleteService(_queryRepository, _servicesMapper, _packageRepository);
 
             var result = target.Query(_repoId, new QueryModel());
 
@@ -71,7 +71,7 @@ namespace Nuget.Lib.Test
         public void ISPToGetReleasesAuto()
         {
             var au = new AssemblyUtils();
-            var target = new NugetAutocompleteService(_queryRepository,  _servicesMapper,_packageRepository);
+            var target = new NugetAutocompleteService(_queryRepository, _servicesMapper, _packageRepository);
             _queryRepositoryMock.Setup(a => a.Query(It.IsAny<Guid>(), It.IsAny<QueryModel>())).
                 Returns(new List<QueryEntity>
                 {
@@ -94,7 +94,7 @@ namespace Nuget.Lib.Test
         public void ISPToGetReleasesWithPrePresentAuto()
         {
             var au = new AssemblyUtils();
-            var target = new NugetAutocompleteService(_queryRepository,  _servicesMapper,_packageRepository);
+            var target = new NugetAutocompleteService(_queryRepository, _servicesMapper, _packageRepository);
             _queryRepositoryMock.Setup(a => a.Query(It.IsAny<Guid>(), It.IsAny<QueryModel>())).
                 Returns(new List<QueryEntity>
                 {
@@ -104,7 +104,7 @@ namespace Nuget.Lib.Test
                         CsvVersions="1,2",
                         HasRelease=true,
                         PreVersion="2",
-                        PreCsvVersion="3,4",
+                        PreCsvVersions="3,4",
                         PackageId="test",
                         HasPreRelease=true
                     }
@@ -120,14 +120,14 @@ namespace Nuget.Lib.Test
         public void ISPToGetPreReleasesAuto()
         {
             var au = new AssemblyUtils();
-            var target = new NugetAutocompleteService(_queryRepository,  _servicesMapper,_packageRepository);
+            var target = new NugetAutocompleteService(_queryRepository, _servicesMapper, _packageRepository);
             _queryRepositoryMock.Setup(a => a.Query(It.IsAny<Guid>(), It.IsAny<QueryModel>())).
                 Returns(new List<QueryEntity>
                 {
                     new QueryEntity //Prerelase
                     {
                         PreVersion="1",
-                        PreCsvVersion="1,2",
+                        PreCsvVersions="1,2",
                         PackageId="test",
                         HasPreRelease=true
                     }
@@ -148,7 +148,7 @@ namespace Nuget.Lib.Test
         public void ISPToGetTheReleaseWhenPreReleasesIsMissingAuto()
         {
             var au = new AssemblyUtils();
-            var target = new NugetAutocompleteService(_queryRepository,  _servicesMapper,_packageRepository);
+            var target = new NugetAutocompleteService(_queryRepository, _servicesMapper, _packageRepository);
             _queryRepositoryMock.Setup(a => a.Query(It.IsAny<Guid>(), It.IsAny<QueryModel>())).
                 Returns(new List<QueryEntity>
                 {
@@ -176,7 +176,7 @@ namespace Nuget.Lib.Test
         public void ISPToGetMajorWhenGreaterThanPreAskingForPreAuto()
         {
             var au = new AssemblyUtils();
-            var target = new NugetAutocompleteService(_queryRepository,  _servicesMapper,_packageRepository);
+            var target = new NugetAutocompleteService(_queryRepository, _servicesMapper, _packageRepository);
             _queryRepositoryMock.Setup(a => a.Query(It.IsAny<Guid>(), It.IsAny<QueryModel>())).
                 Returns(new List<QueryEntity>
                 {
@@ -186,7 +186,7 @@ namespace Nuget.Lib.Test
                         CsvVersions="5,6",
                         HasRelease=true,
                         PreVersion="2",
-                        PreCsvVersion="3,4",
+                        PreCsvVersions="3,4",
                         PackageId="test",
                         HasPreRelease=true
                     }
@@ -206,7 +206,7 @@ namespace Nuget.Lib.Test
         public void ISPToGetPreWhenGreaterThanMajorAskingForPreAuto()
         {
             var au = new AssemblyUtils();
-            var target = new NugetAutocompleteService(_queryRepository,  _servicesMapper,_packageRepository);
+            var target = new NugetAutocompleteService(_queryRepository, _servicesMapper, _packageRepository);
             _queryRepositoryMock.Setup(a => a.Query(It.IsAny<Guid>(), It.IsAny<QueryModel>())).
                 Returns(new List<QueryEntity>
                 {
@@ -216,7 +216,7 @@ namespace Nuget.Lib.Test
                         CsvVersions="3.4",
                         HasRelease=true,
                         PreVersion="5",
-                        PreCsvVersion="5,6",
+                        PreCsvVersions="5,6",
                         PackageId="test",
                         HasPreRelease=true
                     }
@@ -252,7 +252,7 @@ namespace Nuget.Lib.Test
                     }
                 });
 
-            var result = target.QueryByPackage(_repoId,"test",true);
+            var result = target.QueryByPackage(_repoId, "test", true);
 
             Assert.IsNotNull(result);
             JsonComp.Equals("ISPToGetPreReleasesVersionsToo.json", result);

@@ -9,11 +9,9 @@ namespace Nuget.Repositories
 {
     public class QueryEntity : BaseEntity
     {
-        private string _packageId;
-
         public Guid RepositoryId { get; set; }
         public string FreeText { get; set; }
-        public string PackageId { get => _packageId; set => _packageId = value != null ? value.ToLowerInvariant() : value; }
+        public string PackageId { get; set; }
         public string Version { get; set; }
         public string PreVersion { get; set; }
         public string Title { get; set; }
@@ -22,9 +20,6 @@ namespace Nuget.Repositories
         public string Description { get; set; }
         public string Summary { get; set; }
         public string Owner { get; set; }
-        public string CsvVersions { get; set; }
-        public string PreCsvVersion { get; set; }
-        public int TotalDownloads { get; set; }
         public bool HasRelease { get; set; }
         public bool HasPreRelease { get; set; }
         public Guid CommitId { get; set; }
@@ -34,6 +29,10 @@ namespace Nuget.Repositories
         public string ProjectUrl { get;  set; }
         public bool Verified { get;  set; }
         public bool Listed { get; set; }
+        public bool PreListed { get; set; }
+        public long TotalDownloads { get; set; }
+        public string PreCsvVersions { get;  set; }
+        public string CsvVersions { get;  set; }
         /*
 public int Major { get; set; }
 public int Minor { get; set; }

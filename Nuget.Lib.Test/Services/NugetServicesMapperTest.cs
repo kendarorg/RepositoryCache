@@ -23,21 +23,28 @@ namespace Nuget.Lib.Test
             var data = au.ReadRes<NugetServicesMapperTest>("nuget.org.settings.json");
             _properties = new AppProperties(null,null);
             _repositoryId = Guid.NewGuid();
-            var mock = new Mock<IRepositoryEntitiesRepository>();
-            mock.Setup(r => r.GetByType(It.IsAny<string>())).
+            
+            var repositoryEntitiesRepository = new Mock<IRepositoryEntitiesRepository>();
+
+            var repo = new RepositoryEntity
+            {
+                Address = "nuget.org",
+                Id = _repositoryId,
+                Mirror = true,
+                Prefix = "nuget.org",
+                Settings = data,
+                Type = "nuget",
+                PackagesPath = "path"
+            };
+            repositoryEntitiesRepository.Setup(r => r.GetById(It.IsAny<Guid>(), It.IsAny<ITransaction>())).
+                Returns(repo);
+
+            repositoryEntitiesRepository.Setup(r => r.GetByType(It.IsAny<string>())).
                 Returns(new List<RepositoryEntity>
                 {
-                    new RepositoryEntity
-                    {
-                        Address = "nuget.org",
-                        Id = _repositoryId,
-                        Mirror = true,
-                        Prefix = "nuget.org",
-                        Settings = data,
-                        Type = "nuget"
-                    }
+                    repo
                 });
-            _repository = mock.Object;
+            _repository = repositoryEntitiesRepository.Object;
         }
 
         [TestMethod]

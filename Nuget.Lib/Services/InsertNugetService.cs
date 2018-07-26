@@ -57,7 +57,7 @@ namespace Nuget.Services
                 {
                     if (entry.FileName.ToLowerInvariant().EndsWith(".nuspec"))
                     {
-                        timestamp = entry.CreationTime;
+                        timestamp = entry.ModifiedTime > entry.LastModified ? entry.ModifiedTime : entry.LastModified;
                         var ms = new MemoryStream();
                         entry.Extract(ms);
                         ms.Seek(0, SeekOrigin.Begin);
@@ -124,9 +124,9 @@ namespace Nuget.Services
                 try
                 {
                     InsertPackagesStorage(data, content);
+                    InsertRegistration(data, transaction);
                     InsertPackages(data, transaction);
                     InsertQuery(data, transaction);
-                    InsertRegistration(data, transaction);
                     InsertDependencies(data, transaction);
                     InsertAssemblies(data, transaction);
                     transaction.Commit();
@@ -155,7 +155,7 @@ namespace Nuget.Services
                 {
                     _nugetDependencies.Save(new NugetDependency
                     {
-                        RepositoryId =  data.RepoId,
+                        RepositoryId = data.RepoId,
                         PackageId = asm.Id,
                         Range = asm.Version,
                         TargetFramework = null,
@@ -307,8 +307,9 @@ namespace Nuget.Services
             r.CommitTimestamp = data.Timestamp;
             r.Major = version.Major;
             r.Minor = version.Minor;
-            r.Major = version.Patch;
+            r.Patch = version.Patch;
             r.PreRelease = version.Prerelease;
+            r.Listed = true;
             r.RepositoryId = data.RepoId;
             if (version.Extra != null)
             {
@@ -324,37 +325,71 @@ namespace Nuget.Services
                 _registrationRepository.Update(r, transaction);
             }
         }
-        
+
         public void InsertQuery(InsertData data, ITransaction transaction)
         {
             var metadata = data.Nuspec.Metadata;
-            var p = _queryRepository.GetByPackage(data.RepoId, data.Id, data.Version);
+            var p = _queryRepository.GetByPackage(data.RepoId, data.Id);
+            SemVersion newVersion = SemVersion.Parse(metadata.Version);
+            var isPre = string.IsNullOrWhiteSpace(newVersion.Prerelease);
+            var registrationEntities = _registrationRepository.GetAllByPackageId(data.RepoId, data.Id)
+                        .OrderByDescending((a) => SemVersion.Parse(a.Version));
+
             var isNew = p == null;
             if (isNew)
             {
                 p = new QueryEntity();
             }
+
+
             p.RepositoryId = data.RepoId;
             p.CommitId = data.CommitId;
             p.CommitTimestamp = data.Timestamp;
             p.PackageId = data.Id.ToLowerInvariant();
             p.RepositoryId = data.RepoId;
-            p.Version = data.Version.ToLowerInvariant();
             p.Summary = metadata.Summary;
             p.Tags = metadata.Tags;
             p.Title = metadata.Title;
             p.Author = metadata.Authors;
             p.Description = metadata.Description;
             p.Owner = metadata.Owners;
-            
+
             p.IconUrl = metadata.IconUrl;
             p.LicenseUrl = metadata.LicenseUrl;
             p.ProjectUrl = metadata.ProjectUrl;
             p.Verified = data.Verified;
 
+            if (isPre)
+            {
+                var lastVisible = registrationEntities.FirstOrDefault(a => !string.IsNullOrWhiteSpace(a.PreRelease) && a.Listed);
+                p.PreVersion = null;
+                p.PreListed = false;
+                p.PreCsvVersions ="|"+ string.Join("|",registrationEntities.Where(a => !string.IsNullOrWhiteSpace(a.PreRelease) && a.Listed).
+                    Select(a => a.Version))+"|";
+                    
+                if (lastVisible != null)
+                {
+                    p.PreVersion = lastVisible.Version;
+                    p.PreListed = true;
+                }
+            }
+            else
+            {
+                var lastVisible = registrationEntities.FirstOrDefault(a => string.IsNullOrWhiteSpace(a.PreRelease) && a.Listed);
+                p.Version = null;
+                p.Listed = false;
+                p.CsvVersions = "|" + string.Join("|", registrationEntities.Where(a => string.IsNullOrWhiteSpace(a.PreRelease) && a.Listed).
+                    Select(a => a.Version)) + "|";
+
+                if (lastVisible != null)
+                {
+                    p.Version = lastVisible.Version;
+                    p.Listed = true;
+                }
+            }
+            
             if (isNew)
             {
-                p.Listed = true;
                 _queryRepository.Save(p, transaction);
             }
             else

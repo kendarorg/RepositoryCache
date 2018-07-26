@@ -18,10 +18,10 @@ namespace Nuget.Repositories
         {
             _queryToLinq = queryToLinq;
         }
-
-        public QueryEntity GetByPackage(Guid repoId, string id, string version)
+        
+        public QueryEntity GetByPackage(Guid repoId, string id)
         {
-            return GetAll().FirstOrDefault(a =>a.Listed && a.RepositoryId == repoId && a.PackageId == id && a.Version == version);
+            return GetAll().FirstOrDefault(a => a.Listed && a.RepositoryId == repoId && a.PackageId == id);
         }
 
         public IEnumerable<QueryEntity> Query(Guid repoId, QueryModel model)

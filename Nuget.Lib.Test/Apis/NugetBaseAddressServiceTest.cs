@@ -53,11 +53,6 @@ namespace Nuget.Lib.Test
                 Type = "nuget",
                 PackagesPath = "path"
             };
-            /*repositoryEntitiesRepository.Setup(r => r.GetByType(It.IsAny<string>())).
-                Returns(new List<RepositoryEntity>
-                {
-                    repo
-                });*/
             repositoryEntitiesRepository.Setup(r => r.GetById(It.IsAny<Guid>(), It.IsAny<ITransaction>())).
                 Returns(repo);
             _repositoryEntitiesRepository = repositoryEntitiesRepository.Object;

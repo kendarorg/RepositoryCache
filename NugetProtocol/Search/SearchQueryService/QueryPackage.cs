@@ -17,7 +17,7 @@ namespace NugetProtocol
         public QueryPackage(string oid, string otype, string registration, string id, string version, QueryVersion[] versions,
             string description = null, List<string> authors = null, string iconUrl = null, string licenseUrl = null,
             List<string> owners = null, string projectUrl = null,
-            string summary = null, List<string> tags = null, string title = null, int totalDownloads = 0, bool verified = true)
+            string summary = null, List<string> tags = null, string title = null, long totalDownloads = 0, bool verified = true)
         {
             OId = oid;
             OType = otype;
@@ -69,7 +69,7 @@ namespace NugetProtocol
         [JsonProperty("title", DefaultValueHandling = DefaultValueHandling.Ignore)]
         public string Title { get; set; }
         [JsonProperty("totalDownloads", DefaultValueHandling = DefaultValueHandling.Ignore)]
-        public int TotalDownloads { get; set; }
+        public long TotalDownloads { get; set; }
         [JsonProperty("verified", DefaultValueHandling = DefaultValueHandling.Ignore)]
         public bool Verified { get; set; }
     }

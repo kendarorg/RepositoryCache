@@ -13,6 +13,8 @@ namespace NugetProtocol.Utils
         public int CatalogPageSize { get; set; }
         [JsonProperty("registrationPageSize")]
         public int RegistrationPageSize { get; set; }
+        [JsonProperty("queryPageSize")]
+        public int QueryPageSize { get; set; }
         [JsonProperty("services")]
         public List<EntryPointDescriptor> Services { get; set; }
     }

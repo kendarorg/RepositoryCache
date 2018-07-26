@@ -32,10 +32,17 @@ namespace Nuget.Lib.Mem
             }
             foreach (var item in pq.Keys)
             {
+                if (string.IsNullOrWhiteSpace(item.Value))
+                {
+                    continue;
+                }
                 switch (item.Key)
                 {
                     case ("id"):
                         result = result.Where(r => r.PackageId.IndexOf(item.Value, StringComparison.CurrentCultureIgnoreCase) >= 0);
+                        break;
+                    case ("version"):
+                        result = result.Where(r => r.Version.IndexOf(item.Value, StringComparison.CurrentCultureIgnoreCase) >= 0);
                         break;
                     case ("title"):
                         result = result.Where(r => r.Title.IndexOf(item.Value, StringComparison.CurrentCultureIgnoreCase) >= 0);

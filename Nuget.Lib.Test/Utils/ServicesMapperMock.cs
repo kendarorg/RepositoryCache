@@ -12,14 +12,16 @@ namespace Nuget.Lib.Test
         private string _repoName;
         private readonly Guid _repoId;
         private int _maxReg;
+        private readonly int _maxPages;
         private int _maxCatalog;
 
-        public ServicesMapperMock(string v, Guid repoId,int maxCat,int maxReg)
+        public ServicesMapperMock(string v, Guid repoId,int maxCat,int maxReg,int maxPages)
         {
             this._repoName = v;
             _repoId = repoId;
             _maxCatalog = maxCat;
             _maxReg = maxReg;
+            this._maxPages = maxPages;
         }
 
         public string From(Guid repoId, string resourceId, params string[] par)
@@ -47,6 +49,11 @@ namespace Nuget.Lib.Test
         public int MaxCatalogPages(Guid repoId)
         {
             return _maxCatalog;
+        }
+
+        public int MaxQueryPage(Guid repoId)
+        {
+            return _maxPages;
         }
 
         public int MaxRegistrationPages(Guid repoId)

@@ -30,7 +30,7 @@ namespace Nuget.Lib.Test
         public void Initialize()
         {
             _repoId = Guid.NewGuid();
-            _servicesMapper = new ServicesMapperMock("nuget.org", _repoId,0,5);
+            _servicesMapper = new ServicesMapperMock("nuget.org", _repoId, 0, 5, 3);
 
             _registrationRepositoryMock = new Mock<IRegistrationRepository>();
             _registrationRepository = _registrationRepositoryMock.Object;
@@ -38,7 +38,7 @@ namespace Nuget.Lib.Test
             _catalogServiceMock = new Mock<ICatalogService>();
             _catalogService = _catalogServiceMock.Object;
 
-            _servicesMapper = new ServicesMapperMock("nuget.org", _repoId,5,10);
+            _servicesMapper = new ServicesMapperMock("nuget.org", _repoId, 5, 10, 3);
         }
 
 
@@ -92,7 +92,7 @@ namespace Nuget.Lib.Test
 
 
 
-        private IEnumerable<RegistrationEntity> GetMultiPageRegistrationResult(int maxRegPages,DateTime time, DateTime lastTime, Guid lastCommit)
+        private IEnumerable<RegistrationEntity> GetMultiPageRegistrationResult(int maxRegPages, DateTime time, DateTime lastTime, Guid lastCommit)
         {
             var firstPage = new List<RegistrationEntity>();
             for (int i = 0; i < maxRegPages; i++)
@@ -257,7 +257,7 @@ namespace Nuget.Lib.Test
                 It.Is<String>(g => g == "1.2.0"))).Returns(packDetails);
 
 
-            var result = target.SinglePage(_repoId, "test","1.0.0-alpha","1.2.0", null);
+            var result = target.SinglePage(_repoId, "test", "1.0.0-alpha", "1.2.0", null);
 
             Assert.IsNotNull(result);
             Assert.AreEqual(3, result.Count);

@@ -1,6 +1,7 @@
 ﻿{
   "catalogPageSize": 540,
   "registrationPageSize": 64,
+  "queryPageSize": 32,
   "services": [
     {
       "id": "PackagePublish/2.0.0",

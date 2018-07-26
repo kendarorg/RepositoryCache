@@ -244,6 +244,11 @@ namespace Nuget
             return _settings[repoId].RegistrationPageSize;
         }
 
+        public int MaxQueryPage(Guid repoId)
+        {
+            return _settings[repoId].QueryPageSize;
+        }
+
         public int MaxCatalogPages(Guid repoId)
         {
             return _settings[repoId].CatalogPageSize;

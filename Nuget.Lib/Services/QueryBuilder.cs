@@ -65,6 +65,7 @@ namespace Nuget.Services
             if (litem.StartsWith("id:")) return "id";
             if (litem.StartsWith("packageid:")) return "packageid";
             if (litem.StartsWith("title:")) return "title";
+            if (litem.StartsWith("version:")) return "version";
             if (litem.StartsWith("tags:")) return "tags";
             if (litem.StartsWith("author:")) return "author";
             if (litem.StartsWith("description:")) return "description";

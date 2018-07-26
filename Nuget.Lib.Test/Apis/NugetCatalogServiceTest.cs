@@ -51,7 +51,7 @@ namespace Nuget.Lib.Test
             _nugetDependenciesMock = new Mock<INugetDependenciesRepository>();
             _nugetDependencies = _nugetDependenciesMock.Object;
 
-            _servicesMapper = new ServicesMapperMock("nuget.org", _repoId, 5, 0);
+            _servicesMapper = new ServicesMapperMock("nuget.org", _repoId, 5, 0,3);
         }
 
 

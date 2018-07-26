@@ -32,15 +32,21 @@ namespace Nuget.Apis
         {
             var repo = _repository.GetById(repoId);
             var packages = new List<QueryPackage>();
+            var maxSize = _servicesMapper.MaxQueryPage(repo.Id);
             foreach (var item in _queryRepository.Query(repoId, query))
             {
+                if (maxSize == 0)
+                {
+                    break;
+                }
+                maxSize--;
                 var queryVersions = new List<QueryVersion>();
                 var shownVersion = item.Version;
                 var isSet = false;
                 if (query.PreRelease && item.HasPreRelease)
                 {
                     shownVersion = item.PreVersion;
-                    queryVersions = AddReleaseVersions(repoId, query, item.PreCsvVersion, item.PackageId).ToList();
+                    queryVersions = AddReleaseVersions(repoId, query, item.PreCsvVersions, item.PackageId).ToList();
                     isSet = true;
                     if (item.HasRelease)
                     {
