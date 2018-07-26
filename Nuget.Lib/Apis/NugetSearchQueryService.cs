@@ -46,14 +46,14 @@ namespace Nuget.Apis
                 if (query.PreRelease && item.HasPreRelease)
                 {
                     shownVersion = item.PreVersion;
-                    queryVersions = AddReleaseVersions(repoId, query, item.PreCsvVersions, item.PackageId).ToList();
+                    queryVersions = PrepareVersions(repoId, query, item.PreCsvVersions, item.PackageId).ToList();
                     isSet = true;
                     if (item.HasRelease)
                     {
                         if (SemVersion.IsGreater(item.Version, item.PreVersion))
                         {
                             shownVersion = item.Version;
-                            queryVersions = AddReleaseVersions(repoId, query, item.CsvVersions, item.PackageId).ToList();
+                            queryVersions = PrepareVersions(repoId, query, item.CsvVersions, item.PackageId).ToList();
                         }
                     }
                 }
@@ -61,7 +61,7 @@ namespace Nuget.Apis
                 {
                     isSet = true;
                     shownVersion = item.Version;
-                    queryVersions = AddReleaseVersions(repoId, query, item.CsvVersions, item.PackageId).ToList();
+                    queryVersions = PrepareVersions(repoId, query, item.CsvVersions, item.PackageId).ToList();
                 }
 
                 if (!isSet)
@@ -97,10 +97,11 @@ namespace Nuget.Apis
                                 packages);
         }
 
-        private IEnumerable<QueryVersion> AddReleaseVersions(Guid repoId, QueryModel query, string versions, string packageId)
+        private IEnumerable<QueryVersion> PrepareVersions(Guid repoId, QueryModel query, string versions, string packageId)
         {
-            foreach (var singleVersion in versions.Split(','))
+            foreach (var singleVersion in versions.Split('|'))
             {
+                if (string.IsNullOrWhiteSpace(singleVersion)) continue;
                 yield return new QueryVersion(
                                         _servicesMapper.FromSemver(repoId, "PackageVersionDisplayMetadataUriTemplate", query.SemVerLevel,
                                             packageId, singleVersion + ".json"),

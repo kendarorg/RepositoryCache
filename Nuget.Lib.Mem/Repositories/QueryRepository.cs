@@ -21,12 +21,12 @@ namespace Nuget.Repositories
         
         public QueryEntity GetByPackage(Guid repoId, string id)
         {
-            return GetAll().FirstOrDefault(a => a.Listed && a.RepositoryId == repoId && a.PackageId == id);
+            return GetAll().FirstOrDefault(a => (a.Listed || a.PreListed) && a.RepositoryId == repoId && a.PackageId == id);
         }
 
         public IEnumerable<QueryEntity> Query(Guid repoId, QueryModel model)
         {
-            return _queryToLinq.Query(GetAll().AsQueryable(), repoId, model).Where(a=>a.Listed);
+            return _queryToLinq.Query(GetAll().AsQueryable(), repoId, model).Where(a=> a.Listed || a.PreListed);
         }
     }
 }

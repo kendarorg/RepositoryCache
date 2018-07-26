@@ -13,13 +13,8 @@
       "version": "1",
       "versions": [
         {
-          "@id": "nuget.org/PackageVersionDisplayMetadataUriTemplate:/test/1.json",
-          "version": "1",
-          "downloads": 0
-        },
-        {
-          "@id": "nuget.org/PackageVersionDisplayMetadataUriTemplate:/test/2.json",
-          "version": "2",
+          "@id": "nuget.org/PackageVersionDisplayMetadataUriTemplate:/test/1,2.json",
+          "version": "1,2",
           "downloads": 0
         }
       ]

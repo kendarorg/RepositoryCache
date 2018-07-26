@@ -114,9 +114,9 @@ namespace Nuget.Services
                 Size = content.Length,
                 RepoId = repoId,
             };
-            data.Id = data.Nuspec.Metadata.Id;
-            data.Version = SemVer.SemVersion.Parse(data.Nuspec.Metadata.Version).ToNormalizedVersion().ToLowerInvariant();
-            data.OriginalVersion = SemVer.SemVersion.Parse(data.Nuspec.Metadata.Version).ToString().ToLowerInvariant();
+            data.Id = data.Nuspec.Metadata.Id.ToLowerInvariant();
+            data.Version = SemVer.SemVersion.Parse(data.Nuspec.Metadata.Version.ToLowerInvariant()).ToNormalizedVersion().ToLowerInvariant();
+            data.OriginalVersion = SemVer.SemVersion.Parse(data.Nuspec.Metadata.Version.ToLowerInvariant()).ToString().ToLowerInvariant();
             data.Timestamp = commitTimestamp;
 
             using (var transaction = _transactionManager.BeginTransaction())
@@ -305,6 +305,7 @@ namespace Nuget.Services
             var version = SemVersion.Parse(data.OriginalVersion);
             r.CommitId = data.CommitId;
             r.CommitTimestamp = data.Timestamp;
+            r.PackageId = data.Id;
             r.Major = version.Major;
             r.Minor = version.Minor;
             r.Patch = version.Patch;
@@ -331,7 +332,7 @@ namespace Nuget.Services
             var metadata = data.Nuspec.Metadata;
             var p = _queryRepository.GetByPackage(data.RepoId, data.Id);
             SemVersion newVersion = SemVersion.Parse(metadata.Version);
-            var isPre = string.IsNullOrWhiteSpace(newVersion.Prerelease);
+            var isPre = !string.IsNullOrWhiteSpace(newVersion.Prerelease);
             var registrationEntities = _registrationRepository.GetAllByPackageId(data.RepoId, data.Id)
                         .OrderByDescending((a) => SemVersion.Parse(a.Version));
 
@@ -366,9 +367,10 @@ namespace Nuget.Services
                 p.PreListed = false;
                 p.PreCsvVersions ="|"+ string.Join("|",registrationEntities.Where(a => !string.IsNullOrWhiteSpace(a.PreRelease) && a.Listed).
                     Select(a => a.Version))+"|";
-                    
+                p.HasPreRelease = false;
                 if (lastVisible != null)
                 {
+                    p.HasPreRelease = true;
                     p.PreVersion = lastVisible.Version;
                     p.PreListed = true;
                 }
@@ -381,8 +383,10 @@ namespace Nuget.Services
                 p.CsvVersions = "|" + string.Join("|", registrationEntities.Where(a => string.IsNullOrWhiteSpace(a.PreRelease) && a.Listed).
                     Select(a => a.Version)) + "|";
 
+                p.HasRelease = false;
                 if (lastVisible != null)
                 {
+                    p.HasRelease = true;
                     p.Version = lastVisible.Version;
                     p.Listed = true;
                 }

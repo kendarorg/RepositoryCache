@@ -36,7 +36,7 @@ namespace NugetProtocol
                         "catalog:CatalogPage",
                         Guid.NewGuid(),DateTime.UtcNow,
                         64,"1.0.0","1.5.0",
-                         _servicesMapper.From(repoId,"PackageDisplayMetadataUriTemplate",semVerLevel, lowerId, "index.json"),
+                         _servicesMapper.FromSemver(repoId,"PackageDisplayMetadataUriTemplate",semVerLevel, lowerId, "index.json"),
                          null,
                          null
                         )
@@ -52,20 +52,20 @@ namespace NugetProtocol
         public RegistrationPage SinglePage(Guid repoId, string lowerId, string versionFrom, string versionTo, string semVerLevel)
         {
             var result = new RegistrationPage(
-                        _servicesMapper.From(repoId, "PackageDisplayMetadataUriTemplate", semVerLevel, lowerId, "page", versionFrom, versionTo + ".json"),
+                        _servicesMapper.FromSemver(repoId, "PackageDisplayMetadataUriTemplate", semVerLevel, lowerId, "page", versionFrom, versionTo + ".json"),
                         "catalog:CatalogPage",
                         Guid.NewGuid(), DateTime.UtcNow,
                         22, versionFrom, versionTo,
-                        _servicesMapper.From(repoId, "PackageDisplayMetadataUriTemplate", semVerLevel, lowerId, "index.json"),
+                        _servicesMapper.FromSemver(repoId, "PackageDisplayMetadataUriTemplate", semVerLevel, lowerId, "index.json"),
                         new List<RegistrationLeaf>
                         {
                             new RegistrationLeaf(
-                                _servicesMapper.From(repoId, "PackageDisplayMetadataUriTemplate",semVerLevel, lowerId, "1.0.0"+".json"),
+                                _servicesMapper.FromSemver(repoId, "PackageDisplayMetadataUriTemplate",semVerLevel, lowerId, "1.0.0"+".json"),
                                 "Package",
                                 Guid.NewGuid(),DateTime.UtcNow,
                                 null,
                                 _servicesMapper.From(repoId,"PackageBaseAddress/3.0.0",lowerId,"1.0.0",lowerId+"."+"1.0.0"+".nupkg"),
-                                _servicesMapper.From(repoId, "PackageDisplayMetadataUriTemplate",semVerLevel, lowerId, "index.json"),
+                                _servicesMapper.FromSemver(repoId, "PackageDisplayMetadataUriTemplate",semVerLevel, lowerId, "index.json"),
                                 "1.0.0"
                                 )
                         },
@@ -98,7 +98,7 @@ namespace NugetProtocol
                                 _servicesMapper.From(repoId, "Catalog/3.0.0", "data", catalogDate.ToString("yyyy.MM.dd.HH.mm.ss"),
                                     lowerId + "." + version + ".json"),
                                 _servicesMapper.From(repoId, "PackageBaseAddress/3.0.0", lowerId, version, lowerId + "." + version + ".nupkg"),
-                                _servicesMapper.From(repoId, "PackageDisplayMetadataUriTemplate", semVerLevel, lowerId, "index.json"),
+                                _servicesMapper.FromSemver(repoId, "PackageDisplayMetadataUriTemplate", semVerLevel, lowerId, "index.json"),
                                 version,
                                 new RegistrationLastLeafContext(
                                     _servicesMapper.From(repoId, "*Schema"),

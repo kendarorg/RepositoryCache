@@ -28,7 +28,7 @@ namespace NugetIntegration
             var package = localRepo.FindPackagesById("packageId").First();
             var packageFile = new FileInfo(@"packagePath");
             var size = packageFile.Length;
-            var ps = new PackageServer("http://localhost:", "userAgent");
+            var ps = new PackageServer("http://localhost:9080/nuget", "userAgent");
             ps.PushPackage("MYAPIKEY", package, size, 1800, false);
         }
     }

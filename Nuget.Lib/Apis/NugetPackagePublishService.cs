@@ -52,7 +52,7 @@ namespace Nuget.Apis
         private void ChangeListedStatus(Guid repoId, string id, string version, bool listed)
         {
             var semVersion = SemVersion.Parse(version);
-            var isPre = string.IsNullOrWhiteSpace(semVersion.Prerelease);
+            var isPre = !string.IsNullOrWhiteSpace(semVersion.Prerelease);
 
             using (var transaction = _transactionManager.BeginTransaction())
             {

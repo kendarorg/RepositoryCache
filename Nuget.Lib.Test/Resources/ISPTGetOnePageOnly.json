@@ -10,17 +10,17 @@
   "count": 1,
   "items": [
     {
-      "@id": "nuget.org/PackageDisplayMetadataUriTemplate/test/page/1.0.0-alpha/1.2.0.json",
+      "@id": "nuget.org/PackageDisplayMetadataUriTemplate:/test/page/1.0.0-alpha/1.2.0.json",
       "@type": "catalog:CatalogPage",
       "commitId": "0006c9a6-860f-4eb0-83b2-9b84cdeb0eb1",
       "commitTimestamp": "0001-01-01T00:00:22.3456789",
       "count": 3,
       "lower": "1.0.0-alpha",
       "upper": "1.2.0",
-      "parent": "nuget.org/PackageDisplayMetadataUriTemplate/test/index.json",
+      "parent": "nuget.org/PackageDisplayMetadataUriTemplate:/test/index.json",
       "items": [
         {
-          "@id": "nuget.org/PackageDisplayMetadataUriTemplate/test/1.0.0-alpha.json",
+          "@id": "nuget.org/PackageDisplayMetadataUriTemplate:/test/1.0.0-alpha.json",
           "@type": "Package",
           "commitId": "ced6c9a6-860f-4eb0-83b2-9b84cdeb0eb1",
           "commitTimestamp": "0001-01-01T00:00:12.3456789",
@@ -36,10 +36,10 @@
             "tags": []
           },
           "packageContent": "nuget.org/PackageBaseAddress/3.0.0/test/1.0.0-alpha/test.1.0.0-alpha.nupkg",
-          "registration": "nuget.org/PackageDisplayMetadataUriTemplate/test/index.json"
+          "registration": "nuget.org/PackageDisplayMetadataUriTemplate:/test/index.json"
         },
         {
-          "@id": "nuget.org/PackageDisplayMetadataUriTemplate/test/1.1.0.json",
+          "@id": "nuget.org/PackageDisplayMetadataUriTemplate:/test/1.1.0.json",
           "@type": "Package",
           "commitId": "ced6c9a6-860f-4eb0-83b2-9b84cdeb0eb2",
           "commitTimestamp": "0001-01-01T00:00:12.3456789",
@@ -55,10 +55,10 @@
             "tags": []
           },
           "packageContent": "nuget.org/PackageBaseAddress/3.0.0/test/1.1.0/test.1.1.0.nupkg",
-          "registration": "nuget.org/PackageDisplayMetadataUriTemplate/test/index.json"
+          "registration": "nuget.org/PackageDisplayMetadataUriTemplate:/test/index.json"
         },
         {
-          "@id": "nuget.org/PackageDisplayMetadataUriTemplate/test/1.2.0.json",
+          "@id": "nuget.org/PackageDisplayMetadataUriTemplate:/test/1.2.0.json",
           "@type": "Package",
           "commitId": "0006c9a6-860f-4eb0-83b2-9b84cdeb0eb1",
           "commitTimestamp": "0001-01-01T00:00:22.3456789",
@@ -74,7 +74,7 @@
             "tags": []
           },
           "packageContent": "nuget.org/PackageBaseAddress/3.0.0/test/1.2.0/test.1.2.0.nupkg",
-          "registration": "nuget.org/PackageDisplayMetadataUriTemplate/test/index.json"
+          "registration": "nuget.org/PackageDisplayMetadataUriTemplate:/test/index.json"
         }
       ]
     }

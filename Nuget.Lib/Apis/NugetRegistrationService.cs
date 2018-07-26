@@ -113,7 +113,7 @@ namespace Nuget.Apis
                                     "catalog:CatalogPage",
                                     pageMaxCommitId, pageLastTimestamp,
                                     pageRegistrationsCount, startVersion, endVersion,
-                                     _servicesMapper.From(repoId, "PackageDisplayMetadataUriTemplate", semVerLevel, lowerId, "index.json"),
+                                     _servicesMapper.FromSemver(repoId, "PackageDisplayMetadataUriTemplate", semVerLevel, lowerId, "index.json"),
                                      null,
                                      null
                                     );
@@ -132,23 +132,24 @@ namespace Nuget.Apis
                     lastTimestamp = singlePage.CommitTimestamp;
                     maxCommitId = singlePage.CommitId;
                 }
-                data.Add(new RegistrationLeaf(
-                                _servicesMapper.From(repoId, "PackageDisplayMetadataUriTemplate", semVerLevel, lowerId, singlePage.Version + ".json"),
+                var leaf = new RegistrationLeaf(
+                                _servicesMapper.FromSemver(repoId, "PackageDisplayMetadataUriTemplate", semVerLevel, lowerId, singlePage.Version + ".json"),
                                 "Package",
                                 singlePage.CommitId, singlePage.CommitTimestamp,
                                 null,
                                 _servicesMapper.From(repoId, "PackageBaseAddress/3.0.0", lowerId, singlePage.Version, lowerId + "." + singlePage.Version + ".nupkg"),
-                                _servicesMapper.From(repoId, "PackageDisplayMetadataUriTemplate", semVerLevel, lowerId, "index.json"),
+                                _servicesMapper.FromSemver(repoId, "PackageDisplayMetadataUriTemplate", semVerLevel, lowerId, "index.json"),
                                 singlePage.Version
-                                ));
+                                );
+                data.Add(leaf);
             }
 
             var result = new RegistrationPage(
-                        _servicesMapper.From(repoId, "PackageDisplayMetadataUriTemplate", semVerLevel, lowerId, "page", versionFrom, versionTo + ".json"),
+                        _servicesMapper.FromSemver(repoId, "PackageDisplayMetadataUriTemplate", semVerLevel, lowerId, "page", versionFrom, versionTo + ".json"),
                         "catalog:CatalogPage",
                         maxCommitId, lastTimestamp,
                         data.Count, versionFrom, versionTo,
-                        _servicesMapper.From(repoId, "PackageDisplayMetadataUriTemplate", semVerLevel, lowerId, "index.json"),
+                        _servicesMapper.FromSemver(repoId, "PackageDisplayMetadataUriTemplate", semVerLevel, lowerId, "index.json"),
                         data,
                         new RegistrationContext(
                             _servicesMapper.From(repoId, "*Schema"), _servicesMapper.From(repoId, "*Catalog"),
@@ -180,7 +181,7 @@ namespace Nuget.Apis
                                 _servicesMapper.From(repoId, "Catalog/3.0.0", "data", catalogDate.ToString("yyyy.MM.dd.HH.mm.ss"),
                                     lowerId + "." + version + ".json"),
                                 _servicesMapper.From(repoId, "PackageBaseAddress/3.0.0", lowerId, version, lowerId + "." + version + ".nupkg"),
-                                _servicesMapper.From(repoId, "PackageDisplayMetadataUriTemplate", semVerLevel, lowerId, "index.json"),
+                                _servicesMapper.FromSemver(repoId, "PackageDisplayMetadataUriTemplate", semVerLevel, lowerId, "index.json"),
                                 version,
                                 new RegistrationLastLeafContext(
                                     _servicesMapper.From(repoId, "*Schema"),

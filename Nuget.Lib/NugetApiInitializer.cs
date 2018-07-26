@@ -59,7 +59,7 @@ namespace Nuget
 
         public void Initialize(IRepositoryServiceProvider repositoryServiceProvider)
         {
-            var avail = _repositoryEntitiesRepository.GetAll().FirstOrDefault(a => a.Address == "http://api.nuget.org");
+            var avail = _repositoryEntitiesRepository.GetAll().FirstOrDefault(a => a.Prefix == "nuget.org");
 
             if (avail == null)
             {
@@ -69,13 +69,32 @@ namespace Nuget
                     Mirror = true,
                     Prefix = "nuget.org",
                     Type = "nuget",
-                    Address = "http://api.nuget.org",
+                    Address = "nuget.org/v3/index.json",
                     PackagesPath = "nuget.org",
                     Settings = data
                 };
                 _repositoryEntitiesRepository.Save(avail);
-                _servicesMapper.Refresh();
             };
+
+            var local = _repositoryEntitiesRepository.GetAll().FirstOrDefault(a => a.Prefix == "local");
+
+            if (local == null)
+            {
+                var data = _assemblyUtils.ReadRes<NugetApiInitializer>("nuget.org.settings.json");
+                local = new RepositoryEntity
+                {
+                    Mirror = false,
+                    Prefix = "local",
+                    Type = "nuget",
+                    Address = "/local/v3/index.json",
+                    PackagesPath = "local",
+                    Settings = data
+                };
+                _repositoryEntitiesRepository.Save(local);
+            };
+
+            _servicesMapper.Refresh();
+
             repositoryServiceProvider.RegisterApi(new V3_Index_Json(
                 _indexService, _applicationPropertes, _repositoryEntitiesRepository,
                 "/{repo}/v3/index.json"));

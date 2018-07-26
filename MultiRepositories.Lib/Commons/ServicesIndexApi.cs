@@ -33,7 +33,7 @@ namespace MultiRepositories.Commons
                     Official = item.Mirror,
                     Prefix = item.Prefix,
                     Type = item.Type.ToLowerInvariant(),
-                    Address = _properties.Host + "/" + item.Prefix + "/" + item.Address.TrimStart('/')
+                    Address = _properties.Host.TrimEnd('/') + "/" + item.Address.TrimStart('/')
                 });
             }
 

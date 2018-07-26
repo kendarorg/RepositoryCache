@@ -16,7 +16,7 @@ namespace Nuget.Repositories
 
         public IEnumerable<RegistrationEntity> GetAllByPackageId(Guid repoId, string lowerId)
         {
-            return GetAll().Where(a => a.RepositoryId == repoId).
+            return GetAll().Where(a => a.RepositoryId == repoId && a.PackageId == lowerId).
                 OrderBy(a => a.Major).OrderBy(a => a.Minor).OrderBy(a => a.Patch).
                 OrderBy(a => a.Extra ?? 0).
                 OrderBy(a => a.PreRelease);
