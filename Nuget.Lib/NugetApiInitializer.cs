@@ -95,6 +95,10 @@ namespace Nuget
 
             _servicesMapper.Refresh();
 
+            
+            repositoryServiceProvider.RegisterApi(new V2_Publish(_insertNugetService, _repositoryEntitiesRepository,
+                "/{repo}/v2/publish"));
+
             repositoryServiceProvider.RegisterApi(new V3_Index_Json(
                 _indexService, _applicationPropertes, _repositoryEntitiesRepository,
                 "/{repo}/v3/index.json"));

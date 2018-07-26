@@ -80,9 +80,9 @@ namespace MultiRepositories
 
         public SerializableRequest()
         {
-            Headers = new Dictionary<string, string>();
-            PathParams = new Dictionary<string, string>();
-            QueryParams = new Dictionary<string, string>();
+            Headers = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);
+            PathParams = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);
+            QueryParams = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);
             Content = new byte[] { };
             Protocol = "http";
         }

@@ -161,12 +161,13 @@ namespace MultiRepositories
                 {
                     using (System.IO.BinaryReader reader = new System.IO.BinaryReader(body, request.ContentEncoding))
                     {
-                        var offset = 0;
+                        //var offset = 0;
                         var read = reader.ReadBytes(10000);
                         while (read != null && read.Length > 0)
                         {
-                            ms.Write(read, offset, read.Length);
-                            offset += read.Length;
+                            ms.Write(read, 0, read.Length);
+                            //offset += read.Length - 1;
+                            read = reader.ReadBytes(10000);
                         }
                         ms.Seek(0, SeekOrigin.Begin);
                         return ms.ToArray();
@@ -209,8 +210,8 @@ namespace MultiRepositories
             if (serializedRequest.Method == "POST") method = HttpMethod.Post;
             if (serializedRequest.Method == "PUT") method = HttpMethod.Put;
             //sr.ContentType = req.ContentType;
-            serializedRequest.Headers = new Dictionary<String, String>();
-            serializedRequest.QueryParams = new Dictionary<String, String>();
+            serializedRequest.Headers = new Dictionary<String, String>(StringComparer.InvariantCultureIgnoreCase);
+            serializedRequest.QueryParams = new Dictionary<String, String>(StringComparer.InvariantCultureIgnoreCase);
 
             foreach (string item in req.QueryString.Keys)
             {

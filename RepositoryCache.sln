@@ -37,8 +37,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MemDb", "MemDb", "{9162DC40
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Integration", "Integration", "{F3814DB4-A2BC-4AAA-9C1D-5B8BCDFC38CA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NugetIntegration", "NugetIntegration\NugetIntegration.csproj", "{545AA3D8-0847-4D58-A975-329C3DBE2E90}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -97,10 +95,6 @@ Global
 		{CF3CEADB-42D1-4873-8061-4B2E3691AA0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CF3CEADB-42D1-4873-8061-4B2E3691AA0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CF3CEADB-42D1-4873-8061-4B2E3691AA0D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{545AA3D8-0847-4D58-A975-329C3DBE2E90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{545AA3D8-0847-4D58-A975-329C3DBE2E90}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{545AA3D8-0847-4D58-A975-329C3DBE2E90}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{545AA3D8-0847-4D58-A975-329C3DBE2E90}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -119,7 +113,6 @@ Global
 		{6D34F0EA-4C37-49A7-8B88-F68713CDE78E} = {9162DC40-6922-4768-91BB-C0D13FC0E368}
 		{249C4075-9CFB-4CA1-BA82-290BFF361CD7} = {44F0CFA8-B467-43B5-9C9F-3CA39DAC83DD}
 		{CF3CEADB-42D1-4873-8061-4B2E3691AA0D} = {BE9C9E19-84E5-4844-B361-02A2116382D4}
-		{545AA3D8-0847-4D58-A975-329C3DBE2E90} = {F3814DB4-A2BC-4AAA-9C1D-5B8BCDFC38CA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CE85B18F-DEB6-473C-A03F-D7EBA917086D}

@@ -29,7 +29,7 @@ namespace MultiRepositories.Service
 
         public bool CanHandleRequest(String url)
         {
-            var splittedUrl = url.TrimStart('/').Split('/');
+            var splittedUrl = url.Trim('/').Split('/');
             
             foreach (var realPath in _realPaths)
             {
@@ -54,7 +54,7 @@ namespace MultiRepositories.Service
         public SerializableResponse HandleRequest(SerializableRequest request)
         {
             var res = new Dictionary<string, string>();
-            var splittedUrl = request.Url.TrimStart('/').Split('/');
+            var splittedUrl = request.Url.Trim('/').Split('/');
             foreach (var realPath in _realPaths)
             {
                 var isGood = true;
