@@ -1,0 +1,16 @@
+﻿{
+  "groupId": "com.test.requesthandlernode",
+  "artifactId": "requesthandlernode",
+  "version": "1.1.6",
+  "dependencies": [
+    {
+      "artifactId": "guava",
+      "groupId": "com.google.guava",
+      "version": "23.0"
+    },
+    {
+      "artifactId": "spring-boot-starter-web",
+      "groupId": "org.springframework.boot"
+    }
+  ]
+}

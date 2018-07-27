@@ -14,7 +14,8 @@ namespace Maven.Controllers
     {
         private IRepositoryEntitiesRepository _repositoryEntitiesRepository;
 
-        public Maven2_Push( IRepositoryEntitiesRepository repositoryEntitiesRepository, params string[] paths)
+        public Maven2_Push(
+            IRepositoryEntitiesRepository repositoryEntitiesRepository, params string[] paths)
             : base(null, paths)
         {
             _repositoryEntitiesRepository = repositoryEntitiesRepository;
@@ -22,7 +23,18 @@ namespace Maven.Controllers
         }
 
         private SerializableResponse Handler(SerializableRequest arg)
-        {
+        {/*
+            http://localhost:9088/maven.local/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25.jar
+http://localhost:9088/maven.local/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25.jar.sha1
+http://localhost:9088/maven.local/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25.jar.md5
+http://localhost:9088/maven.local/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25.pom
+http://localhost:9088/maven.local/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25.pom.sha1
+http://localhost:9088/maven.local/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25.pom.md5
+http://localhost:9088/maven.local/org/slf4j/slf4j-api/maven-metadata.xml
+http://localhost:9088/maven.local/org/slf4j/slf4j-api/maven-metadata.xml
+http://localhost:9088/maven.local/org/slf4j/slf4j-api/maven-metadata.xml.sha1
+http://localhost:9088/maven.local/org/slf4j/slf4j-api/maven-metadata.xml.md5
+*/
             //repo
             //fullname
             //version

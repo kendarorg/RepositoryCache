@@ -1,0 +1,8 @@
+﻿{
+  "groupId": "org.slf4j",
+  "artifactId": "slf4j-api",
+  "version": "1.7.25",
+  "name": "SLF4J API Module",
+  "description": "The slf4j API",
+  "url": "http://www.slf4j.org"
+}
