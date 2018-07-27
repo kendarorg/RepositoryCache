@@ -210,11 +210,8 @@ namespace MultiRepositories
         [TestMethod]
         public void ISBPToIgnoreNotMatchingMethodInCanHandle()
         {
-            var viewed = false;
-
             var mockRest = new MockRestApi((a) =>
             {
-                viewed = true;
                 return new SerializableResponse();
             }, "*PUT", "test");
 

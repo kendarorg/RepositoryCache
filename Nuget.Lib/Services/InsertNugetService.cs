@@ -342,18 +342,27 @@ namespace Nuget.Services
                 p = new QueryEntity();
             }
 
-
+            
             p.RepositoryId = data.RepoId;
             p.CommitId = data.CommitId;
             p.CommitTimestamp = data.Timestamp;
             p.PackageId = data.Id.ToLowerInvariant();
             p.RepositoryId = data.RepoId;
             p.Summary = metadata.Summary;
-            p.Tags = metadata.Tags;
+            if (!string.IsNullOrWhiteSpace(metadata.Tags))
+            {
+                p.Tags ="|"+string.Join("|", metadata.Tags.Split(' ',',').Where(a=>a.Trim().Length>0))+"|";
+            }
             p.Title = metadata.Title;
-            p.Author = metadata.Authors;
+            if (!string.IsNullOrWhiteSpace(metadata.Authors))
+            {
+                p.Author = "|" + string.Join("|", metadata.Authors.Split(' ', ',').Where(a => a.Trim().Length > 0)) + "|";
+            }
             p.Description = metadata.Description;
-            p.Owner = metadata.Owners;
+            if (!string.IsNullOrWhiteSpace(metadata.Owners))
+            {
+                p.Owner = "|" + string.Join("|", metadata.Owners.Split(' ', ',').Where(a => a.Trim().Length > 0)) + "|";
+            }
 
             p.IconUrl = metadata.IconUrl;
             p.LicenseUrl = metadata.LicenseUrl;
@@ -391,7 +400,7 @@ namespace Nuget.Services
                     p.Listed = true;
                 }
             }
-            
+            p.FreeText = p.Title + " " + p.Description + " " + p.Summary;
             if (isNew)
             {
                 _queryRepository.Save(p, transaction);
