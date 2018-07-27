@@ -34,10 +34,10 @@ namespace Maven
                 avail = new RepositoryEntity
                 {
                     Mirror = true,
-                    Prefix = "repo.maven.apache.org",
+                    Prefix = "maven.apache",
                     Type = "maven",
-                    Address = "/repo.maven.apache.org",
-                    PackagesPath = "repo.maven.apache.org",
+                    Address = "/maven.apache",
+                    PackagesPath = "maven.apache",
                     Settings = string.Empty
                 };
                 _repositoryEntitiesRepository.Save(avail);
@@ -61,7 +61,7 @@ namespace Maven
             };
 
             repositoryServiceProvider.RegisterApi(new Maven2_Push(_repositoryEntitiesRepository,
-                "/{repo}/publish/{*data}"));
+                "*PUT", "/{repo}/{*group}/{id}/{version}/{fullName}"));
         }
     }
 }

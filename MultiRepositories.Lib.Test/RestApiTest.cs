@@ -111,13 +111,8 @@ namespace MultiRepositories
         [ExpectedException(typeof(Exception))]
         public void ISBPToThrowOnduplicateStars()
         {
-            var viewed = false;
 
-            var mockRest = new MockRestApi((a) =>
-            {
-                viewed = true;
-                return new SerializableResponse();
-            }, "test/{*first}/{*last}.json");
+            var mockRest = new MockRestApi((a) => null, "test/{*first}/{*last}.json");
 
             var url = "test/test/item/index.json";
             mockRest.CanHandleRequest(url);
@@ -185,6 +180,66 @@ namespace MultiRepositories
             var url = "test/prova.json/fuffa";
             var result = mockRest.CanHandleRequest(url);
             Assert.IsFalse(result);
+        }
+
+        [TestMethod]
+        public void ISBPToHandleSimpleUrlWithMethod()
+        {
+            var viewed = false;
+
+            var mockRest = new MockRestApi((a) =>
+            {
+                viewed = true;
+                return new SerializableResponse();
+            },"*PUT", "test");
+
+            var url = "test";
+            var canSee = mockRest.CanHandleRequest(url,"PUT");
+            Assert.IsTrue(canSee);
+            var req = new SerializableRequest()
+            {
+                Url = url,
+                Method="PUT"
+            };
+            var result = mockRest.HandleRequest(req);
+            Assert.IsTrue(viewed);
+            Assert.IsNotNull(result);
+        }
+
+
+        [TestMethod]
+        public void ISBPToIgnoreNotMatchingMethodInCanHandle()
+        {
+            var viewed = false;
+
+            var mockRest = new MockRestApi((a) =>
+            {
+                viewed = true;
+                return new SerializableResponse();
+            }, "*PUT", "test");
+
+            var url = "test";
+            var canSee = mockRest.CanHandleRequest(url,"POST");
+            Assert.IsFalse(canSee);
+        }
+
+
+        [TestMethod]
+        [ExpectedException(typeof(Exception))]
+        public void ISBPToIgnoreNotMatchingMethodInHandleRequest()
+        {
+            var mockRest = new MockRestApi((a) =>
+            {
+                return new SerializableResponse();
+            }, "*PUT", "test");
+
+            var url = "test";
+            var req = new SerializableRequest()
+            {
+                Url = url,
+                Method = "POST"
+            };
+            mockRest.HandleRequest(req);
         }
     }
 }

@@ -237,7 +237,7 @@ namespace MultiRepositories
 
             foreach (var api in _restApis)
             {
-                if (api.CanHandleRequest(serializedRequest.Url))
+                if (api.CanHandleRequest(serializedRequest.Url, serializedRequest.Method))
                 {
                     try
                     {

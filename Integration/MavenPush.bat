@@ -1,7 +1,7 @@
 @echo off
 REM maven_exes\lib\slf4j-api-1.7.25.pom
 SET APIKEY=E7446C12-BD80-4272-3332-09914BE6EBC8
-SET NUROOT=http://localhost:9088/maven.local/publish
+SET NUROOT=http://localhost:9088/maven.local
 
 cd maven_exes
 SET CUDIR=%CD%

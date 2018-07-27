@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MultiRepositories;
+using System.IO;
 
 namespace Maven.Controllers
 {
@@ -22,6 +23,12 @@ namespace Maven.Controllers
 
         private SerializableResponse Handler(SerializableRequest arg)
         {
+            //repo
+            //fullname
+            //version
+            //id
+            //group
+            //File.WriteAllText(arg.PathParams["fullname"],JsonConvert.)
             return new SerializableResponse();
         }
     }
