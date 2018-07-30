@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MockRestApi.cs" />
+    <Compile Include="MavenApiTest.cs" />
     <Compile Include="RestApiTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

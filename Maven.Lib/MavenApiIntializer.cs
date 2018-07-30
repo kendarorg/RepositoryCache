@@ -26,6 +26,11 @@ namespace Maven
         }
         public void Initialize(IRepositoryServiceProvider repositoryServiceProvider)
         {
+
+            repositoryServiceProvider.RegisterApi(new Maven2_Push(_repositoryEntitiesRepository,
+              "/maven.local/{*group}"));
+            return;
+
             var avail = _repositoryEntitiesRepository.GetAll().FirstOrDefault(a => a.Prefix == "repo.maven.apache.org");
             //https://repo.maven.apache.org/maven2/
             if (avail == null)

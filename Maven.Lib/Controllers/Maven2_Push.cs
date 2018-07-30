@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MultiRepositories;
 using System.IO;
+using Newtonsoft.Json;
 
 namespace Maven.Controllers
 {
@@ -21,16 +22,22 @@ namespace Maven.Controllers
             _repositoryEntitiesRepository = repositoryEntitiesRepository;
             SetHandler(Handler);
         }
-
-        private SerializableResponse Handler(SerializableRequest arg)
+        private static int count = 0;
+        private SerializableResponse Handler(SerializableRequest localRequest)
         {
-
+            count++;
             //repo
             //fullname
             //version
             //id
             //group
-            //File.WriteAllText(arg.PathParams["fullname"],JsonConvert.)
+            var path = localRequest.ToLocalPath("index."+ count+".json");
+            var dir = Path.GetDirectoryName(path);
+            if (!Directory.Exists(dir))
+            {
+                Directory.CreateDirectory(dir);
+            }
+            File.WriteAllText(path, JsonConvert.SerializeObject(localRequest));
             return new SerializableResponse();
         }
     }

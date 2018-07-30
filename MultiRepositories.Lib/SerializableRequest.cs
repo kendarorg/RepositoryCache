@@ -37,8 +37,8 @@ namespace MultiRepositories
             {
                 res = res + "\\" + CalculateMD5Hash(JsonConvert.SerializeObject(QueryParams));
             }
-            if (fileName == null) return res;
-            return res + "\\" + fileName;
+            if (fileName == null) return res + "." + Method;
+            return res + "\\" + Method + "." + fileName;
         }
 
         public string CalculateMD5Hash(string input)

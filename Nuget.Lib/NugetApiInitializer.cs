@@ -93,46 +93,49 @@ namespace Nuget
 
             _servicesMapper.Refresh();
 
-            
-            repositoryServiceProvider.RegisterApi(new V2_Publish(_insertNugetService, _repositoryEntitiesRepository,
-                "/{repo}/v2/publish"));
+            foreach (var item in _repositoryEntitiesRepository.GetByType("nuget"))
+            {
 
-            repositoryServiceProvider.RegisterApi(new V3_Index_Json(
-                _indexService, _applicationPropertes, _repositoryEntitiesRepository,
-                "/{repo}/v3/index.json"));
+                repositoryServiceProvider.RegisterApi(new V2_Publish(_insertNugetService, _repositoryEntitiesRepository,
+                    "/{repo}/v2/publish".Replace("{repo}",item.Prefix)));
 
-            repositoryServiceProvider.RegisterApi(new V3_Query(
-                _searchQueryService, _applicationPropertes, _repositoryEntitiesRepository, _servicesMapper,
-                "/{repo}/v3/query"));
+                repositoryServiceProvider.RegisterApi(new V3_Index_Json(
+                    _indexService, _applicationPropertes, _repositoryEntitiesRepository,
+                    "/{repo}/v3/index.json".Replace("{repo}", item.Prefix)));
 
-            repositoryServiceProvider.RegisterApi(new V3_Registration_Package(
-                _applicationPropertes, _repositoryEntitiesRepository, _registrationService, _servicesMapper,
-                "/{repo}/v3/registration/{semver}/{packageid}/index.json"));
+                repositoryServiceProvider.RegisterApi(new V3_Query(
+                    _searchQueryService, _applicationPropertes, _repositoryEntitiesRepository, _servicesMapper,
+                    "/{repo}/v3/query".Replace("{repo}", item.Prefix)));
 
-            repositoryServiceProvider.RegisterApi(new V3_Registration_Package_Version(
-                _applicationPropertes, _repositoryEntitiesRepository, _registrationService, _servicesMapper,
-                "/{repo}/v3/registration/{semver}/{packageid}/{version}.json"));
+                repositoryServiceProvider.RegisterApi(new V3_Registration_Package(
+                    _applicationPropertes, _repositoryEntitiesRepository, _registrationService, _servicesMapper,
+                    "/{repo}/v3/registration/{semver}/{packageid}/index.json".Replace("{repo}", item.Prefix)));
 
-            repositoryServiceProvider.RegisterApi(new V3_Registration_Package_Page(
-                _applicationPropertes, _registrationService, _servicesMapper, _repositoryEntitiesRepository,
-                "/{repo}/v3/registration/{semver}/{packageid}/page/{from}/{to}.json"));
+                repositoryServiceProvider.RegisterApi(new V3_Registration_Package_Version(
+                    _applicationPropertes, _repositoryEntitiesRepository, _registrationService, _servicesMapper,
+                    "/{repo}/v3/registration/{semver}/{packageid}/{version}.json".Replace("{repo}", item.Prefix)));
 
-            repositoryServiceProvider.RegisterApi(new V3_FlatContainer_Package_Version_Nupkg(
-                _applicationPropertes, _insertNugetService, _repositoryOfPackages,
-                _packageBaseAddressService, _servicesMapper, _repositoryEntitiesRepository,
-                "/{repo}/v3/container/{idLower}/{versionLower}/{fullversion}.nupkg"));
+                repositoryServiceProvider.RegisterApi(new V3_Registration_Package_Page(
+                    _applicationPropertes, _registrationService, _servicesMapper, _repositoryEntitiesRepository,
+                    "/{repo}/v3/registration/{semver}/{packageid}/page/{from}/{to}.json".Replace("{repo}", item.Prefix)));
 
-            repositoryServiceProvider.RegisterApi(new V3_FlatContainer_Package(
-                _applicationPropertes, _servicesMapper, _repositoryEntitiesRepository, _packageBaseAddressService,
-                "/{repo}/v3/container/{packageid}/index.json"));
+                repositoryServiceProvider.RegisterApi(new V3_FlatContainer_Package_Version_Nupkg(
+                    _applicationPropertes, _insertNugetService, _repositoryOfPackages,
+                    _packageBaseAddressService, _servicesMapper, _repositoryEntitiesRepository,
+                    "/{repo}/v3/container/{idLower}/{versionLower}/{fullversion}.nupkg".Replace("{repo}", item.Prefix)));
+
+                repositoryServiceProvider.RegisterApi(new V3_FlatContainer_Package(
+                    _applicationPropertes, _servicesMapper, _repositoryEntitiesRepository, _packageBaseAddressService,
+                    "/{repo}/v3/container/{packageid}/index.json".Replace("{repo}", item.Prefix)));
 
 
-            repositoryServiceProvider.RegisterApi(new V3_Catalog_PackageId(
-                _applicationPropertes, _catalogService, _repositoryEntitiesRepository, _registrationService, _servicesMapper,
-                "/{repo}/v3/catalog/data/{date}/{fullPackage}.json"));
+                repositoryServiceProvider.RegisterApi(new V3_Catalog_PackageId(
+                    _applicationPropertes, _catalogService, _repositoryEntitiesRepository, _registrationService, _servicesMapper,
+                    "/{repo}/v3/catalog/data/{date}/{fullPackage}.json".Replace("{repo}", item.Prefix)));
 
-            repositoryServiceProvider.RegisterApi(new Custom_Load(_insertNugetService, _repositoryEntitiesRepository,
-                "/{repo}/custom/load"));
+                repositoryServiceProvider.RegisterApi(new Custom_Load(_insertNugetService, _repositoryEntitiesRepository,
+                    "/{repo}/custom/load".Replace("{repo}", item.Prefix)));
+            }
             /*repositoryServiceProvider.RegisterApi(new V3_Catalog_PackageId(pr, de, ap, uc, reps));*/
         }
     }

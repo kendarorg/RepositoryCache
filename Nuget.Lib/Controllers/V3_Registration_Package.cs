@@ -67,7 +67,6 @@ namespace Nuget.Controllers
             var convertedUrl = _servicesMapper.ToNuget(repo.Id, localRequest.Protocol + "://" + localRequest.Host + localRequest.Url);
             remoteRequest.Headers["Host"] = new Uri(convertedUrl).Host;
 
-            var path = localRequest.ToLocalPath("index.json");
             var remoteRes = RemoteRequest(convertedUrl, remoteRequest);
 
             result = JsonConvert.DeserializeObject<RegistrationIndex>(Encoding.UTF8.GetString(remoteRes.Content));

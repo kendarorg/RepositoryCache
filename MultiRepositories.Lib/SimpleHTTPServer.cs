@@ -323,8 +323,7 @@ namespace MultiRepositories
                 }
                 res = ForwardRequest(cloned);
 
-                //Console.WriteLine("Written " + serializedRequest.ToLocalPath());
-
+                
                 File.WriteAllBytes(localPath + ".response", res.Content);
                 File.WriteAllText(localPath + ".mime", res.ContentType);
             }

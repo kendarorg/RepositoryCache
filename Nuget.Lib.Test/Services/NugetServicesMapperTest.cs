@@ -21,9 +21,9 @@ namespace Nuget.Lib.Test
         {
             var au = new AssemblyUtils();
             var data = au.ReadRes<NugetServicesMapperTest>("nuget.org.settings.json");
-            _properties = new AppProperties(null,null);
+            _properties = new AppProperties(null, null);
             _repositoryId = Guid.NewGuid();
-            
+
             var repositoryEntitiesRepository = new Mock<IRepositoryEntitiesRepository>();
 
             var repo = new RepositoryEntity
@@ -63,7 +63,7 @@ namespace Nuget.Lib.Test
         public void ISPToLoadRefItemNoVersion()
         {
             var au = new AssemblyUtils();
-            var target = new NugetServicesMapper(_repository,_properties);
+            var target = new NugetServicesMapper(_repository, _properties);
             target.Refresh();
 
             var packagePublish = target.From(_repositoryId, "PackageVersionDisplayMetadataUriTemplate");
@@ -131,9 +131,9 @@ namespace Nuget.Lib.Test
             target.Refresh();
             var visibles = target.GetVisibles(_repositoryId);
 
-            Assert.AreEqual(21, visibles.Count);
+            Assert.AreEqual(22, visibles.Count);
         }
-        
+
         [TestMethod]
         public void ISPToLoadFromNuget()
         {
@@ -156,7 +156,7 @@ namespace Nuget.Lib.Test
             target.Refresh();
 
             var packagePublish = target.ToNuget(_repositoryId, "http://localhost:9080/nuget.org/v3/registrationsemver1/test/index.json");
-            Assert.AreEqual("https://api.nuget.org/v3/registration3-gz/test/index.json", packagePublish);
+            Assert.AreEqual("https://api.nuget.org/v3/registration3/test/index.json", packagePublish);
         }
     }
 }

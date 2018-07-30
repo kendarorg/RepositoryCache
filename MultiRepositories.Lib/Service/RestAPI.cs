@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace MultiRepositories.Service
@@ -130,7 +131,17 @@ namespace MultiRepositories.Service
                                     spl = spl.Substring(0, spl.Length - post.Length);
                                     mtc = mtc.Substring(0, mtc.Length - post.Length);
                                 }
-                                Append(data, mtc.Trim('{', '}'), spl);
+                                if (mtc.IndexOf("#") > 0)
+                                {
+                                    if (!AppendMerge(data, mtc.Trim('{', '}'), spl))
+                                    {
+                                        return null;
+                                    }
+                                }
+                                else
+                                {
+                                    Append(data, mtc.Trim('{', '}'), spl);
+                                }
                                 limitSplit--;
                                 continue;
                             }
@@ -149,23 +160,6 @@ namespace MultiRepositories.Service
                         Append(data, "*" + index, spl);
                     }
                     return data;
-
-                    /*var expected = realPath[realIndex + 1];
-                    var indexFounded = false;
-                    for (; splittedIndex < splittedUrl.Length; splittedIndex++)
-                    {
-                        if (splittedUrl[splittedIndex] == expected)
-                        {
-                            indexFounded = true;
-                            splittedIndex--;
-                            break;
-                        }
-                        Append(data, index, splittedUrl[splittedIndex]);
-                    }
-                    if (!indexFounded)
-                    {
-                        return null;
-                    }*/
                 }
                 else if (string.Compare(spl, mtc, true) == 0)
                 {
@@ -188,7 +182,18 @@ namespace MultiRepositories.Service
                             spl = spl.Substring(0, spl.Length - post.Length);
                             mtc = mtc.Substring(0, mtc.Length - post.Length);
                         }
-                        Append(data, mtc.Trim('{', '}'), spl);
+
+                        if (mtc.IndexOf("#") > 0)
+                        {
+                            if (!AppendMerge(data, mtc.Trim('{', '}'), spl))
+                            {
+                                return null;
+                            }
+                        }
+                        else
+                        {
+                            Append(data, mtc.Trim('{', '}'), spl);
+                        }
                         splittedIndex++;
                         continue;
                     }
@@ -202,6 +207,31 @@ namespace MultiRepositories.Service
 
             }
             return data;
+        }
+
+        protected static Dictionary<string, Regex> _regexes = new Dictionary<string, Regex>(StringComparer.InvariantCultureIgnoreCase);
+        //https://docs.oracle.com/javase/tutorial/java/package/namingpkgs.html
+        private bool AppendMerge(Dictionary<string, string> data, string mtc, string spl)
+        {
+            var trimmed = mtc.Trim('{', '}');
+            var sharp = trimmed.IndexOf('#');
+            var regex = trimmed.Substring(sharp + 1);
+            if (!_regexes.ContainsKey(regex))
+            {
+                _regexes[regex] = new Regex(regex, RegexOptions.CultureInvariant | RegexOptions.Compiled |
+                    RegexOptions.ExplicitCapture);
+            }
+            var match = _regexes[regex].Match(spl);
+            if (!match.Success) return false;
+
+            foreach (string groupName in _regexes[regex].GetGroupNames())
+            {
+                if (match.Groups[groupName].Success)
+                {
+                    data[groupName] = match.Groups[groupName].Value;
+                };
+            }
+            return true;
         }
 
         public bool CanHandleRequest(String url, string method = null)

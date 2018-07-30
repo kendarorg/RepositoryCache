@@ -53,12 +53,13 @@
   <ItemGroup>
     <Compile Include="PomXmlTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SampleMavenRead.cs" />
     <Compile Include="Utils\JsonComp.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
     <EmbeddedResource Include="Resources\slf4j-api-1.7.25.pom" />
-    <None Include="Resources\ITSPToParseSimplePom.json" />
+    <EmbeddedResource Include="Resources\ITSPToParseSimplePom.json" />
     <EmbeddedResource Include="Resources\ITSPToParseRealPom.json" />
   </ItemGroup>
   <ItemGroup>

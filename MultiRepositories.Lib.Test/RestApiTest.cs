@@ -251,5 +251,28 @@ namespace MultiRepositories
             Assert.IsFalse(mockRest.CanHandleRequest("/nuget.org/v3/index.json"));
             Assert.IsTrue(mockRest.CanHandleRequest("/maven.local/org/slf4j/slf4j-api/maven-metadata.xml"));
         }
+
+
+        [TestMethod]
+        public void ISBPToMatchRegex()
+        {
+            SerializableRequest request = null;
+            var mockRest = new MockRestApi((a) =>
+            {
+                request = a;
+                return new SerializableResponse();
+            }, @"/{repo}/{id#^(?<major>\d+)$}/test");
+
+            var url = "/nuget.org/33/test";
+            Assert.IsTrue(mockRest.CanHandleRequest(url));
+            var req = new SerializableRequest()
+            {
+                Url = url,
+                Method = "POST"
+            };
+            mockRest.HandleRequest(req);
+            Assert.IsNotNull(request);
+            Assert.AreEqual("33", request.PathParams["major"]);
+        }
     }
 }

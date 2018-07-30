@@ -43,6 +43,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Apis\IMavenPublish.cs" />
+    <Compile Include="Apis\IMavenRead.cs" />
+    <Compile Include="Apis\IMavenSearch.cs" />
+    <Compile Include="Apis\ResponseContent.cs" />
+    <Compile Include="Apis\ResponseDoc.cs" />
+    <Compile Include="Apis\ResponseHeader.cs" />
+    <Compile Include="Apis\SearchResult.cs" />
     <Compile Include="DependencyXml.cs" />
     <Compile Include="PomXml.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
