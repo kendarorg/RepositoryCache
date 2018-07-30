@@ -1,5 +1,5 @@
 ﻿{
-  "Port": 9080,
+  "Port": 9088,
   "LogRequests": true,
   "Path": "",
   "Ignores": [

@@ -78,6 +78,7 @@ namespace MultiRepositories.Service
                 AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
             };
             var client = new HttpClient(handler);
+            client.Timeout = TimeSpan.FromMilliseconds(300);
             var result = client.SendAsync(requestMessage);
             result.Wait();
             var resh = result.Result;

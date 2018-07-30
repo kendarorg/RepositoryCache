@@ -36,7 +36,7 @@ namespace NugetProtocol
                 new Service(_servicesMapper.From(repoId,"LegacyGallery"),"LegacyGallery","Gallery"),
 
                 new Service(_servicesMapper.From(repoId,"SearchGalleryQueryService/3.0.0-rc"),"SearchGalleryQueryService/3.0.0-rc","Gallery"),
-            });
+            },new IndexCatalog());
         }
     }
 }

@@ -86,6 +86,10 @@ namespace Nuget
                 case ("*Schema"):
                     result = "http://schema.nuget.org/schema#";
                     break;
+                case ("*Service"):
+                    result = "http://schema.nuget.org/services#";
+                    break;
+                    
                 case ("*W3SchemaComment"):
                     result = "http://www.w3.org/2000/01/rdf-schema#comment";
                     break;
@@ -188,7 +192,8 @@ namespace Nuget
             var result = new Dictionary<string, EntryPointDescriptor>(StringComparer.InvariantCultureIgnoreCase);
             foreach (var item in dictionary)
             {
-                if (item.Value.Visible && item.Key.IndexOf(":") < 0)
+                if (item.Value.Visible && (
+                    item.Key.IndexOf(":") < 0 || item.Key.IndexOf(":")==(item.Key.Length-1)))
                 {
                     result[item.Value.Id] = item.Value;
                 }

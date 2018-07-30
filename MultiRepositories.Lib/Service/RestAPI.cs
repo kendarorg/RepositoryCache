@@ -136,6 +136,12 @@ namespace MultiRepositories.Service
                             }
                             return null;
                         }
+                        else if (string.Compare(spl, mtc, true) == 0)
+                        {
+                            limitSplit--;
+                            continue;
+                        }
+                        return null;
                     }
                     for (; splittedIndex <= limitSplit; splittedIndex++)
                     {

@@ -191,15 +191,15 @@ namespace MultiRepositories
             {
                 viewed = true;
                 return new SerializableResponse();
-            },"*PUT", "test");
+            }, "*PUT", "test");
 
             var url = "test";
-            var canSee = mockRest.CanHandleRequest(url,"PUT");
+            var canSee = mockRest.CanHandleRequest(url, "PUT");
             Assert.IsTrue(canSee);
             var req = new SerializableRequest()
             {
                 Url = url,
-                Method="PUT"
+                Method = "PUT"
             };
             var result = mockRest.HandleRequest(req);
             Assert.IsTrue(viewed);
@@ -216,7 +216,7 @@ namespace MultiRepositories
             }, "*PUT", "test");
 
             var url = "test";
-            var canSee = mockRest.CanHandleRequest(url,"POST");
+            var canSee = mockRest.CanHandleRequest(url, "POST");
             Assert.IsFalse(canSee);
         }
 
@@ -237,6 +237,19 @@ namespace MultiRepositories
                 Method = "POST"
             };
             mockRest.HandleRequest(req);
+        }
+
+
+        [TestMethod]
+        public void ISBPToParseCorrectlyMavenUrl()
+        {
+            var mockRest = new MockRestApi((a) =>
+            {
+                return new SerializableResponse();
+            }, "/{repo}/{*group}/{id}/maven-metadata.xml");
+            
+            Assert.IsFalse(mockRest.CanHandleRequest("/nuget.org/v3/index.json"));
+            Assert.IsTrue(mockRest.CanHandleRequest("/maven.local/org/slf4j/slf4j-api/maven-metadata.xml"));
         }
     }
 }

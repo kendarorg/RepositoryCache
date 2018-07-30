@@ -32,7 +32,8 @@ namespace Nuget
                 var local = item.Local.TrimStart('/').Replace("{repoName}",repo.Prefix);
                 services.Add(new Service(local, item.Id, item.Comment));
             }
-            return new ServiceIndex("3.0.0", services);
+            return new ServiceIndex("3.0.0", services,
+                new IndexCatalog(_servicesMapper.From(repoId,"*Service"),_servicesMapper.From(repoId, "*W3SchemaComment")));
         }
     }
 }
