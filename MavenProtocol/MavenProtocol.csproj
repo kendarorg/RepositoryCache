@@ -46,6 +46,7 @@
     <Compile Include="Apis\IMavenPublish.cs" />
     <Compile Include="Apis\IMavenRead.cs" />
     <Compile Include="Apis\IMavenSearch.cs" />
+    <Compile Include="Apis\MavenItem.cs" />
     <Compile Include="Apis\ResponseContent.cs" />
     <Compile Include="Apis\ResponseDoc.cs" />
     <Compile Include="Apis\ResponseHeader.cs" />
