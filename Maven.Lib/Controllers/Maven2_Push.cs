@@ -23,21 +23,18 @@ namespace Maven.Controllers
             SetHandler(Handler);
         }
         private static int count = 0;
-        private SerializableResponse Handler(SerializableRequest localRequest)
+        private SerializableResponse Handler(SerializableRequest arg)
         {
-            count++;
-            //repo
-            //fullname
-            //version
-            //id
-            //group
-            var path = localRequest.ToLocalPath("index."+ count+".json");
-            var dir = Path.GetDirectoryName(path);
-            if (!Directory.Exists(dir))
+            if (!arg.PathParams.ContainsKey("subtype"))
             {
-                Directory.CreateDirectory(dir);
+                arg.PathParams["subtype"] = string.Empty;
             }
-            File.WriteAllText(path, JsonConvert.SerializeObject(localRequest));
+
+            /*Assert.AreEqual("slf4j-api", arg.PathParams["package"]);
+            Assert.AreEqual("org/slf4j", arg.PathParams["*path"]);
+            Assert.AreEqual("maven-metadata.xml", arg.PathParams["filename"]);
+            Assert.AreEqual("asc", arg.PathParams["subtype"]);*/
+
             return new SerializableResponse();
         }
     }

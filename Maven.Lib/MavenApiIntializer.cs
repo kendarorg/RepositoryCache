@@ -27,76 +27,23 @@ namespace Maven
         public void Initialize(IRepositoryServiceProvider repositoryServiceProvider)
         {
 
-            repositoryServiceProvider.RegisterApi(new Maven2_Push(_repositoryEntitiesRepository,
-              "/maven.local/{*group}"));
-            return;
-
-            var avail = _repositoryEntitiesRepository.GetAll().FirstOrDefault(a => a.Prefix == "repo.maven.apache.org");
-            //https://repo.maven.apache.org/maven2/
-            if (avail == null)
-            {
-                //var data = _assemblyUtils.ReadRes<MavenApiIntializer>("maven.org.settings.json");
-                avail = new RepositoryEntity
-                {
-                    Mirror = true,
-                    Prefix = "maven.apache",
-                    Type = "maven",
-                    Address = "/maven.apache",
-                    PackagesPath = "maven.apache",
-                    Settings = string.Empty
-                };
-                _repositoryEntitiesRepository.Save(avail);
-            };
-
-            var local = _repositoryEntitiesRepository.GetAll().FirstOrDefault(a => a.Prefix == "maven.local");
-
-            if (local == null)
-            {
-                //var data = _assemblyUtils.ReadRes<MavenApiIntializer>("nuget.org.settings.json");
-                local = new RepositoryEntity
-                {
-                    Mirror = false,
-                    Prefix = "maven.local",
-                    Type = "maven",
-                    Address = "/maven.local",
-                    PackagesPath = "maven.local",
-                    Settings = string.Empty
-                };
-                _repositoryEntitiesRepository.Save(local);
-            };
-
-            var allowedPackageApis = new List<string>();
-
-            foreach (var item in new string[] { "jar", "pom" })
-            {
-                var toAdd = "/{repo}/{*group}/{id}/{version}/{fullName}." + item;
-                allowedPackageApis.Add("*PUT");
-                allowedPackageApis.Add("*GET");
-                allowedPackageApis.Add(toAdd);
-                foreach (var sub in new string[] { "asc", "md5", "sha1" })
-                {
-                    allowedPackageApis.Add("*PUT");
-                    allowedPackageApis.Add("*GET");
-                    allowedPackageApis.Add(toAdd + "." + sub);
-                }
-            }
-
             repositoryServiceProvider.RegisterApi(new Maven2_Push_Package(_repositoryEntitiesRepository,
-               allowedPackageApis.ToArray()));
+              "*GET", "*PUT", @"/{repo}/{*path}/" +
+                @"{pack#^(?<package>[0-9A-Za-z\-\.]+)$}/" +
+                @"{ver#^(?<major>\d+)" +
+                @"(\.(?<minor>\d+))?" +
+                @"(\.(?<patch>\d+))?" +
+                @"(\.(?<extra>\d+))?" +
+                @"(\-(?<pre>[0-9A-Za-z\.]+))?" +
+                @"(\-(?<build>[0-9A-Za-z\-\.]+))?$}/" +
+                @"{filename#^(?<fullpackage>(?:(?!\b(?:jar|pom)\b)[0-9A-Za-z\-\.])+)?" +
+                @"\.(?<type>(jar|pom))" +
+                @"(\.(?<subtype>(asc|md5|sha1)))?$}"));
 
-            var allowedPackageGroupApis = new List<string>();
-            var add = "/{repo}/{*group}/{id}/maven-metadata.xml";
-            allowedPackageGroupApis.Add("*PUT");
-            allowedPackageGroupApis.Add("*GET");
-            allowedPackageGroupApis.Add(add);
-            foreach (var sub in new string[] { "asc", "md5", "sha1" })
-            {
-                allowedPackageGroupApis.Add("*PUT");
-                allowedPackageGroupApis.Add("*GET");
-                allowedPackageGroupApis.Add(add + "." + sub);
-            }
             repositoryServiceProvider.RegisterApi(new Maven2_Push(_repositoryEntitiesRepository,
-              allowedPackageGroupApis.ToArray()));
+              "*GET", "*PUT", @"/{repo}/{*path}/" +
+                @"{pack#^(?<package>[0-9A-Za-z\-\.]+)$}/" +
+                @"{meta#^(?<filename>(maven-metadata.xml))(\.(?<subtype>(asc|md5|sha1)))?$}"));
         }
     }
 }

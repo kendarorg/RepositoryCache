@@ -23,24 +23,20 @@ namespace Maven.Controllers
         }
 
         private SerializableResponse Handler(SerializableRequest arg)
-        {/*
-            http://localhost:9088/maven.local/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25.jar
-http://localhost:9088/maven.local/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25.jar.sha1
-http://localhost:9088/maven.local/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25.jar.md5
-http://localhost:9088/maven.local/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25.pom
-http://localhost:9088/maven.local/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25.pom.sha1
-http://localhost:9088/maven.local/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25.pom.md5
-http://localhost:9088/maven.local/org/slf4j/slf4j-api/maven-metadata.xml
-http://localhost:9088/maven.local/org/slf4j/slf4j-api/maven-metadata.xml
-http://localhost:9088/maven.local/org/slf4j/slf4j-api/maven-metadata.xml.sha1
-http://localhost:9088/maven.local/org/slf4j/slf4j-api/maven-metadata.xml.md5
-*/
-            //repo
-            //fullname
-            //version
-            //id
-            //group
-            //File.WriteAllText(arg.PathParams["fullname"],JsonConvert.)
+        {
+            if (!arg.PathParams.ContainsKey("subtype"))
+            {
+                arg.PathParams["subtype"] = string.Empty;
+            }
+            /*Assert.AreEqual("1", arg.PathParams["major"]);
+            Assert.AreEqual("7", arg.PathParams["minor"]);
+            Assert.AreEqual("25", arg.PathParams["patch"]);
+            Assert.AreEqual("slf4j-api", arg.PathParams["package"]);
+            Assert.AreEqual("org/slf4j", arg.PathParams["*path"]);
+            Assert.AreEqual("slf4j-api-1.7.25", arg.PathParams["fullpackage"]);
+            Assert.AreEqual("jar", arg.PathParams["type"]);
+            Assert.AreEqual("md5", arg.PathParams["subtype"]);*/
+
             return new SerializableResponse();
         }
     }

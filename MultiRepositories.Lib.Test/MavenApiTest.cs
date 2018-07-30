@@ -18,7 +18,11 @@ namespace MultiRepositories
                 @"(\-(?<build>[0-9A-Za-z\-\.]+))?$}/" +
                 @"{filename#^(?<fullpackage>(?:(?!\b(?:jar|pom)\b)[0-9A-Za-z\-\.])+)?" +
                 @"\.(?<type>(jar|pom))" +
-                @"(\.(?<subtype>(asc|md5|sh1)))?$}";
+                @"(\.(?<subtype>(asc|md5|sha1)))?$}";
+
+        const string METADATA_REGEX = @"/{repo}/{*path}/" +
+                @"{pack#^(?<package>[0-9A-Za-z\-\.]+)$}/" +
+                @"{meta#^(?<filename>(maven-metadata.xml))(\.(?<subtype>(asc|md5|sha1)))?$}";
 
         [TestMethod]
         public void ISBPToMatchRegexJarMd5()
@@ -135,6 +139,55 @@ namespace MultiRepositories
             Assert.AreEqual("slf4j-api-1.7.25", request.PathParams["fullpackage"]);
             Assert.AreEqual("pom", request.PathParams["type"]);
             Assert.AreEqual("asc", request.PathParams["subtype"]);
+        }
+
+
+        [TestMethod]
+        public void ISBPToMatchRegexmetadataAsc()
+        {
+            SerializableRequest request = null;
+            var mockRest = new MockRestApi((a) =>
+            {
+                request = a;
+                return new SerializableResponse();
+            }, METADATA_REGEX);
+
+            var url = "/maven.local/org/slf4j/slf4j-api/maven-metadata.xml.asc";
+
+            Assert.IsTrue(mockRest.CanHandleRequest(url));
+            var req = new SerializableRequest() { Url = url };
+            mockRest.HandleRequest(req);
+            Assert.IsNotNull(request);
+
+            Assert.AreEqual("slf4j-api", request.PathParams["package"]);
+            Assert.AreEqual("org/slf4j", request.PathParams["*path"]);
+            Assert.AreEqual("maven-metadata.xml", request.PathParams["filename"]);
+            Assert.AreEqual("asc", request.PathParams["subtype"]);
+        }
+
+
+
+        [TestMethod]
+        public void ISBPToMatchRegexmetadata()
+        {
+            SerializableRequest request = null;
+            var mockRest = new MockRestApi((a) =>
+            {
+                request = a;
+                return new SerializableResponse();
+            }, METADATA_REGEX);
+
+            var url = "/maven.local/org/slf4j/slf4j-api/maven-metadata.xml";
+
+            Assert.IsTrue(mockRest.CanHandleRequest(url));
+            var req = new SerializableRequest() { Url = url };
+            mockRest.HandleRequest(req);
+            Assert.IsNotNull(request);
+
+            Assert.AreEqual("slf4j-api", request.PathParams["package"]);
+            Assert.AreEqual("org/slf4j", request.PathParams["*path"]);
+            Assert.AreEqual("maven-metadata.xml", request.PathParams["filename"]);
+            Assert.IsFalse(request.PathParams.ContainsKey("subtype"));
         }
     }
 }
