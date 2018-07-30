@@ -9,6 +9,6 @@
   "Urls": [
     "nuget.org",
     "repo.maven.apache.org",
-    "npmjs.org"
+    "npmjs.org" 
   ]
 }
