@@ -1,0 +1,144 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{3301706B-F12E-4575-B125-AAD767009455}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>IntegrationTest</RootNamespace>
+    <AssemblyName>IntegrationTest</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="MavenPush.bat" />
+    <None Include="maven_exes\bin\m2.conf" />
+    <None Include="maven_exes\bin\mvn" />
+    <None Include="maven_exes\bin\mvn.cmd" />
+    <None Include="maven_exes\bin\mvnDebug" />
+    <None Include="maven_exes\bin\mvnDebug.cmd" />
+    <None Include="maven_exes\bin\mvnyjp" />
+    <None Include="maven_exes\conf\logging\simplelogger.properties" />
+    <None Include="maven_exes\lib\cdi-api.license" />
+    <None Include="maven_exes\lib\commons-cli.license" />
+    <None Include="maven_exes\lib\commons-io.license" />
+    <None Include="maven_exes\lib\commons-lang3.license" />
+    <None Include="maven_exes\lib\jansi-native\freebsd32\libjansi.so" />
+    <None Include="maven_exes\lib\jansi-native\freebsd64\libjansi.so" />
+    <None Include="maven_exes\lib\jansi-native\linux32\libjansi.so" />
+    <None Include="maven_exes\lib\jansi-native\linux64\libjansi.so" />
+    <None Include="maven_exes\lib\jansi-native\osx\libjansi.jnilib" />
+    <None Include="maven_exes\lib\jcl-over-slf4j.license" />
+    <None Include="maven_exes\lib\jsr250-api.license" />
+    <None Include="maven_exes\lib\maven-artifact.license" />
+    <None Include="maven_exes\lib\maven-builder-support.license" />
+    <None Include="maven_exes\lib\maven-compat.license" />
+    <None Include="maven_exes\lib\maven-core.license" />
+    <None Include="maven_exes\lib\maven-embedder.license" />
+    <None Include="maven_exes\lib\maven-model-builder.license" />
+    <None Include="maven_exes\lib\maven-model.license" />
+    <None Include="maven_exes\lib\maven-plugin-api.license" />
+    <None Include="maven_exes\lib\maven-repository-metadata.license" />
+    <None Include="maven_exes\lib\maven-resolver-api.license" />
+    <None Include="maven_exes\lib\maven-resolver-connector-basic.license" />
+    <None Include="maven_exes\lib\maven-resolver-impl.license" />
+    <None Include="maven_exes\lib\maven-resolver-provider.license" />
+    <None Include="maven_exes\lib\maven-resolver-spi.license" />
+    <None Include="maven_exes\lib\maven-resolver-transport-wagon.license" />
+    <None Include="maven_exes\lib\maven-resolver-util.license" />
+    <None Include="maven_exes\lib\maven-settings-builder.license" />
+    <None Include="maven_exes\lib\maven-settings.license" />
+    <None Include="maven_exes\lib\maven-shared-utils.license" />
+    <None Include="maven_exes\lib\maven-slf4j-provider.license" />
+    <None Include="maven_exes\lib\org.eclipse.sisu.inject.license" />
+    <None Include="maven_exes\lib\org.eclipse.sisu.plexus.license" />
+    <None Include="maven_exes\lib\plexus-cipher.license" />
+    <None Include="maven_exes\lib\plexus-component-annotations.license" />
+    <None Include="maven_exes\lib\plexus-interpolation.license" />
+    <None Include="maven_exes\lib\plexus-sec-dispatcher.license" />
+    <None Include="maven_exes\lib\plexus-utils.license" />
+    <None Include="maven_exes\lib\slf4j-api-1.7.25.pom" />
+    <None Include="maven_exes\lib\slf4j-api.license" />
+    <None Include="maven_exes\lib\wagon-file.license" />
+    <None Include="maven_exes\lib\wagon-http.license" />
+    <None Include="maven_exes\lib\wagon-provider-api.license" />
+    <None Include="maven_exes\LICENSE" />
+    <None Include="maven_exes\NOTICE" />
+    <None Include="NugetPush.bat" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="maven_exes\boot\plexus-classworlds-2.5.2.jar" />
+    <Content Include="maven_exes\conf\settings.xml" />
+    <Content Include="maven_exes\conf\toolchains.xml" />
+    <Content Include="maven_exes\lib\aopalliance-1.0.jar" />
+    <Content Include="maven_exes\lib\cdi-api-1.0.jar" />
+    <Content Include="maven_exes\lib\commons-cli-1.4.jar" />
+    <Content Include="maven_exes\lib\commons-io-2.5.jar" />
+    <Content Include="maven_exes\lib\commons-lang3-3.5.jar" />
+    <Content Include="maven_exes\lib\ext\README.txt" />
+    <Content Include="maven_exes\lib\guava-20.0.jar" />
+    <Content Include="maven_exes\lib\guice-4.2.0-no_aop.jar" />
+    <Content Include="maven_exes\lib\jansi-1.17.1.jar" />
+    <Content Include="maven_exes\lib\jansi-native\README.txt" />
+    <Content Include="maven_exes\lib\jansi-native\windows32\jansi.dll" />
+    <Content Include="maven_exes\lib\jansi-native\windows64\jansi.dll" />
+    <Content Include="maven_exes\lib\javax.inject-1.jar" />
+    <Content Include="maven_exes\lib\jcl-over-slf4j-1.7.25.jar" />
+    <Content Include="maven_exes\lib\jsr250-api-1.0.jar" />
+    <Content Include="maven_exes\lib\maven-artifact-3.5.4.jar" />
+    <Content Include="maven_exes\lib\maven-builder-support-3.5.4.jar" />
+    <Content Include="maven_exes\lib\maven-compat-3.5.4.jar" />
+    <Content Include="maven_exes\lib\maven-core-3.5.4.jar" />
+    <Content Include="maven_exes\lib\maven-embedder-3.5.4.jar" />
+    <Content Include="maven_exes\lib\maven-model-3.5.4.jar" />
+    <Content Include="maven_exes\lib\maven-model-builder-3.5.4.jar" />
+    <Content Include="maven_exes\lib\maven-plugin-api-3.5.4.jar" />
+    <Content Include="maven_exes\lib\maven-repository-metadata-3.5.4.jar" />
+    <Content Include="maven_exes\lib\maven-resolver-api-1.1.1.jar" />
+    <Content Include="maven_exes\lib\maven-resolver-connector-basic-1.1.1.jar" />
+    <Content Include="maven_exes\lib\maven-resolver-impl-1.1.1.jar" />
+    <Content Include="maven_exes\lib\maven-resolver-provider-3.5.4.jar" />
+    <Content Include="maven_exes\lib\maven-resolver-spi-1.1.1.jar" />
+    <Content Include="maven_exes\lib\maven-resolver-transport-wagon-1.1.1.jar" />
+    <Content Include="maven_exes\lib\maven-resolver-util-1.1.1.jar" />
+    <Content Include="maven_exes\lib\maven-settings-3.5.4.jar" />
+    <Content Include="maven_exes\lib\maven-settings-builder-3.5.4.jar" />
+    <Content Include="maven_exes\lib\maven-shared-utils-3.2.1.jar" />
+    <Content Include="maven_exes\lib\maven-slf4j-provider-3.5.4.jar" />
+    <Content Include="maven_exes\lib\org.eclipse.sisu.inject-0.3.3.jar" />
+    <Content Include="maven_exes\lib\org.eclipse.sisu.plexus-0.3.3.jar" />
+    <Content Include="maven_exes\lib\plexus-cipher-1.7.jar" />
+    <Content Include="maven_exes\lib\plexus-component-annotations-1.7.1.jar" />
+    <Content Include="maven_exes\lib\plexus-interpolation-1.24.jar" />
+    <Content Include="maven_exes\lib\plexus-sec-dispatcher-1.4.jar" />
+    <Content Include="maven_exes\lib\plexus-utils-3.1.0.jar" />
+    <Content Include="maven_exes\lib\slf4j-api-1.7.25.jar" />
+    <Content Include="maven_exes\lib\wagon-file-3.1.0.jar" />
+    <Content Include="maven_exes\lib\wagon-http-3.1.0-shaded.jar" />
+    <Content Include="maven_exes\lib\wagon-provider-api-3.1.0.jar" />
+    <Content Include="maven_exes\README.txt" />
+    <Content Include="nuget_exes\NuGet.3.5.exe" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

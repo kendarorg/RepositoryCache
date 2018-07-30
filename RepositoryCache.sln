@@ -35,12 +35,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{BE9C9E19-8
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MemDb", "MemDb", "{9162DC40-6922-4768-91BB-C0D13FC0E368}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Integration", "Integration", "{F3814DB4-A2BC-4AAA-9C1D-5B8BCDFC38CA}"
-	ProjectSection(SolutionItems) = preProject
-		Integration\MavenPush.bat = Integration\MavenPush.bat
-		Integration\NugetPush.bat = Integration\NugetPush.bat
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maven.Lib", "Maven.Lib\Maven.Lib.csproj", "{3F3EF9E8-0427-48A5-9307-D92EEC080415}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiRepositories.Lib.Test", "MultiRepositories.Lib.Test\MultiRepositories.Lib.Test.csproj", "{72A248D5-1D27-4DAC-89A7-5B8327FDBA3E}"
@@ -54,6 +48,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MavenProtocol", "MavenProtocol\MavenProtocol.csproj", "{E932EF38-FFDD-41A4-9D98-9C73B0F3EA13}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MavenProtocol.Test", "MavenProtocol.Test\MavenProtocol.Test.csproj", "{CDC5EB64-1A2E-4F26-8831-3A84DF5C7AB4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTest", "IntegrationTest\IntegrationTest.csproj", "{3301706B-F12E-4575-B125-AAD767009455}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -129,6 +125,10 @@ Global
 		{CDC5EB64-1A2E-4F26-8831-3A84DF5C7AB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CDC5EB64-1A2E-4F26-8831-3A84DF5C7AB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CDC5EB64-1A2E-4F26-8831-3A84DF5C7AB4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3301706B-F12E-4575-B125-AAD767009455}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3301706B-F12E-4575-B125-AAD767009455}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3301706B-F12E-4575-B125-AAD767009455}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3301706B-F12E-4575-B125-AAD767009455}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
