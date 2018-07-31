@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace MavenProtocol.Apis
 {
-    public interface IMavenPush
+    public interface IMavenSearch
     {
+        SearchResult Search(Guid repoId, SearchParam param);
     }
 }

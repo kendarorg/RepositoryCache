@@ -1,5 +1,6 @@
 ﻿using Ioc;
 using Maven.Controllers;
+using MavenProtocol;
 using MultiRepositories;
 using MultiRepositories.Repositories;
 using System;
@@ -66,23 +67,16 @@ namespace Maven
                 repositoryServiceProvider.RegisterApi(new Maven2_Push_Package(_repositoryEntitiesRepository,
                     "*GET", "*PUT",
                     @"/{repo}/{*path}/" + ///maven.local/org/slf4j
-                    @"{pack#^(?<package>[0-9A-Za-z\-\.]+)$}/" + //slf4j-api/
-                    @"{ver#^(?<major>\d+)" + //1.7.25/
-                    @"(\.(?<minor>\d+))?" +
-                    @"(\.(?<patch>\d+))?" +
-                    @"(\.(?<extra>\d+))?" +
-                    @"(\-(?<pre>[0-9A-Za-z\.]+))?" +
-                    @"(\-(?<build>[0-9A-Za-z\-\.]+))?$}/" +
-                    @"{filename#^(?<fullpackage>(?:(?!\b(?:jar|pom)\b)[0-9A-Za-z\-\.])+)?" +
-                    @"\.(?<type>(jar|pom))" +
-                    @"(\.(?<subtype>(asc|md5|sha1)))?$}".
+                    @"{pack#" + MavenConstants.PACKAGE_REGEXP + @"}/" + //slf4j-api/
+                    @"{ver#" + MavenConstants.VERSION_REGEXP + @"}/" +
+                    @"{meta#" + MavenConstants.FULLPACKAGE_AND_CHECHKSUMS_REGEXP + @"}".
                         Replace("{repo}", item.Prefix))); //slf4j-api-1.7.25.jar.md5
 
                 repositoryServiceProvider.RegisterApi(new Maven2_Push(_repositoryEntitiesRepository,
                     "*GET", "*PUT",
                     @"/{repo}/{*path}/" +//maven.local/org/slf4j/
-                    @"{pack#^(?<package>[0-9A-Za-z\-\.]+)$}/" + //slf4j-api/
-                    @"{meta#^(?<filename>(maven-metadata.xml))(\.(?<subtype>(asc|md5|sha1)))?$}".
+                    @"{pack#" + MavenConstants.PACKAGE_REGEXP + @"}/" + //slf4j-api/
+                    @"{meta#" + MavenConstants.METADATA_AND_CHECHKSUMS_REGEXP + @"}".
                         Replace("{repo}", item.Prefix))); //maven-metadata.xml.asc
             }
         }

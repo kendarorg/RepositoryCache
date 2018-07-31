@@ -57,6 +57,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maven.Lib.Test", "Maven.Lib.Test\Maven.Lib.Test.csproj", "{A933812C-C8F5-49B4-AA7B-E39961093102}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -135,6 +137,10 @@ Global
 		{3301706B-F12E-4575-B125-AAD767009455}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3301706B-F12E-4575-B125-AAD767009455}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3301706B-F12E-4575-B125-AAD767009455}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A933812C-C8F5-49B4-AA7B-E39961093102}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A933812C-C8F5-49B4-AA7B-E39961093102}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A933812C-C8F5-49B4-AA7B-E39961093102}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A933812C-C8F5-49B4-AA7B-E39961093102}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -161,6 +167,7 @@ Global
 		{E932EF38-FFDD-41A4-9D98-9C73B0F3EA13} = {79FB3572-AA5D-4714-B70E-AA92E3AE50DD}
 		{CDC5EB64-1A2E-4F26-8831-3A84DF5C7AB4} = {BE9C9E19-84E5-4844-B361-02A2116382D4}
 		{3301706B-F12E-4575-B125-AAD767009455} = {BE9C9E19-84E5-4844-B361-02A2116382D4}
+		{A933812C-C8F5-49B4-AA7B-E39961093102} = {BE9C9E19-84E5-4844-B361-02A2116382D4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CE85B18F-DEB6-473C-A03F-D7EBA917086D}

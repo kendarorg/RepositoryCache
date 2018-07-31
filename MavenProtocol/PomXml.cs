@@ -99,6 +99,8 @@ namespace MavenProtocol
         public string Url { get; set; }
         [JsonProperty("inceptionYear", DefaultValueHandling = DefaultValueHandling.Ignore)]
         public string InceptionYear { get; set; }
+        [JsonProperty("modules", DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public List<string> Modules { get; set; }
 
         public static PomXml Parse(string data)
         {
@@ -130,16 +132,17 @@ namespace MavenProtocol
                     depx.GroupId = ValueByName(dep, "groupId");
                     depx.ArtifactId = ValueByName(dep, "artifactId");
                     depx.Version = ValueByName(dep, "version");
-                    /*if (depx.Version == null)
-                    {
-                        depx.Version = result.Version;
-                    }
-                    if (depx.GroupId == null)
-                    {
-                        depx.GroupId = result.GroupId;
-                    }*/
-                    
                     result.Dependencies.Add(depx);
+                }
+            }
+
+            var modulesEl = ChildByName(xml, "modules");
+            if (modulesEl != null && modulesEl.Elements().Any())
+            {
+                result.Modules = new List<string>();
+                foreach (var mod in ChildrenByName(modulesEl, "module"))
+                {
+                    result.Modules.Add(mod.Value);
                 }
             }
 

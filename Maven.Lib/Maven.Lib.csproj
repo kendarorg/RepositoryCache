@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DotNetZip, Version=1.11.0.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetZip.1.11.0\lib\net20\DotNetZip.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -43,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Apis\MavenReadService.cs" />
     <Compile Include="Controllers\Maven2_Push.cs" />
     <Compile Include="Controllers\Maven2_Push_Package.cs" />
     <Compile Include="MavenApiIntializer.cs" />
@@ -61,6 +65,10 @@
       <Project>{59BA45AE-F80C-440D-BEA1-C1FCA0F00A2B}</Project>
       <Name>Ioc.Shared</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MavenProtocol\MavenProtocol.csproj">
+      <Project>{E932EF38-FFDD-41A4-9D98-9C73B0F3EA13}</Project>
+      <Name>MavenProtocol</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MultiRepositories.Lib\MultiRepositories.Lib.csproj">
       <Project>{B20C279E-7034-4A46-9820-1D96296EB36B}</Project>
       <Name>MultiRepositories.Lib</Name>
@@ -70,9 +78,7 @@
       <Name>Repositories.Lib</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Apis\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using MultiRepositories;
 using System.IO;
 using Newtonsoft.Json;
+using MavenProtocol.Apis;
 
 namespace Maven.Controllers
 {
@@ -29,6 +30,12 @@ namespace Maven.Controllers
             {
                 arg.PathParams["subtype"] = string.Empty;
             }
+            /*var metadata = new MavenPackageMetadata
+            {
+                ArtifactId = arg.PathParams["package"],
+                Group = arg.PathParams["*path"],
+                SubType = arg.PathParams["subtype"]
+            };*/
 
             /*Assert.AreEqual("slf4j-api", arg.PathParams["package"]);
             Assert.AreEqual("org/slf4j", arg.PathParams["*path"]);

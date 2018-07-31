@@ -1,11 +1,13 @@
 ﻿using MultiRepositories.Repositories;
 using Ioc;
+using MavenProtocol.Apis;
 
 namespace Maven.Services
 {
     public interface IPackagesStorage : ISingleton
     {
-        byte[] Load(RepositoryEntity repo, string id,string normalVersio);
-        void Save(RepositoryEntity repo, string id, string normalVersio, byte[] data);
+        /*byte[] ReadPackage(RepositoryEntity repo, MavenVersionedArtifact item);
+        string ReadPackageMetadata(RepositoryEntity repo, MavenVersionedArtifact item);
+        string ReadPom(RepositoryEntity repo, MavenVersionedArtifact item);*/
     }
 }
