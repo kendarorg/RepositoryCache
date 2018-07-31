@@ -14,6 +14,10 @@ Nuget, Maven, NPM local cache server
 * _PUT /{repo}/{path}/{packageId}/{version}/{packageId}.{version}.\[jar|pom\](.\[md5|asc|sha1\]))_	To upload package, pom and the signatures
 * _PUT /{repo}/{path}/{packageId}/maven-metadata.xml(.\[md5|asc|sha1\]))_	To upload the maven metadata for the uploaded package
 
+* _GET /{repo}/..._	Standard maven browse
+
+* _GET /{repo}/custom/search_ Search according to [https://search.maven.org/]
+
 ## Nuget API
 
 * _GET /{repo}/v3/index.json_	List of avaliable APIs
@@ -27,6 +31,7 @@ Nuget, Maven, NPM local cache server
 * _GET /{repo}/v3/container/{idLower}/{versionLower}/{fullversion}.nupkg_ Download the package
 * _GET /{repo}/v3/container/{packageid}/index.json_ List the versions for the package
 * _GET /{repo}/v3/catalog/data/{date}/{fullPackage}.json_ Retrieve alla data included dependencies for package
+
 * _GET /{repo}/custom/load_ Load nupkg from an existing directory
 
 
