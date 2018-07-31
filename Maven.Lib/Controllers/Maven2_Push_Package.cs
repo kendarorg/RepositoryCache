@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MultiRepositories;
 using System.IO;
+using MavenProtocol.Apis;
 
 namespace Maven.Controllers
 {
@@ -28,14 +29,30 @@ namespace Maven.Controllers
             {
                 arg.PathParams["subtype"] = string.Empty;
             }
-            /*Assert.AreEqual("1", arg.PathParams["major"]);
-            Assert.AreEqual("7", arg.PathParams["minor"]);
-            Assert.AreEqual("25", arg.PathParams["patch"]);
-            Assert.AreEqual("slf4j-api", arg.PathParams["package"]);
-            Assert.AreEqual("org/slf4j", arg.PathParams["*path"]);
-            Assert.AreEqual("slf4j-api-1.7.25", arg.PathParams["fullpackage"]);
-            Assert.AreEqual("jar", arg.PathParams["type"]);
-            Assert.AreEqual("md5", arg.PathParams["subtype"]);*/
+
+            var subType = arg.PathParams["subtype"];
+            var version = "";
+            if (arg.PathParams.ContainsKey("major")) version += arg.PathParams["major"];
+            if (arg.PathParams.ContainsKey("minor")) version += "."+ arg.PathParams["major"];
+            if (arg.PathParams.ContainsKey("patch")) version += "." + arg.PathParams["patch"];
+            if (arg.PathParams.ContainsKey("extra")) version += "." + arg.PathParams["extra"];
+            if (arg.PathParams.ContainsKey("pre")) version += "-" + arg.PathParams["pre"];
+
+
+            
+            var classifier = arg.PathParams["filename"].Replace(arg.PathParams["package"], "");
+            if (string.IsNullOrWhiteSpace(classifier))
+            {
+                classifier = null;
+            }
+            var mavenIndex = new MavenIndex
+            {
+                ArtifactId= arg.PathParams["package"],
+                Checksum = arg.PathParams["subtype"],
+                Group= arg.PathParams["*path"].Split('/'),
+                Version = version,
+                Classifier = classifier
+            };
 
             return new SerializableResponse();
         }

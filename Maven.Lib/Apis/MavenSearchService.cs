@@ -15,15 +15,18 @@ namespace Maven.Apis
     {
         private readonly IRepositoryEntitiesRepository _repository;
         private readonly IServicesMapper _servicesMapper;
-        private readonly IMavenSearchRepository _queryRepository;
+        private readonly IMavenSearchRepository _mavenSearchRepository;
+        private readonly IMavenSearchLastRepository _mavenSearchLastRepository;
 
         public MavenSearchService(IRepositoryEntitiesRepository repositoryEntitiesRepository,
             IServicesMapper servicesMapper,
-            IMavenSearchRepository mavenSearchRepository)
+            IMavenSearchRepository mavenSearchRepository,
+            IMavenSearchLastRepository mavenSearchLastRepository)
         {
             this._repository = repositoryEntitiesRepository;
             this._servicesMapper = servicesMapper;
-            this._queryRepository = mavenSearchRepository;
+            this._mavenSearchRepository = mavenSearchRepository;
+            this._mavenSearchLastRepository = mavenSearchLastRepository;
         }
         public SearchResult Search(Guid repoId, SearchParam param)
         {
@@ -44,7 +47,18 @@ namespace Maven.Apis
             var docs = new List<ResponseDoc>();
 
             var max = 0;
-            foreach (var item in _queryRepository.Query(repoId, param))
+            IEnumerable<MavenSearchEntity> result = null;
+
+            if (param.Wt == "gav")
+            {
+                result = _mavenSearchRepository.Query(repoId, param);
+            }
+            else
+            {
+                result = _mavenSearchLastRepository.Query(repoId, param);
+            }
+
+            foreach (var item in result)
             {
                 if (max >= param.Rows)
                 {
@@ -72,7 +86,24 @@ namespace Maven.Apis
 
         private ResponseDoc BuildResponse(MavenSearchEntity item)
         {
-            throw new NotImplementedException();
+            var id = item.Group + ":" + item.ArtifactId + ":" + item.Version;
+            List<string> typeAndExt = null;
+            List<string> tags = null;
+            if (!string.IsNullOrWhiteSpace(item.Classifiers))
+            {
+                typeAndExt = item.Classifiers.Split('|').Select(a => a.Trim('|')).
+                    Where(b => !string.IsNullOrWhiteSpace(b)).ToList();
+            }
+            if (!string.IsNullOrWhiteSpace(item.Tags))
+            {
+                tags = item.Tags.Split('|').Select(a => a.Trim('|')).
+                    Where(b => !string.IsNullOrWhiteSpace(b)).ToList();
+            }
+            return new ResponseDoc(
+                id, item.Group, item.ArtifactId, item.Version,
+                item.Timestamp.ToFileTime(),
+                typeAndExt,
+                tags);
         }
     }
 }

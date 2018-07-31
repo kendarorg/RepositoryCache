@@ -40,12 +40,28 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Repositories\MavenSearchLastRepository.cs" />
+    <Compile Include="Repositories\MavenSearchRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\IQueryToLinq.cs" />
+    <Compile Include="Services\QueryToLinq.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Ioc.Shared\Ioc.Shared.csproj">
+      <Project>{59BA45AE-F80C-440D-BEA1-C1FCA0F00A2B}</Project>
+      <Name>Ioc.Shared</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Maven.Lib\Maven.Lib.csproj">
       <Project>{3f3ef9e8-0427-48a5-9307-d92eec080415}</Project>
       <Name>Maven.Lib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MavenProtocol\MavenProtocol.csproj">
+      <Project>{E932EF38-FFDD-41A4-9D98-9C73B0F3EA13}</Project>
+      <Name>MavenProtocol</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MultiRepositories.Lib\MultiRepositories.Lib.csproj">
+      <Project>{B20C279E-7034-4A46-9820-1D96296EB36B}</Project>
+      <Name>MultiRepositories.Lib</Name>
     </ProjectReference>
     <ProjectReference Include="..\Repositories.Lib.Mem\Repositories.Lib.Mem.csproj">
       <Project>{34d3da85-ac0f-4e8b-8244-835d4a3b77c5}</Project>

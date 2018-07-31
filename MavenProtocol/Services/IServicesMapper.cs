@@ -9,13 +9,11 @@ namespace MavenProtocol
     public interface IServicesMapper
     {
         void Refresh();
-        /*string From(Guid repoId, string resourceId, params string[] par);
-        string FromSemver(Guid repoId, string resourceId,string semVerLevel, params string[] par);
-        Dictionary<string, EntryPointDescriptor> GetVisibles(Guid id);
-        string ToNuget(Guid repoId, string src);
-        string FromNuget(Guid repoId, string src);
+        string From(Guid repoId, string resourceId, params string[] par);
+        string ToMaven(Guid repoId, string src);
+        string FromMvane(Guid repoId, string src);
         int MaxRegistrationPages(Guid repoId);
-        int MaxCatalogPages(Guid repoId);*/
+        int MaxCatalogPages(Guid repoId);
         int MaxQueryPage(Guid repoId);
     }
 }

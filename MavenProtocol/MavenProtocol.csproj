@@ -64,6 +64,11 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Ioc.Shared\Ioc.Shared.csproj">
+      <Project>{59BA45AE-F80C-440D-BEA1-C1FCA0F00A2B}</Project>
+      <Name>Ioc.Shared</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

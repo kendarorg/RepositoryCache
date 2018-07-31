@@ -14,11 +14,10 @@ namespace MavenProtocol.Apis
         /// <param name="repoId"></param>
         /// <param name="item"></param>
         /// <returns></returns>
-        byte[] ReadPackage(Guid repoId, MavenIndex item);
-        byte[] ReadPom(Guid repoId, MavenIndex item);
+        byte[] ReadArtifact(Guid repoId, MavenIndex item);
         string ReadChecksum(Guid repoId, MavenIndex item);
-        void WritePackage(Guid repoId, MavenIndex item,byte[] content);
-        void WritePom(Guid repoId, MavenIndex item,byte[] content);
+        void WriteArtifact(Guid repoId, MavenIndex item,byte[] content);
         void WriteChecksum(Guid repoId, MavenIndex item,string content);
+        void DeleteArtifact(Guid repoId, MavenIndex);
     }
 }

@@ -23,24 +23,22 @@ namespace Maven.Controllers
             _repositoryEntitiesRepository = repositoryEntitiesRepository;
             SetHandler(Handler);
         }
-        private static int count = 0;
+
         private SerializableResponse Handler(SerializableRequest arg)
         {
             if (!arg.PathParams.ContainsKey("subtype"))
             {
                 arg.PathParams["subtype"] = string.Empty;
             }
-            /*var metadata = new MavenPackageMetadata
+
+            var subType = arg.PathParams["subtype"];
+            var mavenIndex = new MavenIndex
             {
                 ArtifactId = arg.PathParams["package"],
-                Group = arg.PathParams["*path"],
-                SubType = arg.PathParams["subtype"]
-            };*/
-
-            /*Assert.AreEqual("slf4j-api", arg.PathParams["package"]);
-            Assert.AreEqual("org/slf4j", arg.PathParams["*path"]);
-            Assert.AreEqual("maven-metadata.xml", arg.PathParams["filename"]);
-            Assert.AreEqual("asc", arg.PathParams["subtype"]);*/
+                Checksum = arg.PathParams["subtype"],
+                Group = arg.PathParams["*path"].Split('/'),
+                Type = arg.PathParams["type"]
+            };
 
             return new SerializableResponse();
         }
