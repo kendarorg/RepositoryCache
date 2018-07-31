@@ -128,10 +128,12 @@ namespace MavenProtocol
                 result.Dependencies = new List<DependencyXml>();
                 foreach (var dep in ChildrenByName(dependenciesEl, "dependency"))
                 {
-                    var depx = new DependencyXml();
-                    depx.GroupId = ValueByName(dep, "groupId");
-                    depx.ArtifactId = ValueByName(dep, "artifactId");
-                    depx.Version = ValueByName(dep, "version");
+                    var depx = new DependencyXml
+                    {
+                        GroupId = ValueByName(dep, "groupId"),
+                        ArtifactId = ValueByName(dep, "artifactId"),
+                        Version = ValueByName(dep, "version")
+                    };
                     result.Dependencies.Add(depx);
                 }
             }

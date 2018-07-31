@@ -1,4 +1,5 @@
-﻿using MavenProtocol.Apis;
+﻿using Ioc;
+using MavenProtocol.Apis;
 using MultiRepositories;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Maven.Services
 {
-    public interface IRequestParser
+    public interface IRequestParser : ISingleton
     {
         MavenIndex Parse(SerializableRequest request);
     }

@@ -65,7 +65,7 @@
     <Compile Include="Services\IArtifactsStorage.cs" />
     <Compile Include="Services\IQueryBuilder.cs" />
     <Compile Include="Services\IRequestParser.cs" />
-    <Compile Include="Services\PackagesStorage.cs" />
+    <Compile Include="Services\ArtifactsStorage.cs" />
     <Compile Include="Services\ParsedQuery.cs" />
     <Compile Include="Services\QueryBuilder.cs" />
     <Compile Include="Services\RequestParser.cs" />

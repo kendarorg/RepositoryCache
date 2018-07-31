@@ -57,6 +57,7 @@
     <Compile Include="Apis\Query\SearchResult.cs" />
     <Compile Include="DependencyXml.cs" />
     <Compile Include="MavenConstants.cs" />
+    <Compile Include="MavenMetadataXml.cs" />
     <Compile Include="PomXml.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\IServicesMapper.cs" />

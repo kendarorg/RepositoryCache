@@ -78,7 +78,7 @@ namespace Maven.Services
             if (litem.StartsWith("l:"))
             {
                 //return "classfier";
-                throw new NotSupportedException();
+                throw new NotSupportedException("Not supported parameter");
             }
             if (litem.StartsWith("a:")) return "packageid";//packageid
             if (litem.StartsWith("c:")) return "class";

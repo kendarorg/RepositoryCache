@@ -37,7 +37,15 @@ namespace Maven.Apis
         public byte[] ReadArtifact(Guid repoId, MavenIndex item)
         {
             var repo = _repositoryEntitiesRepository.GetById(repoId);
-            return _artifactsStorage.Load(repo, item.Group, item.ArtifactId, item.Version, item.Classifier, item.Type);
+
+            if (item.Type == "maven-metadata")
+            {
+                throw new NotImplementedException("TODO SHOULD READ THE METADATA");
+            }
+            else
+            {
+                return _artifactsStorage.Load(repo, item.Group, item.ArtifactId, item.Version, item.Classifier, item.Type);
+            }
         }
         
         public void WriteChecksum(Guid repoId, MavenIndex item, string content)

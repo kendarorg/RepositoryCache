@@ -12,33 +12,42 @@ namespace Maven.Services
     {
         public MavenIndex Parse(SerializableRequest arg)
         {
-            if (!arg.PathParams.ContainsKey("subtype"))
-            {
-                arg.PathParams["subtype"] = string.Empty;
-            }
-
-            var subType = arg.PathParams["subtype"];
-            var version = "";
-            if (arg.PathParams.ContainsKey("major")) version += arg.PathParams["major"];
+            
+            string subType = null;
+            string version = null;
+            string filename = null;
+            string package = null;
+            string classifier = null;
+            string path = string.Empty;
+            string type = null;
+            if (arg.PathParams.ContainsKey("type")) type = arg.PathParams["type"];
+            if (arg.PathParams.ContainsKey("*path")) path = arg.PathParams["*path"];
+            if (arg.PathParams.ContainsKey("package")) package = arg.PathParams["package"];
+            if (arg.PathParams.ContainsKey("subType")) subType = arg.PathParams["subType"];
+            if (arg.PathParams.ContainsKey("filename")) filename = arg.PathParams["filename"];
+            if (arg.PathParams.ContainsKey("major")) version = arg.PathParams["major"];
             if (arg.PathParams.ContainsKey("minor")) version += "." + arg.PathParams["major"];
             if (arg.PathParams.ContainsKey("patch")) version += "." + arg.PathParams["patch"];
             if (arg.PathParams.ContainsKey("extra")) version += "." + arg.PathParams["extra"];
             if (arg.PathParams.ContainsKey("pre")) version += "-" + arg.PathParams["pre"];
+            if (arg.PathParams.ContainsKey("build")) version += "-" + arg.PathParams["build"];
+
+            if (arg.PathParams.ContainsKey("filename")) filename = arg.PathParams["filename"];
 
 
-
-            var classifier = arg.PathParams["filename"].Replace(arg.PathParams["package"], "");
-            if (string.IsNullOrWhiteSpace(classifier))
+            if (filename != null && package != null)
             {
-                classifier = null;
+                classifier = filename.Replace(package, "");
             }
             return new MavenIndex
             {
-                ArtifactId = arg.PathParams["package"],
-                Checksum = arg.PathParams["subtype"],
-                Group = arg.PathParams["*path"].Split('/'),
+                ArtifactId =package,
+                Checksum = subType,
+                Group = path.Split('/'),
                 Version = version,
-                Classifier = classifier
+                Classifier = classifier,
+                Filename = filename,
+                Type = type
             };
         }
     }
