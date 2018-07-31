@@ -89,6 +89,7 @@
     <None Include="maven_exes\lib\wagon-provider-api.license" />
     <None Include="maven_exes\LICENSE" />
     <None Include="maven_exes\NOTICE" />
+    <None Include="maven_exes\upload\api-common-1.6.0.pom" />
     <None Include="NugetPush.bat" />
   </ItemGroup>
   <ItemGroup>
@@ -142,6 +143,9 @@
     <Content Include="maven_exes\lib\wagon-http-3.1.0-shaded.jar" />
     <Content Include="maven_exes\lib\wagon-provider-api-3.1.0.jar" />
     <Content Include="maven_exes\README.txt" />
+    <Content Include="maven_exes\upload\api-common-1.6.0-javadoc.jar" />
+    <Content Include="maven_exes\upload\api-common-1.6.0-sources.jar" />
+    <Content Include="maven_exes\upload\api-common-1.6.0.jar" />
     <Content Include="nuget_exes\NuGet.3.5.exe" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

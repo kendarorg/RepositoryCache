@@ -155,8 +155,8 @@ namespace MavenProtocol
 
             Assert.AreEqual("slf4j-api", request.PathParams["package"]);
             Assert.AreEqual("org/slf4j", request.PathParams["*path"]);
-            Assert.AreEqual("maven-metadata", request.PathParams["filename"]);
-            Assert.AreEqual("xml", request.PathParams["type"]);
+            Assert.AreEqual("maven-metadata", request.PathParams["type"]);
+            Assert.AreEqual("xml", request.PathParams["extension"]);
             Assert.AreEqual("asc", request.PathParams["subtype"]);
         }
 
@@ -181,8 +181,8 @@ namespace MavenProtocol
 
             Assert.AreEqual("slf4j-api", request.PathParams["package"]);
             Assert.AreEqual("org/slf4j", request.PathParams["*path"]);
-            Assert.AreEqual("maven-metadata", request.PathParams["filename"]);
-            Assert.AreEqual("xml", request.PathParams["type"]);
+            Assert.AreEqual("maven-metadata", request.PathParams["type"]);
+            Assert.AreEqual("xml", request.PathParams["extension"]);
             Assert.IsFalse(request.PathParams.ContainsKey("subtype"));
         }
     }

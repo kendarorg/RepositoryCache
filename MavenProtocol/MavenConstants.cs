@@ -22,8 +22,8 @@ namespace MavenProtocol
                     @"\.(?<type>(jar|pom))" +
                     @"(\.(?<subtype>(asc|md5|sha1)))?$";
         public const string METADATA_AND_CHECHKSUMS_REGEXP =
-                    @"^(?<filename>(maven-metadata))"+
-                    @"\.(?<type>(xml))" +
+                    @"^(?<type>(maven-metadata))"+
+                    @"\.(?<extension>(xml))" +
                     @"(\.(?<subtype>(asc|md5|sha1)))?$";
 
 

@@ -8,6 +8,6 @@ namespace MavenProtocol.Apis.Browse
 {
     public interface IMavenExploreService
     {
-        ExploreResult Explore(Guid repoId,List<string> explore);
+        ExploreResult Explore(Guid repoId,MavenIndex explore);
     }
 }

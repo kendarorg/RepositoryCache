@@ -1,0 +1,129 @@
+﻿{
+	"responseHeader": {
+		"status": 0,
+		"QTime": 2,
+    "params": {
+      "q": "g:\"com.google.inject\" AND a:\"guice\"",
+      "core": "gav",
+      "indent": "off",
+      "fl": "id,g,a,v,p,ec,timestamp,tags",
+      "sort": "score desc,timestamp desc,g asc,a asc,v desc",
+      "rows": "20",
+      "wt": "json",
+      "version": "2.2"
+    }
+	},
+	"response": {
+		"numFound": 12,
+		"start": 0,
+		"docs": [{
+			"id": "com.google.inject:guice:4.2.0",
+			"g": "com.google.inject",
+			"a": "guice",
+			"v": "4.2.0",
+			"p": "jar",
+			"timestamp": 1519843925000,
+			"ec": ["-sources.jar", "-javadoc.jar", "-test-sources.jar", ".jar", "-tests.jar", "-no_aop.jar", "-classes.jar", ".pom"],
+			"tags": ["dependency", "guice", "injection", "above", "java", "lightweight", "framework"]
+		}, {
+			"id": "com.google.inject:guice:4.1.0",
+			"g": "com.google.inject",
+			"a": "guice",
+			"v": "4.1.0",
+			"p": "jar",
+			"timestamp": 1466193194000,
+			"ec": ["-javadoc.jar", "-sources.jar", "-test-sources.jar", ".jar", "-tests.jar", "-no_aop.jar", "-classes.jar", ".pom"],
+			"tags": ["dependency", "guice", "injection", "above", "java", "lightweight", "framework"]
+		}, {
+			"id": "com.google.inject:guice:4.0",
+			"g": "com.google.inject",
+			"a": "guice",
+			"v": "4.0",
+			"p": "jar",
+			"timestamp": 1430253206000,
+			"ec": ["-sources.jar", "-javadoc.jar", "-test-sources.jar", ".jar", "-tests.jar", "-site.jar", "-no_aop.jar", "-classes.jar", ".pom"],
+			"tags": ["dependency", "guice", "injection", "above", "java", "lightweight", "framework"]
+		}, {
+			"id": "com.google.inject:guice:4.0-beta5",
+			"g": "com.google.inject",
+			"a": "guice",
+			"v": "4.0-beta5",
+			"p": "jar",
+			"timestamp": 1411592603000,
+			"ec": ["-javadoc.jar", "-sources.jar", "-test-sources.jar", "-tests.jar", ".jar", "-site.jar", "-no_aop.jar", "-classes.jar", ".pom"],
+			"tags": ["dependency", "guice", "injection", "above", "java", "lightweight", "framework"]
+		}, {
+			"id": "com.google.inject:guice:4.0-beta4",
+			"g": "com.google.inject",
+			"a": "guice",
+			"v": "4.0-beta4",
+			"p": "jar",
+			"timestamp": 1395352292000,
+			"ec": ["-javadoc.jar", "-sources.jar", "-test-sources.jar", ".jar", "-tests.jar", "-site.jar", "-no_aop.jar", "-classes.jar", ".pom"],
+			"tags": ["dependency", "guice", "injection", "above", "java", "lightweight", "framework"]
+		}, {
+			"id": "com.google.inject:guice:4.0-beta",
+			"g": "com.google.inject",
+			"a": "guice",
+			"v": "4.0-beta",
+			"p": "jar",
+			"timestamp": 1375308146000,
+			"ec": ["-sources.jar", "-javadoc.jar", "-test-sources.jar", ".jar", "-tests.jar", "-no_aop.jar", "-no_deps.jar", ".pom"],
+			"tags": ["dependency", "guice", "injection", "above", "java", "lightweight", "framework"]
+		}, {
+			"id": "com.google.inject:guice:3.0",
+			"g": "com.google.inject",
+			"a": "guice",
+			"v": "3.0",
+			"p": "jar",
+			"timestamp": 1301077187000,
+			"ec": ["-javadoc.jar", "-sources.jar", ".jar", "-tests.jar", "-no_aop.jar", ".pom"],
+			"tags": ["dependency", "guice", "injection", "above", "java", "lightweight", "framework"]
+		}, {
+			"id": "com.google.inject:guice:3.0-rc3",
+			"g": "com.google.inject",
+			"a": "guice",
+			"v": "3.0-rc3",
+			"p": "jar",
+			"timestamp": 1299460443000,
+			"ec": ["-javadoc.jar", "-sources.jar", ".jar", "-tests.jar", "-no_aop.jar", ".pom"],
+			"tags": ["dependency", "guice", "injection", "above", "java", "lightweight", "framework"]
+		}, {
+			"id": "com.google.inject:guice:2.0-no_aop",
+			"g": "com.google.inject",
+			"a": "guice",
+			"v": "2.0-no_aop",
+			"p": "jar",
+			"timestamp": 1295723536000,
+			"ec": ["-javadoc.jar", "-sources.jar", ".jar", ".pom"],
+			"tags": ["dependency", "guice", "google", "pronounced", "juice", "injection", "above", "java", "lightweight", "brought", "framework"]
+		}, {
+			"id": "com.google.inject:guice:3.0-rc2",
+			"g": "com.google.inject",
+			"a": "guice",
+			"v": "3.0-rc2",
+			"p": "jar",
+			"timestamp": 1294625670000,
+			"ec": ["-sources.jar", "-javadoc.jar", "-tests.jar", ".jar", "-no_aop.jar", ".pom"],
+			"tags": ["dependency", "guice", "injection", "above", "java", "lightweight", "framework"]
+		}, {
+			"id": "com.google.inject:guice:2.0",
+			"g": "com.google.inject",
+			"a": "guice",
+			"v": "2.0",
+			"p": "jar",
+			"timestamp": 1249129549000,
+			"ec": [".jar", ".pom"],
+			"tags": ["dependency", "guice", "google", "pronounced", "juice", "injection", "above", "java", "lightweight", "brought", "framework"]
+		}, {
+			"id": "com.google.inject:guice:1.0",
+			"g": "com.google.inject",
+			"a": "guice",
+			"v": "1.0",
+			"p": "jar",
+			"timestamp": 1243341596000,
+			"ec": [".jar", ".pom"],
+			"tags": ["dependency", "guice", "google", "pronounced", "juice", "injection", "above", "java", "lightweight", "brought", "framework"]
+		}]
+	}
+}

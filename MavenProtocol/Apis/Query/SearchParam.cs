@@ -8,6 +8,7 @@
     {
         public string FreeText { get; set; }
         public string Query { get; set; }
+        public string Core { get; set; }//GAV=get all version.  Empty/GA=last version only
         public string Wt { get; set; }//always json
         public int Rows { get; set; }//take
         public int Start { get; set; }//skip

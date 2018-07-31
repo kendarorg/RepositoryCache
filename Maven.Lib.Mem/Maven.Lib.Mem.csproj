@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E932EF38-FFDD-41A4-9D98-9C73B0F3EA13}</ProjectGuid>
+    <ProjectGuid>{0DE32351-3EE8-404B-BF55-A7B2349F8A27}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MavenProtocol</RootNamespace>
-    <AssemblyName>MavenProtocol</AssemblyName>
+    <RootNamespace>Maven</RootNamespace>
+    <AssemblyName>Maven.Lib.Mem</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,9 +30,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -43,27 +40,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Apis\Browse\ExploreResult.cs" />
-    <Compile Include="Apis\Browse\IMavenExploreService.cs" />
-    <Compile Include="Apis\Catalog\IMavenArtifactsService.cs" />
-    <Compile Include="Apis\Metadata\IMetadataService.cs" />
-    <Compile Include="Apis\MavenIndex.cs" />
-    <Compile Include="Apis\Metadata\MavenMetadata.cs" />
-    <Compile Include="Apis\Query\IMavenSearch.cs" />
-    <Compile Include="Apis\Query\SearchParam.cs" />
-    <Compile Include="Apis\Query\ResponseContent.cs" />
-    <Compile Include="Apis\Query\ResponseDoc.cs" />
-    <Compile Include="Apis\Query\ResponseHeader.cs" />
-    <Compile Include="Apis\Query\SearchResult.cs" />
-    <Compile Include="DependencyXml.cs" />
-    <Compile Include="MavenConstants.cs" />
-    <Compile Include="PomXml.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\IServicesMapper.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <ProjectReference Include="..\Maven.Lib\Maven.Lib.csproj">
+      <Project>{3f3ef9e8-0427-48a5-9307-d92eec080415}</Project>
+      <Name>Maven.Lib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Repositories.Lib.Mem\Repositories.Lib.Mem.csproj">
+      <Project>{34d3da85-ac0f-4e8b-8244-835d4a3b77c5}</Project>
+      <Name>Repositories.Lib.Mem</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Repositories.Lib\Repositories.Lib.csproj">
+      <Project>{7a5739d6-0966-4c2f-8dd2-07f3e6159212}</Project>
+      <Name>Repositories.Lib</Name>
+    </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

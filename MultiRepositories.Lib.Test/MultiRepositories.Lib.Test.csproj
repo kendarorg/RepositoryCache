@@ -54,10 +54,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MavenProtocol\MavenProtocol.csproj">
-      <Project>{E932EF38-FFDD-41A4-9D98-9C73B0F3EA13}</Project>
-      <Name>MavenProtocol</Name>
-    </ProjectReference>
     <ProjectReference Include="..\MultiRepositories.Lib\MultiRepositories.Lib.csproj">
       <Project>{B20C279E-7034-4A46-9820-1D96296EB36B}</Project>
       <Name>MultiRepositories.Lib</Name>

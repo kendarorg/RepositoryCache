@@ -46,11 +46,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Apis\MavenReadService.cs" />
+    <Compile Include="Apis\MavenSearchService.cs" />
     <Compile Include="Controllers\Maven2_Push.cs" />
     <Compile Include="Controllers\Maven2_Push_Package.cs" />
     <Compile Include="MavenApiIntializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\IMavenSearchRepository.cs" />
+    <Compile Include="Repositories\MavenSearchEntity.cs" />
     <Compile Include="Services\IInsertMavenService.cs" />
     <Compile Include="Services\InsertData.cs" />
     <Compile Include="Services\InsertMavenService.cs" />
@@ -80,6 +82,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <None Include="Apis\MavenSearchService.json" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

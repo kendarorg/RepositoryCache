@@ -7,7 +7,7 @@ namespace MavenProtocol.Apis
     public class ResponseDoc
     {
         public ResponseDoc(string id,string group,string archive,string version,
-            DateTime timestamp,
+            long timestamp,
             List<string> typeAndExt,List<string> tags)
         {
             Id = id;
@@ -31,7 +31,7 @@ namespace MavenProtocol.Apis
         [JsonProperty("v")]
         public string Version { get; set; }
         [JsonProperty("timestamp")]
-        public DateTime Timestamp { get; set; }
+        public long Timestamp { get; set; }
 
         /// <summary>
         /// given package test-1.2.jar

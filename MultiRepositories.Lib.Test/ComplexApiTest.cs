@@ -1,5 +1,4 @@
 ﻿using System;
-using MavenProtocol;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MultiRepositories
@@ -21,12 +20,13 @@ namespace MultiRepositories
                 @"\.(?<type>(jar|pom))" +
                 @"(\.(?<subtype>(asc|md5|sha1)))?$}";
 
-        const string METADATA_REGEX = @"/{repo}/{*path}/" +//maven.local/org/slf4j/
-                    @"{pack#" + MavenConstants.PACKAGE_REGEXP + @"}/" + //slf4j-api/
-                    @"{meta#" + MavenConstants.METADATA_AND_CHECHKSUMS_REGEXP + @"}";
+
+        const string METADATA_REGEX = @"/{repo}/{*path}/" +
+                @"{pack#^(?<package>[0-9A-Za-z\-\.]+)$}/" +
+                @"{meta#^(?<filename>(maven-metadata.xml))(\.(?<subtype>(asc|md5|sha1)))?$}";
 
         [TestMethod]
-        public void ISBPToMatchRegexJarMd5()
+        public void ISBPToMatchRegexJarMd5Comp()
         {
             SerializableRequest request = null;
             var mockRest = new MockRestApi((a) =>
@@ -60,7 +60,7 @@ namespace MultiRepositories
 
 
         [TestMethod]
-        public void ISBPToMatchRegexJar()
+        public void ISBPToMatchRegexJarComp()
         {
             SerializableRequest request = null;
             var mockRest = new MockRestApi((a) =>
@@ -88,7 +88,7 @@ namespace MultiRepositories
 
 
         [TestMethod]
-        public void ISBPToMatchRegexPom()
+        public void ISBPToMatchRegexPomComp()
         {
             SerializableRequest request = null;
             var mockRest = new MockRestApi((a) =>
@@ -116,7 +116,7 @@ namespace MultiRepositories
 
 
         [TestMethod]
-        public void ISBPToMatchRegexPomAsc()
+        public void ISBPToMatchRegexPomAscComp()
         {
             SerializableRequest request = null;
             var mockRest = new MockRestApi((a) =>
@@ -144,7 +144,7 @@ namespace MultiRepositories
 
 
         [TestMethod]
-        public void ISBPToMatchRegexmetadataAsc()
+        public void ISBPToMatchRegexmetadataAscComp()
         {
             SerializableRequest request = null;
             var mockRest = new MockRestApi((a) =>
@@ -162,15 +162,14 @@ namespace MultiRepositories
 
             Assert.AreEqual("slf4j-api", request.PathParams["package"]);
             Assert.AreEqual("org/slf4j", request.PathParams["*path"]);
-            Assert.AreEqual("maven-metadata", request.PathParams["filename"]);
-            Assert.AreEqual("xml", request.PathParams["type"]);
+            Assert.AreEqual("maven-metadata.xml", request.PathParams["filename"]);
             Assert.AreEqual("asc", request.PathParams["subtype"]);
         }
 
 
 
         [TestMethod]
-        public void ISBPToMatchRegexmetadata()
+        public void ISBPToMatchRegexmetadataComp()
         {
             SerializableRequest request = null;
             var mockRest = new MockRestApi((a) =>
@@ -188,8 +187,7 @@ namespace MultiRepositories
 
             Assert.AreEqual("slf4j-api", request.PathParams["package"]);
             Assert.AreEqual("org/slf4j", request.PathParams["*path"]);
-            Assert.AreEqual("maven-metadata", request.PathParams["filename"]);
-            Assert.AreEqual("xml", request.PathParams["type"]);
+            Assert.AreEqual("maven-metadata.xml", request.PathParams["filename"]);
             Assert.IsFalse(request.PathParams.ContainsKey("subtype"));
         }
     }

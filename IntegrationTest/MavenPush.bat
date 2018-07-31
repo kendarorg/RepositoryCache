@@ -4,13 +4,21 @@ SET APIKEY=E7446C12-BD80-4272-3332-09914BE6EBC8
 SET NUROOT=http://localhost:9088/maven.local
 
 cd maven_exes
+
+SET GROUPID=com.google.api
+SET ARTIFACTID=api-common
+SET AVERSION=1.6.0
+SET ARTIPATH=%CD%\upload\%ARTIFACTID%-%AVERSION%
+
 SET CUDIR=%CD%
 cd bin
 
 echo Maven.3.5.4, Upload of simple file
 
-REM mvn deploy:deploy-file -DgroupId=org.slf4j -DartifactId=slf4j-api -Dversion=1.7.25 -DgeneratePom=true -Dpackaging=jar -DrepositoryId=local -Durl=%NUROOT% -DpomFile=%CUDIR%\lib\slf4j-api-1.7.25.pom -Dfile=%CUDIR%\lib\slf4j-api-1.7.25.jar
-mvn deploy:deploy-file -DgroupId=org.slf4j -DartifactId=slf4j-api -Dversion=1.7.25 -DgeneratePom=true -Dpackaging=jar -DrepositoryId=local -Durl=%NUROOT% -Dfile=%CUDIR%\lib\slf4j-api-1.7.25.jar 
+REM mvn deploy:deploy-file -DgroupId=%GROUPID% -DartifactId=%ARTIFACTID% -Dversion=%AVERSION% -DgeneratePom=true -Dpackaging=jar -DrepositoryId=local -Durl=%NUROOT% -Dfile=%ARTIPATH%.jar 
+
+mvn deploy:deploy-file -DgroupId=%GROUPID% -DartifactId=%ARTIFACTID% -Dversion=%AVERSION% -DgeneratePom=true -Dpackaging=jar -DrepositoryId=local -Durl=%NUROOT% -Dfile=%ARTIPATH%.jar -Dfiles=%ARTIPATH%-javadoc.jar,%ARTIPATH%-sources.jar -Dclassifiers=javadoc,sources -Dtypes=jar,jar
+
 
 cd ..
 
