@@ -9,36 +9,27 @@ using MultiRepositories;
 using System.IO;
 using Newtonsoft.Json;
 using MavenProtocol.Apis;
+using Maven.Services;
 
 namespace Maven.Controllers
 {
     public class Maven2_Push : RestAPI
     {
         private IRepositoryEntitiesRepository _repositoryEntitiesRepository;
+        private readonly IRequestParser _requestParser;
 
         public Maven2_Push(
-            IRepositoryEntitiesRepository repositoryEntitiesRepository, params string[] paths)
+            IRepositoryEntitiesRepository repositoryEntitiesRepository, IRequestParser requestParser, params string[] paths)
             : base(null, paths)
         {
             _repositoryEntitiesRepository = repositoryEntitiesRepository;
+            this._requestParser = requestParser;
             SetHandler(Handler);
         }
 
         private SerializableResponse Handler(SerializableRequest arg)
         {
-            if (!arg.PathParams.ContainsKey("subtype"))
-            {
-                arg.PathParams["subtype"] = string.Empty;
-            }
-
-            var subType = arg.PathParams["subtype"];
-            var mavenIndex = new MavenIndex
-            {
-                ArtifactId = arg.PathParams["package"],
-                Checksum = arg.PathParams["subtype"],
-                Group = arg.PathParams["*path"].Split('/'),
-                Type = arg.PathParams["type"]
-            };
+            var idx = _requestParser.Parse(arg);
 
             return new SerializableResponse();
         }

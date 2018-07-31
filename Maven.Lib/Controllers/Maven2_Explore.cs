@@ -7,17 +7,18 @@ using System.Text;
 using System.Threading.Tasks;
 using MultiRepositories;
 using System.IO;
+using Newtonsoft.Json;
 using MavenProtocol.Apis;
 using Maven.Services;
 
 namespace Maven.Controllers
 {
-    public class Maven2_Push_Package: RestAPI
+    public class Maven2_Explore : RestAPI
     {
         private IRepositoryEntitiesRepository _repositoryEntitiesRepository;
         private readonly IRequestParser _requestParser;
 
-        public Maven2_Push_Package(
+        public Maven2_Explore(
             IRepositoryEntitiesRepository repositoryEntitiesRepository, IRequestParser requestParser, params string[] paths)
             : base(null, paths)
         {
@@ -28,7 +29,8 @@ namespace Maven.Controllers
 
         private SerializableResponse Handler(SerializableRequest arg)
         {
-            var index = _requestParser.Parse(arg);
+
+            var idx = _requestParser.Parse(arg);
 
             return new SerializableResponse();
         }

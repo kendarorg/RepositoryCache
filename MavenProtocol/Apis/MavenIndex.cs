@@ -10,6 +10,7 @@ namespace MavenProtocol.Apis
         public string Classifier { get; set; } //-sources/-
         public string Type { get; set; }    //maven-metadata/jar/pom
         public string Checksum { get; set; } //null/asc/sha1/md5
+        public string Filename { get; set; }
 
         public string ToLocalPath()
         {

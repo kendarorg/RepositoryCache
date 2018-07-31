@@ -18,6 +18,6 @@ namespace MavenProtocol.Apis
         string ReadChecksum(Guid repoId, MavenIndex item);
         void WriteArtifact(Guid repoId, MavenIndex item,byte[] content);
         void WriteChecksum(Guid repoId, MavenIndex item,string content);
-        void DeleteArtifact(Guid repoId, MavenIndex);
+        void DeleteArtifact(Guid repoId, MavenIndex item);
     }
 }

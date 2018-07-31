@@ -55,7 +55,7 @@ namespace Maven.Apis
             throw new NotImplementedException();
         }
 
-        public void DeleteArtifact(Guid repoId, MavenIndex )
+        public void DeleteArtifact(Guid repoId, MavenIndex item)
         {
             throw new NotImplementedException();
         }

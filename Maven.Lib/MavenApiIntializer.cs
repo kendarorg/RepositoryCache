@@ -1,5 +1,6 @@
 ﻿using Ioc;
 using Maven.Controllers;
+using Maven.Services;
 using MavenProtocol;
 using MultiRepositories;
 using MultiRepositories.Repositories;
@@ -16,14 +17,17 @@ namespace Maven
         private readonly AppProperties _applicationPropertes;
         private readonly IAssemblyUtils _assemblyUtils;
         private readonly IRepositoryEntitiesRepository _repositoryEntitiesRepository;
+        private readonly IRequestParser _requestParser;
 
         public MavenApiIntializer(AppProperties applicationPropertes,
             IAssemblyUtils assemblyUtils,
-            IRepositoryEntitiesRepository repositoryEntitiesRepository)
+            IRepositoryEntitiesRepository repositoryEntitiesRepository,
+            IRequestParser requestParser)
         {
             this._applicationPropertes = applicationPropertes;
             this._assemblyUtils = assemblyUtils;
             this._repositoryEntitiesRepository = repositoryEntitiesRepository;
+            this._requestParser = requestParser;
         }
         public void Initialize(IRepositoryServiceProvider repositoryServiceProvider)
         {
@@ -64,16 +68,43 @@ namespace Maven
             foreach (var item in _repositoryEntitiesRepository.GetByType("nuget"))
             {
 
-                repositoryServiceProvider.RegisterApi(new Maven2_Push_Package(_repositoryEntitiesRepository,
-                    "*GET", "*PUT",
+
+                repositoryServiceProvider.RegisterApi(new Maven2_Explore(_repositoryEntitiesRepository, _requestParser,
+                    "*GET",
+                        @"/{repo}/{*path}/" + ///maven.local/org/slf4j
+                        @"{pack#" + MavenConstants.PACKAGE_REGEXP + @"}/" + //slf4j-api/
+                        @"{ver#" + MavenConstants.VERSION_REGEXP + @"}/" +
+                        @"{meta#" + MavenConstants.FULLPACKAGE_AND_CHECHKSUMS_REGEXP + @"}".//slf4j-api-1.7.25.jar.md5
+                            Replace("{repo}", item.Prefix),
+                    "*GET",
+                        @"/{repo}/{*path}/" + ///maven.local/org/slf4j
+                        @"{pack#" + MavenConstants.PACKAGE_REGEXP + @"}/" + //slf4j-api/
+                        @"{ver#" + MavenConstants.VERSION_REGEXP + @"}".
+                            Replace("{repo}", item.Prefix),
+                    "*GET",
+                        @"/{repo}/{*path}/" +//maven.local/org/slf4j/
+                        @"{pack#" + MavenConstants.PACKAGE_REGEXP + @"}/" + //slf4j-api/
+                        @"{meta#" + MavenConstants.METADATA_AND_CHECHKSUMS_REGEXP + @"}". ////maven-metadata.xml.asc
+                            Replace("{repo}", item.Prefix),
+                    "*GET",
+                        @"/{repo}/{*path}/" +//maven.local/org/slf4j/
+                        @"{pack#" + MavenConstants.PACKAGE_REGEXP + @"}".
+                            Replace("{repo}", item.Prefix), //slf4j-api/
+                    "*GET",
+                        @"/{repo}/{*path}".
+                            Replace("{repo}", item.Prefix)//maven.local/org/slf4j/
+                    ));
+
+                repositoryServiceProvider.RegisterApi(new Maven2_Push_Package(_repositoryEntitiesRepository, _requestParser,
+                    "*PUT",
                     @"/{repo}/{*path}/" + ///maven.local/org/slf4j
                     @"{pack#" + MavenConstants.PACKAGE_REGEXP + @"}/" + //slf4j-api/
                     @"{ver#" + MavenConstants.VERSION_REGEXP + @"}/" +
                     @"{meta#" + MavenConstants.FULLPACKAGE_AND_CHECHKSUMS_REGEXP + @"}".
                         Replace("{repo}", item.Prefix))); //slf4j-api-1.7.25.jar.md5
 
-                repositoryServiceProvider.RegisterApi(new Maven2_Push(_repositoryEntitiesRepository,
-                    "*GET", "*PUT",
+                repositoryServiceProvider.RegisterApi(new Maven2_Push(_repositoryEntitiesRepository, _requestParser,
+                    "*PUT",
                     @"/{repo}/{*path}/" +//maven.local/org/slf4j/
                     @"{pack#" + MavenConstants.PACKAGE_REGEXP + @"}/" + //slf4j-api/
                     @"{meta#" + MavenConstants.METADATA_AND_CHECHKSUMS_REGEXP + @"}".

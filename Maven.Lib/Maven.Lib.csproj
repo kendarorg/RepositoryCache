@@ -49,6 +49,7 @@
     <Compile Include="Apis\MavenArtifactsService.cs" />
     <Compile Include="Apis\MavenExploreService.cs" />
     <Compile Include="Apis\MavenSearchService.cs" />
+    <Compile Include="Controllers\Maven2_Explore.cs" />
     <Compile Include="Controllers\Maven2_Push.cs" />
     <Compile Include="Controllers\Maven2_Push_Package.cs" />
     <Compile Include="MavenApiIntializer.cs" />
@@ -56,18 +57,18 @@
     <Compile Include="Repositories\IMavenArtifactsRepository.cs" />
     <Compile Include="Repositories\IMavenSearchLastRepository.cs" />
     <Compile Include="Repositories\IMavenSearchRepository.cs" />
-    <Compile Include="Repositories\IMavenTreeRepository.cs" />
     <Compile Include="Repositories\MavenArtifactEntity.cs" />
     <Compile Include="Repositories\MavenSearchEntity.cs" />
-    <Compile Include="Repositories\MavenTreeItem.cs" />
     <Compile Include="Services\IInsertMavenService.cs" />
     <Compile Include="Services\InsertData.cs" />
     <Compile Include="Services\InsertMavenService.cs" />
     <Compile Include="Services\IArtifactsStorage.cs" />
     <Compile Include="Services\IQueryBuilder.cs" />
+    <Compile Include="Services\IRequestParser.cs" />
     <Compile Include="Services\PackagesStorage.cs" />
     <Compile Include="Services\ParsedQuery.cs" />
     <Compile Include="Services\QueryBuilder.cs" />
+    <Compile Include="Services\RequestParser.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Ioc.Shared\Ioc.Shared.csproj">
