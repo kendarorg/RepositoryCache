@@ -22,11 +22,24 @@ namespace Maven.Services
             return result;
         }
 
+        public void Write(RepositoryEntity repo, string[] group, string artifactId, string version, string classifier, string type, byte[] data)
+        {
+            classifier = string.IsNullOrWhiteSpace(classifier) ? "" : "-" + classifier;
+            var path = Path.Combine(GetPath(repo), string.Join("\\", group),
+                artifactId, version, artifactId + "-" + version + classifier + "." + type);
+            var dir = Path.GetDirectoryName(path);
+            if (!Directory.Exists(dir))
+            {
+                Directory.CreateDirectory(dir);
+            }
+            File.WriteAllBytes(path, data);
+        }
+
         public byte[] Load(RepositoryEntity repo, string[] group, string artifactId, string version, string classifier, string type)
         {
-            classifier = classifier ?? "";
+            classifier = string.IsNullOrWhiteSpace(classifier) ? "" : "-" + classifier;
             var path = Path.Combine(GetPath(repo), string.Join("\\", group),
-                artifactId, version, artifactId + classifier + "." + type);
+                artifactId, version, artifactId + "-" + version + classifier + "." + type);
             if (File.Exists(path))
             {
                 return File.ReadAllBytes(path);

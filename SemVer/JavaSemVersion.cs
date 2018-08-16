@@ -14,10 +14,10 @@ namespace SemVer
     /// Conforms to v2.0.0 of http://semver.org/
     /// </summary>
 #if NETSTANDARD
-    public sealed class SemVersion : IComparable<SemVersion>, IComparable
+    public sealed class JavaSemVersion : IComparable<JavaSemVersion>, IComparable
 #else
     [Serializable]
-    public sealed class SemVersion : IComparable<SemVersion>, IComparable, ISerializable
+    public sealed class JavaSemVersion : IComparable<JavaSemVersion>, IComparable, ISerializable
 #endif
     {
         public bool IsPreRelease
@@ -33,8 +33,7 @@ namespace SemVer
                 @"(\.(?<minor>\d+))?" +
                 @"(\.(?<patch>\d+))?" +
                 @"(\.(?<extra>\d+))?" +
-                @"(\-(?<pre>[0-9A-Za-z\-\.]+))?" +
-                @"(\+(?<build>[0-9A-Za-z\-\.]+))?$",
+                @"(\-(?<pre>[0-9A-Za-z\-\.]+))?$",
 #if NETSTANDARD
                 RegexOptions.CultureInvariant | RegexOptions.ExplicitCapture);
 #else
@@ -43,33 +42,33 @@ namespace SemVer
 
 #if !NETSTANDARD
         /// <summary>
-        /// Initializes a new instance of the <see cref="SemVersion" /> class.
+        /// Initializes a new instance of the <see cref="JavaSemVersion" /> class.
         /// </summary>
         /// <param name="info"></param>
         /// <param name="context"></param>
         /// <exception cref="ArgumentNullException"></exception>
-        private SemVersion(SerializationInfo info, StreamingContext context)
+        private JavaSemVersion(SerializationInfo info, StreamingContext context)
         {
             if (info == null) throw new ArgumentNullException("info");
-            var semVersion = Parse(info.GetString("SemVersion"));
+            var semVersion = Parse(info.GetString("JavaSemVersion"));
             Major = semVersion.Major;
             Minor = semVersion.Minor;
             Patch = semVersion.Patch;
             Extra = semVersion.Extra;
             Prerelease = semVersion.Prerelease;
-            Build = semVersion.Build;
+            IsSnapsot = semVersion.IsSnapsot;
         }
 #endif
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SemVersion" /> class.
+        /// Initializes a new instance of the <see cref="JavaSemVersion" /> class.
         /// </summary>
         /// <param name="major">The major version.</param>
         /// <param name="minor">The minor version.</param>
         /// <param name="patch">The patch version.</param>
         /// <param name="prerelease">The prerelease version (eg. "alpha").</param>
         /// <param name="build">The build eg ("nightly.232").</param>
-        public SemVersion(int major, int minor = 0, int patch = 0, string prerelease = "", string build = "", int? extra = null)
+        public JavaSemVersion(int major, int minor = 0, int patch = 0, string prerelease = "", bool snapshot = false, int? extra = null)
         {
             this.Major = major;
             this.Minor = minor;
@@ -77,15 +76,15 @@ namespace SemVer
             this.Extra = extra;
 
             this.Prerelease = prerelease ?? "";
-            this.Build = build ?? "";
+            this.IsSnapsot = snapshot;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SemVersion"/> class.
+        /// Initializes a new instance of the <see cref="JavaSemVersion"/> class.
         /// </summary>
         /// <param name="version">The <see cref="System.Version"/> that is used to initialize 
         /// the Major, Minor, Patch and Build properties.</param>
-        public SemVersion(Version version)
+        public JavaSemVersion(Version version)
         {
             if (version == null)
                 throw new ArgumentNullException("version");
@@ -100,14 +99,7 @@ namespace SemVer
 
             this.Prerelease = String.Empty;
 
-            if (version.Build > 0)
-            {
-                this.Build = version.Build.ToString();
-            }
-            else
-            {
-                this.Build = String.Empty;
-            }
+            this.IsSnapsot = false;
         }
 
         /// <summary>
@@ -115,10 +107,19 @@ namespace SemVer
         /// </summary>
         /// <param name="version">The version string.</param>
         /// <param name="strict">If set to <c>true</c> minor and patch version are required, else they default to 0.</param>
-        /// <returns>The SemVersion object.</returns>
+        /// <returns>The JavaSemVersion object.</returns>
         /// <exception cref="System.InvalidOperationException">When a invalid version string is passed.</exception>
-        public static SemVersion Parse(string version, bool strict = false)
+        public static JavaSemVersion Parse(string version, bool strict = false)
         {
+            var isSnapshot = false;
+            var snap = version.ToUpperInvariant().IndexOf("-SNAPSHOT");
+
+            if(snap>0)
+            {
+                version = version.Substring(0, snap);
+                isSnapshot = true;
+            }
+
             var match = parseEx.Match(version);
             if (!match.Success)
                 throw new ArgumentException("Invalid version.", "version");
@@ -177,19 +178,19 @@ namespace SemVer
             var prerelease = match.Groups["pre"].Value;
             var build = match.Groups["build"].Value;
 
-            return new SemVersion(major, minor, patch, prerelease, build, extra);
+            return new JavaSemVersion(major, minor, patch, prerelease, isSnapshot, extra);
         }
 
         /// <summary>
         /// Parses the specified string to a semantic version.
         /// </summary>
         /// <param name="version">The version string.</param>
-        /// <param name="semver">When the method returns, contains a SemVersion instance equivalent 
+        /// <param name="semver">When the method returns, contains a JavaSemVersion instance equivalent 
         /// to the version string passed in, if the version string was valid, or <c>null</c> if the 
         /// version string was not valid.</param>
         /// <param name="strict">If set to <c>true</c> minor and patch version are required, else they default to 0.</param>
         /// <returns><c>False</c> when a invalid version string is passed, otherwise <c>true</c>.</returns>
-        public static bool TryParse(string version, out SemVersion semver, bool strict = false)
+        public static bool TryParse(string version, out JavaSemVersion semver, bool strict = false)
         {
             try
             {
@@ -209,7 +210,7 @@ namespace SemVer
         /// <param name="versionA">The first version.</param>
         /// <param name="versionB">The second version.</param>
         /// <returns>If versionA is equal to versionB <c>true</c>, else <c>false</c>.</returns>
-        public static bool Equals(SemVersion versionA, SemVersion versionB)
+        public static bool Equals(JavaSemVersion versionA, JavaSemVersion versionB)
         {
             if (ReferenceEquals(versionA, null))
                 return ReferenceEquals(versionB, null);
@@ -223,7 +224,7 @@ namespace SemVer
         /// <param name="versionB">The version to compare against.</param>
         /// <returns>If versionA &lt; versionB <c>&lt; 0</c>, if versionA &gt; versionB <c>&gt; 0</c>,
         /// if versionA is equal to versionB <c>0</c>.</returns>
-        public static int Compare(SemVersion versionA, SemVersion versionB)
+        public static int Compare(JavaSemVersion versionA, JavaSemVersion versionB)
         {
             if (ReferenceEquals(versionA, null))
                 return ReferenceEquals(versionB, null) ? 0 : -1;
@@ -232,7 +233,7 @@ namespace SemVer
 
         public static bool IsGreater(string versionA, string versionB)
         {
-            return SemVersion.Parse(versionA) > SemVersion.Parse(versionB);
+            return JavaSemVersion.Parse(versionA) > JavaSemVersion.Parse(versionB);
         }
 
         /// <summary>
@@ -244,15 +245,15 @@ namespace SemVer
         /// <param name="prerelease">The prerelease text.</param>
         /// <param name="build">The build text.</param>
         /// <returns>The new version object.</returns>
-        public SemVersion Change(int? major = null, int? minor = null, int? patch = null,
-            string prerelease = null, string build = null, int? extra = null)
+        public JavaSemVersion Change(int? major = null, int? minor = null, int? patch = null,
+            string prerelease = null, bool snapshot = false, int? extra = null)
         {
-            return new SemVersion(
+            return new JavaSemVersion(
                 major ?? this.Major,
                 minor ?? this.Minor,
                 patch ?? this.Patch,
                 prerelease ?? this.Prerelease,
-                build ?? this.Build,
+                snapshot,
                 extra ?? this.Extra);
         }
 
@@ -296,13 +297,7 @@ namespace SemVer
         /// </value>
         public string Prerelease { get; private set; }
 
-        /// <summary>
-        /// Gets the build version.
-        /// </summary>
-        /// <value>
-        /// The build version.
-        /// </value>
-        public string Build { get; private set; }
+        public bool IsSnapsot { get; private set; }
 
         /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.
@@ -317,18 +312,8 @@ namespace SemVer
                 version += "." + Extra;
             if (!String.IsNullOrEmpty(Prerelease))
                 version += "-" + Prerelease;
-            if (!String.IsNullOrEmpty(Build))
-                version += "+" + Build;
-            return version;
-        }
-
-        public string ToNormalizedVersion()
-        {
-            var version = "" + Major + "." + Minor + "." + Patch;
-            if (Extra != null)
-                version += "." + Extra;
-            if (!String.IsNullOrEmpty(Prerelease))
-                version += "-" + Prerelease;
+            if (IsSnapsot)
+                version += "-SNAPSHOT";
             return version;
         }
 
@@ -347,7 +332,7 @@ namespace SemVer
         /// </returns>
         public int CompareTo(object obj)
         {
-            return CompareTo((SemVersion)obj);
+            return CompareTo((JavaSemVersion)obj);
         }
 
         /// <summary>
@@ -363,7 +348,7 @@ namespace SemVer
         ///  Zero This instance occurs in the same position in the sort order as <paramref name="other" />. i
         ///  Greater than zero This instance follows <paramref name="other" /> in the sort order.
         /// </returns>
-        public int CompareTo(SemVersion other)
+        public int CompareTo(JavaSemVersion other)
         {
             if (ReferenceEquals(other, null))
                 return 1;
@@ -372,8 +357,9 @@ namespace SemVer
             if (r != 0)
                 return r;
 
-            r = CompareComponent(this.Build, other.Build);
-            return r;
+            if (this.IsSnapsot && !other.IsSnapsot) return -1;
+            if (!this.IsSnapsot && other.IsSnapsot) return 1;
+            return 0;
         }
 
         /// <summary>
@@ -381,7 +367,7 @@ namespace SemVer
         /// </summary>
         /// <param name="other">The semantic version.</param>
         /// <returns><c>true</c> if the version precedence matches.</returns>
-        public bool PrecedenceMatches(SemVersion other)
+        public bool PrecedenceMatches(JavaSemVersion other)
         {
             return CompareByPrecedence(other) == 0;
         }
@@ -397,7 +383,7 @@ namespace SemVer
         ///  Zero This instance has the same precedence as <paramref name="other" />. i
         ///  Greater than zero This instance has creater precedence as <paramref name="other" />.
         /// </returns>
-        public int CompareByPrecedence(SemVersion other)
+        public int CompareByPrecedence(JavaSemVersion other)
         {
             if (ReferenceEquals(other, null))
                 return 1;
@@ -417,6 +403,11 @@ namespace SemVer
             if (r != 0) return r;
 
             r = CompareComponent(this.Prerelease, other.Prerelease, true);
+            if (r == 0)
+            {
+                if (this.IsSnapsot && !other.IsSnapsot) return -1;
+                if (!this.IsSnapsot && other.IsSnapsot) return 1;
+            }
             return r;
         }
 
@@ -479,14 +470,14 @@ namespace SemVer
             if (ReferenceEquals(this, obj))
                 return true;
 
-            var other = (SemVersion)obj;
+            var other = (JavaSemVersion)obj;
 
             return this.Major == other.Major &&
                 this.Minor == other.Minor &&
                 this.Patch == other.Patch &&
                 this.Extra == other.Extra &&
                 string.Equals(this.Prerelease, other.Prerelease, StringComparison.Ordinal) &&
-                string.Equals(this.Build, other.Build, StringComparison.Ordinal);
+                this.IsSnapsot==other.IsSnapsot;
         }
 
         /// <summary>
@@ -507,7 +498,7 @@ namespace SemVer
                 {
                     result = result * 31 + this.Extra.Value.GetHashCode();
                 }
-                result = result * 31 + this.Build.GetHashCode();
+                result = result * 31 + this.IsSnapsot.GetHashCode();
                 return result;
             }
         }
@@ -517,18 +508,18 @@ namespace SemVer
         public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             if (info == null) throw new ArgumentNullException("info");
-            info.AddValue("SemVersion", ToString());
+            info.AddValue("JavaSemVersion", ToString());
         }
 #endif
 
         /// <summary>
-        /// Implicit conversion from string to SemVersion.
+        /// Implicit conversion from string to JavaSemVersion.
         /// </summary>
         /// <param name="version">The semantic version.</param>
-        /// <returns>The SemVersion object.</returns>
-        public static implicit operator SemVersion(string version)
+        /// <returns>The JavaSemVersion object.</returns>
+        public static implicit operator JavaSemVersion(string version)
         {
-            return SemVersion.Parse(version);
+            return JavaSemVersion.Parse(version);
         }
 
         /// <summary>
@@ -537,9 +528,9 @@ namespace SemVer
         /// <param name="left">The left value.</param>
         /// <param name="right">The right value.</param>
         /// <returns>If left is equal to right <c>true</c>, else <c>false</c>.</returns>
-        public static bool operator ==(SemVersion left, SemVersion right)
+        public static bool operator ==(JavaSemVersion left, JavaSemVersion right)
         {
-            return SemVersion.Equals(left, right);
+            return JavaSemVersion.Equals(left, right);
         }
 
         /// <summary>
@@ -548,9 +539,9 @@ namespace SemVer
         /// <param name="left">The left value.</param>
         /// <param name="right">The right value.</param>
         /// <returns>If left is not equal to right <c>true</c>, else <c>false</c>.</returns>
-        public static bool operator !=(SemVersion left, SemVersion right)
+        public static bool operator !=(JavaSemVersion left, JavaSemVersion right)
         {
-            return !SemVersion.Equals(left, right);
+            return !JavaSemVersion.Equals(left, right);
         }
 
         /// <summary>
@@ -559,9 +550,9 @@ namespace SemVer
         /// <param name="left">The left value.</param>
         /// <param name="right">The right value.</param>
         /// <returns>If left is greater than right <c>true</c>, else <c>false</c>.</returns>
-        public static bool operator >(SemVersion left, SemVersion right)
+        public static bool operator >(JavaSemVersion left, JavaSemVersion right)
         {
-            return SemVersion.Compare(left, right) > 0;
+            return JavaSemVersion.Compare(left, right) > 0;
         }
 
         /// <summary>
@@ -570,7 +561,7 @@ namespace SemVer
         /// <param name="left">The left value.</param>
         /// <param name="right">The right value.</param>
         /// <returns>If left is greater than or equal to right <c>true</c>, else <c>false</c>.</returns>
-        public static bool operator >=(SemVersion left, SemVersion right)
+        public static bool operator >=(JavaSemVersion left, JavaSemVersion right)
         {
             return left == right || left > right;
         }
@@ -581,9 +572,9 @@ namespace SemVer
         /// <param name="left">The left value.</param>
         /// <param name="right">The right value.</param>
         /// <returns>If left is less than right <c>true</c>, else <c>false</c>.</returns>
-        public static bool operator <(SemVersion left, SemVersion right)
+        public static bool operator <(JavaSemVersion left, JavaSemVersion right)
         {
-            return SemVersion.Compare(left, right) < 0;
+            return JavaSemVersion.Compare(left, right) < 0;
         }
 
         /// <summary>
@@ -592,7 +583,7 @@ namespace SemVer
         /// <param name="left">The left value.</param>
         /// <param name="right">The right value.</param>
         /// <returns>If left is less than or equal to right <c>true</c>, else <c>false</c>.</returns>
-        public static bool operator <=(SemVersion left, SemVersion right)
+        public static bool operator <=(JavaSemVersion left, JavaSemVersion right)
         {
             return left == right || left < right;
         }

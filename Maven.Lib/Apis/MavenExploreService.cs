@@ -21,16 +21,19 @@ namespace Maven.Apis
         private readonly IRepositoryEntitiesRepository _repositoryEntitiesRepository;
         private readonly IMavenArtifactsService _mavenArtifactsService;
         private readonly IMavenArtifactsRepository _mavenArtifactsRepository;
+        private readonly IMavenSearchRepository _mavenSearchRepository;
 
         public MavenExploreService(IArtifactsStorage mavenTreeRepository,
             IRepositoryEntitiesRepository repositoryEntitiesRepository,
             IMavenArtifactsService mavenArtService,
-            IMavenArtifactsRepository mavenArtifactsRepository)
+            IMavenArtifactsRepository mavenArtifactsRepository,
+            IMavenSearchRepository mavenSearchRepository)
         {
             this._artifactsStorage = mavenTreeRepository;
             this._repositoryEntitiesRepository = repositoryEntitiesRepository;
             this._mavenArtifactsService = mavenArtService;
             this._mavenArtifactsRepository = mavenArtifactsRepository;
+            _mavenSearchRepository = mavenSearchRepository;
         }
 
         public ExploreResult Explore(Guid repoId, MavenIndex explore)
@@ -55,7 +58,7 @@ namespace Maven.Apis
                             else
                             {
                                 baseUrl = null;
-                                result.Content = BuildMavenMetadata(explore, repo);
+                                result.Content = _mavenArtifactsService.ReadArtifact(repoId,explore);
                             }
                         }
                         else if (!string.IsNullOrWhiteSpace(explore.Version))
@@ -79,9 +82,10 @@ namespace Maven.Apis
                         }
                         else
                         {
-                            foreach (var res in _mavenArtifactsRepository.GetVersionsByIdFirstIsRelease(repo.Id, explore.Group, explore.ArtifactId))
+                            foreach(var item in _mavenSearchRepository.GetByArtifactId(repoId, 
+                                explore.ArtifactId,string.Join(".", explore.Group)))
                             {
-                                result.Children.Add(res.Version);
+                                result.Children.Add(item.Version);
                             }
                             result.Children.Add("maven-metadata.xml");
                         }
@@ -131,48 +135,6 @@ namespace Maven.Apis
             }
 
             return resulta;
-        }
-
-        private byte[] BuildMavenMetadata(MavenIndex explore, RepositoryEntity repo)
-        {
-            throw new NotImplementedException();
-            byte[] resultb = null;
-            var mmd = new MavenMetadataXml
-            {
-                GroupId = string.Join(".", explore.Group),
-                ArtifactId = explore.ArtifactId,
-                ModelVersion = "1.1.0",
-                Versioning = new MavenVersioning
-                {
-                    Versions = new MavenVersions()
-                }
-            };
-            mmd.Versioning.Versions.Version = new List<string>();
-            var lastTimestamp = DateTime.MinValue;
-            foreach (var res in _mavenArtifactsRepository.GetVersionsByIdFirstIsRelease(repo.Id, explore.Group, explore.ArtifactId))
-            {
-                if (mmd.Versioning.Release == null)
-                {
-                    mmd.Versioning.Release = res.Version;
-                }
-                if (lastTimestamp < res.Timestamp)
-                {
-                    lastTimestamp = res.Timestamp;
-                    mmd.Versioning.Latest = res.Version;
-                }
-                mmd.Versioning.Versions.Version.Add(res.Version);
-            }
-            XmlSerializer xsSubmit = new XmlSerializer(mmd.GetType());
-            using (var sww = new StringWriter())
-            {
-                using (XmlWriter writer = XmlWriter.Create(sww))
-                {
-                    xsSubmit.Serialize(writer, mmd);
-                    resultb = Encoding.UTF8.GetBytes(sww.ToString()); // Your XML
-                }
-            }
-
-            return resultb;
-        }
+        }       
     }
 }

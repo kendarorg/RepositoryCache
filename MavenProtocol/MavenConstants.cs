@@ -15,8 +15,7 @@ namespace MavenProtocol
                     @"(\.(?<minor>\d+))?" +
                     @"(\.(?<patch>\d+))?" +
                     @"(\.(?<extra>\d+))?" +
-                    @"(\-(?<pre>[0-9A-Za-z\.]+))?" +
-                    @"(\-(?<build>[0-9A-Za-z\-\.]+))?$";
+                    @"(\-(?<pre>[0-9A-Za-z\-\.]+))?$";
         public const string FULLPACKAGE_AND_CHECHKSUMS_REGEXP =
                     @"^(?<filename>(?:(?!\b(?:jar|pom)\b)[0-9A-Za-z\-\.])+)?" +
                     @"\.(?<type>(jar|pom))" +

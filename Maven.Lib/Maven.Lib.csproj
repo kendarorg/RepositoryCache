@@ -61,9 +61,7 @@
     <Compile Include="Repositories\MavenBaseSearchEntity.cs" />
     <Compile Include="Repositories\MavenSearchEntity.cs" />
     <Compile Include="Repositories\MavenSearchLastEntity.cs" />
-    <Compile Include="Services\IInsertMavenService.cs" />
     <Compile Include="Services\InsertData.cs" />
-    <Compile Include="Services\InsertMavenService.cs" />
     <Compile Include="Services\IArtifactsStorage.cs" />
     <Compile Include="Services\IQueryBuilder.cs" />
     <Compile Include="Services\IRequestParser.cs" />

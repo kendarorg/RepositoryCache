@@ -1,4 +1,6 @@
-﻿using Maven.Repositories;
+﻿using Ioc;
+using Ionic.Zip;
+using Maven.Repositories;
 using Maven.Services;
 using MavenProtocol;
 using MavenProtocol.Apis;
@@ -10,13 +12,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
 
 namespace Maven.Apis
 {
-    public class MavenArtifactsService : IMavenArtifactsService
+    public class MavenArtifactsService : IMavenArtifactsService, ISingleton
     {
         private readonly IMavenArtifactsRepository _mavenArtifactsRepository;
         private readonly IArtifactsStorage _artifactsStorage;
@@ -53,7 +56,7 @@ namespace Maven.Apis
 
             if (item.Type == "maven-metadata")
             {
-                string result = ReadPackageMavenMetadata(repo.Id,item);
+                string result = ReadPackageMavenMetadata(repo.Id, item);
                 return Encoding.UTF8.GetBytes(result);
             }
             else
@@ -62,7 +65,9 @@ namespace Maven.Apis
             }
         }
 
-        private string ReadPackageMavenMetadata(Guid repoId,MavenIndex item)
+
+
+        private string ReadPackageMavenMetadata(Guid repoId, MavenIndex item)
         {
             var metadata = new MavenMetadataXml();
             MavenSearchEntity latestSnapshot = null;
@@ -84,7 +89,7 @@ namespace Maven.Apis
         {
             if (artifacts.Any(a => !a.Version.ToUpperInvariant().EndsWith("-SNAPSHOT")))
             {
-                var maxVersionRelease = new SemVersion(0);
+                var maxVersionRelease = new JavaSemVersion(0);
 
                 metadata.Versioning.Versions = new MavenVersions();
                 metadata.Versioning.Versions.Version = new List<string>();
@@ -98,7 +103,7 @@ namespace Maven.Apis
         private static MavenSearchEntity PrepareSnapshotData(MavenMetadataXml metadata, IEnumerable<MavenSearchEntity> artifacts)
         {
             MavenSearchEntity latestSnapshot = null;
-            var latestSnapshotVersion = SemVersion.Parse("0");
+            var latestSnapshotVersion = JavaSemVersion.Parse("0");
             if (artifacts.Any(a => a.Version.ToUpperInvariant().EndsWith("-SNAPSHOT")))
             {
 
@@ -121,7 +126,7 @@ namespace Maven.Apis
                             Updated = snap.Timestamp.ToFileTime().ToString(),
                             Value = snap.BuildNumer
                         };
-                        var curVer = SemVersion.Parse(snap.Version);
+                        var curVer = JavaSemVersion.Parse(snap.Version);
                         if (curVer > latestSnapshotVersion)
                         {
                             latestSnapshotVersion = curVer;
@@ -188,6 +193,87 @@ namespace Maven.Apis
         }
 
         public void WriteArtifact(Guid repoId, MavenIndex item, byte[] content)
+        {
+            var type = item.Type.ToLowerInvariant();
+            switch (type)
+            {
+                case ("pom"):
+                    InsertPom(repoId, item, content);
+                    break;
+                case ("jar"):
+                    InsertJar(repoId, item, content);
+                    break;
+                default:
+                    Console.WriteLine("BOH " + type);
+                    throw new NotImplementedException("NOT SUPPORTED " + type);
+            }
+        }
+
+        private void InsertPom(Guid repoId, MavenIndex item, byte[] content)
+        {
+            var repo = _repositoryEntitiesRepository.GetById(repoId);
+            PomXml result = null;
+            var xml = Encoding.UTF8.GetString(content);
+            string pattern = @"xmlns=""[a-zA-Z0-9:\/._]{1,}""";
+            System.Text.RegularExpressions.Match m = Regex.Match(xml, pattern);
+            if (m.Success)
+            {
+                xml = xml.Replace(m.Value, "");
+            }
+            result = PomXml.Parse(xml);
+
+            _artifactsStorage.Write(repo, item.Group, item.ArtifactId, item.Version, item.Classifier, item.Type, content);
+            if (string.IsNullOrWhiteSpace(item.Classifier))
+            {
+                InsertPom(result);
+            }
+        }
+
+        private void InsertJar(Guid repoId, MavenIndex item, byte[] data)
+        {
+            var repo = _repositoryEntitiesRepository.GetById(repoId);
+            _artifactsStorage.Write(repo, item.Group, item.ArtifactId, item.Version, item.Classifier, item.Type, data);
+            if (string.IsNullOrWhiteSpace(item.Classifier))
+            {
+                PomXml result = null;
+                byte[] pomContent = null;
+                DateTime timestamp = DateTime.UtcNow;
+                using (ZipFile zip = ZipFile.Read(new MemoryStream(data)))
+                {
+                    foreach (var entry in zip)
+                    {
+                        if (entry.FileName.ToLowerInvariant().EndsWith("pom.xml"))
+                        {
+                            timestamp = entry.ModifiedTime > entry.LastModified ? entry.ModifiedTime : entry.LastModified;
+                            var ms = new MemoryStream();
+                            entry.Extract(ms);
+                            ms.Seek(0, SeekOrigin.Begin);
+                            var ss = ms.ToArray();
+                            var fileName = entry.FileName;
+                            pomContent = ss;
+                            var xml = Encoding.UTF8.GetString(ss);
+                            string pattern = @"xmlns=""[a-zA-Z0-9:\/._]{1,}""";
+                            System.Text.RegularExpressions.Match m = Regex.Match(xml, pattern);
+                            if (m.Success)
+                            {
+                                xml = xml.Replace(m.Value, "");
+                            }
+                            result = PomXml.Parse(xml);
+                            break;
+                        }
+                    }
+                }
+                if (result != null)
+                {
+                    _artifactsStorage.Write(repo, item.Group, item.ArtifactId, item.Version, item.Classifier, "pom", pomContent);
+                    InsertPom(result);
+                }
+            }
+
+
+        }
+
+        private void InsertPom(PomXml result)
         {
             throw new NotImplementedException();
         }

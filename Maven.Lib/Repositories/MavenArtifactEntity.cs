@@ -13,5 +13,7 @@ namespace Maven.Repositories
         public string Sha1 { get; set; }
         public string Asc { get; set; }
         public DateTime Timestamp { get; set; }
+        public Guid RepositoryId { get; set; }
+        public string GroupId { get; set; }
     }
 }

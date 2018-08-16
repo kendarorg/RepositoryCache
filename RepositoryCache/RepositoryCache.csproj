@@ -91,9 +91,17 @@
       <Project>{59BA45AE-F80C-440D-BEA1-C1FCA0F00A2B}</Project>
       <Name>Ioc.Shared</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Maven.Lib.Mem\Maven.Lib.Mem.csproj">
+      <Project>{0de32351-3ee8-404b-bf55-a7b2349f8a27}</Project>
+      <Name>Maven.Lib.Mem</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Maven.Lib\Maven.Lib.csproj">
       <Project>{3f3ef9e8-0427-48a5-9307-d92eec080415}</Project>
       <Name>Maven.Lib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MavenProtocol\MavenProtocol.csproj">
+      <Project>{e932ef38-ffdd-41a4-9d98-9c73b0f3ea13}</Project>
+      <Name>MavenProtocol</Name>
     </ProjectReference>
     <ProjectReference Include="..\MultiRepositories.Lib.Mem\MultiRepositories.Lib.Mem.csproj">
       <Project>{91de67ce-14c4-4c0f-8e08-6ca96a0c05d9}</Project>

@@ -2,6 +2,7 @@
 using Maven.Controllers;
 using Maven.Services;
 using MavenProtocol;
+using MavenProtocol.Apis;
 using MultiRepositories;
 using MultiRepositories.Repositories;
 using System;
@@ -18,16 +19,19 @@ namespace Maven
         private readonly IAssemblyUtils _assemblyUtils;
         private readonly IRepositoryEntitiesRepository _repositoryEntitiesRepository;
         private readonly IRequestParser _requestParser;
+        private readonly IMavenArtifactsService _mavenArtifactsService;
 
         public MavenApiIntializer(AppProperties applicationPropertes,
             IAssemblyUtils assemblyUtils,
             IRepositoryEntitiesRepository repositoryEntitiesRepository,
-            IRequestParser requestParser)
+            IRequestParser requestParser,
+            IMavenArtifactsService mavenArtifactsService)
         {
             this._applicationPropertes = applicationPropertes;
             this._assemblyUtils = assemblyUtils;
             this._repositoryEntitiesRepository = repositoryEntitiesRepository;
             this._requestParser = requestParser;
+            this._mavenArtifactsService = mavenArtifactsService;
         }
         public void Initialize(IRepositoryServiceProvider repositoryServiceProvider)
         {
@@ -95,20 +99,22 @@ namespace Maven
                             Replace("{repo}", item.Prefix)//maven.local/org/slf4j/
                     ));
 
-                repositoryServiceProvider.RegisterApi(new Maven2_Push_Package(_repositoryEntitiesRepository, _requestParser,
+                repositoryServiceProvider.RegisterApi(
+                    new Maven2_Push_Package(_repositoryEntitiesRepository, _requestParser,
+                        _mavenArtifactsService,
                     "*PUT",
-                    @"/{repo}/{*path}/" + ///maven.local/org/slf4j
-                    @"{pack#" + MavenConstants.PACKAGE_REGEXP + @"}/" + //slf4j-api/
-                    @"{ver#" + MavenConstants.VERSION_REGEXP + @"}/" + //1.7.25
-                    @"{meta#" + MavenConstants.FULLPACKAGE_AND_CHECHKSUMS_REGEXP + @"}".//slf4j-api-1.7.25.jar.md5
-                        Replace("{repo}", item.Prefix))); 
+                        @"/{repo}/{*path}/" + ///maven.local/org/slf4j
+                        @"{pack#" + MavenConstants.PACKAGE_REGEXP + @"}/" + //slf4j-api/
+                        @"{ver#" + MavenConstants.VERSION_REGEXP + @"}/" + //1.7.25
+                        @"{meta#" + MavenConstants.FULLPACKAGE_AND_CHECHKSUMS_REGEXP + @"}".//slf4j-api-1.7.25.jar.md5
+                            Replace("{repo}", item.Prefix))); 
 
                 repositoryServiceProvider.RegisterApi(new Maven2_Push(_repositoryEntitiesRepository, _requestParser,
                     "*PUT",
-                    @"/{repo}/{*path}/" +//maven.local/org/slf4j/
-                    @"{pack#" + MavenConstants.PACKAGE_REGEXP + @"}/" + //slf4j-api/
-                    @"{meta#" + MavenConstants.METADATA_AND_CHECHKSUMS_REGEXP + @"}". //maven-metadata.xml.asc
-                        Replace("{repo}", item.Prefix))); 
+                        @"/{repo}/{*path}/" +//maven.local/org/slf4j/
+                        @"{pack#" + MavenConstants.PACKAGE_REGEXP + @"}/" + //slf4j-api/
+                        @"{meta#" + MavenConstants.METADATA_AND_CHECHKSUMS_REGEXP + @"}". //maven-metadata.xml.asc
+                            Replace("{repo}", item.Prefix))); 
             }
         }
     }

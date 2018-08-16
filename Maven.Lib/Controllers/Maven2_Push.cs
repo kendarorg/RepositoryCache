@@ -29,8 +29,9 @@ namespace Maven.Controllers
 
         private SerializableResponse Handler(SerializableRequest arg)
         {
-            var idx = _requestParser.Parse(arg);
-            var content = Encoding.UTF8.GetString(arg.Content);
+            /*var idx = _requestParser.Parse(arg);
+            var content = Encoding.UTF8.GetString(arg.Content);*/
+            //NOP
 
             return new SerializableResponse();
         }
