@@ -13,4 +13,4 @@ namespace Maven.Lib.Mem
         IEnumerable<MavenSearchLastEntity> Query(IQueryable<MavenSearchLastEntity> entities, Guid repoId, SearchParam query);
         IEnumerable<MavenSearchEntity> Query(IQueryable<MavenSearchEntity> entities, Guid repoId, SearchParam query);
     }
-}net@kendar.org
+}
