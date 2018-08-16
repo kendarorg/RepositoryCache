@@ -135,8 +135,9 @@ namespace Maven.Apis
 
         private byte[] BuildMavenMetadata(MavenIndex explore, RepositoryEntity repo)
         {
+            throw new NotImplementedException();
             byte[] resultb = null;
-            var mmd = new MavenMetadata
+            var mmd = new MavenMetadataXml
             {
                 GroupId = string.Join(".", explore.Group),
                 ArtifactId = explore.ArtifactId,

@@ -18,7 +18,7 @@ namespace Maven.Lib.Mem
         {
             _queryBuilder = queryBuilder;
         }
-        public IEnumerable<MavenSearchEntity> Query(IQueryable<MavenSearchEntity> entities,Guid repoId, SearchParam query)
+        public IEnumerable<MavenSearchLastEntity> Query(IQueryable<MavenSearchLastEntity> entities,Guid repoId, SearchParam query)
         {
             throw new NotImplementedException();
 #if TODO
@@ -46,6 +46,11 @@ namespace Maven.Lib.Mem
             
             return result.Skip(query.Start);
 #endif
+        }
+
+        public IEnumerable<MavenSearchEntity> Query(IQueryable<MavenSearchEntity> entities, Guid repoId, SearchParam query)
+        {
+            throw new NotImplementedException();
         }
     }
 }

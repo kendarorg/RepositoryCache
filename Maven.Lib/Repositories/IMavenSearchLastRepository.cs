@@ -8,8 +8,9 @@ using System.Threading.Tasks;
 
 namespace Maven.Repositories
 {
-    public interface IMavenSearchLastRepository : IRepository<MavenSearchEntity>
+    public interface IMavenSearchLastRepository : IRepository<MavenSearchLastEntity>
     {
-        IEnumerable<MavenSearchEntity> Query(Guid repoId, SearchParam param);
+        IEnumerable<MavenSearchLastEntity> Query(Guid repoId, SearchParam param);
+        MavenSearchLastEntity GetByArtifactId(Guid repoId, string artifactId, string groupId);
     }
 }

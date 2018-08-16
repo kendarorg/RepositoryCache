@@ -73,23 +73,23 @@ namespace Maven
                     "*GET",
                         @"/{repo}/{*path}/" + ///maven.local/org/slf4j
                         @"{pack#" + MavenConstants.PACKAGE_REGEXP + @"}/" + //slf4j-api/
-                        @"{ver#" + MavenConstants.VERSION_REGEXP + @"}/" +
+                        @"{ver#" + MavenConstants.VERSION_REGEXP + @"}/" + //1.7.2
                         @"{meta#" + MavenConstants.FULLPACKAGE_AND_CHECHKSUMS_REGEXP + @"}".//slf4j-api-1.7.25.jar.md5
                             Replace("{repo}", item.Prefix),
                     "*GET",
                         @"/{repo}/{*path}/" + ///maven.local/org/slf4j
                         @"{pack#" + MavenConstants.PACKAGE_REGEXP + @"}/" + //slf4j-api/
-                        @"{ver#" + MavenConstants.VERSION_REGEXP + @"}".
+                        @"{ver#" + MavenConstants.VERSION_REGEXP + @"}". //1.7.2
                             Replace("{repo}", item.Prefix),
                     "*GET",
                         @"/{repo}/{*path}/" +//maven.local/org/slf4j/
                         @"{pack#" + MavenConstants.PACKAGE_REGEXP + @"}/" + //slf4j-api/
-                        @"{meta#" + MavenConstants.METADATA_AND_CHECHKSUMS_REGEXP + @"}". ////maven-metadata.xml.asc
+                        @"{meta#" + MavenConstants.METADATA_AND_CHECHKSUMS_REGEXP + @"}". //maven-metadata.xml.asc
                             Replace("{repo}", item.Prefix),
                     "*GET",
                         @"/{repo}/{*path}/" +//maven.local/org/slf4j/
-                        @"{pack#" + MavenConstants.PACKAGE_REGEXP + @"}".
-                            Replace("{repo}", item.Prefix), //slf4j-api/
+                        @"{pack#" + MavenConstants.PACKAGE_REGEXP + @"}".//slf4j-api/
+                            Replace("{repo}", item.Prefix), 
                     "*GET",
                         @"/{repo}/{*path}".
                             Replace("{repo}", item.Prefix)//maven.local/org/slf4j/
@@ -99,16 +99,16 @@ namespace Maven
                     "*PUT",
                     @"/{repo}/{*path}/" + ///maven.local/org/slf4j
                     @"{pack#" + MavenConstants.PACKAGE_REGEXP + @"}/" + //slf4j-api/
-                    @"{ver#" + MavenConstants.VERSION_REGEXP + @"}/" +
-                    @"{meta#" + MavenConstants.FULLPACKAGE_AND_CHECHKSUMS_REGEXP + @"}".
-                        Replace("{repo}", item.Prefix))); //slf4j-api-1.7.25.jar.md5
+                    @"{ver#" + MavenConstants.VERSION_REGEXP + @"}/" + //1.7.25
+                    @"{meta#" + MavenConstants.FULLPACKAGE_AND_CHECHKSUMS_REGEXP + @"}".//slf4j-api-1.7.25.jar.md5
+                        Replace("{repo}", item.Prefix))); 
 
                 repositoryServiceProvider.RegisterApi(new Maven2_Push(_repositoryEntitiesRepository, _requestParser,
                     "*PUT",
                     @"/{repo}/{*path}/" +//maven.local/org/slf4j/
                     @"{pack#" + MavenConstants.PACKAGE_REGEXP + @"}/" + //slf4j-api/
-                    @"{meta#" + MavenConstants.METADATA_AND_CHECHKSUMS_REGEXP + @"}".
-                        Replace("{repo}", item.Prefix))); //maven-metadata.xml.asc
+                    @"{meta#" + MavenConstants.METADATA_AND_CHECHKSUMS_REGEXP + @"}". //maven-metadata.xml.asc
+                        Replace("{repo}", item.Prefix))); 
             }
         }
     }

@@ -11,5 +11,7 @@ namespace Maven.Repositories
     public interface IMavenSearchRepository : IRepository<MavenSearchEntity>
     {
         IEnumerable<MavenSearchEntity> Query(Guid repoId, SearchParam param);
+
+        IEnumerable<MavenSearchEntity> GetByArtifactId(Guid repoId, string artifactId, string groupId);
     }
 }

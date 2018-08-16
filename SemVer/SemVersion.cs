@@ -20,6 +20,15 @@ namespace SemVer
     public sealed class SemVersion : IComparable<SemVersion>, IComparable, ISerializable
 #endif
     {
+        public bool IsPreRelease
+        {
+            get
+            {
+                return !(
+                    string.IsNullOrWhiteSpace(this.Prerelease) ||
+                    string.IsNullOrWhiteSpace(this.Build));
+            }
+        }
         static Regex parseEx =
             new Regex(@"^(?<major>\d+)" +
                 @"(\.(?<minor>\d+))?" +

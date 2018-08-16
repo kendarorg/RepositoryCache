@@ -87,7 +87,8 @@ namespace MavenProtocol
         public string Version { get; set; }
         [JsonProperty("packaging", DefaultValueHandling = DefaultValueHandling.Ignore)]
         public string Packaging { get; set; }
-
+        [JsonProperty("relocation", DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public RelocationXml Relocation { get; set; }
 
         [JsonProperty("dependencies", DefaultValueHandling = DefaultValueHandling.Ignore)]
         public List<DependencyXml> Dependencies { get; set; }
@@ -152,6 +153,21 @@ namespace MavenProtocol
             result.Description = ValueByName(xml, "description");
             result.Url = ValueByName(xml, "url");
             result.InceptionYear = ValueByName(xml, "InceptionYear");
+
+            var distributionManagementEl = ChildByName(xml, "distributionManagement");
+            if (distributionManagementEl != null)
+            {
+                var relocationEl = ChildByName(distributionManagementEl, "relocation");
+                if (relocationEl != null)
+                {
+                    result.Relocation = new RelocationXml();
+                    result.Relocation.GroupId = ValueByName(relocationEl, "groupId");
+                    result.Relocation.ArtifactId = ValueByName(relocationEl, "artifactId");
+                    result.Relocation.Version = ValueByName(relocationEl, "version");
+                    result.Relocation.Message = ValueByName(relocationEl, "message");
+                }
+            }
+
             return result;
         }
         private static string ValueByName(XElement xml, string group)
@@ -168,5 +184,17 @@ namespace MavenProtocol
         {
             return xml.Elements().Where(e => e.Name.LocalName.ToLowerInvariant() == group.ToLowerInvariant());
         }
+    }
+
+    public class RelocationXml
+    {
+        [JsonProperty("groupId", DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public string GroupId { get;  set; }
+        [JsonProperty("artifactId", DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public string ArtifactId { get;  set; }
+        [JsonProperty("version", DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public string Version { get;  set; }
+        [JsonProperty("message", DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public string Message { get;  set; }
     }
 }

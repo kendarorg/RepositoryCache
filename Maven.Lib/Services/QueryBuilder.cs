@@ -11,7 +11,6 @@ namespace Maven.Services
     {
         public ParsedQuery ParseQuery(String q)
         {
-
             var pq = new ParsedQuery();
             if (string.IsNullOrWhiteSpace(q))
             {
@@ -75,11 +74,7 @@ namespace Maven.Services
             if (litem.StartsWith("g:")) return "group";
             if (litem.StartsWith("v:")) return "version";
             if (litem.StartsWith("p:")) return "packaging";//jar war ear bundle
-            if (litem.StartsWith("l:"))
-            {
-                //return "classfier";
-                throw new NotSupportedException("Not supported parameter");
-            }
+            if (litem.StartsWith("l:")) return "classifier";
             if (litem.StartsWith("a:")) return "packageid";//packageid
             if (litem.StartsWith("c:")) return "class";
             if (litem.StartsWith("1:")) return "sha1";

@@ -47,26 +47,35 @@ namespace Maven.Apis
             var docs = new List<ResponseDoc>();
 
             var max = 0;
-            IEnumerable<MavenSearchEntity> result = null;
 
             if (param.Wt == "gav")
             {
-                result = _mavenSearchRepository.Query(repoId, param);
+                var result = _mavenSearchRepository.Query(repoId, param);
+                foreach (var item in result)
+                {
+                    if (max >= param.Rows)
+                    {
+                        break;
+                    }
+                    docs.Add(BuildResponse(item));
+                    max++;
+                }
             }
             else
             {
-                result = _mavenSearchLastRepository.Query(repoId, param);
+                var result = _mavenSearchLastRepository.Query(repoId, param);
+                foreach (var item in result)
+                {
+                    if (max >= param.Rows)
+                    {
+                        break;
+                    }
+                    docs.Add(BuildResponse(item));
+                    max++;
+                }
             }
 
-            foreach (var item in result)
-            {
-                if (max >= param.Rows)
-                {
-                    break;
-                }
-                docs.Add(BuildResponse(item));
-                max++;
-            }
+            
 
             var numfound = docs.Count;
             stopwatch.Stop();
@@ -82,6 +91,28 @@ namespace Maven.Apis
             {
                 reqHeader.Add(id, value);
             }
+        }
+
+        private ResponseDoc BuildResponse(MavenSearchLastEntity item)
+        {
+            var id = item.Group + ":" + item.ArtifactId + ":" + item.Version;
+            List<string> typeAndExt = null;
+            List<string> tags = null;
+            if (!string.IsNullOrWhiteSpace(item.Classifiers))
+            {
+                typeAndExt = item.Classifiers.Split('|').Select(a => a.Trim('|')).
+                    Where(b => !string.IsNullOrWhiteSpace(b)).ToList();
+            }
+            if (!string.IsNullOrWhiteSpace(item.Tags))
+            {
+                tags = item.Tags.Split('|').Select(a => a.Trim('|')).
+                    Where(b => !string.IsNullOrWhiteSpace(b)).ToList();
+            }
+            return new ResponseDoc(
+                id, item.Group, item.ArtifactId, item.Version,
+                item.Timestamp.ToFileTime(),
+                typeAndExt,
+                tags);
         }
 
         private ResponseDoc BuildResponse(MavenSearchEntity item)

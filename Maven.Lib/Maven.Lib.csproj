@@ -58,7 +58,9 @@
     <Compile Include="Repositories\IMavenSearchLastRepository.cs" />
     <Compile Include="Repositories\IMavenSearchRepository.cs" />
     <Compile Include="Repositories\MavenArtifactEntity.cs" />
+    <Compile Include="Repositories\MavenBaseSearchEntity.cs" />
     <Compile Include="Repositories\MavenSearchEntity.cs" />
+    <Compile Include="Repositories\MavenSearchLastEntity.cs" />
     <Compile Include="Services\IInsertMavenService.cs" />
     <Compile Include="Services\InsertData.cs" />
     <Compile Include="Services\InsertMavenService.cs" />
@@ -86,6 +88,10 @@
     <ProjectReference Include="..\Repositories.Lib\Repositories.Lib.csproj">
       <Project>{7A5739D6-0966-4C2F-8DD2-07F3E6159212}</Project>
       <Name>Repositories.Lib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SemVer\SemVer.csproj">
+      <Project>{249C4075-9CFB-4CA1-BA82-290BFF361CD7}</Project>
+      <Name>SemVer</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
