@@ -71,58 +71,95 @@ namespace Maven.Apis
             var artifacts = _mavenSearchRepository.GetByArtifactId(repoId, item.ArtifactId, metadata.GroupId);
             if (artifacts.Any())
             {
-                var latestSnapshotVersion = SemVersion.Parse("0");
                 metadata.Versioning = new MavenVersioning();
-                if (artifacts.Any(a => a.Version.ToUpperInvariant().EndsWith("-SNAPSHOT")))
+                latestSnapshot = PrepareSnapshotData(metadata, artifacts);
+                PrepareStandardData(metadata, artifacts);
+                MavenSearchLastEntity latest = PreparePlugins(repoId, item, metadata);
+                PrepareCurrentItems(metadata, latestSnapshot, latest);
+            }
+            return WriteMetadataXml(metadata);
+        }
+
+        private static void PrepareStandardData(MavenMetadataXml metadata, IEnumerable<MavenSearchEntity> artifacts)
+        {
+            if (artifacts.Any(a => !a.Version.ToUpperInvariant().EndsWith("-SNAPSHOT")))
+            {
+                var maxVersionRelease = new SemVersion(0);
+
+                metadata.Versioning.Versions = new MavenVersions();
+                metadata.Versioning.Versions.Version = new List<string>();
+                foreach (var rel in artifacts.Where(a => !a.Version.ToUpperInvariant().EndsWith("-SNAPSHOT")))
                 {
-
-
-                    metadata.Versioning.SnapshotVersions = new MavenSnapshotVersions();
-                    metadata.Versioning.SnapshotVersions.Version = new List<MavenSnapshotVersion>();
-                    foreach (var snap in artifacts.Where(a => a.Version.ToUpperInvariant().EndsWith("-SNAPSHOT")))
-                    {
-                        var classifiers = snap.Classifiers.Trim('|').Split('|');
-                        var types = snap.Type.Trim('|').Split('|');
-
-                        for (var i = 0; i < classifiers.Length; i++)
-                        {
-                            var classifier = classifiers[i] == "null" ? null : classifiers[i];
-                            var type = types[i] == "null" ? "jar" : types[i];
-                            var snave = new MavenSnapshotVersion
-                            {
-                                Classifier = classifier,
-                                Extension = type,
-                                Updated = snap.Timestamp.ToFileTime().ToString(),
-                                Value = snap.BuildNumer
-                            };
-                            var curVer = SemVersion.Parse(snap.Version);
-                            if (curVer > latestSnapshotVersion)
-                            {
-                                latestSnapshotVersion = curVer;
-                                latestSnapshot = snap;
-                            }
-                            metadata.Versioning.SnapshotVersions.Version.Add(snave);
-                        }
-                    }
+                    metadata.Versioning.Versions.Version.Add(rel.Version);
                 }
-                if (artifacts.Any(a => !a.Version.ToUpperInvariant().EndsWith("-SNAPSHOT")))
-                {
-                    var maxVersionRelease = new SemVersion(0);
+            }
+        }
 
-                    metadata.Versioning.Versions = new MavenVersions();
-                    metadata.Versioning.Versions.Version = new List<string>();
-                    foreach (var rel in artifacts.Where(a => !a.Version.ToUpperInvariant().EndsWith("-SNAPSHOT")))
+        private static MavenSearchEntity PrepareSnapshotData(MavenMetadataXml metadata, IEnumerable<MavenSearchEntity> artifacts)
+        {
+            MavenSearchEntity latestSnapshot = null;
+            var latestSnapshotVersion = SemVersion.Parse("0");
+            if (artifacts.Any(a => a.Version.ToUpperInvariant().EndsWith("-SNAPSHOT")))
+            {
+
+
+                metadata.Versioning.SnapshotVersions = new MavenSnapshotVersions();
+                metadata.Versioning.SnapshotVersions.Version = new List<MavenSnapshotVersion>();
+                foreach (var snap in artifacts.Where(a => a.Version.ToUpperInvariant().EndsWith("-SNAPSHOT")))
+                {
+                    var classifiers = snap.Classifiers.Trim('|').Split('|');
+                    var types = snap.Type.Trim('|').Split('|');
+
+                    for (var i = 0; i < classifiers.Length; i++)
                     {
-                        metadata.Versioning.Versions.Version.Add(rel.Version);
+                        var classifier = classifiers[i] == "null" ? null : classifiers[i];
+                        var type = types[i] == "null" ? "jar" : types[i];
+                        var snave = new MavenSnapshotVersion
+                        {
+                            Classifier = classifier,
+                            Extension = type,
+                            Updated = snap.Timestamp.ToFileTime().ToString(),
+                            Value = snap.BuildNumer
+                        };
+                        var curVer = SemVersion.Parse(snap.Version);
+                        if (curVer > latestSnapshotVersion)
+                        {
+                            latestSnapshotVersion = curVer;
+                            latestSnapshot = snap;
+                        }
+                        metadata.Versioning.SnapshotVersions.Version.Add(snave);
                     }
                 }
             }
-            var latest = _mavenSearchLastRepository.GetByArtifactId(repoId,item.ArtifactId, metadata.GroupId);
+            return latestSnapshot;
+        }
+
+        private MavenSearchLastEntity PreparePlugins(Guid repoId, MavenIndex item, MavenMetadataXml metadata)
+        {
+            var latest = _mavenSearchLastRepository.GetByArtifactId(repoId, item.ArtifactId, metadata.GroupId);
             if (!string.IsNullOrWhiteSpace(latest.JsonPlugins))
             {
                 metadata.Plugins = JsonConvert.DeserializeObject<MavenPlugins>(latest.JsonPlugins);
             }
 
+            return latest;
+        }
+
+        private static string WriteMetadataXml(MavenMetadataXml metadata)
+        {
+            XmlSerializer xsSubmit = new XmlSerializer(metadata.GetType());
+            using (var sww = new StringWriter())
+            {
+                using (XmlWriter writer = XmlWriter.Create(sww))
+                {
+                    xsSubmit.Serialize(writer, metadata);
+                    return sww.ToString(); // Your XML
+                }
+            }
+        }
+
+        private static void PrepareCurrentItems(MavenMetadataXml metadata, MavenSearchEntity latestSnapshot, MavenSearchLastEntity latest)
+        {
             metadata.Versioning.LastUpdated = latest.Timestamp.ToFileTime().ToString();
             metadata.Versioning.Latest = latest.Version;
             if (!string.IsNullOrWhiteSpace(latest.VersionRelease))
@@ -137,15 +174,6 @@ namespace Maven.Apis
                     BuildNumber = latestSnapshot.BuildNumer,
                     Timestamp = latestSnapshot.Timestamp.ToFileTime().ToString()
                 };
-            }
-            XmlSerializer xsSubmit = new XmlSerializer(metadata.GetType());
-            using (var sww = new StringWriter())
-            {
-                using (XmlWriter writer = XmlWriter.Create(sww))
-                {
-                    xsSubmit.Serialize(writer, metadata);
-                    return sww.ToString(); // Your XML
-                }
             }
         }
 

@@ -23,12 +23,13 @@ namespace Maven
 
         public IEnumerable<MavenSearchEntity> GetByArtifactId(Guid repoId, string artifactId, string groupId)
         {
-            throw new NotImplementedException();
+            return GetAll().Where(
+                a => a.RepositoryId == repoId && a.ArtifactId == artifactId && a.Group == groupId);
         }
 
         public IEnumerable<MavenSearchEntity> Query(Guid repoId, SearchParam param)
         {
-            throw new NotImplementedException();
+            return _queryToLinq.Query(GetAll().AsQueryable(), repoId, param);
         }
     }
 }
