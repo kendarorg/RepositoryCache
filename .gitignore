@@ -331,4 +331,5 @@ ASALocalRun/
 /Maven – POM Reference_files
 /Maven – POM Reference.html
 
-!IntegrationTest/**/*.*
+!IntegrationTest/maven_exes/**/*
+!IntegrationTest/nugetexes/**/*
