@@ -27,6 +27,12 @@ namespace Maven
                 a => a.RepositoryId == repoId && a.ArtifactId == artifactId && a.Group == groupId);
         }
 
+        public MavenSearchEntity GetByArtifactIdVersion(Guid repoId, string[] group, string artifactId, string version)
+        {
+            return GetAll().FirstOrDefault(
+                a => a.RepositoryId == repoId && a.ArtifactId == artifactId && a.Group ==string.Join(".", group) && a.Version==version);
+        }
+
         public IEnumerable<MavenSearchEntity> Query(Guid repoId, SearchParam param)
         {
             return _queryToLinq.Query(GetAll().AsQueryable(), repoId, param);

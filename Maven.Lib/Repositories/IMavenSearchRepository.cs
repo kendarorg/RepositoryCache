@@ -13,5 +13,6 @@ namespace Maven.Repositories
         IEnumerable<MavenSearchEntity> Query(Guid repoId, SearchParam param);
 
         IEnumerable<MavenSearchEntity> GetByArtifactId(Guid repoId, string artifactId, string groupId);
+        MavenSearchEntity GetByArtifactIdVersion(Guid repoId, string[] group, string artifactId, string version);
     }
 }

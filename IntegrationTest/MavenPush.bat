@@ -15,10 +15,12 @@ cd bin
 
 echo Maven.3.5.4, Upload of simple file
 
-REM mvn deploy:deploy-file -DgroupId=%GROUPID% -DartifactId=%ARTIFACTID% -Dversion=%AVERSION% -DgeneratePom=true -Dpackaging=jar -DrepositoryId=local -Durl=%NUROOT% -Dfile=%ARTIPATH%.jar 
+REM mvn deploy:deploy-file --fn -DgroupId=%GROUPID% -DartifactId=%ARTIFACTID% -Dversion=%AVERSION% -DgeneratePom=true -Dpackaging=jar -DrepositoryId=local -Durl=%NUROOT% -Dfile=%ARTIPATH%.jar 
 
-mvn deploy:deploy-file -DgroupId=%GROUPID% -DartifactId=%ARTIFACTID% -Dversion=%AVERSION% -DgeneratePom=true -Dpackaging=jar -DrepositoryId=local -Durl=%NUROOT% -Dfile=%ARTIPATH%.jar -Dfiles=%ARTIPATH%-javadoc.jar,%ARTIPATH%-sources.jar -Dclassifiers=javadoc,sources -Dtypes=jar,jar
+start /WAIT /B mvn deploy:deploy-file  -DgroupId=%GROUPID% -DartifactId=%ARTIFACTID% -Dversion=%AVERSION% -DgeneratePom=true -Dpackaging=jar -DrepositoryId=local -Durl=%NUROOT% -Dfile=%ARTIPATH%.jar -Dfiles=%ARTIPATH%-javadoc.jar,%ARTIPATH%-sources.jar -Dclassifiers=javadoc,sources -Dtypes=jar,jar
 
+
+pause
 
 cd ..
 

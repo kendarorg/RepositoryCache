@@ -225,7 +225,7 @@ namespace Maven.Apis
             _artifactsStorage.Write(repo, item.Group, item.ArtifactId, item.Version, item.Classifier, item.Type, content);
             if (string.IsNullOrWhiteSpace(item.Classifier))
             {
-                InsertPom(result);
+                InsertPom(result, repoId, item);
             }
         }
 
@@ -233,6 +233,7 @@ namespace Maven.Apis
         {
             var repo = _repositoryEntitiesRepository.GetById(repoId);
             _artifactsStorage.Write(repo, item.Group, item.ArtifactId, item.Version, item.Classifier, item.Type, data);
+            InsertArtifact(repoId, item);
             if (string.IsNullOrWhiteSpace(item.Classifier))
             {
                 PomXml result = null;
@@ -263,19 +264,150 @@ namespace Maven.Apis
                         }
                     }
                 }
+
                 if (result != null)
                 {
                     _artifactsStorage.Write(repo, item.Group, item.ArtifactId, item.Version, item.Classifier, "pom", pomContent);
-                    InsertPom(result);
+                }
+                else
+                {
+                    result = new PomXml();
+                    result.ArtifactId = item.ArtifactId;
+                    result.Version = item.Version;
+                    result.GroupId = string.Join(".", item.Group);
+                    result.Packaging = item.Type;
+                }
+                InsertPom(result, repoId, item);
+            }
+            else
+            {
+                UpdateSearchContents(repoId, item);
+            }
+        }
+
+        private void InsertPom(PomXml result, Guid repoId, MavenIndex item)
+        {
+            InsertArtifact(repoId, item);
+            if (string.IsNullOrWhiteSpace(item.Classifier))
+            {
+                InsertMavenSearch(repoId, item, result);
+                InsertMavenSearchLast(repoId, item, result);
+            }
+        }
+
+        private void UpdateSearchContents(Guid repoId, MavenIndex item)
+        {
+            var lastEntity = _mavenSearchLastRepository.GetByArtifactId(repoId,
+                item.ArtifactId, string.Join(".", item.Group));
+            var currentEntity = _mavenSearchRepository.GetByArtifactIdVersion(repoId,
+                item.Group, item.ArtifactId, item.Version);
+
+            var allArtifacts = _mavenArtifactsRepository.GetById(repoId, item.Group, item.ArtifactId, item.Version).ToList();
+            lastEntity.Type = "|" + string.Join("|", allArtifacts.Select(a => a.Type ?? "null")) + "|";
+            lastEntity.Classifiers = "|" + string.Join("|", allArtifacts.Select(a => a.Classifier ?? "null")) + "|";
+            currentEntity.Type = "|" + string.Join("|", allArtifacts.Select(a => a.Type ?? "null")) + "|";
+            currentEntity.Classifiers = "|" + string.Join("|", allArtifacts.Select(a => a.Classifier ?? "null")) + "|";
+
+            _mavenSearchLastRepository.Update(lastEntity);
+            _mavenSearchRepository.Update(currentEntity);
+
+        }
+
+        private void InsertMavenSearchLast(Guid repoId, MavenIndex item, PomXml result)
+        {
+            MavenSearchLastEntity artifact = _mavenSearchLastRepository.GetByArtifactId(repoId,
+                item.ArtifactId, string.Join(".", item.Group));
+            var isNew = artifact == null;
+
+            if (isNew)
+            {
+                artifact = new MavenSearchLastEntity();
+            }
+            var allArtifacts = _mavenArtifactsRepository.GetById(repoId, item.Group, item.ArtifactId, item.Version).ToList();
+            var version = JavaSemVersion.Parse(item.Version);
+
+            artifact.ArtifactId = item.ArtifactId;
+            artifact.Group = string.Join(".", item.Group);
+            artifact.RepositoryId = repoId;
+            artifact.Timestamp = DateTime.Now;
+            artifact.Version = item.Version;
+            artifact.Type = "|" + string.Join("|", allArtifacts.Select(a => a.Type)) + "|";
+            artifact.Classifiers = "|" + string.Join("|", allArtifacts.Select(a => a.Classifier ?? "null")) + "|";
+
+            if (version.IsSnapsot)
+            {
+                if (!string.IsNullOrWhiteSpace(artifact.VersionSnapshot))
+                {
+                    var vsn = JavaSemVersion.Parse(artifact.VersionSnapshot);
+                    artifact.VersionSnapshot = vsn >= version ? vsn.ToString() : version.ToString();
+                    artifact.TimestampSnapshot = vsn >= version ? artifact.TimestampSnapshot : artifact.Timestamp;
+                }
+                else
+                {
+                    artifact.VersionSnapshot = version.ToString();
+                    artifact.TimestampSnapshot = artifact.Timestamp;
                 }
             }
+            else if (!version.IsPreRelease)
+            {
+                if (!string.IsNullOrWhiteSpace(artifact.VersionRelease))
+                {
+                    var vsn = JavaSemVersion.Parse(artifact.VersionRelease);
+                    artifact.VersionRelease = vsn >= version ? vsn.ToString() : version.ToString();
+                    artifact.TimestampRelease = vsn >= version ? artifact.TimestampRelease : artifact.Timestamp;
+                }
+                else
+                {
+                    artifact.VersionRelease = version.ToString();
+                    artifact.TimestampRelease = artifact.Timestamp;
+                }
+            }
+
+            if (isNew) { _mavenSearchLastRepository.Save(artifact); } else { _mavenSearchLastRepository.Update(artifact); }
 
 
         }
 
-        private void InsertPom(PomXml result)
+        private void InsertMavenSearch(Guid repoId, MavenIndex item, PomXml pom)
         {
-            throw new NotImplementedException();
+            var artifact = _mavenSearchRepository.GetByArtifactIdVersion(repoId,
+                item.Group, item.ArtifactId, item.Version);
+            var isNew = artifact == null;
+
+            if (isNew)
+            {
+                artifact = new MavenSearchEntity();
+            }
+            var allArtifacts = _mavenArtifactsRepository.GetById(repoId, item.Group, item.ArtifactId, item.Version).ToList();
+            artifact.ArtifactId = item.ArtifactId;
+            artifact.Group = string.Join(".", item.Group);
+            artifact.RepositoryId = repoId;
+            artifact.Timestamp = DateTime.Now;
+            artifact.Type = "|" + string.Join("|", allArtifacts.Select(a => a.Type)) + "|";
+            artifact.Version = item.Version;
+            artifact.Classifiers = "|" + string.Join("|", allArtifacts.Select(a => a.Classifier ?? "null")) + "|";
+            if (isNew) { _mavenSearchRepository.Save(artifact); } else { _mavenSearchRepository.Update(artifact); }
+
+        }
+
+        private void InsertArtifact(Guid repoId, MavenIndex item)
+        {
+            var artifact = _mavenArtifactsRepository.GetById(repoId,
+            item.Group, item.ArtifactId, item.Version, item.Classifier);
+            var isNew = artifact == null;
+
+            if (isNew)
+            {
+                artifact = new MavenArtifactEntity();
+            }
+            artifact.ArtifactId = item.ArtifactId;
+            artifact.Classifier = item.Classifier;
+            artifact.GroupId = string.Join(".", item.Group);
+            artifact.RepositoryId = repoId;
+            artifact.Timestamp = DateTime.Now;
+            artifact.Type = item.Type;
+            artifact.Version = item.Version;
+            if (isNew) { _mavenArtifactsRepository.Save(artifact); } else { _mavenArtifactsRepository.Update(artifact); }
         }
 
         public void DeleteArtifact(Guid repoId, MavenIndex item)
