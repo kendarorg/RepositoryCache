@@ -17,4 +17,4 @@ Important
 {*group}/{pid}/{vers}/{pid}-{vers}-{qualifier}-{SNAPSHOT}.{ext}.{type}
 
 repo/org/apache/test/1.2-SNAPSHOT/test-1.2-SNAPSHOT-sources.war
-^(?<repo>[0-9A-Za-z\-\.]+)/(?<group>[0-9A-Za-z\-\./]+)/(?<package>[0-9A-Za-z\-\.]+)/(?<version>[0-9A-Za-z\-\.]+)/\3-\4(?<specifier>[0-9A-Za-z\-\.]+)?\.(?<extension>[0-9A-Za-z]+)$
+^(?<repo>[0-9A-Za-z\-\.]+)/(?<group>[0-9A-Za-z\-\./]+)/(?<package>[0-9A-Za-z\-\.]+)/(?<version>[0-9A-Za-z\-\.]+)/\3-\4-?(?<specifier>[0-9A-Za-z\-\.]+)?\.(?<extension>[0-9A-Za-z]+)$
