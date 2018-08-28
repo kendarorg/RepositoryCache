@@ -18,3 +18,8 @@ Important
 
 repo/org/apache/test/1.2-SNAPSHOT/test-1.2-SNAPSHOT-sources.war
 ^(?<repo>[0-9A-Za-z\-\.]+)/(?<group>[0-9A-Za-z\-\./]+)/(?<package>[0-9A-Za-z\-\.]+)/(?<version>[0-9A-Za-z\-\.]+)/\3-\4-?(?<specifier>[0-9A-Za-z\-\.]+)?\.(?<extension>[0-9A-Za-z]+)$
+
+
+WITH EXPLICIT CAPTURE
+repo.local/org/apache/test/1.2-SNAPSHOT/test-1.2-SNAPSHOT-source.pom.md5
+^(?<repo>[0-9A-Za-z\-\.]+)/(?<group>[0-9A-Za-z\-\./]+)/(?<package>[0-9A-Za-z\-\.]+)/(?<version>[0-9A-Za-z\-\.]+)/\3-\4(\-(?<specifier>[0-9A-Za-z\-]+))?(\.(?<extension>[0-9A-Za-z]+))(\.(?<checksum>(asc|md5|sha1)))?$
