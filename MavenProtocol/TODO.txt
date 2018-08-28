@@ -1,0 +1,20 @@
+﻿{*group}
+	{packageId}
+		maven-metadata.xml
+		{version}
+			{packageId}-{version}.{ext}
+			{packageId}-{version}.{ext}.{checksum}
+			{packageId}-{version}-{qualifier}.{ext}
+			{packageId}-{version}-{qualifier}.{ext}.{checksum}
+			
+Important
+{*group}/{packageId}/maven-metadata.xml
+{*group}/{packageId}/{version}/{packageId}-{version}.xxx
+{*group}/{packageId}/{version}/{packageId}-{version}.pom
+			
+			
+
+{*group}/{pid}/{vers}/{pid}-{vers}-{qualifier}-{SNAPSHOT}.{ext}.{type}
+
+repo/org/apache/test/1.2-SNAPSHOT/test-1.2-SNAPSHOT-sources.war
+^(?<repo>[0-9A-Za-z\-\.]+)/(?<group>[0-9A-Za-z\-\./]+)/(?<package>[0-9A-Za-z\-\.]+)/(?<version>[0-9A-Za-z\-\.]+)/\3-\4(?<specifier>[0-9A-Za-z\-\.]+)?\.(?<extension>[0-9A-Za-z]+)$
