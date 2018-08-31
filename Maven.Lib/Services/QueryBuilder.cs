@@ -78,6 +78,7 @@ namespace Maven.Services
             if (litem.StartsWith("a:")) return "packageid";//packageid
             if (litem.StartsWith("c:")) return "class";
             if (litem.StartsWith("1:")) return "sha1";
+            if (litem.StartsWith("5:")) return "md5";
             if (litem.StartsWith("tags:")) return "tags";
             if (litem.StartsWith("timestamp:")) return "timestamp";
             return null;

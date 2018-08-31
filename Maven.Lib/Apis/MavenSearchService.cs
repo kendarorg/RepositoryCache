@@ -1,4 +1,4 @@
-﻿using Maven.Repositories;
+﻿//using Maven.Repositories;
 using MavenProtocol;
 using MavenProtocol.Apis;
 using MultiRepositories.Repositories;
@@ -11,17 +11,18 @@ using System.Threading.Tasks;
 
 namespace Maven.Apis
 {
+#if FALSE
     public class MavenSearchService : IMavenSearch
     {
         private readonly IRepositoryEntitiesRepository _repository;
         private readonly IServicesMapper _servicesMapper;
-        private readonly IMavenSearchRepository _mavenSearchRepository;
-        private readonly IMavenSearchLastRepository _mavenSearchLastRepository;
+        private readonly OLDIMavenSearchRepository _mavenSearchRepository;
+        private readonly OLDIMavenSearchLastRepository _mavenSearchLastRepository;
 
         public MavenSearchService(IRepositoryEntitiesRepository repositoryEntitiesRepository,
             IServicesMapper servicesMapper,
-            IMavenSearchRepository mavenSearchRepository,
-            IMavenSearchLastRepository mavenSearchLastRepository)
+            OLDIMavenSearchRepository mavenSearchRepository,
+            OLDIMavenSearchLastRepository mavenSearchLastRepository)
         {
             this._repository = repositoryEntitiesRepository;
             this._servicesMapper = servicesMapper;
@@ -93,7 +94,7 @@ namespace Maven.Apis
             }
         }
 
-        private ResponseDoc BuildResponse(MavenSearchLastEntity item)
+        private ResponseDoc BuildResponse(OLDMavenSearchLastEntity item)
         {
             var id = item.Group + ":" + item.ArtifactId + ":" + item.Version;
             List<string> typeAndExt = null;
@@ -115,7 +116,7 @@ namespace Maven.Apis
                 tags);
         }
 
-        private ResponseDoc BuildResponse(MavenSearchEntity item)
+        private ResponseDoc BuildResponse(OLDMavenSearchEntity item)
         {
             var id = item.Group + ":" + item.ArtifactId + ":" + item.Version;
             List<string> typeAndExt = null;
@@ -137,4 +138,5 @@ namespace Maven.Apis
                 tags);
         }
     }
+#endif
 }

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Maven
 {
-    public class MavenSearchLastRepository : InMemoryRepository<MavenSearchLastEntity>, IMavenSearchLastRepository
+    public class MavenSearchLastRepository : InMemoryRepository<OLDMavenSearchLastEntity>, OLDIMavenSearchLastRepository
     {
         private readonly IQueryToLinq _queryToLinq;
 
@@ -21,13 +21,13 @@ namespace Maven
             this._queryToLinq = queryToLinq;
         }
 
-        public MavenSearchLastEntity GetByArtifactId(Guid repoId, string artifactId, string groupId)
+        public OLDMavenSearchLastEntity GetByArtifactId(Guid repoId, string artifactId, string groupId)
         {
             return GetAll().FirstOrDefault(
                 a => a.RepositoryId == repoId && a.ArtifactId == artifactId && a.Group == groupId);
         }
 
-        public IEnumerable<MavenSearchLastEntity> Query(Guid repoId, SearchParam param)
+        public IEnumerable<OLDMavenSearchLastEntity> Query(Guid repoId, SearchParam param)
         {
             return _queryToLinq.Query(GetAll().AsQueryable(), repoId, param);
         }

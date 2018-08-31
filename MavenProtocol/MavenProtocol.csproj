@@ -43,12 +43,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Apis\Browse\ExploreResult.cs" />
-    <Compile Include="Apis\Browse\IMavenExploreService.cs" />
-    <Compile Include="Apis\Catalog\IMavenArtifactsService.cs" />
-    <Compile Include="Apis\Metadata\IMetadataService.cs" />
+    <Compile Include="Apis\IArtifactsService.cs" />
     <Compile Include="Apis\MavenIndex.cs" />
-    <Compile Include="Apis\Metadata\MavenMetadata.cs" />
     <Compile Include="Apis\Query\IMavenSearch.cs" />
     <Compile Include="Apis\Query\SearchParam.cs" />
     <Compile Include="Apis\Query\ResponseContent.cs" />
@@ -73,6 +69,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="TODO.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Apis\Browse\" />
+    <Folder Include="Apis\Catalog\" />
+    <Folder Include="Apis\Metadata\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

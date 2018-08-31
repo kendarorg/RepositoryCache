@@ -1,0 +1,17 @@
+﻿using System;
+using Repositories;
+
+namespace Maven.Repositories
+{
+    public class ArtifactEntity : BaseEntity
+    {
+        public string Checksums { get; set; }
+        public string ArtifactId { get; set; }
+        public string Group { get; set; }
+        public string Xml { get; set; }
+        public string Latest { get; set; }
+        public string Release { get; set; }
+        public string Snapshot { get; set; }
+        public DateTime LastUpdated { get; set; }
+    }
+}

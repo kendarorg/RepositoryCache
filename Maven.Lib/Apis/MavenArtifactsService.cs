@@ -21,17 +21,17 @@ namespace Maven.Apis
 {
     public class MavenArtifactsService : IMavenArtifactsService, ISingleton
     {
-        private readonly IMavenArtifactsRepository _mavenArtifactsRepository;
+        private readonly OLDIMavenArtifactsRepository _mavenArtifactsRepository;
         private readonly IArtifactsStorage _artifactsStorage;
         private readonly IRepositoryEntitiesRepository _repositoryEntitiesRepository;
-        private readonly IMavenSearchRepository _mavenSearchRepository;
-        private readonly IMavenSearchLastRepository _mavenSearchLastRepository;
+        private readonly OLDIMavenSearchRepository _mavenSearchRepository;
+        private readonly OLDIMavenSearchLastRepository _mavenSearchLastRepository;
 
         public MavenArtifactsService(
-                IMavenArtifactsRepository mavenArtifactsRepository, IArtifactsStorage artifactsStorage,
+                OLDIMavenArtifactsRepository mavenArtifactsRepository, IArtifactsStorage artifactsStorage,
                 IRepositoryEntitiesRepository repositoryEntitiesRepository,
-                IMavenSearchRepository mavenSearchRepository,
-                IMavenSearchLastRepository mavenSearchLastRepository)
+                OLDIMavenSearchRepository mavenSearchRepository,
+                OLDIMavenSearchLastRepository mavenSearchLastRepository)
         {
             this._mavenArtifactsRepository = mavenArtifactsRepository;
             this._artifactsStorage = artifactsStorage;
@@ -70,7 +70,7 @@ namespace Maven.Apis
         private string ReadPackageMavenMetadata(Guid repoId, MavenIndex item)
         {
             var metadata = new MavenMetadataXml();
-            MavenSearchEntity latestSnapshot = null;
+            OLDMavenSearchEntity latestSnapshot = null;
             metadata.ArtifactId = item.ArtifactId;
             metadata.GroupId = string.Join(".", item.Group);
             var artifacts = _mavenSearchRepository.GetByArtifactId(repoId, item.ArtifactId, metadata.GroupId);
@@ -79,13 +79,13 @@ namespace Maven.Apis
                 metadata.Versioning = new MavenVersioning();
                 latestSnapshot = PrepareSnapshotData(metadata, artifacts);
                 PrepareStandardData(metadata, artifacts);
-                MavenSearchLastEntity latest = PreparePlugins(repoId, item, metadata);
+                OLDMavenSearchLastEntity latest = PreparePlugins(repoId, item, metadata);
                 PrepareCurrentItems(metadata, latestSnapshot, latest);
             }
             return WriteMetadataXml(metadata);
         }
 
-        private static void PrepareStandardData(MavenMetadataXml metadata, IEnumerable<MavenSearchEntity> artifacts)
+        private static void PrepareStandardData(MavenMetadataXml metadata, IEnumerable<OLDMavenSearchEntity> artifacts)
         {
             if (artifacts.Any(a => !a.Version.ToUpperInvariant().EndsWith("-SNAPSHOT")))
             {
@@ -100,9 +100,9 @@ namespace Maven.Apis
             }
         }
 
-        private static MavenSearchEntity PrepareSnapshotData(MavenMetadataXml metadata, IEnumerable<MavenSearchEntity> artifacts)
+        private static OLDMavenSearchEntity PrepareSnapshotData(MavenMetadataXml metadata, IEnumerable<OLDMavenSearchEntity> artifacts)
         {
-            MavenSearchEntity latestSnapshot = null;
+            OLDMavenSearchEntity latestSnapshot = null;
             var latestSnapshotVersion = JavaSemVersion.Parse("0");
             if (artifacts.Any(a => a.Version.ToUpperInvariant().EndsWith("-SNAPSHOT")))
             {
@@ -139,7 +139,7 @@ namespace Maven.Apis
             return latestSnapshot;
         }
 
-        private MavenSearchLastEntity PreparePlugins(Guid repoId, MavenIndex item, MavenMetadataXml metadata)
+        private OLDMavenSearchLastEntity PreparePlugins(Guid repoId, MavenIndex item, MavenMetadataXml metadata)
         {
             var latest = _mavenSearchLastRepository.GetByArtifactId(repoId, item.ArtifactId, metadata.GroupId);
             if (!string.IsNullOrWhiteSpace(latest.JsonPlugins))
@@ -163,7 +163,7 @@ namespace Maven.Apis
             }
         }
 
-        private static void PrepareCurrentItems(MavenMetadataXml metadata, MavenSearchEntity latestSnapshot, MavenSearchLastEntity latest)
+        private static void PrepareCurrentItems(MavenMetadataXml metadata, OLDMavenSearchEntity latestSnapshot, OLDMavenSearchLastEntity latest)
         {
             metadata.Versioning.LastUpdated = latest.Timestamp.ToFileTime().ToString();
             metadata.Versioning.Latest = latest.Version;
@@ -315,13 +315,13 @@ namespace Maven.Apis
 
         private void InsertMavenSearchLast(Guid repoId, MavenIndex item, PomXml result)
         {
-            MavenSearchLastEntity artifact = _mavenSearchLastRepository.GetByArtifactId(repoId,
+            OLDMavenSearchLastEntity artifact = _mavenSearchLastRepository.GetByArtifactId(repoId,
                 item.ArtifactId, string.Join(".", item.Group));
             var isNew = artifact == null;
 
             if (isNew)
             {
-                artifact = new MavenSearchLastEntity();
+                artifact = new OLDMavenSearchLastEntity();
             }
             var allArtifacts = _mavenArtifactsRepository.GetById(repoId, item.Group, item.ArtifactId, item.Version).ToList();
             var version = JavaSemVersion.Parse(item.Version);
@@ -376,7 +376,7 @@ namespace Maven.Apis
 
             if (isNew)
             {
-                artifact = new MavenSearchEntity();
+                artifact = new OLDMavenSearchEntity();
             }
             var allArtifacts = _mavenArtifactsRepository.GetById(repoId, item.Group, item.ArtifactId, item.Version).ToList();
             artifact.ArtifactId = item.ArtifactId;
@@ -398,7 +398,7 @@ namespace Maven.Apis
 
             if (isNew)
             {
-                artifact = new MavenArtifactEntity();
+                artifact = new OLDMavenArtifactEntity();
             }
             artifact.ArtifactId = item.ArtifactId;
             artifact.Classifier = item.Classifier;

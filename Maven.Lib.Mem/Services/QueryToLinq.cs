@@ -1,5 +1,5 @@
 ﻿using Ioc;
-using Maven.Repositories;
+//using Maven.Repositories;
 using Maven.Services;
 using MavenProtocol.Apis;
 using System;
@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Maven.Lib.Mem
-{
+{/*
     public class QueryToLinq : ISingleton, IQueryToLinq
     {
         private IQueryBuilder _queryBuilder;
@@ -18,7 +18,7 @@ namespace Maven.Lib.Mem
         {
             _queryBuilder = queryBuilder;
         }
-        public IEnumerable<MavenSearchLastEntity> Query(IQueryable<MavenSearchLastEntity> entities, Guid repoId, SearchParam query)
+        public IEnumerable<OLDMavenSearchLastEntity> Query(IQueryable<OLDMavenSearchLastEntity> entities, Guid repoId, SearchParam query)
         {
             ParsedQuery pq = _queryBuilder.ParseQuery(query.Query);
             var ents = Query(entities, repoId, pq);
@@ -32,22 +32,22 @@ namespace Maven.Lib.Mem
                 {
                     case ("version"):
                         ents = ents.Where(r =>
-                            ((MavenSearchLastEntity)r).VersionRelease == item.Value || ((MavenSearchLastEntity)r).VersionSnapshot == item.Value);
+                            ((OLDMavenSearchLastEntity)r).VersionRelease == item.Value || ((OLDMavenSearchLastEntity)r).VersionSnapshot == item.Value);
                         break;
                     case ("timestamp"):
                         ents = ents.Where(r =>
-                            ((MavenSearchLastEntity)r).TimestampRelease.ToFileTime().ToString() == item.Value || ((MavenSearchLastEntity)r).TimestampSnapshot.ToFileTime().ToString() == item.Value);
+                            ((OLDMavenSearchLastEntity)r).TimestampRelease.ToFileTime().ToString() == item.Value || ((OLDMavenSearchLastEntity)r).TimestampSnapshot.ToFileTime().ToString() == item.Value);
                         break;
                 }
             }
 
             foreach (var res in ents.Skip(query.Start).Take(query.Rows))
             {
-                yield return (MavenSearchLastEntity)res;
+                yield return (OLDMavenSearchLastEntity)res;
             }
         }
 
-        public IEnumerable<MavenSearchEntity> Query(IQueryable<MavenSearchEntity> entities, Guid repoId, SearchParam query)
+        public IEnumerable<OLDMavenSearchEntity> Query(IQueryable<OLDMavenSearchEntity> entities, Guid repoId, SearchParam query)
         {
             ParsedQuery pq = _queryBuilder.ParseQuery(query.Query);
             var ents = Query(entities, repoId, pq);
@@ -55,11 +55,11 @@ namespace Maven.Lib.Mem
 
             foreach (var res in ents.Skip(query.Start).Take(query.Rows))
             {
-                yield return (MavenSearchEntity)res;
+                yield return (OLDMavenSearchEntity)res;
             }
         }
 
-        private IQueryable<MavenBaseSearchEntity> Query(IQueryable<MavenBaseSearchEntity> entities, Guid repoId, ParsedQuery pq)
+        private IQueryable<OLDMavenBaseSearchEntity> Query(IQueryable<OLDMavenBaseSearchEntity> entities, Guid repoId, ParsedQuery pq)
         {
             var result = entities.Where(a => a.RepositoryId == repoId).AsQueryable();
 
@@ -102,5 +102,5 @@ namespace Maven.Lib.Mem
             }
             return result;
         }
-    }
+    }*/
 }

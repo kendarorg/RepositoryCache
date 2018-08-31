@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace Maven.Repositories
 {
-    public class MavenArtifactsRepository : InMemoryRepository<MavenArtifactEntity>, IMavenArtifactsRepository
+    public class MavenArtifactsRepository : InMemoryRepository<OLDMavenArtifactEntity>, OLDIMavenArtifactsRepository
     {
         public MavenArtifactsRepository(AppProperties properties) : base(properties)
         {
         }
 
-        public MavenArtifactEntity GetById(Guid repoId, string[] group, string artifactId, string version, string classifier)
+        public OLDMavenArtifactEntity GetById(Guid repoId, string[] group, string artifactId, string version, string classifier)
         {
             return GetAll().Where(a => a.RepositoryId == repoId).
                 FirstOrDefault(a => a.ArtifactId == artifactId &&
@@ -22,7 +22,7 @@ namespace Maven.Repositories
                     a.Version == version && a.Classifier == classifier);
         }
 
-        public IEnumerable<MavenArtifactEntity> GetById(Guid repoId, string[] group, string artifactId, string version)
+        public IEnumerable<OLDMavenArtifactEntity> GetById(Guid repoId, string[] group, string artifactId, string version)
         {
             return GetAll().Where(a => a.RepositoryId == repoId).
                 Where(a => a.ArtifactId == artifactId &&
@@ -30,7 +30,7 @@ namespace Maven.Repositories
                     a.Version == version);
         }
 
-        public IEnumerable<MavenArtifactEntity> GetVersionsByIdFirstIsRelease(Guid repoId, string[] group, string artifactId)
+        public IEnumerable<OLDMavenArtifactEntity> GetVersionsByIdFirstIsRelease(Guid repoId, string[] group, string artifactId)
         {
             throw new NotImplementedException();
         }

@@ -101,8 +101,8 @@ namespace MultiRepositories
                 Url = url
             };
             var result = mockRest.HandleRequest(req);
-            Assert.IsTrue(req.PathParams.ContainsKey("*first"));
-            Assert.AreEqual("test/item", req.PathParams["*first"]);
+            Assert.IsTrue(req.PathParams.ContainsKey("first"));
+            Assert.AreEqual("test/item", req.PathParams["first"]);
             Assert.IsTrue(viewed);
             Assert.IsNotNull(result);
         }
@@ -138,8 +138,8 @@ namespace MultiRepositories
                 Url = url
             };
             var result = mockRest.HandleRequest(req);
-            Assert.IsTrue(req.PathParams.ContainsKey("*first"));
-            Assert.AreEqual("test/item/index.json", req.PathParams["*first"]);
+            Assert.IsTrue(req.PathParams.ContainsKey("first"));
+            Assert.AreEqual("test/item/index.json", req.PathParams["first"]);
             Assert.IsTrue(viewed);
             Assert.IsNotNull(result);
         }
@@ -164,8 +164,8 @@ namespace MultiRepositories
                 Url = url
             };
             var result = mockRest.HandleRequest(req);
-            Assert.IsTrue(req.PathParams.ContainsKey("*first"));
-            Assert.AreEqual("test/cicca", req.PathParams["*first"]);
+            Assert.IsTrue(req.PathParams.ContainsKey("first"));
+            Assert.AreEqual("test/cicca", req.PathParams["first"]);
             Assert.IsTrue(viewed);
             Assert.IsNotNull(result);
         }
@@ -273,6 +273,32 @@ namespace MultiRepositories
             mockRest.HandleRequest(req);
             Assert.IsNotNull(request);
             Assert.AreEqual("33", request.PathParams["major"]);
+            Assert.AreEqual("33", request.PathParams["id"]);
+        }
+
+
+        [TestMethod]
+        public void ISBPToMatchRegexMultiple()
+        {
+            SerializableRequest request = null;
+            var mockRest = new MockRestApi((a) =>
+            {
+                request = a;
+                return new SerializableResponse();
+            }, @"/{repo}/{id#^(?<major>\d+)(\.(?<minor>\d+))?$}/test");
+
+            var url = "/nuget.org/33.22/test";
+            Assert.IsTrue(mockRest.CanHandleRequest(url));
+            var req = new SerializableRequest()
+            {
+                Url = url,
+                Method = "POST"
+            };
+            mockRest.HandleRequest(req);
+            Assert.IsNotNull(request);
+            Assert.AreEqual("33", request.PathParams["major"]);
+            Assert.AreEqual("22", request.PathParams["minor"]);
+            Assert.AreEqual("33.22", request.PathParams["id"]);
         }
     }
 }

@@ -20,6 +20,7 @@ namespace MultiRepositories.Service
     public abstract class RestAPI
     {
         private List<Request> _realPaths;
+        private Dictionary<String, Regex> _realPathsRegex;
         private Func<SerializableRequest, SerializableResponse> _handler;
 
         protected void SetHandler(Func<SerializableRequest, SerializableResponse> handler)
@@ -29,6 +30,7 @@ namespace MultiRepositories.Service
 
         public RestAPI(Func<SerializableRequest, SerializableResponse> handler, params string[] paths)
         {
+            _realPathsRegex = new Dictionary<string, Regex>();
             _realPaths = new List<Request>();
             Request lastRequest = new Request();
             foreach (var path in paths)
@@ -39,7 +41,17 @@ namespace MultiRepositories.Service
                 }
                 else
                 {
-                    lastRequest.Path = path.TrimStart('/').Split('/');
+                    var cleaned = path.TrimStart('/');
+
+                    if (cleaned.StartsWith("^"))
+                    {
+                        lastRequest.Path = new string[] { cleaned };
+                        _realPathsRegex[cleaned] = new Regex(cleaned, RegexOptions.CultureInvariant | RegexOptions.Compiled | RegexOptions.ExplicitCapture);
+                    }
+                    else
+                    {
+                        lastRequest.Path = cleaned.Split('/');
+                    }
                     _realPaths.Add(lastRequest);
                     lastRequest = new Request();
                 }
@@ -50,6 +62,7 @@ namespace MultiRepositories.Service
 
         public void Append(Dictionary<string, string> dic, string key, string data)
         {
+            //key = key.Trim('*');
             if (!dic.ContainsKey(key))
             {
                 dic[key] = data;
@@ -63,7 +76,24 @@ namespace MultiRepositories.Service
 
         private Dictionary<string, string> BuildPath(string url, string[] realPath)
         {
-            var splittedUrl = url.Trim('/').Split('/');
+            var cleaned = url.Trim('/');
+            if (realPath.Length == 1 && realPath[0].StartsWith("^"))
+            {
+                var match = _realPathsRegex[realPath[0]].Match(cleaned);
+                if (!match.Success) return null;
+                var datareg = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);
+                foreach (string groupName in _realPathsRegex[realPath[0]].GetGroupNames())
+                {
+                    if (match.Groups[groupName].Success)
+                    {
+                        datareg[groupName] = match.Groups[groupName].Value;
+                    };
+                }
+                return datareg;
+            }
+
+            var splittedUrl = cleaned.Split('/');
+
             var data = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);
             var stars = realPath.Count(a => a.StartsWith("{*"));
             if (stars > 1)
@@ -96,7 +126,7 @@ namespace MultiRepositories.Service
                     {
                         for (; splittedIndex < splittedUrl.Length; splittedIndex++)
                         {
-                            Append(data, "*" + index, splittedUrl[splittedIndex]);
+                            Append(data,  index, splittedUrl[splittedIndex]);
                         }
                         return data;
                     }
@@ -157,7 +187,7 @@ namespace MultiRepositories.Service
                     for (; splittedIndex <= limitSplit; splittedIndex++)
                     {
                         spl = splittedUrl[splittedIndex];
-                        Append(data, "*" + index, spl);
+                        Append(data, index, spl);
                     }
                     return data;
                 }
@@ -223,7 +253,7 @@ namespace MultiRepositories.Service
             }
             var match = _regexes[regex].Match(spl);
             if (!match.Success) return false;
-
+            data[trimmed.Substring(0, sharp)] = spl;
             foreach (string groupName in _regexes[regex].GetGroupNames())
             {
                 if (match.Groups[groupName].Success)

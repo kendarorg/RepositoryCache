@@ -1,14 +1,17 @@
-﻿using MultiRepositories.Repositories;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using MultiRepositories.Repositories;
 using Ioc;
 using MavenProtocol.Apis;
-using System.Collections.Generic;
 
-namespace Maven.Services
+namespace Nuget.Services
 {
     public interface IArtifactsStorage : ISingleton
     {
-        byte[] Load(RepositoryEntity repo, string[] group, string artifactId, string version, string classifier, string type);
-        void Write(RepositoryEntity repo, string[] group, string artifactId, string version, string classifier, string type, byte[] data);
-        List<string> ListChildren(RepositoryEntity repo, string[] group);
+        byte[] Load(RepositoryEntity repo, MavenIndex index);
+        void Save(RepositoryEntity repo, MavenIndex index, byte[] data);
     }
 }

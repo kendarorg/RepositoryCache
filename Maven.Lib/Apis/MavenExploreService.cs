@@ -20,14 +20,14 @@ namespace Maven.Apis
         private readonly IArtifactsStorage _artifactsStorage;
         private readonly IRepositoryEntitiesRepository _repositoryEntitiesRepository;
         private readonly IMavenArtifactsService _mavenArtifactsService;
-        private readonly IMavenArtifactsRepository _mavenArtifactsRepository;
-        private readonly IMavenSearchRepository _mavenSearchRepository;
+        private readonly OLDIMavenArtifactsRepository _mavenArtifactsRepository;
+        private readonly OLDIMavenSearchRepository _mavenSearchRepository;
 
         public MavenExploreService(IArtifactsStorage mavenTreeRepository,
             IRepositoryEntitiesRepository repositoryEntitiesRepository,
             IMavenArtifactsService mavenArtService,
-            IMavenArtifactsRepository mavenArtifactsRepository,
-            IMavenSearchRepository mavenSearchRepository)
+            OLDIMavenArtifactsRepository mavenArtifactsRepository,
+            OLDIMavenSearchRepository mavenSearchRepository)
         {
             this._artifactsStorage = mavenTreeRepository;
             this._repositoryEntitiesRepository = repositoryEntitiesRepository;

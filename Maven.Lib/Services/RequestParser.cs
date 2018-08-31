@@ -13,46 +13,47 @@ namespace Maven.Services
         public MavenIndex Parse(SerializableRequest arg)
         {
 
-            string subType = null;
-            string version = null;
-            string filename = null;
-            string package = null;
-            string classifier = null;
-            string path = string.Empty;
-            string type = null;
+            string path=null, repoId = null, package = null, 
+                version = null, specifier = null, extension = null, 
+                checksum = null, meta = null,filename = null;
 
-            if (arg.PathParams.ContainsKey("type")) type = arg.PathParams["type"];
-
-            if (arg.PathParams.ContainsKey("*path")) path = arg.PathParams["*path"];
+            if (arg.PathParams.ContainsKey("path")) path = arg.PathParams["path"];
+            if (arg.PathParams.ContainsKey("repoId")) repoId = arg.PathParams["repoId"];
             if (arg.PathParams.ContainsKey("package")) package = arg.PathParams["package"];
-            if (arg.PathParams.ContainsKey("subType")) subType = arg.PathParams["subType"];
-            if (arg.PathParams.ContainsKey("filename")) filename = arg.PathParams["filename"];
-            if (arg.PathParams.ContainsKey("major")) version = arg.PathParams["major"];
-            if (arg.PathParams.ContainsKey("minor")) version += "." + arg.PathParams["minor"];
-            if (arg.PathParams.ContainsKey("patch")) version += "." + arg.PathParams["patch"];
-            if (arg.PathParams.ContainsKey("extra")) version += "." + arg.PathParams["extra"];
-            if (arg.PathParams.ContainsKey("pre")) version += "-" + arg.PathParams["pre"];
+            if (arg.PathParams.ContainsKey("version")) version = arg.PathParams["version"];
+            if (arg.PathParams.ContainsKey("specifier")) specifier = arg.PathParams["specifier"];
+            if (arg.PathParams.ContainsKey("extension")) extension = arg.PathParams["extension"];
+            if (arg.PathParams.ContainsKey("checksum")) checksum = arg.PathParams["checksum"];
+            if (arg.PathParams.ContainsKey("meta")) meta = arg.PathParams["meta"];
 
-            if (arg.PathParams.ContainsKey("filename")) filename = arg.PathParams["filename"];
-
-
-            if (filename != null && package != null)
+            
+            if (!string.IsNullOrWhiteSpace(meta))
             {
-                classifier = filename.Replace(package + "-" + version, "");
-                if (!string.IsNullOrWhiteSpace(classifier))
-                {
-                    classifier = classifier.Trim('-');
-                }
+                filename = meta;
             }
+            else if(!string.IsNullOrWhiteSpace(extension))
+            {
+                filename = string.Format("{0}-{1}.{2}{3}", 
+                    package, version, extension,checksum==null?"":"."+checksum);
+            }
+
+            var isSnapshot = false;
+            if (version.EndsWith("-SNAPSHOT"))
+            {
+                version = version.Replace("-SNAPSHOT", "");
+                isSnapshot = true;
+            }
+            
             return new MavenIndex
             {
                 ArtifactId = package,
-                Checksum = subType,
+                Checksum = checksum,
                 Group = path.Split('/'),
                 Version = version,
-                Classifier = classifier,
+                Classifier = specifier,
+                IsSnapshot = isSnapshot,
                 Filename = filename,
-                Type = type
+                Type = extension
             };
         }
     }

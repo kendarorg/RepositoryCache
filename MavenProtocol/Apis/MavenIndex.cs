@@ -11,11 +11,14 @@ namespace MavenProtocol.Apis
         public string Type { get; set; }    //maven-metadata/jar/pom
         public string Checksum { get; set; } //null/asc/sha1/md5
         public string Filename { get; set; }
+        public bool IsSnapshot { get; set; }
 
         public string ToLocalPath()
         {
-            return string.Join("\\", string.Join("\\", Group), ArtifactId, ArtifactId + "-" + Version
-                + Classifier + "." + Type);
+            var snapshot = IsSnapshot ? "-SNAPSHOT" : "";
+            var classifier = string.IsNullOrWhiteSpace(Classifier) ? "" : "-" + Classifier;
+            return string.Join("\\", string.Join("\\", Group), ArtifactId, ArtifactId + "-" + Version + snapshot
+                + classifier + "." + Type);
         }
     }
 }
