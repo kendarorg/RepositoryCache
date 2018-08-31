@@ -7,7 +7,7 @@ using MultiRepositories.Repositories;
 using Ioc;
 using MavenProtocol.Apis;
 
-namespace Nuget.Services
+namespace Maven.Services
 {
     public interface IArtifactsStorage : ISingleton
     {

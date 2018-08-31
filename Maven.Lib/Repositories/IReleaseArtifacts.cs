@@ -7,7 +7,7 @@ namespace Maven.Repositories
 {
     public interface IReleaseArtifacts : IRepository<ReleaseEntity>
     {
-        IEnumerable<ReleaseEntity> Query(Guid repoId, SearchParam param, ITransaction transaction);
-        ReleaseEntity GetByArtifact(Guid repoId,string[] group, string artifactId, ITransaction transaction);
+        IEnumerable<ReleaseEntity> Query(Guid repoId, SearchParam param, ITransaction transaction = null);
+        ReleaseEntity GetByArtifact(Guid repoId,string[] group, string artifactId, ITransaction transaction = null);
     }
 }

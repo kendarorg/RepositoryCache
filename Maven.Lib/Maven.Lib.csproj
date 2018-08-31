@@ -33,6 +33,9 @@
     <Reference Include="DotNetZip, Version=1.11.0.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
       <HintPath>..\packages\DotNetZip.1.11.0\lib\net20\DotNetZip.dll</HintPath>
     </Reference>
+    <Reference Include="HtmlAgilityPack, Version=1.8.7.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlAgilityPack.1.8.7\lib\Net45\HtmlAgilityPack.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -66,6 +69,7 @@
     <Compile Include="Services\IQueryBuilder.cs" />
     <Compile Include="Services\IRequestParser.cs" />
     <Compile Include="Services\ArtifactsStorage.cs" />
+    <Compile Include="Services\MavenServicesMapper.cs" />
     <Compile Include="Services\ParsedQuery.cs" />
     <Compile Include="Services\QueryBuilder.cs" />
     <Compile Include="Services\RequestParser.cs" />

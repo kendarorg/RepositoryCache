@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace Nuget.Services
+namespace Maven.Services
 {
     public class ArtifactsStorage : IArtifactsStorage, ISingleton
     {

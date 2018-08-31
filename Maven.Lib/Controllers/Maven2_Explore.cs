@@ -11,24 +11,28 @@ using Newtonsoft.Json;
 using MavenProtocol.Apis;
 using Maven.Services;
 using MavenProtocol.Apis.Browse;
+using MavenProtocol;
+using HtmlAgilityPack;
 
 namespace Maven.Controllers
 {
-    public class Maven2_Explore : RestAPI
+    public class Maven2_Explore : ForwardRestApi
     {
         private readonly Guid repoId;
         private readonly IRepositoryEntitiesRepository _repositoryEntitiesRepository;
         private readonly IRequestParser _requestParser;
         private readonly IMavenExploreService _mavenExploreService;
+        private readonly IServicesMapper _servicesMapper;
 
-        public Maven2_Explore(Guid repoId,
-            IRepositoryEntitiesRepository repositoryEntitiesRepository, IRequestParser requestParser, IMavenExploreService mavenExploreService, params string[] paths)
-            : base(null, paths)
+        public Maven2_Explore(Guid repoId, AppProperties properties,
+            IRepositoryEntitiesRepository repositoryEntitiesRepository, IRequestParser requestParser, IMavenExploreService mavenExploreService, IServicesMapper servicesMapper, params string[] paths)
+            : base(properties, null, paths)
         {
             this.repoId = repoId;
             _repositoryEntitiesRepository = repositoryEntitiesRepository;
             this._requestParser = requestParser;
             this._mavenExploreService = mavenExploreService;
+            this._servicesMapper = servicesMapper;
             SetHandler(Handler);
         }
 
@@ -37,9 +41,70 @@ namespace Maven.Controllers
 
             var idx = _requestParser.Parse(arg);
             var repo = _repositoryEntitiesRepository.GetById(repoId);
-            var result = _mavenExploreService.Explore(repo.Id, idx);
+            ExploreResult result = null;
+            if (repo.Mirror)
+            {
+                try
+                {
+                    result = ExploreRemote(arg, repo, idx);
+                }
+                catch (Exception)
+                {
+
+                }
+            }
+            if (result == null)
+            {
+                result = _mavenExploreService.Explore(repo.Id, idx);
+            }
 
             return new SerializableResponse();
+        }
+
+        private ExploreResult ExploreRemote(SerializableRequest localRequest, RepositoryEntity repo, MavenIndex idx)
+        {
+            ExploreResult result = new ExploreResult();
+            var remoteRequest = localRequest.Clone();
+            var convertedUrl = _servicesMapper.ToMaven(repo.Id, idx, false);
+            remoteRequest.Headers["Host"] = new Uri(convertedUrl).Host;
+
+            var remoteRes = RemoteRequest(convertedUrl, remoteRequest);
+
+            if (!string.IsNullOrWhiteSpace(idx.Meta) || !string.IsNullOrWhiteSpace(idx.Checksum))
+            {
+                result.Content = remoteRes.Content;
+            }
+            else if (!string.IsNullOrWhiteSpace(idx.Type))
+            {
+
+                result.Content = remoteRes.Content;
+                throw new Exception("//Insert the pom or jar or wetheaver");
+            }
+            else
+            {
+                var htmlData = Encoding.UTF8.GetString(remoteRes.Content);
+                HtmlDocument htmlDoc = new HtmlDocument();
+                htmlDoc.LoadHtml(htmlData);
+                result.Children.Add("..");
+                foreach (HtmlNode link in htmlDoc.DocumentNode.SelectNodes("//a[@href]"))
+                {
+                    result.Children.Add(link.Attributes["href"].Value);
+                }
+                if (idx.Group != null && idx.Group.Length > 0)
+                {
+                    result.Base = _properties.Host.TrimEnd('/') + "/" + repo.Prefix + "/" + string.Join("/", idx.Group);
+                    if (!string.IsNullOrWhiteSpace(idx.ArtifactId))
+                    {
+                        result.Base += "/" + idx.ArtifactId;
+                        if (!string.IsNullOrWhiteSpace(idx.Version))
+                        {
+                            var snap = idx.IsSnapshot ? "-SNAPSHOT" : "";
+                            result.Base += "/" + idx.Version + snap;
+                        }
+                    }
+                }
+            }
+            return result;
         }
     }
 }

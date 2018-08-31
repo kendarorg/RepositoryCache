@@ -4,7 +4,7 @@ using MavenProtocol;
 using MavenProtocol.Apis;
 using MavenProtocol.Apis.Browse;
 using MultiRepositories.Repositories;
-using Nuget.Services;
+using Maven.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
