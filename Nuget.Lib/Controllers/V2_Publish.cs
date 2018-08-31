@@ -16,12 +16,14 @@ namespace Nuget.Controllers
     public class V2_Publish : RestAPI
     {
         private IRepositoryEntitiesRepository _repositoryEntitiesRepository;
+        private readonly Guid repoId;
         private IInsertNugetService _insertNugetService;
 
-        public V2_Publish(IInsertNugetService insertNugetService, IRepositoryEntitiesRepository repositoryEntitiesRepository, params string[] paths)
+        public V2_Publish(Guid repoId,IInsertNugetService insertNugetService, IRepositoryEntitiesRepository repositoryEntitiesRepository, params string[] paths)
             : base(null, paths)
         {
             _repositoryEntitiesRepository = repositoryEntitiesRepository;
+            this.repoId = repoId;
             _insertNugetService = insertNugetService;
             SetHandler(Handler);
         }
@@ -29,7 +31,7 @@ namespace Nuget.Controllers
         private SerializableResponse Handler(SerializableRequest localRequest)
         {
             var apiKey = localRequest.Headers["X-NuGet-ApiKey"];
-            var repo = _repositoryEntitiesRepository.GetByName(localRequest.PathParams["repo"]);
+            var repo = _repositoryEntitiesRepository.GetById(repoId);
             var streamContent = new StreamContent(new MemoryStream(localRequest.Content));
             streamContent.Headers.ContentType = MediaTypeHeaderValue.Parse(localRequest.Headers["content-type"]);
 

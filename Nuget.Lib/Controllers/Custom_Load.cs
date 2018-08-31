@@ -14,12 +14,14 @@ namespace Nuget.Controllers
     public class Custom_Load:RestAPI
     {
         private IRepositoryEntitiesRepository _repositoryEntitiesRepository;
+        private readonly Guid repoId;
         private IInsertNugetService _insertNugetService;
 
-        public Custom_Load(IInsertNugetService  insertNugetService, IRepositoryEntitiesRepository repositoryEntitiesRepository, params string[] paths)
+        public Custom_Load(Guid repoId,IInsertNugetService  insertNugetService, IRepositoryEntitiesRepository repositoryEntitiesRepository, params string[] paths)
             : base(null, paths)
         {
             _repositoryEntitiesRepository = repositoryEntitiesRepository;
+            this.repoId = repoId;
             _insertNugetService = insertNugetService;
             SetHandler(Handler);
         }
@@ -27,7 +29,7 @@ namespace Nuget.Controllers
         private SerializableResponse Handler(SerializableRequest localRequest)
         {
             var result = new List<string>();
-            var repo = _repositoryEntitiesRepository.GetByName(localRequest.PathParams["repo"]);
+            var repo = _repositoryEntitiesRepository.GetById(repoId);
             var dir = localRequest.QueryParams["dir"];
             if (!Directory.Exists(dir))
             {

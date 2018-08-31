@@ -3,6 +3,7 @@ using Maven.Controllers;
 using Maven.Services;
 using MavenProtocol;
 using MavenProtocol.Apis;
+using MavenProtocol.Apis.Browse;
 using MultiRepositories;
 using MultiRepositories.Repositories;
 using System;
@@ -20,19 +21,22 @@ namespace Maven
         private readonly IAssemblyUtils _assemblyUtils;
         private readonly IRepositoryEntitiesRepository _repositoryEntitiesRepository;
         private readonly IRequestParser _requestParser;
-        private readonly IArtifactsService _artifactsService;
+        private readonly IMavenArtifactsService _artifactsService;
+        private readonly IMavenExploreService _mavenExplorerService;
 
         public MavenApiIntializer(AppProperties applicationPropertes,
             IAssemblyUtils assemblyUtils,
             IRepositoryEntitiesRepository repositoryEntitiesRepository,
             IRequestParser requestParser,
-            IArtifactsService artifactsService)
+            IMavenArtifactsService artifactsService,
+            IMavenExploreService mavenExplorerService)
         {
             this._applicationPropertes = applicationPropertes;
             this._assemblyUtils = assemblyUtils;
             this._repositoryEntitiesRepository = repositoryEntitiesRepository;
             this._requestParser = requestParser;
             _artifactsService = artifactsService;
+            _mavenExplorerService = mavenExplorerService;
         }
         public void Initialize(IRepositoryServiceProvider repositoryServiceProvider)
         {
@@ -72,7 +76,7 @@ namespace Maven
 
             foreach (var item in _repositoryEntitiesRepository.GetByType("maven"))
             {
-                repositoryServiceProvider.RegisterApi(new Maven2_Explore(_repositoryEntitiesRepository, _requestParser,
+                repositoryServiceProvider.RegisterApi(new Maven2_Explore(item.Id,_repositoryEntitiesRepository, _requestParser, _mavenExplorerService,
                     "*GET",
                         MavenConstants.REGEX_ONLY_PACK.
                             Replace("{repo}", Regex.Escape(item.Prefix)),
@@ -94,13 +98,13 @@ namespace Maven
                     ));
 
                 repositoryServiceProvider.RegisterApi(
-                    new Maven2_Push_Package(_repositoryEntitiesRepository, _requestParser, _artifactsService,
+                    new Maven2_Push_Package(item.Id, _repositoryEntitiesRepository, _requestParser, _artifactsService,
                     "*PUT",
                         MavenConstants.REGEX_ONLY_PACK.
                             Replace("{repo}", Regex.Escape(item.Prefix))));
 
                 repositoryServiceProvider.RegisterApi(
-                    new Maven2_Push_Metadata(_repositoryEntitiesRepository, _requestParser, _artifactsService,
+                    new Maven2_Push_Metadata(item.Id, _repositoryEntitiesRepository, _requestParser, _artifactsService,
                     "*PUT",
                         MavenConstants.REGEX_ONLY_META.
                             Replace("{repo}", Regex.Escape(item.Prefix))));

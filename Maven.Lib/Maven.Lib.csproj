@@ -46,8 +46,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Apis\MavenExploreService.cs" />
     <Compile Include="Apis\MavenSearchService.cs" />
-    <Compile Include="Apis\ArtifactService.cs" />
+    <Compile Include="Apis\MavenArtifactService.cs" />
     <Compile Include="Controllers\Maven2_Explore.cs" />
     <Compile Include="Controllers\Maven2_Push_Metadata.cs" />
     <Compile Include="Controllers\Maven2_Push_Package.cs" />

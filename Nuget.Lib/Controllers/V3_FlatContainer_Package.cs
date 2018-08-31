@@ -18,15 +18,17 @@ namespace Nuget.Controllers
     {
         private IPackageBaseAddressService _packageBaseAddressService;
         private IRepositoryEntitiesRepository _reps;
+        private readonly Guid repoId;
         private IServicesMapper _converter;
         
-        public V3_FlatContainer_Package(AppProperties properties, 
+        public V3_FlatContainer_Package(Guid  repoId,AppProperties properties, 
             IServicesMapper converter, IRepositoryEntitiesRepository reps,
             IPackageBaseAddressService packageBaseAddressService,params string[]paths) :
             base(properties, null, paths)
         {
             _packageBaseAddressService = packageBaseAddressService;
             _reps = reps;
+            this.repoId = repoId;
             _converter = converter;
             SetHandler(Handle);
         }
@@ -38,7 +40,7 @@ namespace Nuget.Controllers
                  localRequest.QueryParams["semVerLevel"] : null;
 
 
-            var repo = _reps.GetByName(localRequest.PathParams["repo"]);
+            var repo = _reps.GetById(repoId);
             VersionsResult result = null;
             //Registration340Entry
             if (repo.Mirror)

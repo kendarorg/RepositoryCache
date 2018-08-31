@@ -17,15 +17,17 @@ namespace Nuget.Controllers
     public class V3_Query : ForwardRestApi
     {
         private IRepositoryEntitiesRepository _reps;
+        private readonly Guid repoId;
         private ISearchQueryService _searchQueryService;
         private IServicesMapper _servicesMapper;
 
-        public V3_Query(
+        public V3_Query(Guid repoId,
             ISearchQueryService searchQueryService, AppProperties properties, IRepositoryEntitiesRepository reps,
             IServicesMapper servicesMapper,params string[]paths) :
             base(properties,  null,paths)
         {
             _reps = reps;
+            this.repoId = repoId;
             _searchQueryService = searchQueryService;
             _servicesMapper = servicesMapper;
             SetHandler(Handle);
@@ -34,7 +36,7 @@ namespace Nuget.Controllers
         private SerializableResponse Handle(SerializableRequest localRequest)
         {
             QueryResult result = null;
-            var repo = _reps.GetByName(localRequest.PathParams["repo"]);
+            var repo = _reps.GetById(repoId);
             var qm = new QueryModel()
             {
                 Query = localRequest.QueryParams.ContainsKey("q") ? localRequest.QueryParams["q"] : "",

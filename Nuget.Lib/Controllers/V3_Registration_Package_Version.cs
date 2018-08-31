@@ -19,9 +19,10 @@ namespace Nuget.Controllers
     {
         private IServicesMapper _servicesMapper;
         private IRegistrationService _registrationService;
+        private readonly Guid repoId;
         private IRepositoryEntitiesRepository _reps;
 
-        public V3_Registration_Package_Version(AppProperties properties,
+        public V3_Registration_Package_Version(Guid repoId,AppProperties properties,
             IRepositoryEntitiesRepository reps,
             IRegistrationService registrationService,
             IServicesMapper servicesMapper, params string[] paths) :
@@ -29,6 +30,7 @@ namespace Nuget.Controllers
         {
             _servicesMapper = servicesMapper;
             _registrationService = registrationService;
+            this.repoId = repoId;
             _reps = reps;
             SetHandler(Handle);
         }
@@ -39,7 +41,7 @@ namespace Nuget.Controllers
                  localRequest.PathParams["semver"] : null;
 
 
-            var repo = _reps.GetByName(localRequest.PathParams["repo"]);
+            var repo = _reps.GetById(repoId);
             RegistrationLastLeaf result = null;
             //Registration340Entry
             if (repo.Mirror)

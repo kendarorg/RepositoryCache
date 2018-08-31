@@ -15,16 +15,18 @@ namespace Maven.Controllers
 {
     public class Maven2_Push_Package : RestAPI
     {
-        private IArtifactsService _interfaceService;
+        private IMavenArtifactsService _interfaceService;
+        private readonly Guid repoId;
         private IRepositoryEntitiesRepository _repositoryEntitiesRepository;
         private readonly IRequestParser _requestParser;
 
-        public Maven2_Push_Package(
+        public Maven2_Push_Package(Guid repoId,
             IRepositoryEntitiesRepository repositoryEntitiesRepository, IRequestParser requestParser,
-            IArtifactsService interfaceService, params string[] paths)
+            IMavenArtifactsService interfaceService, params string[] paths)
             : base(null, paths)
         {
             _interfaceService = interfaceService;
+            this.repoId = repoId;
             _repositoryEntitiesRepository = repositoryEntitiesRepository;
             this._requestParser = requestParser;
             SetHandler(Handler);
@@ -34,7 +36,7 @@ namespace Maven.Controllers
         {
 
             var idx = _requestParser.Parse(arg);
-            var repo = _repositoryEntitiesRepository.GetByName(arg.PathParams["repoId"]);
+            var repo = _repositoryEntitiesRepository.GetById(repoId);
 
             if (string.IsNullOrWhiteSpace(idx.Checksum))
             {
@@ -47,39 +49,5 @@ namespace Maven.Controllers
             }
             return new SerializableResponse();
         }
-        /*
-        private void HandleChecksums(MavenIndex idx, SerializableRequest request)
-        {
-            if ("pom" == idx.Type)
-            {
-                //Handle pom
-                _interfaceService.SetMainArtifactPomChecksum(idx, request.Content,idx.Checksum);
-            }
-            else if (string.IsNullOrWhiteSpace(idx.Classifier))
-            {
-                _interfaceService.SetMainArtifactChecksum(idx, request.Content, idx.Checksum);
-            }
-            else
-            {
-                _interfaceService.SetClassifierArtifactChecksum(idx, request.Content, idx.Checksum);
-            }
-        }
-
-        private void HandleRealArtifacts(MavenIndex idx, SerializableRequest request)
-        {
-            if ("pom" == idx.Type)
-            {
-                //Handle pom
-                _interfaceService.UploadMainArtifactPom(idx, request.Content);
-            }
-            else if (string.IsNullOrWhiteSpace(idx.Classifier))
-            {
-                _interfaceService.UploadMainArtifact(idx, request.Content);
-            }
-            else
-            {
-                _interfaceService.UploadClassifierArtifact(idx, request.Content);
-            }
-        }*/
     }
 }

@@ -13,9 +13,9 @@ namespace Maven.Services
         public MavenIndex Parse(SerializableRequest arg)
         {
 
-            string path=null, repoId = null, package = null, 
-                version = null, specifier = null, extension = null, 
-                checksum = null, meta = null,filename = null;
+            string path = null, repoId = null, package = null,
+                version = null, specifier = null, extension = null,
+                checksum = null, meta = null, filename = null;
 
             if (arg.PathParams.ContainsKey("path")) path = arg.PathParams["path"];
             if (arg.PathParams.ContainsKey("repoId")) repoId = arg.PathParams["repoId"];
@@ -26,15 +26,15 @@ namespace Maven.Services
             if (arg.PathParams.ContainsKey("checksum")) checksum = arg.PathParams["checksum"];
             if (arg.PathParams.ContainsKey("meta")) meta = arg.PathParams["meta"];
 
-            
+
             if (!string.IsNullOrWhiteSpace(meta))
             {
                 filename = meta;
             }
-            else if(!string.IsNullOrWhiteSpace(extension))
+            else if (!string.IsNullOrWhiteSpace(extension))
             {
-                filename = string.Format("{0}-{1}.{2}{3}", 
-                    package, version, extension,checksum==null?"":"."+checksum);
+                filename = string.Format("{0}-{1}.{2}{3}",
+                    package, version, extension, checksum == null ? "" : "." + checksum);
             }
 
             var isSnapshot = false;
@@ -43,7 +43,7 @@ namespace Maven.Services
                 version = version.Replace("-SNAPSHOT", "");
                 isSnapshot = true;
             }
-            
+
             return new MavenIndex
             {
                 ArtifactId = package,
@@ -53,7 +53,8 @@ namespace Maven.Services
                 Classifier = specifier,
                 IsSnapshot = isSnapshot,
                 Filename = filename,
-                Type = extension
+                Type = extension,
+                Meta = meta
             };
         }
     }

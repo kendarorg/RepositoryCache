@@ -43,7 +43,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Apis\IArtifactsService.cs" />
+    <Compile Include="Apis\Browse\ExploreResult.cs" />
+    <Compile Include="Apis\Browse\IMavenExploreService.cs" />
+    <Compile Include="Apis\IMavenArtifactsService.cs" />
     <Compile Include="Apis\MavenIndex.cs" />
     <Compile Include="Apis\Query\IMavenSearch.cs" />
     <Compile Include="Apis\Query\SearchParam.cs" />
@@ -71,7 +73,6 @@
     <Content Include="TODO.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Apis\Browse\" />
     <Folder Include="Apis\Catalog\" />
     <Folder Include="Apis\Metadata\" />
   </ItemGroup>

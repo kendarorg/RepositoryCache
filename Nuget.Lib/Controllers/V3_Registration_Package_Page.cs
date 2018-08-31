@@ -18,10 +18,11 @@ namespace Nuget.Controllers
     public class V3_Registration_Package_Page : ForwardRestApi
     {
         private IRepositoryEntitiesRepository _reps;
+        private readonly Guid repoId;
         private IRegistrationService _registrationPageRepository;
         private IServicesMapper _converter;
 
-        public V3_Registration_Package_Page(
+        public V3_Registration_Package_Page(Guid repoId,
             AppProperties properties,
             IRegistrationService registrationPageRepository,
              IServicesMapper converter, IRepositoryEntitiesRepository reps,
@@ -29,6 +30,7 @@ namespace Nuget.Controllers
             base(properties, null, paths)
         {
             _reps = reps;
+            this.repoId = repoId;
             _registrationPageRepository = registrationPageRepository;
             _converter = converter;
             SetHandler(Handle);
@@ -40,7 +42,7 @@ namespace Nuget.Controllers
                  localRequest.PathParams["semver"] : null;
 
 
-            var repo = _reps.GetByName(localRequest.PathParams["repo"]);
+            var repo = _reps.GetById(repoId);
             RegistrationPage result = null;
             //Registration340Entry
             if (repo.Mirror)

@@ -14,7 +14,7 @@ using System.Xml.Serialization;
 
 namespace MavenProtocol.Test
 {
-    public class ArtifactsService : IArtifactsService
+    public class MavenArtifactsService : IMavenArtifactsService
     {
         private IArtifactRepository _artifactRepository;
         private IVersionedArtifactRepository _versionedArtifactRepository;
@@ -23,7 +23,7 @@ namespace MavenProtocol.Test
         private IReleaseArtifacts _releaseArtifacts;
         private IRepositoryEntitiesRepository _repository;
 
-        public ArtifactsService(
+        public MavenArtifactsService(
             IRepositoryEntitiesRepository repository,
             IArtifactRepository artifactRepository,
             IVersionedArtifactRepository versionedArtifactRepository,
@@ -67,7 +67,7 @@ namespace MavenProtocol.Test
         {
             if (string.IsNullOrWhiteSpace(idx.Classifier))
             {
-                var artifactData = _versionedArtifactRepository.GetArtifactData(repoId, idx.Group, idx.ArtifactId, idx.Version);
+                var artifactData = _versionedArtifactRepository.GetArtifactData(repoId, idx.Group, idx.ArtifactId, idx.Version, idx.IsSnapshot);
                 if (idx.Type == "pom")
                 {
                     artifactData.PomChecksums = RebuildChecksun(artifactData.PomChecksums, idx.Checksum, checksum);
@@ -80,7 +80,7 @@ namespace MavenProtocol.Test
             }
             else
             {
-                var artifactData = _versionedClassifiersRepository.GetArtifactData(repoId, idx.Group, idx.ArtifactId, idx.Version, idx.Classifier);
+                var artifactData = _versionedClassifiersRepository.GetArtifactData(repoId, idx.Group, idx.ArtifactId, idx.Version, idx.IsSnapshot, idx.Classifier);
                 artifactData.Checksums = RebuildChecksun(artifactData.Checksums, idx.Checksum, checksum);
                 _versionedClassifiersRepository.Update(artifactData);
             }
@@ -131,7 +131,7 @@ namespace MavenProtocol.Test
 
         public void UploadArtifact(Guid repoId, MavenIndex idx, byte[] content)
         {
-            var artifactData = _versionedArtifactRepository.GetArtifactData(repoId, idx.Group, idx.ArtifactId, idx.Version);
+            var artifactData = _versionedArtifactRepository.GetArtifactData(repoId, idx.Group, idx.ArtifactId, idx.Version, idx.IsSnapshot);
             var metadataDb = _artifactRepository.GetMetadata(repoId, idx.Group, idx.ArtifactId);
             bool isNewMetadata = SetupMetadata(idx, ref metadataDb);
 
@@ -139,7 +139,7 @@ namespace MavenProtocol.Test
 
             if (string.IsNullOrWhiteSpace(idx.Classifier))
             {
-                BuildArtifactSpecific(repoId,idx, content, artifactData);
+                BuildArtifactSpecific(repoId, idx, content, artifactData);
                 BuildInferredMetadata(idx, artifactData, metadataDb, isNewMetadata);
             }
 
@@ -151,15 +151,15 @@ namespace MavenProtocol.Test
             }
             if (metadataDb.Release == artifactData.Version && !idx.IsSnapshot)
             {
-                BuildRelease(repoId,idx, artifactData);
+                BuildRelease(repoId, idx, artifactData);
 
             }
         }
 
-        private void BuildRelease(Guid repoId,MavenIndex idx, VersionedArtifactEntity artifactData)
+        private void BuildRelease(Guid repoId, MavenIndex idx, VersionedArtifactEntity artifactData)
         {
             var isReleaseNew = false;
-            var release = _releaseArtifacts.GetByArtifact(repoId,idx.Group, idx.ArtifactId);
+            var release = _releaseArtifacts.GetByArtifact(repoId, idx.Group, idx.ArtifactId);
             if (release == null)
             {
                 isReleaseNew = true;
@@ -213,7 +213,7 @@ namespace MavenProtocol.Test
             return isNewArtifactData;
         }
 
-        private void BuildArtifactSpecific(Guid repoId,MavenIndex idx, byte[] content, VersionedArtifactEntity artifactData)
+        private void BuildArtifactSpecific(Guid repoId, MavenIndex idx, byte[] content, VersionedArtifactEntity artifactData)
         {
             if (idx.Type == "pom")
             {
@@ -225,7 +225,7 @@ namespace MavenProtocol.Test
             else
             {
                 artifactData.Packaging = idx.Type;
-                SaveArtifactPackage(repoId,idx, content);
+                SaveArtifactPackage(repoId, idx, content);
             }
         }
 
@@ -268,7 +268,7 @@ namespace MavenProtocol.Test
         {
             var isNewArtifactDataClassifier = false;
             var artifactDataClassifier = _versionedClassifiersRepository.GetArtifactData(
-                repoId, idx.Group, idx.ArtifactId, idx.Version, idx.Classifier);
+                repoId, idx.Group, idx.ArtifactId, idx.Version, idx.IsSnapshot, idx.Classifier);
             if (artifactDataClassifier == null)
             {
                 isNewArtifactDataClassifier = true;
@@ -293,7 +293,7 @@ namespace MavenProtocol.Test
                 artifactData.Classifiers = string.Format("|{0}|{1}|", string.Join("|", classifiers), idx.Classifier);
                 _versionedArtifactRepository.Update(artifactData);
             }
-            SaveArtifactPackage(repoId,idx, content);
+            SaveArtifactPackage(repoId, idx, content);
         }
 
         private void SaveMetadata(ArtifactEntity metadataDb, bool isNew)
@@ -332,10 +332,10 @@ namespace MavenProtocol.Test
             }
         }
 
-        private void SaveArtifactPackage(Guid repoId,MavenIndex idx, byte[] content)
+        private void SaveArtifactPackage(Guid repoId, MavenIndex idx, byte[] content)
         {
             var repo = _repository.GetById(repoId);
-            _artifactsStorage.Save(repo,idx, content);
+            _artifactsStorage.Save(repo, idx, content);
         }
 
         public void SetTags(Guid repoId, MavenIndex idx, string[] tags)
@@ -344,11 +344,11 @@ namespace MavenProtocol.Test
             {
                 return;
             }
-            var artifact = _versionedArtifactRepository.GetArtifactData(repoId, idx.Group, idx.ArtifactId, idx.Version);
+            var artifact = _versionedArtifactRepository.GetArtifactData(repoId, idx.Group, idx.ArtifactId, idx.Version, idx.IsSnapshot);
             artifact.Tags = "|" + string.Join("|", tags) + "|";
             _versionedArtifactRepository.Update(artifact);
             var release = _releaseArtifacts.GetByArtifact(repoId, idx.Group, idx.ArtifactId);
-            if(release.Version == idx.Version)
+            if (release.Version == idx.Version)
             {
                 release.Tags = artifact.Tags;
                 _releaseArtifacts.Update(release);

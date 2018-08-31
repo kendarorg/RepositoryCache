@@ -19,13 +19,14 @@ namespace Nuget.Controllers
 {
     public class V3_FlatContainer_Package_Version_Nupkg : ForwardRestApi
     {
+        private readonly Guid repoId;
         private readonly IInsertNugetService _insertNugetService;
         private readonly Nuget.Repositories.IPackagesRepository _packagesRepository;
         private readonly IPackageBaseAddressService _nugetService;
         private readonly IServicesMapper _converter;
         private readonly IRepositoryEntitiesRepository _reps;
 
-        public V3_FlatContainer_Package_Version_Nupkg(
+        public V3_FlatContainer_Package_Version_Nupkg(Guid repoId,
             AppProperties properties,
             IInsertNugetService insertNugetService,
             Nuget.Repositories.IPackagesRepository packagesRepository,
@@ -33,6 +34,7 @@ namespace Nuget.Controllers
              IServicesMapper converter, IRepositoryEntitiesRepository reps,params string[]paths) :
             base(properties, null,paths)
         {
+            this.repoId = repoId;
             _insertNugetService = insertNugetService;
             _packagesRepository = packagesRepository;
             this._nugetService = nugetService;
@@ -47,7 +49,7 @@ namespace Nuget.Controllers
                  localRequest.QueryParams["semVerLevel"] : null;
 
 
-            var repo = _reps.GetByName(localRequest.PathParams["repo"]);
+            var repo = _reps.GetById(repoId);
             byte[] result = null;
             //Registration340Entry
             if (repo.Mirror)

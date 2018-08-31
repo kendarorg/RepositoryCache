@@ -12,6 +12,7 @@ namespace MavenProtocol.Apis
         public string Checksum { get; set; } //null/asc/sha1/md5
         public string Filename { get; set; }
         public bool IsSnapshot { get; set; }
+        public string Meta { get; set; }
 
         public string ToLocalPath()
         {

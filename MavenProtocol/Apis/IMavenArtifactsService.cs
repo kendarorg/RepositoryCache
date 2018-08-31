@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MavenProtocol.Apis
 {
-    public interface IArtifactsService:ISingleton
+    public interface IMavenArtifactsService:ISingleton
     {
         void SetArtifactChecksums(Guid id, MavenIndex idx, string content);
         void UploadArtifact(Guid id, MavenIndex idx, byte[] content);

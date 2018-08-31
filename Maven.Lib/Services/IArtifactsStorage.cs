@@ -13,5 +13,6 @@ namespace Nuget.Services
     {
         byte[] Load(RepositoryEntity repo, MavenIndex index);
         void Save(RepositoryEntity repo, MavenIndex index, byte[] data);
+        List<string> GetSubDir(RepositoryEntity repo, MavenIndex index);
     }
 }

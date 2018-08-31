@@ -15,16 +15,18 @@ namespace Maven.Controllers
 {
     public class Maven2_Push_Metadata : RestAPI
     {
-        private IArtifactsService _interfaceService;
+        private IMavenArtifactsService _interfaceService;
+        private readonly Guid repoId;
         private IRepositoryEntitiesRepository _repositoryEntitiesRepository;
         private readonly IRequestParser _requestParser;
 
-        public Maven2_Push_Metadata(
+        public Maven2_Push_Metadata(Guid repoId,
             IRepositoryEntitiesRepository repositoryEntitiesRepository, IRequestParser requestParser,
-            IArtifactsService interfaceService, params string[] paths)
+            IMavenArtifactsService interfaceService, params string[] paths)
             : base(null, paths)
         {
             _interfaceService = interfaceService;
+            this.repoId = repoId;
             _repositoryEntitiesRepository = repositoryEntitiesRepository;
             this._requestParser = requestParser;
             SetHandler(Handler);
@@ -34,7 +36,7 @@ namespace Maven.Controllers
         {
 
             var idx = _requestParser.Parse(arg);
-            var repo = _repositoryEntitiesRepository.GetByName(arg.PathParams["repoId"]);
+            var repo = _repositoryEntitiesRepository.GetById(repoId);
             var content = Encoding.UTF8.GetString(arg.Content);
             if (string.IsNullOrWhiteSpace(idx.Checksum))
             {

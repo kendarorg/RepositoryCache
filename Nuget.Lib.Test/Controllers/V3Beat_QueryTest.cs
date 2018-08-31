@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using Nuget.Controllers;
 using Nuget.Lib.Test.Utils;
 using NugetProtocol;
+using Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -51,7 +52,7 @@ namespace Nuget.Lib.Test.Controllers
                 {
                     repo
                 });
-            _repsMock.Setup(r => r.GetByName(It.IsAny<string>())).
+            _repsMock.Setup(r => r.GetById(It.IsAny<Guid>(),It.IsAny<ITransaction>())).
                 Returns(repo);
             _reps = _repsMock.Object;
             _servicesMapper = new NugetServicesMapper(_reps, _properties);
@@ -60,7 +61,7 @@ namespace Nuget.Lib.Test.Controllers
         [TestMethod]
         public void ISPToQueryRemote()
         {
-            var target = new V3_Query(_nugetService, _properties, _reps, _servicesMapper,
+            var target = new V3_Query(Guid.NewGuid(),_nugetService, _properties, _reps, _servicesMapper,
                 "/{repo}/v3/query")
             {
                 RequestData = (a, b) => HandleRequest("ISPToQuery", a, b)

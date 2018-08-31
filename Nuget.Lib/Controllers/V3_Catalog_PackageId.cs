@@ -18,18 +18,20 @@ namespace Nuget.Controllers
 {
     public class V3_Catalog_PackageId : ForwardRestApi
     {
-        private ICatalogService _catalogService;
-        private IServicesMapper _servicesMapper;
-        private IRegistrationService _registrationService;
-        private IRepositoryEntitiesRepository _reps;
+        private readonly Guid repoId;
+        private readonly ICatalogService _catalogService;
+        private readonly IServicesMapper _servicesMapper;
+        private readonly IRegistrationService _registrationService;
+        private readonly IRepositoryEntitiesRepository _reps;
 
-        public V3_Catalog_PackageId(AppProperties properties,
+        public V3_Catalog_PackageId(Guid repoId,AppProperties properties,
             ICatalogService catalogService,
             IRepositoryEntitiesRepository reps,
             IRegistrationService registrationService,
             IServicesMapper servicesMapper, params string[] paths) :
             base(properties, null, paths)
         {
+            this.repoId = repoId;
             _catalogService = catalogService;
             _servicesMapper = servicesMapper;
             _registrationService = registrationService;
@@ -44,7 +46,7 @@ namespace Nuget.Controllers
                  localRequest.PathParams["semver"] : null;
 
 
-            var repo = _reps.GetByName(localRequest.PathParams["repo"]);
+            var repo = _reps.GetById(repoId);
             CatalogEntry result = null;
             //Registration340Entry
             if (repo.Mirror)
