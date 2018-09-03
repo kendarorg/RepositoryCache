@@ -79,7 +79,10 @@ namespace Maven
 
             foreach (var item in _repositoryEntitiesRepository.GetByType("maven"))
             {
-                repositoryServiceProvider.RegisterApi(new Maven2_Explore(item.Id,_repositoryEntitiesRepository, _requestParser, _mavenExplorerService,_servicesMapper,
+                repositoryServiceProvider.RegisterApi(new Maven2_Explore(
+                    item.Id,_applicationPropertes, _repositoryEntitiesRepository,
+                    _requestParser, _mavenExplorerService,_servicesMapper,
+                    _artifactsService,
                     "*GET",
                         MavenConstants.REGEX_ONLY_PACK.
                             Replace("{repo}", Regex.Escape(item.Prefix)),

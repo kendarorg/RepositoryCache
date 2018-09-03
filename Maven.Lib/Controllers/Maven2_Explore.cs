@@ -23,9 +23,12 @@ namespace Maven.Controllers
         private readonly IRequestParser _requestParser;
         private readonly IMavenExploreService _mavenExploreService;
         private readonly IServicesMapper _servicesMapper;
+        private readonly IMavenArtifactsService _mavenArtifactsService;
 
         public Maven2_Explore(Guid repoId, AppProperties properties,
-            IRepositoryEntitiesRepository repositoryEntitiesRepository, IRequestParser requestParser, IMavenExploreService mavenExploreService, IServicesMapper servicesMapper, params string[] paths)
+            IRepositoryEntitiesRepository repositoryEntitiesRepository,
+            IRequestParser requestParser, IMavenExploreService mavenExploreService, IServicesMapper servicesMapper,
+            IMavenArtifactsService mavenArtifactsService, params string[] paths)
             : base(properties, null, paths)
         {
             this.repoId = repoId;
@@ -33,6 +36,7 @@ namespace Maven.Controllers
             this._requestParser = requestParser;
             this._mavenExploreService = mavenExploreService;
             this._servicesMapper = servicesMapper;
+            this._mavenArtifactsService = mavenArtifactsService;
             SetHandler(Handler);
         }
 
@@ -70,15 +74,32 @@ namespace Maven.Controllers
 
             var remoteRes = RemoteRequest(convertedUrl, remoteRequest);
 
-            if (!string.IsNullOrWhiteSpace(idx.Meta) || !string.IsNullOrWhiteSpace(idx.Checksum))
+            if (!string.IsNullOrWhiteSpace(idx.Meta))
             {
                 result.Content = remoteRes.Content;
+                var stringContent = Encoding.UTF8.GetString(remoteRes.Content);
+                if (!string.IsNullOrWhiteSpace(idx.Checksum))
+                {
+                    _mavenArtifactsService.SetMetadataChecksums(repo.Id, idx, stringContent);
+                }
+                else
+                {
+                    _mavenArtifactsService.UpdateMetadata(repo.Id, idx, stringContent);
+                }
             }
             else if (!string.IsNullOrWhiteSpace(idx.Type))
             {
 
                 result.Content = remoteRes.Content;
-                throw new Exception("//Insert the pom or jar or wetheaver");
+                if (!string.IsNullOrWhiteSpace(idx.Checksum))
+                {
+                    var stringContent = Encoding.UTF8.GetString(remoteRes.Content);
+                    _mavenArtifactsService.SetArtifactChecksums(repo.Id, idx, stringContent);
+                }
+                else
+                {
+                    _mavenArtifactsService.UploadArtifact(repo.Id, idx, remoteRes.Content);
+                }
             }
             else
             {
