@@ -102,6 +102,20 @@ namespace Maven.Apis
                             }
                         }
                     }
+                    else if (!string.IsNullOrWhiteSpace(explore.Version) && !string.IsNullOrWhiteSpace(explore.Meta))
+                    {
+                        if (explore.IsSnapshot)
+                        {
+                            if (string.IsNullOrWhiteSpace(explore.Checksum))
+                            {
+                                result.Content = Encoding.UTF8.GetBytes(@"<metadata></metadata>");
+                            }
+                            else
+                            {
+                                throw new NotSupportedException();
+                            }
+                        }
+                    }
                     else if (!string.IsNullOrWhiteSpace(explore.Version))
                     {
                         baseUrl += "/" + explore.Version;
@@ -206,7 +220,7 @@ namespace Maven.Apis
                 metadata.Versioning = new MavenVersioning();
                 latestSnapshot = PrepareSnapshotData(metadata, artifacts);
                 latestRelease = PrepareStandardData(metadata, artifacts);
-                PreparePlugins(repoId, item, metadata);
+                //PreparePlugins(repoId, item, metadata);
                 PrepareCurrentItems(metadata, latestSnapshot, latestRelease);
             }
             return Encoding.UTF8.GetBytes( WriteMetadataXml(metadata));
@@ -244,10 +258,10 @@ namespace Maven.Apis
             var latestSnapshotVersion = JavaSemVersion.Parse("0");
             if (artifacts.Any(a => a.IsSnapshot))
             {
-                metadata.Versioning.SnapshotVersions = new MavenSnapshotVersions
+                /*metadata.Versioning.SnapshotVersions = new MavenSnapshotVersions
                 {
                     Version = new List<MavenSnapshotVersion>()
-                };
+                };*/
                 foreach (var snap in artifacts.Where(a => a.IsSnapshot))
                 {
                     //var classifiers = snap.Classifiers.Trim('|').Split('|');
@@ -256,21 +270,22 @@ namespace Maven.Apis
                     //for (var i = 0; i < classifiers.Length; i++)
                     {
                         //Svar classifier = classifiers[i] == "null" ? null : classifiers[i];
-                        var type = snap.Packaging;
+                        /*var type = snap.Packaging;
                         var snave = new MavenSnapshotVersion
                         {
                             Classifier = null,
                             Extension = type,
                             Updated = snap.Timestamp.ToFileTime().ToString(),
                             Value = snap.BuildNumber
-                        };
+                        };*/
+                        metadata.Versioning.Versions.Version.Add(snap.Version + "-SNAPSHOT");
                         var curVer = JavaSemVersion.Parse(snap.Version);
                         if (curVer > latestSnapshotVersion)
                         {
                             latestSnapshotVersion = curVer;
                             latestSnapshot = snap;
                         }
-                        metadata.Versioning.SnapshotVersions.Version.Add(snave);
+                        //metadata.Versioning.SnapshotVersions.Version.Add(snave);
                     }
                 }
             }
