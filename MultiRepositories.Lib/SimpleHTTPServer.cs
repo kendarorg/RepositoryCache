@@ -17,7 +17,7 @@ using Newtonsoft.Json;
 
 namespace MultiRepositories
 {
-    public class SimpleHTTPServer : IRepositoryServiceProvider, ISimpleHTTPServer,IDisposable
+    public class SimpleHTTPServer : IRepositoryServiceProvider, ISimpleHTTPServer, IDisposable
     {
         private static int _counter = 0;
 
@@ -189,7 +189,7 @@ namespace MultiRepositories
                 context.Response.OutputStream.Close();
                 return;
             }
-            Console.WriteLine(req.Url);
+            Console.WriteLine(req.HttpMethod + ":" + req.Url);
             var filePath = path.TrimStart('/').Replace("/", "\\");
             //var host = path.TrimStart('/').Split('/').First();
 
@@ -484,7 +484,7 @@ namespace MultiRepositories
                 // free managed resources
             }
             // free native resources if there are any.
-            
+
         }
     }
 }

@@ -65,6 +65,7 @@
     <Compile Include="SerializableResponse.cs" />
     <Compile Include="Service\FileRestAPI.cs" />
     <Compile Include="Service\ForwardRestApi.cs" />
+    <Compile Include="Service\NotFoundException.cs" />
     <Compile Include="Service\RestAPI.cs" />
     <Compile Include="SharedApi.cs" />
     <Compile Include="SimpleHTTPServer.cs" />

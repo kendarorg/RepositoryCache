@@ -42,62 +42,68 @@ namespace Maven.Controllers
 
         private SerializableResponse Handler(SerializableRequest arg)
         {
-
-            var idx = _requestParser.Parse(arg);
-            var repo = _repositoryEntitiesRepository.GetById(repoId);
-            ExploreResult result = null;
-            if (repo.Mirror)
+            try
             {
-                try
+                var idx = _requestParser.Parse(arg);
+                var repo = _repositoryEntitiesRepository.GetById(repoId);
+                ExploreResult result = null;
+                if (repo.Mirror)
                 {
-                    var baseStandard = "";
-                    var baseurls = arg.Url.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
-                    if (baseurls.Length >= 1)
+                    try
                     {
-                        baseStandard = "/" + string.Join("/", baseurls.Take(baseurls.Length - 2));
+                        var baseStandard = "";
+                        var baseurls = arg.Url.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+                        if (baseurls.Length >= 1)
+                        {
+                            baseStandard = "/" + string.Join("/", baseurls.Take(baseurls.Length - 2));
+                        }
+                        result = ExploreRemote(arg, repo, idx, arg.Url);
+                        result.Base = arg.Url;
+
+
                     }
-                    result = ExploreRemote(arg, repo, idx, arg.Url);
-                    result.Base = arg.Url;
-
-
-                }
-                catch (InconsistentRemoteDataException)
-                {
-                    throw;
-                }
-                catch (Exception)
-                {
-
-                }
-            }
-            if (result == null)
-            {
-                result = _mavenExploreService.Explore(repo.Id, idx);
-            }
-            if (result.Content != null)
-            {
-                return new SerializableResponse
-                {
-                    Content = result.Content,
-                    HttpCode = 200
-                };
-            }
-            if ((arg.ContentType != null && arg.ContentType.Contains("text")) || (arg.Headers.ContainsKey("Accept") && arg.Headers["Accept"].Contains("text")))
-            {
-                var path = string.Join("/", idx.Group);
-                if (!string.IsNullOrEmpty(idx.ArtifactId))
-                {
-                    if (!string.IsNullOrWhiteSpace(path)) path += "/" + idx.ArtifactId;
-                    if (!string.IsNullOrWhiteSpace(idx.Version))
+                    catch (InconsistentRemoteDataException)
                     {
-                        path += "/" + idx.Version;
-                        if (idx.IsSnapshot) path += "-SNAPSHOT";
+                        throw;
+                    }
+                    catch (Exception)
+                    {
+
                     }
                 }
+                if (result == null)
+                {
+                    result = _mavenExploreService.Explore(repo.Id, idx);
+                }
+                if (result.Content != null)
+                {
+                    return new SerializableResponse
+                    {
+                        Content = result.Content,
+                        HttpCode = 200
+                    };
+                }
+                if ((arg.ContentType != null && arg.ContentType.Contains("text")) || (arg.Headers.ContainsKey("Accept") && arg.Headers["Accept"].Contains("text")))
+                {
+                    var path = string.Join("/", idx.Group);
+                    if (!string.IsNullOrEmpty(idx.ArtifactId))
+                    {
+                        if (!string.IsNullOrWhiteSpace(path)) path += "/" + idx.ArtifactId;
+                        if (!string.IsNullOrWhiteSpace(idx.Version))
+                        {
+                            path += "/" + idx.Version;
+                            if (idx.IsSnapshot) path += "-SNAPSHOT";
+                        }
+                    }
 
-                return HtmlResponse(result, path, repo.Prefix + " " + (repo.Mirror ? "Mirror" : "Local"));
+                    return HtmlResponse(result, path, repo.Prefix + " " + (repo.Mirror ? "Mirror" : "Local"));
+                }
+                return JsonResponse(result);
+            }catch(Exception ex)
+            {
+                Console.WriteLine(ex);
+                throw new NotFoundException();
             }
-            return JsonResponse(result);
         }
 
         private ExploreResult ExploreRemote(SerializableRequest localRequest, RepositoryEntity repo, MavenIndex idx, string baseStandard)

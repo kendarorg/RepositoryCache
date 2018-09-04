@@ -289,17 +289,27 @@ namespace MultiRepositories.Service
 
         public SerializableResponse HandleRequest(SerializableRequest request)
         {
-            foreach (var realPath in _realPaths)
+            try
             {
-                if (VerifyHttpMethod(request.Method, realPath))
+                foreach (var realPath in _realPaths)
                 {
-                    var res = BuildPath(request.Url, realPath.Path);
-                    if (res != null)
+                    if (VerifyHttpMethod(request.Method, realPath))
                     {
-                        request.PathParams = res;
-                        return _handler(request);
+                        var res = BuildPath(request.Url, realPath.Path);
+                        if (res != null)
+                        {
+                            request.PathParams = res;
+                            return _handler(request);
+                        }
                     }
                 }
+            }catch(NotFoundException)
+            {
+                return new SerializableResponse
+                {
+                    HttpCode = 404,
+                    Content = new byte[] { }
+                };
             }
 
             throw new Exception();
