@@ -38,17 +38,21 @@ namespace Maven.Services
             }
 
             var isSnapshot = false;
-            if (version.EndsWith("-SNAPSHOT"))
+            if (!string.IsNullOrWhiteSpace(version) && version.EndsWith("-SNAPSHOT"))
             {
                 version = version.Replace("-SNAPSHOT", "");
                 isSnapshot = true;
+            }
+            if (string.IsNullOrWhiteSpace(path))
+            {
+                path = string.Empty;
             }
 
             return new MavenIndex
             {
                 ArtifactId = package,
                 Checksum = checksum,
-                Group = path.Split('/'),
+                Group = path.Split(new char[] { '/' },StringSplitOptions.RemoveEmptyEntries),
                 Version = version,
                 Classifier = specifier,
                 IsSnapshot = isSnapshot,

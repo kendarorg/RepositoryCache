@@ -113,6 +113,10 @@ namespace MultiRepositories.Service
             for (; realIndex < realPath.Length; realIndex++)
             {
                 var mtc = realPath[realIndex];
+                if (splittedIndex >= splittedUrl.Length)
+                {
+                    return null;
+                }
                 var spl = splittedUrl[splittedIndex];
 
                 var start = mtc.IndexOf("{");

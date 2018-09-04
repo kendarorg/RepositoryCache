@@ -43,19 +43,19 @@ namespace Maven
         }
         public void Initialize(IRepositoryServiceProvider repositoryServiceProvider)
         {
-            var avail = _repositoryEntitiesRepository.GetAll().FirstOrDefault(a => a.Prefix == "repo.maven.apache.org");
+            var avail = _repositoryEntitiesRepository.GetAll().FirstOrDefault(a => a.Prefix == "maven.apache");
             //https://repo.maven.apache.org/maven2/
             if (avail == null)
             {
-                //var data = _assemblyUtils.ReadRes<MavenApiIntializer>("maven.org.settings.json");
+                var data = _assemblyUtils.ReadRes<MavenApiIntializer>("maven.org.settings.json");
                 avail = new RepositoryEntity
-                {
+                {   
                     Mirror = true,
                     Prefix = "maven.apache",
                     Type = "maven",
                     Address = "/maven.apache",
                     PackagesPath = "maven.apache",
-                    Settings = string.Empty
+                    Settings = data
                 };
                 _repositoryEntitiesRepository.Save(avail);
             };
@@ -64,7 +64,7 @@ namespace Maven
 
             if (local == null)
             {
-                //var data = _assemblyUtils.ReadRes<MavenApiIntializer>("nuget.org.settings.json");
+                var data = _assemblyUtils.ReadRes<MavenApiIntializer>("maven.org.settings.json");
                 local = new RepositoryEntity
                 {
                     Mirror = false,
@@ -72,11 +72,11 @@ namespace Maven
                     Type = "maven",
                     Address = "/maven.local",
                     PackagesPath = "maven.local",
-                    Settings = string.Empty
+                    Settings = data
                 };
                 _repositoryEntitiesRepository.Save(local);
             };
-
+            _servicesMapper.Refresh();
             foreach (var item in _repositoryEntitiesRepository.GetByType("maven"))
             {
                 repositoryServiceProvider.RegisterApi(new Maven2_Explore(
@@ -89,18 +89,25 @@ namespace Maven
                     "*GET",
                         MavenConstants.REGEX_ONLY_META.
                             Replace("{repo}", Regex.Escape(item.Prefix)),
+
                     "*GET",
                         @"/{repo}/{*path}/" + ///maven.local/org/slf4j
                         @"{pack#" + MavenConstants.PACKAGE_REGEXP + @"}/" + //slf4j-api/
                         @"{version#" + MavenConstants.VERSION_REGEXP + @"}". //1.7.2
                             Replace("{repo}", item.Prefix),
-                    "*GET",
+
+                    
+                    
+                    /*"*GET",
                         @"/{repo}/{*path}/" +//maven.local/org/slf4j/
                         @"{pack#" + MavenConstants.PACKAGE_REGEXP + @"}".//slf4j-api/
-                            Replace("{repo}", item.Prefix),
+                            Replace("{repo}", item.Prefix),*/
                     "*GET",
                         @"/{repo}/{*path}".
-                            Replace("{repo}", item.Prefix)//maven.local/org/slf4j/
+                            Replace("{repo}", item.Prefix),//maven.local/org/slf4j/
+
+                    "*GET",
+                        item.Prefix
                     ));
 
                 repositoryServiceProvider.RegisterApi(

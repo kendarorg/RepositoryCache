@@ -48,6 +48,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MaxMatchingTest.cs" />
     <Compile Include="MockRestApi.cs" />
     <Compile Include="ComplexApiTest.cs" />
     <Compile Include="RestApiTest.cs" />

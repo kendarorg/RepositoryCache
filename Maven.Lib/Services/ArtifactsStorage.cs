@@ -15,7 +15,10 @@ namespace Maven.Services
             var group = string.Join("\\", index.Group);
             if(index.Group!=null && index.Group.Any())
             {
-                path = path + "\\" + group;
+                if (group != "")
+                {
+                    path = path + "\\" + group;
+                }
                 if (!string.IsNullOrWhiteSpace(index.ArtifactId))
                 {
                     path = path + "\\" + index.ArtifactId;

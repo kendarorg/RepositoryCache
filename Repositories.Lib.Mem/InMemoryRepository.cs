@@ -64,6 +64,11 @@ namespace Repositories
         public virtual int Save(T be, ITransaction transaction = null)
         {
             var data = GetData();
+            if (data.ContainsKey(be.Id))
+            {
+                Update(be, transaction);
+                return 1;
+            }
             var result = data.TryAdd(be.Id,Clone(be,new T()))?1:0;
             Save();
             return result;

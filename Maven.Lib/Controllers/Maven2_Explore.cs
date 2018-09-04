@@ -61,8 +61,19 @@ namespace Maven.Controllers
             {
                 result = _mavenExploreService.Explore(repo.Id, idx);
             }
-
-            return new SerializableResponse();
+            if (result.Content != null)
+            {
+                return new SerializableResponse
+                {
+                    Content = result.Content,
+                    HttpCode = 200
+                };
+            }
+            if ((arg.ContentType != null && arg.ContentType.Contains("text")) || (arg.Headers.ContainsKey("Accept") && arg.Headers["Accept"].Contains("text")))
+            {
+                return HtmlResponse(result);
+            }
+            return JsonResponse(result);
         }
 
         private ExploreResult ExploreRemote(SerializableRequest localRequest, RepositoryEntity repo, MavenIndex idx)
@@ -126,6 +137,30 @@ namespace Maven.Controllers
                 }
             }
             return result;
+        }
+
+
+
+        private SerializableResponse HtmlResponse(ExploreResult to)
+        {
+            var result = "<html>";
+            result += "<head><base href='" + to.Base + "' ></head><body>";
+            var spl = to.Base.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+            if (spl.Length > 1)
+            {
+                result += "<a href='/"+string.Join("/",spl.Take(spl.Length-1))+"'>..</a><br>";
+            }
+            foreach (var item in to.Children)
+            {
+                result+= "<a href='"+ to.Base+"/"+item + "'>"+item+"</a><br>";
+            }
+            result += "</body></html>";
+            return new SerializableResponse
+            {
+                Content = Encoding.UTF8.GetBytes(result),
+                ContentType = "text/html",
+                HttpCode = 200
+            };
         }
     }
 }

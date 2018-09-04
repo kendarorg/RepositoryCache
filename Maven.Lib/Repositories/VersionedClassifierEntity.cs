@@ -15,5 +15,6 @@ namespace Maven.Repositories
         public string Packaging { get; set; }
         public DateTime Timestamp { get; set; }
         public Guid OwnerMetadataId { get; set; }
+        public Guid RepositoryId { get; set; }
     }
 }

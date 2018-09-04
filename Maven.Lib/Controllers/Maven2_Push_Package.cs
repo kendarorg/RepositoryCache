@@ -38,7 +38,7 @@ namespace Maven.Controllers
             var idx = _requestParser.Parse(arg);
             var repo = _repositoryEntitiesRepository.GetById(repoId);
 
-            if (string.IsNullOrWhiteSpace(idx.Checksum))
+            if (!string.IsNullOrWhiteSpace(idx.Checksum))
             {
                 var content = Encoding.UTF8.GetString(arg.Content);
                 _interfaceService.SetArtifactChecksums(repo.Id, idx, content);

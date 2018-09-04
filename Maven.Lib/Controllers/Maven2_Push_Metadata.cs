@@ -38,7 +38,7 @@ namespace Maven.Controllers
             var idx = _requestParser.Parse(arg);
             var repo = _repositoryEntitiesRepository.GetById(repoId);
             var content = Encoding.UTF8.GetString(arg.Content);
-            if (string.IsNullOrWhiteSpace(idx.Checksum))
+            if (!string.IsNullOrWhiteSpace(idx.Checksum))
             {
                 _interfaceService.SetMetadataChecksums(repo.Id, idx, content);
             }

@@ -63,6 +63,7 @@
     <Compile Include="Repositories\IVersionedArtifactRepository.cs" />
     <Compile Include="Repositories\IVersionedClassifiersRepository.cs" />
     <Compile Include="Repositories\ReleaseEntity.cs" />
+    <Compile Include="Repositories\SearchableArtifact.cs" />
     <Compile Include="Repositories\VersionedArtifactEntity.cs" />
     <Compile Include="Repositories\VersionedClassifierEntity.cs" />
     <Compile Include="Services\IArtifactsStorage.cs" />
@@ -99,6 +100,7 @@
   <ItemGroup />
   <ItemGroup>
     <None Include="Apis\MavenSearchService.json" />
+    <EmbeddedResource Include="maven.org.settings.json" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

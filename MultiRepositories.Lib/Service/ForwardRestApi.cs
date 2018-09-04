@@ -15,7 +15,7 @@ namespace MultiRepositories.Service
 
         public Func<String, SerializableRequest, SerializableResponse> RequestData { get; set; }
 
-        public ForwardRestApi(AppProperties properties, Func<SerializableRequest, SerializableResponse> handler,params string[]paths) : base( handler,paths)
+        public ForwardRestApi(AppProperties properties, Func<SerializableRequest, SerializableResponse> handler, params string[] paths) : base(handler, paths)
         {
             _properties = properties;
         }
@@ -59,7 +59,11 @@ namespace MultiRepositories.Service
             var requestMessage = new HttpRequestMessage(method, realUrl + qp);
             foreach (var reqh in sr.Headers)
             {
-                if (reqh.Key == "Host")
+                if (reqh.Key == "Expires")
+                {
+                    continue;
+                }
+                else if (reqh.Key == "Host")
                 {
                     var uri = new Uri(realUrl);
                     requestMessage.Headers.Add(reqh.Key, uri.Host);
