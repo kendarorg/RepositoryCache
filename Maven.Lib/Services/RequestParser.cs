@@ -16,7 +16,9 @@ namespace Maven.Services
             string path = null, repoId = null, package = null,
                 version = null, specifier = null, extension = null,
                 checksum = null, meta = null, filename = null;
+            var isSnapData = false;
 
+            if (arg.PathParams.ContainsKey("snapshot")) isSnapData=true;
             if (arg.PathParams.ContainsKey("path")) path = arg.PathParams["path"];
             if (arg.PathParams.ContainsKey("repoId")) repoId = arg.PathParams["repoId"];
             if (arg.PathParams.ContainsKey("package")) package = arg.PathParams["package"];
@@ -45,6 +47,10 @@ namespace Maven.Services
             if (!string.IsNullOrWhiteSpace(version) && version.EndsWith("-SNAPSHOT"))
             {
                 version = version.Replace("-SNAPSHOT", "");
+                isSnapshot = true;
+            }
+            if (isSnapData)
+            {
                 isSnapshot = true;
             }
             if (string.IsNullOrWhiteSpace(path))

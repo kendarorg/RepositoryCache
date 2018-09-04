@@ -108,11 +108,11 @@ namespace Maven.Apis
                         {
                             if (string.IsNullOrWhiteSpace(explore.Checksum))
                             {
-                                result.Content = Encoding.UTF8.GetBytes(@"<metadata></metadata>");
+                                result.Content = new byte[] { };
                             }
                             else
                             {
-                                throw new NotSupportedException();
+                                result.Content = new byte[] { };
                             }
                         }
                     }
@@ -223,6 +223,10 @@ namespace Maven.Apis
                 //PreparePlugins(repoId, item, metadata);
                 PrepareCurrentItems(metadata, latestSnapshot, latestRelease);
             }
+            if (string.IsNullOrWhiteSpace(metaDb.Checksums))
+            {
+                return new byte[] { };
+            }
             return Encoding.UTF8.GetBytes( WriteMetadataXml(metadata));
         }
 
@@ -278,6 +282,14 @@ namespace Maven.Apis
                             Updated = snap.Timestamp.ToFileTime().ToString(),
                             Value = snap.BuildNumber
                         };*/
+                        if (metadata.Versioning.Versions == null)
+                        {
+                            metadata.Versioning.Versions = new MavenVersions();
+                        }
+                        if (metadata.Versioning.Versions.Version == null)
+                        {
+                            metadata.Versioning.Versions.Version = new List<string>();
+                        }
                         metadata.Versioning.Versions.Version.Add(snap.Version + "-SNAPSHOT");
                         var curVer = JavaSemVersion.Parse(snap.Version);
                         if (curVer > latestSnapshotVersion)

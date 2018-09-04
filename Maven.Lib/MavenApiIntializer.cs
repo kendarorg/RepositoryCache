@@ -49,7 +49,7 @@ namespace Maven
             {
                 var data = _assemblyUtils.ReadRes<MavenApiIntializer>("maven.org.settings.json");
                 avail = new RepositoryEntity
-                {   
+                {
                     Mirror = true,
                     Prefix = "maven.apache",
                     Type = "maven",
@@ -80,28 +80,30 @@ namespace Maven
             foreach (var item in _repositoryEntitiesRepository.GetByType("maven"))
             {
                 repositoryServiceProvider.RegisterApi(new Maven2_Explore(
-                    item.Id,_applicationPropertes, _repositoryEntitiesRepository,
-                    _requestParser, _mavenExplorerService,_servicesMapper,
+                    item.Id, _applicationPropertes, _repositoryEntitiesRepository,
+                    _requestParser, _mavenExplorerService, _servicesMapper,
                     _artifactsService,
+                    "*GET",
+                        MavenConstants.REGEX_SNAP_PACK.
+                            Replace("{repo}", Regex.Escape(item.Prefix)),
+                    "*GET",
+                        MavenConstants.REGEX_SNAP_PACK_CHECK.
+                            Replace("{repo}", Regex.Escape(item.Prefix)),
+                    "*GET",
+                        MavenConstants.REGEX_SNAP_META.
+                            Replace("{repo}", Regex.Escape(item.Prefix)),
+
                     "*GET",
                         MavenConstants.REGEX_ONLY_PACK.
                             Replace("{repo}", Regex.Escape(item.Prefix)),
                     "*GET",
                         MavenConstants.REGEX_ONLY_META.
                             Replace("{repo}", Regex.Escape(item.Prefix)),
-
                     "*GET",
                         (@"/{repo}/{*path}/" + ///maven.local/org/slf4j
                         @"{pack#" + MavenConstants.PACKAGE_REGEXP + @"}/" + //slf4j-api/
                         @"{version#" + MavenConstants.VERSION_REGEXP + @"}"). //1.7.2
                             Replace("{repo}", item.Prefix),
-
-                    
-                    
-                    /*"*GET",
-                        @"/{repo}/{*path}/" +//maven.local/org/slf4j/
-                        @"{pack#" + MavenConstants.PACKAGE_REGEXP + @"}".//slf4j-api/
-                            Replace("{repo}", item.Prefix),*/
                     "*GET",
                         @"/{repo}/{*path}".
                             Replace("{repo}", item.Prefix),//maven.local/org/slf4j/
@@ -113,11 +115,20 @@ namespace Maven
                 repositoryServiceProvider.RegisterApi(
                     new Maven2_Push_Package(item.Id, _repositoryEntitiesRepository, _requestParser, _artifactsService,
                     "*PUT",
+                        MavenConstants.REGEX_SNAP_PACK.
+                            Replace("{repo}", Regex.Escape(item.Prefix)),
+                    "*PUT",
+                        MavenConstants.REGEX_SNAP_PACK_CHECK.
+                            Replace("{repo}", Regex.Escape(item.Prefix)),
+                    "*PUT",
                         MavenConstants.REGEX_ONLY_PACK.
                             Replace("{repo}", Regex.Escape(item.Prefix))));
 
                 repositoryServiceProvider.RegisterApi(
                     new Maven2_Push_Metadata(item.Id, _repositoryEntitiesRepository, _requestParser, _artifactsService,
+                    "*PUT",
+                        MavenConstants.REGEX_SNAP_META.
+                            Replace("{repo}", Regex.Escape(item.Prefix)),
                     "*PUT",
                         MavenConstants.REGEX_ONLY_META.
                             Replace("{repo}", Regex.Escape(item.Prefix))));

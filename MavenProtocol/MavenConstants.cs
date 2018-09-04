@@ -13,7 +13,7 @@ namespace MavenProtocol
          * <extension>((?!(sha1|md5|asc))[0-9A-Za-z\.]+) match not containing in this occurrence the sha1|md|asc
          *  <extension>((?!.*(sha1|md5|asc))[0-9A-Za-z\.]+) match not containing any of them in the following part
          */
-        /*"^(?<repoId>repo)/(?<path>[0-9A-Za-z\-\./]+)/(?<package>[0-9A-Za-z\-\.]+)/(?<version>((?!SNAPSHOT)[0-9A-Za-z\-\.])+)-SNAPSHOT/\3-\4-(?<build>[0-9]{8}\.[0-9]{6}\-[0-9]+)(\-(?<specifier>[0-9A-Za-z\-]+))?(\.(?<extension>((?!(sha1|md5|asc))[0-9A-Za-z\.]+)))$"
+        /*"^(?<repoId>{repo})/(?<path>[0-9A-Za-z\-\./]+)/(?<package>[0-9A-Za-z\-\.]+)/(?<version>((?!SNAPSHOT)[0-9A-Za-z\-\.])+)-SNAPSHOT/\3-\4-(?<build>[0-9]{8}\.[0-9]{6}\-[0-9]+)(\-(?<specifier>[0-9A-Za-z\-]+))?(\.(?<extension>((?!(sha1|md5|asc))[0-9A-Za-z\.]+)))$"
         "repo/org/kendar/test/1.2-SNAPSHOT/test-1.2-12345678.123456-1-gioppino.tar.gz"
         "repo/org/kendar/test/1.2-SNAPSHOT/test-1.2-12345678.123456-1-gioppino.jar"
 
@@ -34,12 +34,10 @@ namespace MavenProtocol
             @"(?<package>[0-9A-Za-z\-\.]+)/(?<meta>maven\-metadata\.xml)(\.(?<checksum>(asc|md5|sha1)))?$";
 
 
-        public const string REGEX_SNAP_PACK = @"^(?<repoId>{repo})/(?<path>[0-9A-Za-z\-\./]+)/" +
-            @"(?<package>[0-9A-Za-z\-\.]+)/(?<version>[0-9A-Za-z\-\.]+)-SNAPSHOT/\3-\4-(\-(?<build>[0-9]{8}\.[0-9]{6}\.[0-9]+))?" +
-            @"(\-(?<specifier>[0-9A-Za-z\-]+))?(\.(?<extension>[0-9A-Za-z\.]+))$";
+        public const string REGEX_SNAP_PACK = @"^(?<repoId>{repo})/(?<path>[0-9A-Za-z\-\./]+)/(?<package>[0-9A-Za-z\-\.]+)/(?<version>((?!SNAPSHOT)[0-9A-Za-z\-\.])+)(?<snapshot>(\-SNAPSHOT))/\3-\4-(?<build>[0-9]{8}\.[0-9]{6}\-[0-9]+)(\-(?<specifier>[0-9A-Za-z\-]+))?(\.(?<extension>((?!(sha1|md5|asc))[0-9A-Za-z\.]+)))$";
+        public const string REGEX_SNAP_PACK_CHECK = @"^(?<repoId>repo)/(?<path>[0-9A-Za-z\-\./]+)/(?<package>[0-9A-Za-z\-\.]+)/(?<version>((?!SNAPSHOT)[0-9A-Za-z\-\.])+)(?<snapshot>(\-SNAPSHOT))/\3-\4-(?<build>[0-9]{8}\.[0-9]{6}\-[0-9]+)(\-(?<specifier>[0-9A-Za-z\-]+))?(\.(?<extension>((?!(sha1|md5|asc))[0-9A-Za-z\.]+)))(\.(?<checksum>(asc|md5|sha1)))$";
+        public const string REGEX_SNAP_META = @"^(?<repoId>{repo})/(?<path>[0-9A-Za-z\-\./]+)/(?<package>[0-9A-Za-z\-\.]+)/(?<version>((?!SNAPSHOT)[0-9A-Za-z\-\.])+)(?<snapshot>(\-SNAPSHOT))/(?<meta>maven\-metadata\.xml)(\.(?<checksum>(asc|md5|sha1)))?$";
 
-        public const string REGEX_SNAP_META = @"^(?<repoId>{repo})/(?<path>[0-9A-Za-z\-\./]+)/" +
-            @"(?<package>[0-9A-Za-z\-\.]+)/(?<version>[0-9A-Za-z\-\.]+)-SNAPSHOT/(?<meta>maven\-metadata\.xml)(\.(?<checksum>(asc|md5|sha1)))?$";
 
         /*public const string REGEX_SUB_META = @"^(?<repoId>{repo})/(?<path>[0-9A-Za-z\-\./]+)/" +
         @"(?<package>[0-9A-Za-z\-\.]+)/(?<version>[0-9A-Za-z\-\.]+)/(?<meta>maven\-metadata\.xml)(\.(?<checksum>(asc|md5|sha1)))?$";*/
