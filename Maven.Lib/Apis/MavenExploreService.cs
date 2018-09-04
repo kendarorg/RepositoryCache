@@ -185,6 +185,10 @@ namespace Maven.Apis
 
         private List<string> GetChecksums(string checksums)
         {
+            if (string.IsNullOrWhiteSpace(checksums))
+            {
+                return new List<string>();
+            }
             var css = checksums.Split(new char[] { '|' },StringSplitOptions.RemoveEmptyEntries);
             return css.Select(a => a.Split('$')[0]).ToList();
         }
@@ -215,8 +219,10 @@ namespace Maven.Apis
             {
                 var maxVersionRelease = new JavaSemVersion(0);
 
-                metadata.Versioning.Versions = new MavenVersions();
-                metadata.Versioning.Versions.Version = new List<string>();
+                metadata.Versioning.Versions = new MavenVersions
+                {
+                    Version = new List<string>()
+                };
                 foreach (var rel in artifacts.Where(a => !a.IsSnapshot))
                 {
                     metadata.Versioning.Versions.Version.Add(rel.Version);
@@ -238,8 +244,10 @@ namespace Maven.Apis
             var latestSnapshotVersion = JavaSemVersion.Parse("0");
             if (artifacts.Any(a => a.IsSnapshot))
             {
-                metadata.Versioning.SnapshotVersions = new MavenSnapshotVersions();
-                metadata.Versioning.SnapshotVersions.Version = new List<MavenSnapshotVersion>();
+                metadata.Versioning.SnapshotVersions = new MavenSnapshotVersions
+                {
+                    Version = new List<MavenSnapshotVersion>()
+                };
                 foreach (var snap in artifacts.Where(a => a.IsSnapshot))
                 {
                     //var classifiers = snap.Classifiers.Trim('|').Split('|');

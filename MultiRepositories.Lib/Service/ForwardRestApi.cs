@@ -20,7 +20,7 @@ namespace MultiRepositories.Service
             _properties = properties;
         }
 
-        protected SerializableResponse RemoteRequest(String realUrl, SerializableRequest sr)
+        protected SerializableResponse RemoteRequest(String realUrl, SerializableRequest sr,double timeoutMs=300)
         {
             if (RequestData != null)
             {
@@ -81,8 +81,10 @@ namespace MultiRepositories.Service
             {
                 AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
             };
-            var client = new HttpClient(handler);
-            client.Timeout = TimeSpan.FromMilliseconds(300);
+            var client = new HttpClient(handler)
+            {
+                Timeout = TimeSpan.FromMilliseconds(timeoutMs)
+            };
             var result = client.SendAsync(requestMessage);
             result.Wait();
             var resh = result.Result;

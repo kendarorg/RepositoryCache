@@ -71,36 +71,45 @@ namespace Maven
                 result += string.Join("/", idx.Group) + "/";
                 if (!string.IsNullOrWhiteSpace(idx.Meta))
                 {
+                    if (!string.IsNullOrWhiteSpace(idx.ArtifactId))
+                    {
+                        result += idx.ArtifactId + "/";
+                    }
                     result += idx.Meta;
                     if (!string.IsNullOrWhiteSpace(idx.Checksum))
                     {
                         result += "." + idx.Checksum;
                     }
                 }
-                else if (!string.IsNullOrWhiteSpace(idx.Version))
+                else if (!string.IsNullOrWhiteSpace(idx.ArtifactId))
                 {
-                    result += idx.Version;
-                    if (idx.IsSnapshot)
+                    result += idx.ArtifactId + "/";
+                    if (!string.IsNullOrWhiteSpace(idx.Version))
                     {
-                        result += "-SNAPSHOT";
-                    }
-                    result += "/";
-                    if (!string.IsNullOrWhiteSpace(idx.Type))
-                    {
-                        result += idx.ArtifactId;
-                        if (!string.IsNullOrWhiteSpace(idx.Classifier))
-                        {
-                            result += "-" + idx.Classifier;
-                        }
-                        result += "-" + idx.Version;
+                        result += idx.Version;
                         if (idx.IsSnapshot)
                         {
                             result += "-SNAPSHOT";
                         }
-                        result += "." + idx.Type;
-                        if (!string.IsNullOrWhiteSpace(idx.Checksum))
+                        result += "/";
+                        if (!string.IsNullOrWhiteSpace(idx.Type))
                         {
-                            result += "." + idx.Checksum;
+                            result += idx.ArtifactId;
+                            
+                            result += "-" + idx.Version;
+                            if (idx.IsSnapshot)
+                            {
+                                result += "-SNAPSHOT";
+                            }
+                            if (!string.IsNullOrWhiteSpace(idx.Classifier))
+                            {
+                                result += "-" + idx.Classifier;
+                            }
+                            result += "." + idx.Type;
+                            if (!string.IsNullOrWhiteSpace(idx.Checksum))
+                            {
+                                result += "." + idx.Checksum;
+                            }
                         }
                     }
                 }

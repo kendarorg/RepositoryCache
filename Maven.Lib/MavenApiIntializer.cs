@@ -91,9 +91,9 @@ namespace Maven
                             Replace("{repo}", Regex.Escape(item.Prefix)),
 
                     "*GET",
-                        @"/{repo}/{*path}/" + ///maven.local/org/slf4j
+                        (@"/{repo}/{*path}/" + ///maven.local/org/slf4j
                         @"{pack#" + MavenConstants.PACKAGE_REGEXP + @"}/" + //slf4j-api/
-                        @"{version#" + MavenConstants.VERSION_REGEXP + @"}". //1.7.2
+                        @"{version#" + MavenConstants.VERSION_REGEXP + @"}"). //1.7.2
                             Replace("{repo}", item.Prefix),
 
                     

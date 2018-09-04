@@ -50,7 +50,20 @@ namespace Maven.Controllers
             {
                 try
                 {
-                    result = ExploreRemote(arg, repo, idx);
+                    var baseStandard = "";
+                    var baseurls = arg.Url.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+                    if (baseurls.Length >= 1)
+                    {
+                        baseStandard = "/" + string.Join("/", baseurls.Take(baseurls.Length - 2));
+                    }
+                    result = ExploreRemote(arg, repo, idx, arg.Url);
+                    result.Base = arg.Url;
+
+
+                }
+                catch (InconsistentRemoteDataException)
+                {
+                    throw;
                 }
                 catch (Exception)
                 {
@@ -71,19 +84,33 @@ namespace Maven.Controllers
             }
             if ((arg.ContentType != null && arg.ContentType.Contains("text")) || (arg.Headers.ContainsKey("Accept") && arg.Headers["Accept"].Contains("text")))
             {
-                return HtmlResponse(result);
+                var path = string.Join("/", idx.Group);
+                if (!string.IsNullOrEmpty(idx.ArtifactId))
+                {
+                    if (!string.IsNullOrWhiteSpace(path)) path += "/" + idx.ArtifactId;
+                    if (!string.IsNullOrWhiteSpace(idx.Version))
+                    {
+                        path += "/" + idx.Version;
+                        if (idx.IsSnapshot) path += "-SNAPSHOT";
+                    }
+                }
+
+                return HtmlResponse(result, path, repo.Prefix + " " + (repo.Mirror ? "Mirror" : "Local"));
             }
             return JsonResponse(result);
         }
 
-        private ExploreResult ExploreRemote(SerializableRequest localRequest, RepositoryEntity repo, MavenIndex idx)
+        private ExploreResult ExploreRemote(SerializableRequest localRequest, RepositoryEntity repo, MavenIndex idx, string baseStandard)
         {
-            ExploreResult result = new ExploreResult();
+            ExploreResult result = new ExploreResult
+            {
+                Base = baseStandard
+            };
             var remoteRequest = localRequest.Clone();
             var convertedUrl = _servicesMapper.ToMaven(repo.Id, idx, false);
             remoteRequest.Headers["Host"] = new Uri(convertedUrl).Host;
 
-            var remoteRes = RemoteRequest(convertedUrl, remoteRequest);
+            var remoteRes = RemoteRequest(convertedUrl, remoteRequest, 2000);
 
             if (!string.IsNullOrWhiteSpace(idx.Meta))
             {
@@ -116,13 +143,18 @@ namespace Maven.Controllers
             {
                 var htmlData = Encoding.UTF8.GetString(remoteRes.Content);
                 HtmlDocument htmlDoc = new HtmlDocument();
+
+                result.Children = new List<string>();
                 htmlDoc.LoadHtml(htmlData);
-                result.Children.Add("..");
+
                 foreach (HtmlNode link in htmlDoc.DocumentNode.SelectNodes("//a[@href]"))
                 {
-                    result.Children.Add(link.Attributes["href"].Value);
+                    if (!link.Attributes["href"].Value.Contains(".."))
+                    {
+                        result.Children.Add(link.Attributes["href"].Value.Trim('/'));
+                    }
                 }
-                if (idx.Group != null && idx.Group.Length > 0)
+                /*if (idx.Group != null && idx.Group.Length > 0)
                 {
                     result.Base = _properties.Host.TrimEnd('/') + "/" + repo.Prefix + "/" + string.Join("/", idx.Group);
                     if (!string.IsNullOrWhiteSpace(idx.ArtifactId))
@@ -134,27 +166,38 @@ namespace Maven.Controllers
                             result.Base += "/" + idx.Version + snap;
                         }
                     }
-                }
+                }*/
             }
             return result;
         }
 
 
 
-        private SerializableResponse HtmlResponse(ExploreResult to)
+        private SerializableResponse HtmlResponse(ExploreResult to, string path, string repoName)
         {
+
+            if (string.IsNullOrWhiteSpace(path))
+            {
+                path = "root";
+            }
             var result = "<html>";
-            result += "<head><base href='" + to.Base + "' ></head><body>";
+            result += "<head><base href='" + to.Base + "' >";
+            result += "<title>" + repoName + ":" + path + "</title>";
+            result += "<meta name='viewport' content='width = device - width, initial - scale = 1.0'>";
+            result += "</head><body>";
+
+
+            result += "<header><h1>" + path + "</h1></header><hr/><main><pre id='contents'>";
             var spl = to.Base.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
             if (spl.Length > 1)
             {
-                result += "<a href='/"+string.Join("/",spl.Take(spl.Length-1))+"'>..</a><br>";
+                result += "<a href='/" + string.Join("/", spl.Take(spl.Length - 1)) + "'>..</a>\r\n";
             }
             foreach (var item in to.Children)
             {
-                result+= "<a href='"+ to.Base+"/"+item + "'>"+item+"</a><br>";
+                result += "<a href='" + to.Base + "/" + item + "'>" + item + "</a>\r\n";
             }
-            result += "</body></html>";
+            result += "</pre></main><hr/></body></html>";
             return new SerializableResponse
             {
                 Content = Encoding.UTF8.GetBytes(result),

@@ -20,7 +20,7 @@ namespace MultiRepositories.Service
     public abstract class RestAPI
     {
         private List<Request> _realPaths;
-        private Dictionary<String, Regex> _realPathsRegex;
+        private readonly Dictionary<String, Regex> _realPathsRegex;
         private Func<SerializableRequest, SerializableResponse> _handler;
 
         protected void SetHandler(Func<SerializableRequest, SerializableResponse> handler)

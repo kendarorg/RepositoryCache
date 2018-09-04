@@ -17,7 +17,7 @@ using Newtonsoft.Json;
 
 namespace MultiRepositories
 {
-    public class SimpleHTTPServer : IRepositoryServiceProvider, ISimpleHTTPServer
+    public class SimpleHTTPServer : IRepositoryServiceProvider, ISimpleHTTPServer,IDisposable
     {
         private static int _counter = 0;
 
@@ -155,23 +155,21 @@ namespace MultiRepositories
             {
                 return new byte[] { };
             }
-            using (System.IO.Stream body = request.InputStream) // here we have data
+            using (var ms = new MemoryStream())
             {
-                using (var ms = new MemoryStream())
+                using (System.IO.BinaryReader reader = new System.IO.BinaryReader(request.InputStream, request.ContentEncoding))
                 {
-                    using (System.IO.BinaryReader reader = new System.IO.BinaryReader(body, request.ContentEncoding))
+                    //var offset = 0;
+                    var read = reader.ReadBytes(10000);
+                    while (read != null && read.Length > 0)
                     {
-                        //var offset = 0;
-                        var read = reader.ReadBytes(10000);
-                        while (read != null && read.Length > 0)
-                        {
-                            ms.Write(read, 0, read.Length);
-                            //offset += read.Length - 1;
-                            read = reader.ReadBytes(10000);
-                        }
-                        ms.Seek(0, SeekOrigin.Begin);
-                        return ms.ToArray();
+                        ms.Write(read, 0, read.Length);
+                        //offset += read.Length - 1;
+                        read = reader.ReadBytes(10000);
                     }
+                    ms.Seek(0, SeekOrigin.Begin);
+                    var reult = ms.ToArray();
+                    return reult;
                 }
             }
         }
@@ -323,7 +321,7 @@ namespace MultiRepositories
                 }
                 res = ForwardRequest(cloned);
 
-                
+
                 File.WriteAllBytes(localPath + ".response", res.Content);
                 File.WriteAllText(localPath + ".mime", res.ContentType);
             }
@@ -361,8 +359,8 @@ namespace MultiRepositories
 
         private List<string> _ignoreUrl;
         private string _local;
-        private AppProperties _applicationPropertes;
-        private List<IApiProvider> _apiProviders;
+        private readonly AppProperties _applicationPropertes;
+        private readonly List<IApiProvider> _apiProviders;
         private string _path;
         private bool _logRequests;
 
@@ -460,6 +458,33 @@ namespace MultiRepositories
             this._port = port;
             _serverThread = new Thread(this.Listen);
             _serverThread.Start();
+        }
+
+        // Dispose() calls Dispose(true)
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        // NOTE: Leave out the finalizer altogether if this class doesn't
+        // own unmanaged resources, but leave the other methods
+        // exactly as they are.
+        ~SimpleHTTPServer()
+        {
+            // Finalizer calls Dispose(false)
+            Dispose(false);
+        }
+
+        // The bulk of the clean-up code is implemented in Dispose(bool)
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                // free managed resources
+            }
+            // free native resources if there are any.
+            
         }
     }
 }

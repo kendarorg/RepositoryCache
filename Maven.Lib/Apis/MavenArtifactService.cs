@@ -10,6 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
+using Maven;
 
 namespace MavenProtocol.Test
 {
@@ -198,13 +199,20 @@ namespace MavenProtocol.Test
 
         private ArtifactEntity GenerateDummyMetadata(Guid repoId, MavenIndex idx, ITransaction transaction)
         {
+
+            if (JavaSemVersion.TryParse(idx.ArtifactId, out JavaSemVersion test))
+            {
+                throw new InconsistentRemoteDataException();
+            }
             var metadata = _artifactRepository.GetMetadata(repoId, idx.Group, idx.ArtifactId, transaction);
             if (metadata == null)
             {
-                metadata = new ArtifactEntity();
-                metadata.ArtifactId = idx.ArtifactId;
-                metadata.Group = string.Join(".", idx.Group);
-                metadata.RepositoryId = repoId;
+                metadata = new ArtifactEntity
+                {
+                    ArtifactId = idx.ArtifactId,
+                    Group = string.Join(".", idx.Group),
+                    RepositoryId = repoId
+                };
                 _artifactRepository.Save(metadata, transaction);
             }
             return metadata;
@@ -231,26 +239,28 @@ namespace MavenProtocol.Test
             var artifactData = _versionedArtifactRepository.GetArtifactData(repoId, idx.Group, idx.ArtifactId, idx.Version, idx.IsSnapshot, transaction);
             if (artifactData == null)
             {
-                artifactData = new VersionedArtifactEntity();
-                artifactData.ArtifactId = idx.ArtifactId;
                 var ver = idx.Version + (idx.IsSnapshot ? "-SNAPSHOT" : "");
-                artifactData.OwnerMetadataId = metadata.Id;
-                artifactData.Version = idx.Version;
-                artifactData.IsSnapshot = idx.IsSnapshot;
-                artifactData.BuildNumber = Guid.NewGuid().ToString();
-                artifactData.Timestamp = DateTime.Now;
-                artifactData.Group = string.Join(".",idx.Group);
-                artifactData.RepositoryId = repoId;
+                artifactData = new VersionedArtifactEntity
+                {
+                    ArtifactId = idx.ArtifactId,
+                    OwnerMetadataId = metadata.Id,
+                    Version = idx.Version,
+                    IsSnapshot = idx.IsSnapshot,
+                    BuildNumber = Guid.NewGuid().ToString(),
+                    Timestamp = DateTime.Now,
+                    Group = string.Join(".", idx.Group),
+                    RepositoryId = repoId
+                };
                 _versionedArtifactRepository.Save(artifactData, transaction);
-                
+
             }
 
             return artifactData;
         }
 
-        
 
-        
+
+
         private void BuildRelease(Guid repoId, MavenIndex idx, VersionedArtifactEntity artifactData)
         {
             using (var transaction = _transactionManager.BeginTransaction())
@@ -278,7 +288,7 @@ namespace MavenProtocol.Test
                 transaction.Commit();
             }
         }
-        
+
 
         private void BuildInferredMetadata(MavenIndex idx, VersionedArtifactEntity artifactData, ArtifactEntity metadataDb, ITransaction transaction)
         {
@@ -334,7 +344,7 @@ namespace MavenProtocol.Test
             artifactDataClassifier.IsSnapshot = idx.IsSnapshot;
             artifactDataClassifier.Version = idx.Version;
             artifactDataClassifier.Group = string.Join(".", idx.Group);
-            artifactDataClassifier.Classifer = idx.Classifier??string.Empty;
+            artifactDataClassifier.Classifer = idx.Classifier ?? string.Empty;
             artifactDataClassifier.RepositoryId = repoId;
             if (isNewArtifactDataClassifier) _versionedClassifiersRepository.Save(artifactDataClassifier, transaction); else _versionedClassifiersRepository.Update(artifactDataClassifier, transaction);
 
@@ -342,7 +352,7 @@ namespace MavenProtocol.Test
             {
                 artifactData.Classifiers = "";
             }
-            var classifiers = artifactData.Classifiers.Trim('|').Split('|');
+            var classifiers = artifactData.Classifiers.Trim('|').Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
             if (!classifiers.Any(a => a == idx.Classifier))
             {
                 artifactData.Classifiers = string.Format("|{0}|{1}|", string.Join("|", classifiers), idx.Classifier);
