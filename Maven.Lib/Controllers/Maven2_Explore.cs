@@ -110,7 +110,7 @@ namespace Maven.Controllers
             var convertedUrl = _servicesMapper.ToMaven(repo.Id, idx, false);
             remoteRequest.Headers["Host"] = new Uri(convertedUrl).Host;
 
-            var remoteRes = RemoteRequest(convertedUrl, remoteRequest, 2000);
+            var remoteRes = RemoteRequest(convertedUrl, remoteRequest, 60000);
 
             if (!string.IsNullOrWhiteSpace(idx.Meta))
             {
@@ -195,7 +195,7 @@ namespace Maven.Controllers
             }
             foreach (var item in to.Children)
             {
-                result += "<a href='" + to.Base + "/" + item + "'>" + item + "</a>\r\n";
+                result += "<a href='" + to.Base.TrimEnd('/') + "/" + item + "'>" + item + "</a>\r\n";
             }
             result += "</pre></main><hr/></body></html>";
             return new SerializableResponse

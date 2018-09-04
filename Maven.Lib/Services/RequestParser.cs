@@ -26,6 +26,10 @@ namespace Maven.Services
             if (arg.PathParams.ContainsKey("checksum")) checksum = arg.PathParams["checksum"];
             if (arg.PathParams.ContainsKey("meta")) meta = arg.PathParams["meta"];
 
+            
+            BuildDirtyChecksum(ref extension, ref checksum, "md5");
+            BuildDirtyChecksum(ref extension, ref checksum, "sha1");
+            BuildDirtyChecksum(ref extension, ref checksum, "asc");
 
             if (!string.IsNullOrWhiteSpace(meta))
             {
@@ -52,7 +56,7 @@ namespace Maven.Services
             {
                 ArtifactId = package,
                 Checksum = checksum,
-                Group = path.Split(new char[] { '/' },StringSplitOptions.RemoveEmptyEntries),
+                Group = path.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries),
                 Version = version,
                 Classifier = specifier,
                 IsSnapshot = isSnapshot,
@@ -60,6 +64,16 @@ namespace Maven.Services
                 Type = extension,
                 Meta = meta
             };
+        }
+
+        private static void BuildDirtyChecksum(ref string extension, ref string checksum, string md5)
+        {
+            if (string.IsNullOrWhiteSpace(extension)) return;
+            if (extension.EndsWith("." + md5))
+            {
+                extension = extension.Replace("." + md5, "");
+                checksum = md5;
+            }
         }
     }
 }
