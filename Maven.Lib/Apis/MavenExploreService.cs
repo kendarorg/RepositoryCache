@@ -45,10 +45,176 @@ namespace Maven.Apis
             var result = new ExploreResult();
             var baseUrl = "/" + repo.Prefix;
             result.Children = _artifactsStorage.GetSubDir(repo, explore);
+            ArtifactEntity mainMetaData = FixPathWithArtifactId(explore, repo);
+
+            if (explore.Group != null && explore.Group.Any())
+            {
+                baseUrl += "/" + string.Join("/", explore.Group);
+                if (!string.IsNullOrWhiteSpace(explore.ArtifactId))
+                {
+                    baseUrl += "/" + explore.ArtifactId;
+                    if (string.IsNullOrWhiteSpace(explore.Version))
+                    {
+                        if (!string.IsNullOrWhiteSpace(explore.Meta))
+                        {
+                            SetupArtifactDirectoryMetadataContent(repoId, explore, result, mainMetaData);
+                        }
+                        else
+                        {
+                            SetupArtifactDirectoryContent(repoId, explore, result, mainMetaData);
+                        }
+                    }
+                    /*else if (!string.IsNullOrWhiteSpace(explore.Version) && !string.IsNullOrWhiteSpace(explore.Meta))
+                    {
+                        if (explore.IsSnapshot)
+                        {
+
+                            if (string.IsNullOrWhiteSpace(explore.Checksum))
+                            {
+                                result.Content = new byte[] { };
+                            }
+                            else
+                            {
+                                result.Content = new byte[] { };
+                            }
+                        }
+                    }*/
+                    else if (!string.IsNullOrWhiteSpace(explore.Version))
+                    {
+                        baseUrl += "/" + explore.Version;
+
+
+                        if (!string.IsNullOrWhiteSpace(explore.Type) || !string.IsNullOrWhiteSpace(explore.Classifier))
+                        {
+                            var artifact = _versionedArtifactsRepository.GetSingleVersionedArtifact(repo.Id, explore.Group, explore.ArtifactId, explore.Version, explore.IsSnapshot, explore.Build);
+                            if (string.IsNullOrWhiteSpace(explore.Classifier))
+                            {
+                                SetupMainArtifactContent(explore, repo, result, artifact);
+                            }
+                            else
+                            {
+                                SetupSubArtifactsContent(repoId, explore, repo, result);
+                            }
+                        }
+                        else if (!string.IsNullOrWhiteSpace(explore.Meta))
+                        {
+                            var subMetaDb = _artifactsRepository.GetMetadata(repo.Id, explore.Group, explore.ArtifactId,
+                                explore.Version,explore.IsSnapshot);
+                            if (subMetaDb == null)
+                            {
+                                subMetaDb = new ArtifactEntity
+                                {
+                                    ArtifactId = explore.ArtifactId,
+                                    Checksums = "",
+                                    Group = string.Join(".", explore.Group),
+                                    RepositoryId = repoId,
+                                    Version = explore.Version,
+                                    IsSnapshot = explore.IsSnapshot
+                                };
+                                _artifactsRepository.Save(subMetaDb);
+                            }
+                            if (string.IsNullOrWhiteSpace(subMetaDb.Checksums))
+                            {
+                                result.Content = new byte[] { };
+                            }
+                            else
+                            {
+                                if (subMetaDb.IsSnapshot) { }
+                            }
+                        }
+                        else
+                        {
+                            //List specific artifact directory content
+                            result.Children.Add("maven-metadata.xml");
+                            foreach (var artifact in _versionedArtifactsRepository.GetAllMainArtifacts(repoId, explore.Group,
+                                explore.ArtifactId, explore.Version, explore.IsSnapshot).ToList())
+                            {
+                                var snapshot = explore.IsSnapshot ? "-SNAPSHOT" : "";
+                                if (artifact.IsSnapshot && !string.IsNullOrWhiteSpace(artifact.BuildNumber))
+                                {
+                                    snapshot = "-" + artifact.BuildNumber;
+                                }
+                                result.Children.Add(artifact.ArtifactId + "-" + artifact.Version + snapshot + "." + artifact.Packaging);
+                                foreach (var checksum in GetChecksums(artifact.Checksums))
+                                {
+                                    result.Children.Add(artifact.ArtifactId + "-" + artifact.Version + snapshot + "." + artifact.Packaging + "." + checksum);
+                                }
+
+                                foreach (var classif in _versionedClassifiersRepository.GetAllClassifiersData(repoId, explore.Group,
+                                    explore.ArtifactId, explore.Version, explore.IsSnapshot, artifact.BuildNumber))
+                                {
+                                    result.Children.Add(classif.ArtifactId + "-" + classif.Version + snapshot + "-" + classif.Classifer + "." + classif.Packaging);
+                                    foreach (var checksum in GetChecksums(classif.Checksums))
+                                    {
+                                        result.Children.Add(classif.ArtifactId + "-" + classif.Version + snapshot + "-" + classif.Classifer + "." + classif.Packaging + "." + checksum);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            result.Base = baseUrl;
+            return result;
+        }
+
+        private void SetupSubArtifactsContent(Guid repoId, MavenIndex explore, RepositoryEntity repo, ExploreResult result)
+        {
+            var classif = _versionedClassifiersRepository.GetSingleClassifierData(repoId, explore.Group, explore.ArtifactId, explore.Version, explore.IsSnapshot, explore.Classifier, explore.Build);
+            if (!string.IsNullOrWhiteSpace(explore.Checksum))
+            {
+                result.Content = GetChecksum(classif.Checksums, explore.Checksum);
+            }
+            else
+            {
+                result.Content = _artifactsStorage.Load(repo, explore);
+            }
+        }
+
+        private void SetupMainArtifactContent(MavenIndex explore, RepositoryEntity repo, ExploreResult result, VersionedArtifactEntity artifact)
+        {
+            if (!string.IsNullOrWhiteSpace(explore.Checksum))
+            {
+                result.Content = GetChecksum(artifact.Checksums, explore.Checksum);
+            }
+            else
+            {
+                result.Content = _artifactsStorage.Load(repo, explore);
+            }
+        }
+
+        private void SetupArtifactDirectoryContent(Guid repoId, MavenIndex explore, ExploreResult result, ArtifactEntity mainMetaData)
+        {
+            result.Children.Add("maven-metadata.xml");
+            foreach (var item in GetChecksums(mainMetaData.Checksums))
+            {
+                result.Children.Add("maven-metadata.xml." + item);
+            }
+            foreach (var arti in _versionedArtifactsRepository.GetAllMainArtifacts(repoId, explore.Group, explore.ArtifactId))
+            {
+                var snapshot = arti.IsSnapshot ? "-SNAPSHOT" : "";
+                result.Children.Add(arti.Version + snapshot);
+            }
+        }
+
+        private void SetupArtifactDirectoryMetadataContent(Guid repoId, MavenIndex explore, ExploreResult result, ArtifactEntity mainMetaData)
+        {
+            if (!string.IsNullOrWhiteSpace(explore.Checksum))
+            {
+                result.Content = GetChecksum(mainMetaData.Checksums, explore.Checksum);
+            }
+            else
+            {
+                result.Content = BuildArtifactDirectoryMetadata(repoId, mainMetaData, explore);
+            }
+        }
+
+        private ArtifactEntity FixPathWithArtifactId(MavenIndex explore, RepositoryEntity repo)
+        {
             var subGroup = explore.Group.ToList().ToArray();
             if (subGroup.Length > 1)
             {
-                subGroup = explore.Group.Take(explore.Group.Length-1).ToArray();
+                subGroup = explore.Group.Take(explore.Group.Length - 1).ToArray();
             }
             ArtifactEntity metaDb = null;
             if (string.IsNullOrWhiteSpace(explore.ArtifactId) && explore.Group != null && explore.Group.Any())
@@ -61,130 +227,10 @@ namespace Maven.Apis
                     explore.ArtifactId = artifact;
                 }
             }
-            
 
-            if (explore.Group != null && explore.Group.Any())
-            {
-                baseUrl += "/" + string.Join("/", explore.Group);
-                if (!string.IsNullOrWhiteSpace(explore.ArtifactId))
-                {
-                    baseUrl += "/" + explore.ArtifactId;
-                    if (string.IsNullOrWhiteSpace(explore.Version))
-                    {
-
-                        if (metaDb == null)
-                        {
-                            metaDb = _artifactsRepository.GetMetadata(repo.Id, explore.Group, explore.ArtifactId);
-                        }
-                        if (!string.IsNullOrWhiteSpace(explore.Meta))
-                        {
-                            if (!string.IsNullOrWhiteSpace(explore.Checksum))
-                            {
-                                baseUrl = null;
-                                result.Content = GetChecksum(metaDb.Checksums, explore.Checksum);
-                            }
-                            else
-                            {
-                                result.Content = BuildMavenMetadata(repoId,metaDb, explore);
-                            }
-                        }
-                        else
-                        {
-                            result.Children.Add("maven-metadata.xml");
-                            foreach (var item in GetChecksums(metaDb.Checksums))
-                            {
-                                result.Children.Add("maven-metadata.xml." + item);
-                            }
-                            foreach(var arti in _versionedArtifactsRepository.GetArtifactData(repoId, explore.Group, explore.ArtifactId))
-                            {
-                                var snapshot = arti.IsSnapshot ? "-SNAPSHOT" : "";
-                                result.Children.Add(arti.Version + snapshot);
-                            }
-                        }
-                    }
-                    else if (!string.IsNullOrWhiteSpace(explore.Version) && !string.IsNullOrWhiteSpace(explore.Meta))
-                    {
-                        if (explore.IsSnapshot)
-                        {
-                            if (string.IsNullOrWhiteSpace(explore.Checksum))
-                            {
-                                result.Content = new byte[] { };
-                            }
-                            else
-                            {
-                                result.Content = new byte[] { };
-                            }
-                        }
-                    }
-                    else if (!string.IsNullOrWhiteSpace(explore.Version))
-                    {
-                        baseUrl += "/" + explore.Version;
-                        var snapshot = explore.IsSnapshot ? "-SNAPSHOT" : "";
-                        var artifact = _versionedArtifactsRepository.GetArtifactData(repo.Id, explore.Group, explore.ArtifactId, explore.Version, explore.IsSnapshot,explore.Build);
-                        if (!string.IsNullOrWhiteSpace(explore.Type) || !string.IsNullOrWhiteSpace(explore.Classifier))
-                        {
-                            if (string.IsNullOrWhiteSpace(explore.Classifier))
-                            {
-                                if (!string.IsNullOrWhiteSpace(explore.Checksum))
-                                {
-                                    baseUrl = null;
-                                    result.Content = GetChecksum(artifact.Checksums, explore.Checksum);
-                                }
-                                else
-                                {
-                                    result.Content = _artifactsStorage.Load(repo, explore);
-                                }
-                            }
-                            else
-                            {
-                                var classif = _versionedClassifiersRepository.GetArtifactData(repoId, explore.Group, explore.ArtifactId, explore.Version, explore.IsSnapshot, explore.Classifier,explore.Build);
-                                if (!string.IsNullOrWhiteSpace(explore.Checksum))
-                                {
-                                    baseUrl = null;
-                                    result.Content = GetChecksum(classif.Checksums, explore.Checksum);
-                                }
-                                else
-                                {
-                                    result.Content = _artifactsStorage.Load(repo, explore);
-                                }
-                            }
-                        }
-                        else
-                        {
-                            result.Children.Add(artifact.ArtifactId + "-" + artifact.Version + snapshot + "." + artifact.Packaging);
-                            foreach (var checksum in GetChecksums(artifact.Checksums))
-                            {
-                                result.Children.Add(artifact.ArtifactId + "-" + artifact.Version + snapshot + "." + artifact.Packaging + "." + checksum);
-                            }
-
-                            foreach (var classif in _versionedClassifiersRepository.GetArtifactData(repoId, explore.Group, explore.ArtifactId, explore.Version, explore.IsSnapshot,explore.Build))
-                            {
-                                result.Children.Add(classif.ArtifactId + "-" + classif.Version + snapshot + "-" + classif.Classifer + "." + classif.Packaging);
-                                foreach (var checksum in GetChecksums(classif.Checksums))
-                                {
-                                    result.Children.Add(classif.ArtifactId + "-" + classif.Version + snapshot + "-" + classif.Classifer + "." + classif.Packaging + "." + checksum);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            else
-            {
-               /* foreach (var item in _artifactsStorage.GetSubDir(repo, explore))
-                {
-                    result.Children.Add(item);
-                }*/
-            }
-            /*if (!result.Children.Any())
-            {
-                
-            }*/
-            result.Base = baseUrl;
-            return result;
+            return metaDb;
         }
 
-        
 
         private byte[] GetChecksum(string checksums, string type)
         {
@@ -203,23 +249,23 @@ namespace Maven.Apis
             {
                 return new List<string>();
             }
-            var css = checksums.Split(new char[] { '|' },StringSplitOptions.RemoveEmptyEntries);
+            var css = checksums.Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
             return css.Select(a => a.Split('$')[0]).ToList();
         }
 
-        private byte[] BuildMavenMetadata(Guid repoId, ArtifactEntity metaDb, MavenIndex item)
+        private byte[] BuildArtifactDirectoryMetadata(Guid repoId, ArtifactEntity metaDb, MavenIndex item)
         {
             var metadata = new MavenMetadataXml();
             VersionedArtifactEntity latestSnapshot = null;
             VersionedArtifactEntity latestRelease = null;
             metadata.ArtifactId = item.ArtifactId;
             metadata.GroupId = string.Join(".", item.Group);
-            var artifacts = _versionedArtifactsRepository.GetArtifactData(repoId, item.Group, item.ArtifactId);
+            var artifacts = _versionedArtifactsRepository.GetAllMainArtifacts(repoId, item.Group, item.ArtifactId);
             if (artifacts.Any())
             {
                 metadata.Versioning = new MavenVersioning();
-                latestSnapshot = PrepareSnapshotData(metadata, artifacts);
-                latestRelease = PrepareStandardData(metadata, artifacts);
+                latestSnapshot = PrepareSnapshotDataAndAddToVersions(metadata, artifacts);
+                latestRelease = PrepareStandardDataAndAddToVersions(metadata, artifacts);
                 //PreparePlugins(repoId, item, metadata);
                 PrepareCurrentItems(metadata, latestSnapshot, latestRelease);
             }
@@ -227,10 +273,10 @@ namespace Maven.Apis
             {
                 return new byte[] { };
             }
-            return Encoding.UTF8.GetBytes( WriteMetadataXml(metadata));
+            return Encoding.UTF8.GetBytes(WriteMetadataXml(metadata));
         }
 
-        private static VersionedArtifactEntity PrepareStandardData(MavenMetadataXml metadata, IEnumerable<VersionedArtifactEntity> artifacts)
+        private static VersionedArtifactEntity PrepareStandardDataAndAddToVersions(MavenMetadataXml metadata, IEnumerable<VersionedArtifactEntity> artifacts)
         {
             VersionedArtifactEntity result = null;
             if (artifacts.Any(a => !a.IsSnapshot))
@@ -254,8 +300,8 @@ namespace Maven.Apis
             }
             return result;
         }
-        
-        private static VersionedArtifactEntity PrepareSnapshotData(MavenMetadataXml metadata,
+
+        private static VersionedArtifactEntity PrepareSnapshotDataAndAddToVersions(MavenMetadataXml metadata,
             IEnumerable<VersionedArtifactEntity> artifacts)
         {
             VersionedArtifactEntity latestSnapshot = null;
@@ -327,7 +373,7 @@ namespace Maven.Apis
         }
 
         private static void PrepareCurrentItems(
-            MavenMetadataXml metadata, 
+            MavenMetadataXml metadata,
             VersionedArtifactEntity latestSnapshot,
             VersionedArtifactEntity latest)
         {

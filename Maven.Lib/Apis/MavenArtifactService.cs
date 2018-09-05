@@ -52,7 +52,7 @@ namespace MavenProtocol.Test
                 {
                     return;
                 }
-                var artifact = _versionedArtifactRepository.GetArtifactData(repoId, idx.Group, idx.ArtifactId, idx.Version, idx.IsSnapshot,idx.Build, transaction);
+                var artifact = _versionedArtifactRepository.GetSingleVersionedArtifact(repoId, idx.Group, idx.ArtifactId, idx.Version, idx.IsSnapshot,idx.Build, transaction);
                 artifact.Tags = "|" + string.Join("|", tags) + "|";
                 _versionedArtifactRepository.Update(artifact);
                 var release = _releaseArtifacts.GetByArtifact(repoId, idx.Group, idx.ArtifactId,idx.IsSnapshot,idx.Build, transaction);
@@ -204,7 +204,7 @@ namespace MavenProtocol.Test
             {
                 throw new InconsistentRemoteDataException();
             }
-            var metadata = _artifactRepository.GetMetadata(repoId, idx.Group, idx.ArtifactId, transaction);
+            var metadata = _artifactRepository.GetMetadata(repoId, idx.Group, idx.ArtifactId,null, transaction);
             if (metadata == null)
             {
                 metadata = new ArtifactEntity
@@ -221,7 +221,7 @@ namespace MavenProtocol.Test
 
         private VersionedClassifierEntity GenerateDummyClassifierArtifact(Guid repoId, MavenIndex idx, ITransaction transaction, VersionedArtifactEntity artifactData)
         {
-            var classifierData = _versionedClassifiersRepository.GetArtifactData(repoId, idx.Group, idx.ArtifactId, idx.Version, idx.IsSnapshot, idx.Classifier,idx.Build, transaction);
+            var classifierData = _versionedClassifiersRepository.GetSingleClassifierData(repoId, idx.Group, idx.ArtifactId, idx.Version, idx.IsSnapshot, idx.Classifier,idx.Build, transaction);
             if (classifierData == null)
             {
                 classifierData.OwnerArtifactId = artifactData.Id;
@@ -236,7 +236,7 @@ namespace MavenProtocol.Test
 
         private VersionedArtifactEntity GenerateDummyArtifact(Guid repoId, MavenIndex idx, ITransaction transaction, ArtifactEntity metadata)
         {
-            var artifactData = _versionedArtifactRepository.GetArtifactData(repoId, idx.Group, idx.ArtifactId, idx.Version, idx.IsSnapshot,idx.Build, transaction);
+            var artifactData = _versionedArtifactRepository.GetSingleVersionedArtifact(repoId, idx.Group, idx.ArtifactId, idx.Version, idx.IsSnapshot,idx.Build, transaction);
             if (artifactData == null)
             {
                 artifactData = new VersionedArtifactEntity
@@ -328,7 +328,7 @@ namespace MavenProtocol.Test
         private void BuildClassifier(Guid repoId, MavenIndex idx, VersionedArtifactEntity artifactData, ArtifactEntity metadataDb, byte[] content, ITransaction transaction)
         {
             var isNewArtifactDataClassifier = false;
-            var artifactDataClassifier = _versionedClassifiersRepository.GetArtifactData(
+            var artifactDataClassifier = _versionedClassifiersRepository.GetSingleClassifierData(
                 repoId, idx.Group, idx.ArtifactId, idx.Version, idx.IsSnapshot, idx.Classifier,idx.Build, transaction);
             if (artifactDataClassifier == null)
             {

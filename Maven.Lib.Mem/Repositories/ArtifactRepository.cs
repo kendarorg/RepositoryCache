@@ -13,7 +13,7 @@ namespace Maven.Repositories
         {
         }
 
-        public ArtifactEntity GetMetadata(Guid repoId, string[] group, string artifactId, ITransaction transaction = null)
+        public ArtifactEntity GetMetadata(Guid repoId, string[] group, string artifactId,string version=null, ITransaction transaction = null)
         {
             return GetAll().FirstOrDefault(a => a.RepositoryId == repoId && a.Group == string.Join(".", group)
              && a.ArtifactId == artifactId );

@@ -15,5 +15,7 @@ namespace Maven.Repositories
         public DateTime LastUpdated { get; set; }
         public Guid RepositoryId { get; set; }
         public string JsonPlugins { get; internal set; }
+        public string Version { get; internal set; }
+        public bool IsSnapshot { get; internal set; }
     }
 }
