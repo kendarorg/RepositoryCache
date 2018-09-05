@@ -120,7 +120,7 @@ namespace Maven.Apis
                     {
                         baseUrl += "/" + explore.Version;
                         var snapshot = explore.IsSnapshot ? "-SNAPSHOT" : "";
-                        var artifact = _versionedArtifactsRepository.GetArtifactData(repo.Id, explore.Group, explore.ArtifactId, explore.Version, explore.IsSnapshot);
+                        var artifact = _versionedArtifactsRepository.GetArtifactData(repo.Id, explore.Group, explore.ArtifactId, explore.Version, explore.IsSnapshot,explore.Build);
                         if (!string.IsNullOrWhiteSpace(explore.Type) || !string.IsNullOrWhiteSpace(explore.Classifier))
                         {
                             if (string.IsNullOrWhiteSpace(explore.Classifier))
@@ -137,7 +137,7 @@ namespace Maven.Apis
                             }
                             else
                             {
-                                var classif = _versionedClassifiersRepository.GetArtifactData(repoId, explore.Group, explore.ArtifactId, explore.Version, explore.IsSnapshot, explore.Classifier);
+                                var classif = _versionedClassifiersRepository.GetArtifactData(repoId, explore.Group, explore.ArtifactId, explore.Version, explore.IsSnapshot, explore.Classifier,explore.Build);
                                 if (!string.IsNullOrWhiteSpace(explore.Checksum))
                                 {
                                     baseUrl = null;
@@ -157,7 +157,7 @@ namespace Maven.Apis
                                 result.Children.Add(artifact.ArtifactId + "-" + artifact.Version + snapshot + "." + artifact.Packaging + "." + checksum);
                             }
 
-                            foreach (var classif in _versionedClassifiersRepository.GetArtifactData(repoId, explore.Group, explore.ArtifactId, explore.Version, explore.IsSnapshot))
+                            foreach (var classif in _versionedClassifiersRepository.GetArtifactData(repoId, explore.Group, explore.ArtifactId, explore.Version, explore.IsSnapshot,explore.Build))
                             {
                                 result.Children.Add(classif.ArtifactId + "-" + classif.Version + snapshot + "-" + classif.Classifer + "." + classif.Packaging);
                                 foreach (var checksum in GetChecksums(classif.Checksums))

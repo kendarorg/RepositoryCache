@@ -5,6 +5,6 @@ namespace Maven.Repositories
 {
     public class VersionedArtifactEntity : SearchableArtifact
     {
-        public bool IsSnapshot { get; set; }
+        
     }
 }

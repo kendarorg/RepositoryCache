@@ -13,6 +13,7 @@ namespace MavenProtocol.Apis
         public string Filename { get; set; }
         public bool IsSnapshot { get; set; }
         public string Meta { get; set; }
+        public string Build { get; set; }
 
         public string ToLocalPath()
         {

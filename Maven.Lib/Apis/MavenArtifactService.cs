@@ -52,10 +52,10 @@ namespace MavenProtocol.Test
                 {
                     return;
                 }
-                var artifact = _versionedArtifactRepository.GetArtifactData(repoId, idx.Group, idx.ArtifactId, idx.Version, idx.IsSnapshot, transaction);
+                var artifact = _versionedArtifactRepository.GetArtifactData(repoId, idx.Group, idx.ArtifactId, idx.Version, idx.IsSnapshot,idx.Build, transaction);
                 artifact.Tags = "|" + string.Join("|", tags) + "|";
                 _versionedArtifactRepository.Update(artifact);
-                var release = _releaseArtifacts.GetByArtifact(repoId, idx.Group, idx.ArtifactId, transaction);
+                var release = _releaseArtifacts.GetByArtifact(repoId, idx.Group, idx.ArtifactId,idx.IsSnapshot,idx.Build, transaction);
                 if (release.Version == idx.Version)
                 {
                     release.Tags = artifact.Tags;
@@ -221,7 +221,7 @@ namespace MavenProtocol.Test
 
         private VersionedClassifierEntity GenerateDummyClassifierArtifact(Guid repoId, MavenIndex idx, ITransaction transaction, VersionedArtifactEntity artifactData)
         {
-            var classifierData = _versionedClassifiersRepository.GetArtifactData(repoId, idx.Group, idx.ArtifactId, idx.Version, idx.IsSnapshot, idx.Classifier, transaction);
+            var classifierData = _versionedClassifiersRepository.GetArtifactData(repoId, idx.Group, idx.ArtifactId, idx.Version, idx.IsSnapshot, idx.Classifier,idx.Build, transaction);
             if (classifierData == null)
             {
                 classifierData.OwnerArtifactId = artifactData.Id;
@@ -236,23 +236,22 @@ namespace MavenProtocol.Test
 
         private VersionedArtifactEntity GenerateDummyArtifact(Guid repoId, MavenIndex idx, ITransaction transaction, ArtifactEntity metadata)
         {
-            var artifactData = _versionedArtifactRepository.GetArtifactData(repoId, idx.Group, idx.ArtifactId, idx.Version, idx.IsSnapshot, transaction);
+            var artifactData = _versionedArtifactRepository.GetArtifactData(repoId, idx.Group, idx.ArtifactId, idx.Version, idx.IsSnapshot,idx.Build, transaction);
             if (artifactData == null)
             {
-                var ver = idx.Version + (idx.IsSnapshot ? "-SNAPSHOT" : "");
                 artifactData = new VersionedArtifactEntity
                 {
                     ArtifactId = idx.ArtifactId,
                     OwnerMetadataId = metadata.Id,
                     Version = idx.Version,
                     IsSnapshot = idx.IsSnapshot,
-                    BuildNumber = Guid.NewGuid().ToString(),
+                    BuildNumber = idx.Build,
                     Timestamp = DateTime.Now,
                     Group = string.Join(".", idx.Group),
                     RepositoryId = repoId
                 };
                 _versionedArtifactRepository.Save(artifactData, transaction);
-
+                
             }
 
             return artifactData;
@@ -266,7 +265,7 @@ namespace MavenProtocol.Test
             using (var transaction = _transactionManager.BeginTransaction())
             {
                 var isReleaseNew = false;
-                var release = _releaseArtifacts.GetByArtifact(repoId, idx.Group, idx.ArtifactId, transaction);
+                var release = _releaseArtifacts.GetByArtifact(repoId, idx.Group, idx.ArtifactId,idx.IsSnapshot,idx.Build, transaction);
                 if (release == null)
                 {
                     isReleaseNew = true;
@@ -283,6 +282,7 @@ namespace MavenProtocol.Test
                 release.Timestamp = artifactData.Timestamp;
                 release.OwnerMetadataId = artifactData.OwnerMetadataId;
                 release.BuildNumber = artifactData.BuildNumber;
+                release.IsSnapshot = artifactData.IsSnapshot;
                 release.RepositoryId = repoId;
                 if (isReleaseNew) _releaseArtifacts.Save(release, transaction); else _releaseArtifacts.Update(release, transaction);
                 transaction.Commit();
@@ -329,7 +329,7 @@ namespace MavenProtocol.Test
         {
             var isNewArtifactDataClassifier = false;
             var artifactDataClassifier = _versionedClassifiersRepository.GetArtifactData(
-                repoId, idx.Group, idx.ArtifactId, idx.Version, idx.IsSnapshot, idx.Classifier, transaction);
+                repoId, idx.Group, idx.ArtifactId, idx.Version, idx.IsSnapshot, idx.Classifier,idx.Build, transaction);
             if (artifactDataClassifier == null)
             {
                 isNewArtifactDataClassifier = true;
@@ -339,6 +339,7 @@ namespace MavenProtocol.Test
             artifactDataClassifier.OwnerMetadataId = metadataDb.Id;
             artifactDataClassifier.Timestamp = DateTime.Now;
             artifactDataClassifier.Packaging = idx.Type;
+            artifactDataClassifier.BuildNumber = idx.Build;
             artifactDataClassifier.OwnerArtifactId = artifactData.Id;
             artifactDataClassifier.ArtifactId = idx.ArtifactId;
             artifactDataClassifier.IsSnapshot = idx.IsSnapshot;

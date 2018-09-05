@@ -15,10 +15,10 @@ namespace Maven.Services
 
             string path = null, repoId = null, package = null,
                 version = null, specifier = null, extension = null,
-                checksum = null, meta = null, filename = null;
+                checksum = null, meta = null, filename = null, build = null;
             var isSnapData = false;
 
-            if (arg.PathParams.ContainsKey("snapshot")) isSnapData=true;
+            if (arg.PathParams.ContainsKey("snapshot")) isSnapData = true;
             if (arg.PathParams.ContainsKey("path")) path = arg.PathParams["path"];
             if (arg.PathParams.ContainsKey("repoId")) repoId = arg.PathParams["repoId"];
             if (arg.PathParams.ContainsKey("package")) package = arg.PathParams["package"];
@@ -27,8 +27,9 @@ namespace Maven.Services
             if (arg.PathParams.ContainsKey("extension")) extension = arg.PathParams["extension"];
             if (arg.PathParams.ContainsKey("checksum")) checksum = arg.PathParams["checksum"];
             if (arg.PathParams.ContainsKey("meta")) meta = arg.PathParams["meta"];
+            if (arg.PathParams.ContainsKey("build")) build = arg.PathParams["build"];
 
-            
+
             BuildDirtyChecksum(ref extension, ref checksum, "md5");
             BuildDirtyChecksum(ref extension, ref checksum, "sha1");
             BuildDirtyChecksum(ref extension, ref checksum, "asc");
@@ -60,6 +61,7 @@ namespace Maven.Services
 
             return new MavenIndex
             {
+                Build =build,
                 ArtifactId = package,
                 Checksum = checksum,
                 Group = path.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries),

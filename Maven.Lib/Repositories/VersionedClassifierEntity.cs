@@ -16,5 +16,6 @@ namespace Maven.Repositories
         public DateTime Timestamp { get; set; }
         public Guid OwnerMetadataId { get; set; }
         public Guid RepositoryId { get; set; }
+        public string BuildNumber { get; set; }
     }
 }
