@@ -99,7 +99,7 @@ namespace Maven.Apis
                         else if (!string.IsNullOrWhiteSpace(explore.Meta))
                         {
                             var subMetaDb = _artifactsRepository.GetMetadata(repo.Id, explore.Group, explore.ArtifactId,
-                                explore.Version,explore.IsSnapshot);
+                                explore.Version, explore.IsSnapshot);
                             if (subMetaDb == null)
                             {
                                 subMetaDb = new ArtifactEntity
@@ -190,7 +190,7 @@ namespace Maven.Apis
             {
                 result.Children.Add("maven-metadata.xml." + item);
             }
-            foreach (var arti in _versionedArtifactsRepository.GetAllMainArtifacts(repoId, explore.Group, explore.ArtifactId))
+            foreach (var arti in _versionedArtifactsRepository.GetAllMainArtifacts(repoId, explore.Group, explore.ArtifactId, explore.Version, explore.IsSnapshot))
             {
                 var snapshot = arti.IsSnapshot ? "-SNAPSHOT" : "";
                 result.Children.Add(arti.Version + snapshot);
@@ -260,7 +260,7 @@ namespace Maven.Apis
             VersionedArtifactEntity latestRelease = null;
             metadata.ArtifactId = item.ArtifactId;
             metadata.GroupId = string.Join(".", item.Group);
-            var artifacts = _versionedArtifactsRepository.GetAllMainArtifacts(repoId, item.Group, item.ArtifactId);
+            var artifacts = _versionedArtifactsRepository.GetAllMainArtifacts(repoId, item.Group, item.ArtifactId, item.Version, item.IsSnapshot);
             if (artifacts.Any())
             {
                 metadata.Versioning = new MavenVersioning();

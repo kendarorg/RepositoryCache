@@ -204,7 +204,7 @@ namespace MavenProtocol.Test
             {
                 throw new InconsistentRemoteDataException();
             }
-            var metadata = _artifactRepository.GetMetadata(repoId, idx.Group, idx.ArtifactId,null, transaction);
+            var metadata = _artifactRepository.GetMetadata(repoId, idx.Group, idx.ArtifactId,null,idx.IsSnapshot, transaction);
             if (metadata == null)
             {
                 metadata = new ArtifactEntity
