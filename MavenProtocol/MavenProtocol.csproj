@@ -43,11 +43,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Apis\Browse\ArtifactsApiResult.cs" />
+    <Compile Include="Apis\Browse\ExploreResponse.cs" />
     <Compile Include="Apis\Browse\ExploreResult.cs" />
-    <Compile Include="News\IArtifactsApi.cs" />
-    <Compile Include="News\IExploreApi.cs" />
-    <Compile Include="News\IPomApi.cs" />
-    <Compile Include="News\MavenIndex.cs" />
+    <Compile Include="Apis\Browse\IArtifactsApi.cs" />
+    <Compile Include="Apis\Browse\IExploreApi.cs" />
+    <Compile Include="Apis\Browse\IPomApi.cs" />
+    <Compile Include="Apis\Browse\MetadataApiResult.cs" />
+    <Compile Include="Apis\Browse\PomApiResult.cs" />
+    <Compile Include="MavenIndex.cs" />
     <Compile Include="Apis\Query\IMavenSearch.cs" />
     <Compile Include="Apis\Query\SearchParam.cs" />
     <Compile Include="Apis\Query\ResponseContent.cs" />
@@ -56,13 +60,13 @@
     <Compile Include="Apis\Query\SearchResult.cs" />
     <Compile Include="DependencyXml.cs" />
     <Compile Include="MavenConstants.cs" />
-    <Compile Include="News\MavenMetadataXml.cs" />
-    <Compile Include="News\MavenSettings.cs" />
-    <Compile Include="News\IMavenApi.cs" />
-    <Compile Include="News\IMetadataApi.cs" />
+    <Compile Include="MavenMetadataXml.cs" />
+    <Compile Include="MavenSettings.cs" />
+    <Compile Include="Apis\Browse\IMavenApi.cs" />
+    <Compile Include="Apis\Browse\IMetadataApi.cs" />
     <Compile Include="PomXml.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="News\IServicesMapper.cs" />
+    <Compile Include="Services\IServicesMapper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -76,8 +80,6 @@
   <ItemGroup>
     <Content Include="TODO.txt" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Services\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
