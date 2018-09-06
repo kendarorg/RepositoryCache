@@ -3,8 +3,9 @@ using Repositories;
 
 namespace Maven.Repositories
 {
-    public class ArtifactEntity : BaseEntity
+    public class MavenMetadataEntity : BaseEntity
     {
+        public Guid RepositoryId { get; set; }
         public string Checksums { get; set; }
         public string ArtifactId { get; set; }
         public string Group { get; set; }
@@ -12,10 +13,11 @@ namespace Maven.Repositories
         public string Latest { get; set; }
         public string Release { get; set; }
         public string Snapshot { get; set; }
+
         public DateTime LastUpdated { get; set; }
-        public Guid RepositoryId { get; set; }
-        public string JsonPlugins { get; internal set; }
-        public string Version { get; internal set; }
-        public bool IsSnapshot { get; internal set; }
+
+        public bool IsSnapshot { get; set; }
+        public string Version { get; set; }
+        public string BuildNumber { get; set; }
     }
 }

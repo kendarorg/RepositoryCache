@@ -3,7 +3,7 @@ using System;
 
 namespace Maven.Repositories
 {
-    public class ReleaseEntity: SearchableArtifact
+    public class ReleaseArtifactEntity: SearchableArtifact
     {
     }
 }

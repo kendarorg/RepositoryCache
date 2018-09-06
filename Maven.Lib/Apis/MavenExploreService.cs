@@ -21,16 +21,16 @@ namespace Maven.Apis
     {
         private readonly IArtifactsStorage _artifactsStorage;
         private readonly IRepositoryEntitiesRepository _repositoryEntitiesRepository;
-        private readonly IArtifactRepository _artifactsRepository;
-        private readonly IVersionedArtifactRepository _versionedArtifactsRepository;
-        private readonly IVersionedClassifiersRepository _versionedClassifiersRepository;
+        private readonly IMetadataRepository _artifactsRepository;
+        private readonly IMainArtifactsRepository _versionedArtifactsRepository;
+        private readonly ISubArtifactsRepository _versionedClassifiersRepository;
 
         public MavenExploreService(IArtifactsStorage mavenTreeRepository,
             IRepositoryEntitiesRepository repositoryEntitiesRepository,
             IMavenArtifactsService mavenArtService,
-            IArtifactRepository mavenArtifactsRepository,
-            IVersionedArtifactRepository mavenSearchRepository,
-            IVersionedClassifiersRepository versionedClassifiersRepository)
+            IMetadataRepository mavenArtifactsRepository,
+            IMainArtifactsRepository mavenSearchRepository,
+            ISubArtifactsRepository versionedClassifiersRepository)
         {
             this._artifactsStorage = mavenTreeRepository;
             this._repositoryEntitiesRepository = repositoryEntitiesRepository;
@@ -45,7 +45,7 @@ namespace Maven.Apis
             var result = new ExploreResult();
             var baseUrl = "/" + repo.Prefix;
             result.Children = _artifactsStorage.GetSubDir(repo, explore);
-            ArtifactEntity mainMetaData = FixPathWithArtifactId(explore, repo);
+            MavenMetadataEntity mainMetaData = FixPathWithArtifactId(explore, repo);
 
             if (explore.Group != null && explore.Group.Any())
             {
@@ -84,7 +84,7 @@ namespace Maven.Apis
                         baseUrl += "/" + explore.Version;
 
 
-                        if (!string.IsNullOrWhiteSpace(explore.Type) || !string.IsNullOrWhiteSpace(explore.Classifier))
+                        if (!string.IsNullOrWhiteSpace(explore.Extension) || !string.IsNullOrWhiteSpace(explore.Classifier))
                         {
                             var artifact = _versionedArtifactsRepository.GetSingleVersionedArtifact(repo.Id, explore.Group, explore.ArtifactId, explore.Version, explore.IsSnapshot, explore.Build);
                             if (string.IsNullOrWhiteSpace(explore.Classifier))
@@ -102,7 +102,7 @@ namespace Maven.Apis
                                 explore.Version, explore.IsSnapshot);
                             if (subMetaDb == null)
                             {
-                                subMetaDb = new ArtifactEntity
+                                subMetaDb = new MavenMetadataEntity
                                 {
                                     ArtifactId = explore.ArtifactId,
                                     Checksums = "",
@@ -171,7 +171,7 @@ namespace Maven.Apis
             }
         }
 
-        private void SetupMainArtifactContent(MavenIndex explore, RepositoryEntity repo, ExploreResult result, VersionedArtifactEntity artifact)
+        private void SetupMainArtifactContent(MavenIndex explore, RepositoryEntity repo, ExploreResult result, MainArtifact artifact)
         {
             if (!string.IsNullOrWhiteSpace(explore.Checksum))
             {
@@ -183,7 +183,7 @@ namespace Maven.Apis
             }
         }
 
-        private void SetupArtifactDirectoryContent(Guid repoId, MavenIndex explore, ExploreResult result, ArtifactEntity mainMetaData)
+        private void SetupArtifactDirectoryContent(Guid repoId, MavenIndex explore, ExploreResult result, MavenMetadataEntity mainMetaData)
         {
             result.Children.Add("maven-metadata.xml");
             foreach (var item in GetChecksums(mainMetaData.Checksums))
@@ -197,7 +197,7 @@ namespace Maven.Apis
             }
         }
 
-        private void SetupArtifactDirectoryMetadataContent(Guid repoId, MavenIndex explore, ExploreResult result, ArtifactEntity mainMetaData)
+        private void SetupArtifactDirectoryMetadataContent(Guid repoId, MavenIndex explore, ExploreResult result, MavenMetadataEntity mainMetaData)
         {
             if (!string.IsNullOrWhiteSpace(explore.Checksum))
             {
@@ -209,14 +209,14 @@ namespace Maven.Apis
             }
         }
 
-        private ArtifactEntity FixPathWithArtifactId(MavenIndex explore, RepositoryEntity repo)
+        private MavenMetadataEntity FixPathWithArtifactId(MavenIndex explore, RepositoryEntity repo)
         {
             var subGroup = explore.Group.ToList().ToArray();
             if (subGroup.Length > 1)
             {
                 subGroup = explore.Group.Take(explore.Group.Length - 1).ToArray();
             }
-            ArtifactEntity metaDb = null;
+            MavenMetadataEntity metaDb = null;
             if (string.IsNullOrWhiteSpace(explore.ArtifactId) && explore.Group != null && explore.Group.Any())
             {
                 metaDb = _artifactsRepository.GetMetadata(repo.Id, subGroup, explore.Group.Last());
@@ -253,11 +253,11 @@ namespace Maven.Apis
             return css.Select(a => a.Split('$')[0]).ToList();
         }
 
-        private byte[] BuildArtifactDirectoryMetadata(Guid repoId, ArtifactEntity metaDb, MavenIndex item)
+        private byte[] BuildArtifactDirectoryMetadata(Guid repoId, MavenMetadataEntity metaDb, MavenIndex item)
         {
             var metadata = new MavenMetadataXml();
-            VersionedArtifactEntity latestSnapshot = null;
-            VersionedArtifactEntity latestRelease = null;
+            MainArtifact latestSnapshot = null;
+            MainArtifact latestRelease = null;
             metadata.ArtifactId = item.ArtifactId;
             metadata.GroupId = string.Join(".", item.Group);
             var artifacts = _versionedArtifactsRepository.GetAllMainArtifacts(repoId, item.Group, item.ArtifactId, item.Version, item.IsSnapshot);
@@ -276,9 +276,9 @@ namespace Maven.Apis
             return Encoding.UTF8.GetBytes(WriteMetadataXml(metadata));
         }
 
-        private static VersionedArtifactEntity PrepareStandardDataAndAddToVersions(MavenMetadataXml metadata, IEnumerable<VersionedArtifactEntity> artifacts)
+        private static MainArtifact PrepareStandardDataAndAddToVersions(MavenMetadataXml metadata, IEnumerable<MainArtifact> artifacts)
         {
-            VersionedArtifactEntity result = null;
+            MainArtifact result = null;
             if (artifacts.Any(a => !a.IsSnapshot))
             {
                 var maxVersionRelease = new JavaSemVersion(0);
@@ -301,10 +301,10 @@ namespace Maven.Apis
             return result;
         }
 
-        private static VersionedArtifactEntity PrepareSnapshotDataAndAddToVersions(MavenMetadataXml metadata,
-            IEnumerable<VersionedArtifactEntity> artifacts)
+        private static MainArtifact PrepareSnapshotDataAndAddToVersions(MavenMetadataXml metadata,
+            IEnumerable<MainArtifact> artifacts)
         {
-            VersionedArtifactEntity latestSnapshot = null;
+            MainArtifact latestSnapshot = null;
             var latestSnapshotVersion = JavaSemVersion.Parse("0");
             if (artifacts.Any(a => a.IsSnapshot))
             {
@@ -374,8 +374,8 @@ namespace Maven.Apis
 
         private static void PrepareCurrentItems(
             MavenMetadataXml metadata,
-            VersionedArtifactEntity latestSnapshot,
-            VersionedArtifactEntity latest)
+            MainArtifact latestSnapshot,
+            MainArtifact latest)
         {
             long lastUpdated = 0;
             var relSemVer = "0";

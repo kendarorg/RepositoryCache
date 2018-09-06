@@ -19,7 +19,7 @@ namespace Maven.Lib.Mem
         {
             _queryBuilder = queryBuilder;
         }
-        public IEnumerable<VersionedArtifactEntity> Query(IQueryable<VersionedArtifactEntity> entities, Guid repoId, SearchParam query)
+        public IEnumerable<MainArtifact> Query(IQueryable<MainArtifact> entities, Guid repoId, SearchParam query)
         {
             ParsedQuery pq = _queryBuilder.ParseQuery(query.Query);
             var ents = Query(entities, repoId, pq);
@@ -33,22 +33,22 @@ namespace Maven.Lib.Mem
                 {
                     case ("version"):
                         ents = ents.Where(r =>
-                            ((VersionedArtifactEntity)r).Version == item.Value);
+                            ((MainArtifact)r).Version == item.Value);
                         break;
                     case ("timestamp"):
                         ents = ents.Where(r =>
-                            ((VersionedArtifactEntity)r).Timestamp.ToFileTime().ToString() == item.Value);
+                            ((MainArtifact)r).Timestamp.ToFileTime().ToString() == item.Value);
                         break;
                 }
             }
 
             foreach (var res in ents.Skip(query.Start).Take(query.Rows))
             {
-                yield return (VersionedArtifactEntity)res;
+                yield return (MainArtifact)res;
             }
         }
 
-        public IEnumerable<ReleaseEntity> Query(IQueryable<ReleaseEntity> entities, Guid repoId, SearchParam query)
+        public IEnumerable<ReleaseArtifactEntity> Query(IQueryable<ReleaseArtifactEntity> entities, Guid repoId, SearchParam query)
         {
             ParsedQuery pq = _queryBuilder.ParseQuery(query.Query);
             var ents = Query(entities, repoId, pq);
@@ -56,7 +56,7 @@ namespace Maven.Lib.Mem
 
             foreach (var res in ents.Skip(query.Start).Take(query.Rows))
             {
-                yield return (ReleaseEntity)res;
+                yield return (ReleaseArtifactEntity)res;
             }
         }
 

@@ -3,7 +3,7 @@ using Repositories;
 
 namespace Maven.Repositories
 {
-    public class VersionedClassifierEntity:BaseEntity
+    public class SubArtifact : BaseEntity
     {
         public string Checksums { get; set; }
         public string ArtifactId { get; set; }
@@ -16,6 +16,6 @@ namespace Maven.Repositories
         public DateTime Timestamp { get; set; }
         public Guid OwnerMetadataId { get; set; }
         public Guid RepositoryId { get; set; }
-        public string BuildNumber { get; set; }
+        public string Build { get; set; }
     }
 }

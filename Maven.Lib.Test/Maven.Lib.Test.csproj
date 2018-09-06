@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MavenApiRewrite.cs" />
     <Compile Include="MavenApiTest.cs" />
     <Compile Include="MockRestApi.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

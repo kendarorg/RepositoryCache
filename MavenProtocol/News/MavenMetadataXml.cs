@@ -90,6 +90,8 @@ namespace MavenProtocol
         public string ArtifactId { get; set; }
         [XmlElement(ElementName = "versioning")]
         public MavenVersioning Versioning { get; set; }
+        [XmlElement(ElementName = "version")]
+        public String Version { get; set; }
         [XmlAttribute(AttributeName = "modelVersion")]
         public string ModelVersion { get; set; }
         [XmlElement(ElementName = "plugins")]

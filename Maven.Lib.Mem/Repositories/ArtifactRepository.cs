@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace Maven.Repositories
 {
-    public class ArtifactRepository : InMemoryRepository<ArtifactEntity>, IArtifactRepository
+    public class ArtifactRepository : InMemoryRepository<MavenMetadataEntity>, IMetadataRepository
     {
         public ArtifactRepository(AppProperties properties) : base(properties)
         {
         }
 
-        public ArtifactEntity GetMetadata(Guid repoId, string[] group, string artifactId,string version=null, ITransaction transaction = null)
+        public MavenMetadataEntity GetMetadata(Guid repoId, string[] group, string artifactId,string version=null, ITransaction transaction = null)
         {
             return GetAll().FirstOrDefault(a => a.RepositoryId == repoId && a.Group == string.Join(".", group)
              && a.ArtifactId == artifactId );

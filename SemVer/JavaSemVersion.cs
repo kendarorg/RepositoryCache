@@ -58,6 +58,11 @@ namespace SemVer
             Prerelease = semVersion.Prerelease;
             IsSnapsot = semVersion.IsSnapsot;
         }
+
+        public static JavaSemVersion Parse(object version)
+        {
+            throw new NotImplementedException();
+        }
 #endif
 
         /// <summary>

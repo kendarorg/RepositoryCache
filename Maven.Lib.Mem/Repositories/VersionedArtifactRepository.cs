@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace Maven.Repositories
 {
-    public class VersionedArtifactRepository : InMemoryRepository<VersionedArtifactEntity>, IVersionedArtifactRepository
+    public class VersionedArtifactRepository : InMemoryRepository<MainArtifact>, IMainArtifactsRepository
     {
         private readonly IQueryToLinq _queryToLinq;
 
@@ -17,19 +17,19 @@ namespace Maven.Repositories
             this._queryToLinq = queryToLinq;
         }
 
-        public VersionedArtifactEntity GetSingleVersionedArtifact(Guid repoId, string[] group, string artifactId, string version, bool isSnapshot,string build, ITransaction transaction = null)
+        public MainArtifact GetSingleVersionedArtifact(Guid repoId, string[] group, string artifactId, string version, bool isSnapshot,string build, ITransaction transaction = null)
         {
             return GetAll().FirstOrDefault(a => a.RepositoryId == repoId && a.Group == string.Join(".", group)
                 && a.ArtifactId == artifactId && a.IsSnapshot==isSnapshot && a.Version==version);
         }
 
-        public IEnumerable<VersionedArtifactEntity> GetAllMainArtifacts(Guid repoId, string[] group, string artifactId, ITransaction transaction = null)
+        public IEnumerable<MainArtifact> GetAllMainArtifacts(Guid repoId, string[] group, string artifactId, ITransaction transaction = null)
         {
             return GetAll().Where(a => a.RepositoryId == repoId && a.Group == string.Join(".", group)
                 && a.ArtifactId == artifactId);
         }
 
-        public IEnumerable<VersionedArtifactEntity> Query(Guid repoId, SearchParam param, ITransaction transaction = null)
+        public IEnumerable<MainArtifact> Query(Guid repoId, SearchParam param, ITransaction transaction = null)
         {
             return _queryToLinq.Query(GetAll().AsQueryable(), repoId, param);
         }

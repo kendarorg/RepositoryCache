@@ -11,6 +11,7 @@ namespace MavenProtocol
     {
         void Refresh();
         int MaxRegistrationPages(Guid repoId);
+        bool HasTimestampedSnapshot(Guid repoId);
         int MaxCatalogPages(Guid repoId);
         int MaxQueryPage(Guid repoId);
         string ToMaven(Guid id, MavenIndex idx, bool search);

@@ -17,13 +17,13 @@ namespace Maven.Apis
     {
         private readonly IRepositoryEntitiesRepository _repository;
         private readonly IServicesMapper _servicesMapper;
-        private readonly IVersionedArtifactRepository _mavenSearchRepository;
-        private readonly IReleaseArtifacts _mavenSearchLastRepository;
+        private readonly IMainArtifactsRepository _mavenSearchRepository;
+        private readonly IReleaseArtifactsRepository _mavenSearchLastRepository;
 
         public MavenSearchService(IRepositoryEntitiesRepository repositoryEntitiesRepository,
             IServicesMapper servicesMapper,
-            IVersionedArtifactRepository mavenSearchRepository,
-            IReleaseArtifacts mavenSearchLastRepository)
+            IMainArtifactsRepository mavenSearchRepository,
+            IReleaseArtifactsRepository mavenSearchLastRepository)
         {
             this._repository = repositoryEntitiesRepository;
             this._servicesMapper = servicesMapper;
@@ -95,7 +95,7 @@ namespace Maven.Apis
             }
         }
 
-        private ResponseDoc BuildResponse(ReleaseEntity item)
+        private ResponseDoc BuildResponse(ReleaseArtifactEntity item)
         {
             var id = item.Group + ":" + item.ArtifactId + ":" + item.Version;
             List<string> typeAndExt = null;
@@ -117,7 +117,7 @@ namespace Maven.Apis
                 tags);
         }
 
-        private ResponseDoc BuildResponse(VersionedArtifactEntity item)
+        private ResponseDoc BuildResponse(MainArtifact item)
         {
             var id = item.Group + ":" + item.ArtifactId + ":" + item.Version;
             List<string> typeAndExt = null;

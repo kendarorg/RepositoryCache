@@ -92,7 +92,7 @@ namespace Maven
                             result += "-SNAPSHOT";
                         }
                         result += "/";
-                        if (!string.IsNullOrWhiteSpace(idx.Type))
+                        if (!string.IsNullOrWhiteSpace(idx.Extension))
                         {
                             result += idx.ArtifactId;
                             
@@ -105,7 +105,7 @@ namespace Maven
                             {
                                 result += "-" + idx.Classifier;
                             }
-                            result += "." + idx.Type;
+                            result += "." + idx.Extension;
                             if (!string.IsNullOrWhiteSpace(idx.Checksum))
                             {
                                 result += "." + idx.Checksum;

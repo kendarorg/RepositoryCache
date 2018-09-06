@@ -20,5 +20,7 @@ namespace MavenProtocol
         public string RemoteAddress { get; set; }
         [JsonProperty("remoteSearchAddress")]
         public string RemoteSearchAddress { get; set; }
+        [JsonProperty("singleSnapshot")]
+        public bool IsSingleSnapshot { get; set; }
     }
 }

@@ -7,7 +7,7 @@
     <ProjectGuid>{CDC5EB64-1A2E-4F26-8831-3A84DF5C7AB4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MavenProtocol.Test</RootNamespace>
+    <RootNamespace>MavenProtocol</RootNamespace>
     <AssemblyName>MavenProtocol.Test</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

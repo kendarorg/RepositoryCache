@@ -131,7 +131,7 @@ namespace Maven.Controllers
                     _mavenArtifactsService.UpdateMetadata(repo.Id, idx, stringContent);
                 }
             }
-            else if (!string.IsNullOrWhiteSpace(idx.Type))
+            else if (!string.IsNullOrWhiteSpace(idx.Extension))
             {
 
                 result.Content = remoteRes.Content;

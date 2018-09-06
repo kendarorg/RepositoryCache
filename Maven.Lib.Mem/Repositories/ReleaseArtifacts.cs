@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace Maven.Repositories
 {
-    public class ReleaseArtifacts : InMemoryRepository<ReleaseEntity>, IReleaseArtifacts
+    public class ReleaseArtifacts : InMemoryRepository<ReleaseArtifactEntity>, IReleaseArtifactsRepository
     {
         private readonly IQueryToLinq _queryToLinq;
 
@@ -17,13 +17,13 @@ namespace Maven.Repositories
             this._queryToLinq = queryToLinq;
         }
 
-        public ReleaseEntity GetByArtifact(Guid repoId, string[] group, string artifactId,bool isSnapshot,string build, ITransaction transaction = null)
+        public ReleaseArtifactEntity GetByArtifact(Guid repoId, string[] group, string artifactId,bool isSnapshot,string build, ITransaction transaction = null)
         {
             return GetAll().FirstOrDefault(a => a.RepositoryId == repoId && a.Group == string.Join(".", group)
              && a.ArtifactId == artifactId  && a.IsSnapshot == isSnapshot);
         }
 
-        public IEnumerable<ReleaseEntity> Query(Guid repoId, SearchParam param, ITransaction transaction = null)
+        public IEnumerable<ReleaseArtifactEntity> Query(Guid repoId, SearchParam param, ITransaction transaction = null)
         {
             return _queryToLinq.Query(GetAll().AsQueryable(), repoId, param);
         }

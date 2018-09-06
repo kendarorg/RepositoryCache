@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,6 +29,7 @@ namespace Maven.Services
             if (arg.PathParams.ContainsKey("checksum")) checksum = arg.PathParams["checksum"];
             if (arg.PathParams.ContainsKey("meta")) meta = arg.PathParams["meta"];
             if (arg.PathParams.ContainsKey("build")) build = arg.PathParams["build"];
+
 
 
             BuildDirtyChecksum(ref extension, ref checksum, "md5");
@@ -59,9 +61,8 @@ namespace Maven.Services
                 path = string.Empty;
             }
 
-            return new MavenIndex
+            var result = new MavenIndex
             {
-                Build =build,
                 ArtifactId = package,
                 Checksum = checksum,
                 Group = path.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries),
@@ -69,9 +70,19 @@ namespace Maven.Services
                 Classifier = specifier,
                 IsSnapshot = isSnapshot,
                 Filename = filename,
-                Type = extension,
+                Extension = extension,
                 Meta = meta
             };
+
+            if (!string.IsNullOrWhiteSpace(build))
+            {
+                var splitted = build.Split('-');
+                result.Build = splitted.Last();
+                build = build.Substring(0, build.Length - result.Build.Length);
+                result.Timestamp = DateTime.ParseExact(build, "yyyyMMdd.HHmmss", CultureInfo.InvariantCulture);
+            }
+
+            return result;
         }
 
         private static void BuildDirtyChecksum(ref string extension, ref string checksum, string md5)
