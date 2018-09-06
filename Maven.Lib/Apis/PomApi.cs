@@ -79,13 +79,13 @@ namespace Maven.News
             metadata.Md5 = _hashCalculator.GetMd5(metadata.Xml);
             metadata.Sha1 = _hashCalculator.GetSha1(metadata.Xml);
             _pomRepository.Save(metadata, transaction);
+            throw new Exception("TODO SHOULD CONSIDER THE MODIFICATIONS");
         }
 
         public PomApiResult Generate(MavenIndex mi)
         {
             using (var transaction = _transactionManager.BeginTransaction())
             {
-                _metadataApi.Generate(mi);
                 var strPom = Encoding.UTF8.GetString(mi.Content);
                 var metadata = new PomEntity
                 {
@@ -101,7 +101,9 @@ namespace Maven.News
 
                 var pom = PomXml.Parse(strPom);
                 SerializePom(metadata, pom, transaction);
-                return CreateResponse(metadata, !string.IsNullOrWhiteSpace(mi.Checksum));
+                var result = CreateResponse(metadata, !string.IsNullOrWhiteSpace(mi.Checksum));
+                _metadataApi.Generate(mi);
+                return result;
             }
         }
     }

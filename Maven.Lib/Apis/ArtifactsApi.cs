@@ -19,12 +19,14 @@ namespace Maven.News
         private readonly IServicesMapper _servicesMapper;
         private readonly IHashCalculator _hashCalculator;
         private readonly ITransactionManager _transactionManager;
+        private readonly IReleaseArtifactRepository _releaseArtifactRepository;
         private readonly IPomApi _pomApi;
 
         public ArtifactsApi(IArtifactsRepository artifactVersionsRepository, IArtifactsStorage artifactsStorage,
             IRepositoryEntitiesRepository repositoriesRepository,
             IServicesMapper servicesMapper,
             IHashCalculator hashCalculator, ITransactionManager transactionManager,
+            IReleaseArtifactRepository releaseArtifactRepository,
             IPomApi pomApi)
         {
             this._artifactVersionsRepository = artifactVersionsRepository;
@@ -33,6 +35,7 @@ namespace Maven.News
             this._servicesMapper = servicesMapper;
             this._hashCalculator = hashCalculator;
             this._transactionManager = transactionManager;
+            this._releaseArtifactRepository = releaseArtifactRepository;
             this._pomApi = pomApi;
         }
         public bool CanHandle(MavenIndex mi)
@@ -93,7 +96,6 @@ namespace Maven.News
             var repo = _repositoriesRepository.GetById(mi.RepoId);
             using (var transactin = _transactionManager.BeginTransaction())
             {
-                _pomApi.Generate(mi);
                 _artifactsStorage.Save(repo, mi, mi.Content);
                 if (isNew)
                 {
@@ -103,6 +105,7 @@ namespace Maven.News
                 {
                     _artifactVersionsRepository.Update(artifact, transactin);
                 }
+                _pomApi.Generate(mi);
             }
             var result = new ArtifactsApiResult
             {

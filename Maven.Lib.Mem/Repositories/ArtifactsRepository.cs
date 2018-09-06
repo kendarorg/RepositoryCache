@@ -3,6 +3,7 @@ using MultiRepositories;
 using Repositories;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Maven.Repositories
 {
@@ -14,17 +15,28 @@ namespace Maven.Repositories
 
         public IEnumerable<ArtifactEntity> GetAllArtifacts(Guid repoId, string[] group, string artifactId, string version, bool isSnapshot, ITransaction transaction = null)
         {
-            throw new NotImplementedException();
+            return GetAll().Where(a =>
+            {
+                return a.Group == string.Join(".", group) && a.ArtifactId == artifactId && a.Version == version && a.IsSnapshot == isSnapshot;
+            });
         }
 
         public ArtifactEntity GetSingleArtifact(Guid repoId, string[] group, string artifactId, string version, string classifier, string extension, bool isSnapshot, DateTime timestamp, string build)
         {
-            throw new NotImplementedException();
+            return GetAll().FirstOrDefault(a =>
+            {
+                return a.Group == string.Join(".", group) && a.ArtifactId == artifactId && a.Version == version && a.IsSnapshot == isSnapshot &&
+                    a.Classifier == classifier && a.Extension == extension && a.Build == build && a.Timestamp.ToFileTime() == timestamp.ToFileTime();
+            });
         }
 
-        public IEnumerable<ArtifactEntity> GetSnapshotBuildArtifacts(Guid repoId, string[] group, string artifactId, string version, DateTime timestampToSeconds, string buildId, ITransaction transaction = null)
+        public IEnumerable<ArtifactEntity> GetSnapshotBuildArtifacts(Guid repoId, string[] group, string artifactId, string version, DateTime timestamp, string build, ITransaction transaction = null)
         {
-            throw new NotImplementedException();
+            return GetAll().Where(a =>
+            {
+                return a.Group == string.Join(".", group) && a.ArtifactId == artifactId && a.Version == version && a.IsSnapshot &&
+                     a.Build == build && a.Timestamp.ToFileTime() == timestamp.ToFileTime();
+            });
         }
     }
 }

@@ -14,7 +14,7 @@ namespace Maven.News
     {
         //The list of release artifacts
         
-        ReleaseVersion GetSingleVersion(Guid repoId, string[] group, string artifactId, string version, bool isSnapshot, ITransaction transaction = null);
+        ///ReleaseVersion GetReleaseVersion(Guid repoId, string[] group, string artifactId, bool isSnapshot, ITransaction transaction = null);
         
         
     }

@@ -19,9 +19,9 @@ namespace MavenProtocol
         private readonly IServicesMapper _servicesMapper;
         private readonly IArtifactsRepository _artifactsRepository;
         private readonly IHashCalculator _hashCalculator;
-        private readonly IReleaseArtifactRepository _artifactVersionsRepository;
+//        private readonly IReleaseArtifactRepository _artifactVersionsRepository;
 
-        public MetadataApi( IReleaseArtifactRepository artifactVersionsRepository,
+        public MetadataApi(// IReleaseArtifactRepository artifactVersionsRepository,
             IMetadataRepository metadataRepository, ITransactionManager transactionManager,
             IServicesMapper servicesMapper,
             IArtifactsRepository artifactsRepository,
@@ -32,7 +32,7 @@ namespace MavenProtocol
             this._servicesMapper = servicesMapper;
             this._artifactsRepository = artifactsRepository;
             this._hashCalculator = hashCalculator;
-            this._artifactVersionsRepository = artifactVersionsRepository;
+            //this._artifactVersionsRepository = artifactVersionsRepository;
         }
 
         public MetadataApiResult Generate(MavenIndex mi)
@@ -48,13 +48,14 @@ namespace MavenProtocol
             }
             else
             {
-                if (_metadataRepository.GetArtifactMetadata(mi.RepoId, mi.Group, mi.ArtifactId) == null)
-                {
-                    GenerateArtifactMetadata(mi);
-                }
+                
                 if (_metadataRepository.GetArtifactVersionMetadata(mi.RepoId, mi.Group, mi.ArtifactId, mi.Version, mi.IsSnapshot) == null)
                 {
                     metadata = GenerateArtifactVersionMetadata(mi);
+                }
+                if (_metadataRepository.GetArtifactMetadata(mi.RepoId, mi.Group, mi.ArtifactId) == null)
+                {
+                    GenerateArtifactMetadata(mi);
                 }
             }
             return CreateResponse(metadata, !string.IsNullOrWhiteSpace(mi.Checksum));
@@ -75,6 +76,7 @@ namespace MavenProtocol
                 var mavenMetadataXml = InitializeMavenMetadataXml(metadata, false);
                 FillSingleVersionData(mi, mavenMetadataXml, transaction);
                 SerializeMetadata(metadata, mavenMetadataXml, transaction);
+                throw new Exception("TODO SHOULD CONSIDER THE MODIFICATIONS");
                 return metadata;
             }
         }
@@ -92,6 +94,7 @@ namespace MavenProtocol
                 MavenMetadataXml mavenMetadataXml = InitializeMavenMetadataXml(metadata, true);
                 FillVersions(mi, mavenMetadataXml, transaction);
                 SerializeMetadata(metadata, mavenMetadataXml, transaction);
+                throw new Exception("TODO SHOULD CONSIDER THE MODIFICATIONS");
                 return metadata;
             }
         }
@@ -249,25 +252,25 @@ namespace MavenProtocol
 
         private void FillSingleVersionData(MavenIndex mi, MavenMetadataXml mavenMetadataXml, ITransaction transaction)
         {
-            var version = _artifactVersionsRepository.GetSingleVersion(mi.RepoId, mi.Group, mi.ArtifactId, mi.Version, mi.IsSnapshot, transaction);
+            //var version = _artifactVersionsRepository.GetSingleVersion(mi.RepoId, mi.Group, mi.ArtifactId, mi.Version, mi.IsSnapshot, transaction);
             var hasTimestampedSnapshot = _servicesMapper.HasTimestampedSnapshot(mi.RepoId);
 
 
-            mavenMetadataXml.Version = this.BuildFullVersion(version.Version, version.IsSnapshot);
-            if (hasTimestampedSnapshot && version.IsSnapshot)
+            mavenMetadataXml.Version = this.BuildFullVersion(mi.Version, mi.IsSnapshot);
+            if (hasTimestampedSnapshot && mi.IsSnapshot)
             {
-                var fullBuildId = version.Timestamp.ToString("yyyyMMdd.HHmmss") + "-" + version.Build;
+                var fullBuildId = mi.Timestamp.ToString("yyyyMMdd.HHmmss") + "-" + mi.Build;
                 mavenMetadataXml.Versioning.Snapshot = new MavenSnapshot
                 {
-                    Timestamp = version.Timestamp.ToString("yyyyMMdd.HHmmss"),
-                    BuildNumber = version.Build
+                    Timestamp = mi.Timestamp.ToString("yyyyMMdd.HHmmss"),
+                    BuildNumber = mi.Build
                 };
-                mavenMetadataXml.Versioning.LastUpdated = version.Timestamp.ToString("yyyyMMddHHmmss");
+                mavenMetadataXml.Versioning.LastUpdated = mi.Timestamp.ToString("yyyyMMddHHmmss");
                 mavenMetadataXml.Versioning.SnapshotVersions = new MavenSnapshotVersions
                 {
                     Version = new List<MavenSnapshotVersion>()
                 };
-                foreach (var artifact in _artifactsRepository.GetSnapshotBuildArtifacts(mi.RepoId, mi.Group, mi.ArtifactId, mi.Version, version.Timestamp, version.Build))
+                foreach (var artifact in _artifactsRepository.GetSnapshotBuildArtifacts(mi.RepoId, mi.Group, mi.ArtifactId, mi.Version, mi.Timestamp, mi.Build))
                 {
                     mavenMetadataXml.Versioning.SnapshotVersions.Version.Add(new MavenSnapshotVersion
                     {
