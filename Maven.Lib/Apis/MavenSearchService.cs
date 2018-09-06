@@ -1,5 +1,4 @@
 ﻿//using Maven.Repositories;
-using Maven.Repositories;
 using MavenProtocol;
 using MavenProtocol.Apis;
 using MultiRepositories.Repositories;
@@ -15,7 +14,7 @@ namespace Maven.Apis
 
     public class MavenSearchService : IMavenSearch
     {
-        private readonly IRepositoryEntitiesRepository _repository;
+        /*private readonly IRepositoryEntitiesRepository _repository;
         private readonly IServicesMapper _servicesMapper;
         private readonly IMainArtifactsRepository _mavenSearchRepository;
         private readonly IReleaseArtifactsRepository _mavenSearchLastRepository;
@@ -137,6 +136,10 @@ namespace Maven.Apis
                 item.Timestamp.ToFileTime(),
                 typeAndExt,
                 tags);
+        }*/
+        public SearchResult Search(Guid repoId, SearchParam param)
+        {
+            throw new NotImplementedException();
         }
     }
 }

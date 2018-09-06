@@ -70,15 +70,6 @@
     <Compile Include="News\PomApi.cs" />
     <Compile Include="News\PomEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repositories\IMainArtifactsRepository.cs" />
-    <Compile Include="Repositories\IMetadataRepository.cs" />
-    <Compile Include="Repositories\IReleaseArtifactsRepository.cs" />
-    <Compile Include="Repositories\ISubArtifactsRepository.cs" />
-    <Compile Include="Repositories\MainArtifact.cs" />
-    <Compile Include="Repositories\MavenMetadataEntity.cs" />
-    <Compile Include="Repositories\ReleaseArtifactEntity.cs" />
-    <Compile Include="Repositories\SearchableArtifact.cs" />
-    <Compile Include="Repositories\SubArtifact.cs" />
     <Compile Include="News\IArtifactsStorage.cs" />
     <Compile Include="Services\IQueryBuilder.cs" />
     <Compile Include="News\IRequestParser.cs" />

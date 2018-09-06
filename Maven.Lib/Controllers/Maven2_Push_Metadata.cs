@@ -17,8 +17,8 @@ namespace Maven.Controllers
     public class Maven2_Push_Metadata : RestAPI
     {
         private IMetadataApi _interfaceService;
-        private readonly Guid repoId;
-        private IRepositoryEntitiesRepository _repositoryEntitiesRepository;
+        private readonly Guid _repoId;
+        private readonly IRepositoryEntitiesRepository _repositoryEntitiesRepository;
         private readonly IRequestParser _requestParser;
 
         public Maven2_Push_Metadata(Guid repoId,
@@ -27,7 +27,7 @@ namespace Maven.Controllers
             : base(null, paths)
         {
             _interfaceService = interfaceService;
-            this.repoId = repoId;
+            this._repoId = repoId;
             _repositoryEntitiesRepository = repositoryEntitiesRepository;
             this._requestParser = requestParser;
             SetHandler(Handler);

@@ -44,8 +44,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Apis\Browse\ExploreResult.cs" />
-    <Compile Include="Apis\Browse\IMavenExploreService.cs" />
-    <Compile Include="Apis\IMavenArtifactsService.cs" />
     <Compile Include="News\IArtifactsApi.cs" />
     <Compile Include="News\IExploreApi.cs" />
     <Compile Include="News\IPomApi.cs" />

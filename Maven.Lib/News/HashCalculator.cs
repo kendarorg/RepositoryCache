@@ -31,7 +31,7 @@ namespace Maven.News
             return GetSha1(System.Text.Encoding.ASCII.GetBytes(data));
         }
 
-        public string GetSha1(byte[] data)
+        public string GetSha1(byte[] inputBytes)
         {
             SHA1 md5 = System.Security.Cryptography.SHA1.Create();
             byte[] hash = md5.ComputeHash(inputBytes);

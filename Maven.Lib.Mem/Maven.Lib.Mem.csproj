@@ -41,10 +41,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repositories\ArtifactRepository.cs" />
-    <Compile Include="Repositories\ReleaseArtifacts.cs" />
-    <Compile Include="Repositories\VersionedArtifactRepository.cs" />
-    <Compile Include="Repositories\VersionedClassifiersRepository.cs" />
+    <Compile Include="Repositories\ArtifactsRepository.cs" />
+    <Compile Include="Repositories\MetadataRepository.cs" />
+    <Compile Include="Repositories\PomRepository.cs" />
+    <Compile Include="Repositories\ReleaseArtifactRepository.cs" />
     <Compile Include="Services\IQueryToLinq.cs" />
     <Compile Include="Services\QueryToLinq.cs" />
   </ItemGroup>

@@ -11,7 +11,7 @@ namespace Maven.Lib.Mem
 {
     public interface IQueryToLinq : ISingleton
     {
-        IEnumerable<MainArtifact> Query(IQueryable<MainArtifact> entities, Guid repoId, SearchParam query);
-        IEnumerable<ReleaseArtifactEntity> Query(IQueryable<ReleaseArtifactEntity> entities, Guid repoId, SearchParam query);
+        //IEnumerable<MainArtifact> Query(IQueryable<MainArtifact> entities, Guid repoId, SearchParam query);
+        //IEnumerable<ReleaseArtifactEntity> Query(IQueryable<ReleaseArtifactEntity> entities, Guid repoId, SearchParam query);
     }
 }

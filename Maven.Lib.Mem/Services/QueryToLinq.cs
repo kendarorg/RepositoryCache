@@ -13,13 +13,13 @@ namespace Maven.Lib.Mem
 {
     public class QueryToLinq : ISingleton, IQueryToLinq
     {
-        private IQueryBuilder _queryBuilder;
+        private readonly IQueryBuilder _queryBuilder;
 
         public QueryToLinq(IQueryBuilder queryBuilder)
         {
             _queryBuilder = queryBuilder;
         }
-        public IEnumerable<MainArtifact> Query(IQueryable<MainArtifact> entities, Guid repoId, SearchParam query)
+      /*  public IEnumerable<MainArtifact> Query(IQueryable<MainArtifact> entities, Guid repoId, SearchParam query)
         {
             ParsedQuery pq = _queryBuilder.ParseQuery(query.Query);
             var ents = Query(entities, repoId, pq);
@@ -102,6 +102,6 @@ namespace Maven.Lib.Mem
                 }
             }
             return result;
-        }
+        }*/
     }
 }
