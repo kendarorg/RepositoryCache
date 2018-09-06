@@ -13,30 +13,39 @@ using Maven.Services;
 using MavenProtocol.Apis.Browse;
 using MavenProtocol;
 using HtmlAgilityPack;
+using Maven.News;
+using MavenProtocol.News;
+using System.Xml.Serialization;
+using System.Xml;
 
 namespace Maven.Controllers
 {
     public class Maven2_Explore : ForwardRestApi
     {
-        private readonly Guid repoId;
+        private readonly Guid _repoId;
         private readonly IRepositoryEntitiesRepository _repositoryEntitiesRepository;
         private readonly IRequestParser _requestParser;
-        private readonly IMavenExploreService _mavenExploreService;
+        private readonly IExploreApi _exploreApi;
+        private readonly IPomApi _pomApi;
+        private readonly IArtifactsApi _artifactsApi;
+        private readonly IMetadataApi _metadataApi;
         private readonly IServicesMapper _servicesMapper;
-        private readonly IMavenArtifactsService _mavenArtifactsService;
 
         public Maven2_Explore(Guid repoId, AppProperties properties,
-            IRepositoryEntitiesRepository repositoryEntitiesRepository,
-            IRequestParser requestParser, IMavenExploreService mavenExploreService, IServicesMapper servicesMapper,
-            IMavenArtifactsService mavenArtifactsService, params string[] paths)
+            IRepositoryEntitiesRepository repositoryEntitiesRepository,IServicesMapper servicesMapper,
+            IRequestParser requestParser,
+            IExploreApi exploreApi,IPomApi pomApi,IArtifactsApi artifactsApi,IMetadataApi metadataApi,
+            params string[] paths)
             : base(properties, null, paths)
         {
-            this.repoId = repoId;
+            this._repoId = repoId;
             _repositoryEntitiesRepository = repositoryEntitiesRepository;
             this._requestParser = requestParser;
-            this._mavenExploreService = mavenExploreService;
+            this._exploreApi = exploreApi;
+            this._pomApi = pomApi;
+            this._artifactsApi = artifactsApi;
+            this._metadataApi = metadataApi;
             this._servicesMapper = servicesMapper;
-            this._mavenArtifactsService = mavenArtifactsService;
             SetHandler(Handler);
         }
 
@@ -45,7 +54,8 @@ namespace Maven.Controllers
             try
             {
                 var idx = _requestParser.Parse(arg);
-                var repo = _repositoryEntitiesRepository.GetById(repoId);
+                idx.RepoId = _repoId;
+                var repo = _repositoryEntitiesRepository.GetById(_repoId);
                 ExploreResult result = null;
                 if (repo.Mirror)
                 {
@@ -59,8 +69,6 @@ namespace Maven.Controllers
                         }
                         result = ExploreRemote(arg, repo, idx, arg.Url);
                         result.Base = arg.Url;
-
-
                     }
                     catch (InconsistentRemoteDataException)
                     {
@@ -73,7 +81,8 @@ namespace Maven.Controllers
                 }
                 if (result == null)
                 {
-                    result = _mavenExploreService.Explore(repo.Id, idx);
+                    ExploreLocal(idx, result);
+
                 }
                 if (result.Content != null)
                 {
@@ -106,6 +115,81 @@ namespace Maven.Controllers
             }
         }
 
+        private void ExploreLocal(MavenIndex idx, ExploreResult result)
+        {
+            if (_artifactsApi.CanHandle(idx))
+            {
+                var re = _artifactsApi.Retrieve(idx);
+                if (re.Content != null)
+                {
+                    result.Content = re.Content;
+                }
+                else if (idx.Checksum == "md5")
+                {
+                    result.Content = Encoding.UTF8.GetBytes(re.Md5);
+                }
+                else if (idx.Checksum == "sha1")
+                {
+                    result.Content = Encoding.UTF8.GetBytes(re.Sha1);
+                }
+            }
+            else if (_metadataApi.CanHandle(idx))
+            {
+                var re = _metadataApi.Retrieve(idx);
+                if (re.Xml != null)
+                {
+                    var xsSubmit = new XmlSerializer(re.Xml.GetType());
+
+                    using (var sww = new StringWriter())
+                    {
+                        using (var writer = XmlWriter.Create(sww))
+                        {
+                            xsSubmit.Serialize(writer, re.Xml);
+                            result.Content = Encoding.UTF8.GetBytes(sww.ToString());
+                        }
+                    }
+                }
+                else if (idx.Checksum == "md5")
+                {
+                    result.Content = Encoding.UTF8.GetBytes(re.Md5);
+                }
+                else if (idx.Checksum == "sha1")
+                {
+                    result.Content = Encoding.UTF8.GetBytes(re.Sha1);
+                }
+            }
+            else if (_pomApi.CanHandle(idx))
+            {
+                var re = _pomApi.Retrieve(idx);
+                if (re.Xml != null)
+                {
+                    var xsSubmit = new XmlSerializer(re.Xml.GetType());
+
+                    using (var sww = new StringWriter())
+                    {
+                        using (var writer = XmlWriter.Create(sww))
+                        {
+                            xsSubmit.Serialize(writer, re.Xml);
+                            result.Content = Encoding.UTF8.GetBytes(sww.ToString());
+                        }
+                    }
+                }
+                else if (idx.Checksum == "md5")
+                {
+                    result.Content = Encoding.UTF8.GetBytes(re.Md5);
+                }
+                else if (idx.Checksum == "sha1")
+                {
+                    result.Content = Encoding.UTF8.GetBytes(re.Sha1);
+                }
+            }
+            else
+            {
+                var re = _exploreApi.Retrieve(idx);
+                re.Children = re.Children;
+            }
+        }
+
         private ExploreResult ExploreRemote(SerializableRequest localRequest, RepositoryEntity repo, MavenIndex idx, string baseStandard)
         {
             ExploreResult result = new ExploreResult
@@ -118,32 +202,17 @@ namespace Maven.Controllers
 
             var remoteRes = RemoteRequest(convertedUrl, remoteRequest, 60000);
 
-            if (!string.IsNullOrWhiteSpace(idx.Meta))
+            if (_artifactsApi.CanHandle(idx))
             {
-                result.Content = remoteRes.Content;
-                var stringContent = Encoding.UTF8.GetString(remoteRes.Content);
-                if (!string.IsNullOrWhiteSpace(idx.Checksum))
-                {
-                    _mavenArtifactsService.SetMetadataChecksums(repo.Id, idx, stringContent);
-                }
-                else
-                {
-                    _mavenArtifactsService.UpdateMetadata(repo.Id, idx, stringContent);
-                }
+                _artifactsApi.Generate(idx);
             }
-            else if (!string.IsNullOrWhiteSpace(idx.Extension))
+            else if (_metadataApi.CanHandle(idx))
             {
-
-                result.Content = remoteRes.Content;
-                if (!string.IsNullOrWhiteSpace(idx.Checksum))
-                {
-                    var stringContent = Encoding.UTF8.GetString(remoteRes.Content);
-                    _mavenArtifactsService.SetArtifactChecksums(repo.Id, idx, stringContent);
-                }
-                else
-                {
-                    _mavenArtifactsService.UploadArtifact(repo.Id, idx, remoteRes.Content);
-                }
+                _metadataApi.Generate(idx);
+            }
+            else if (_pomApi.CanHandle(idx))
+            {
+                _pomApi.Generate(idx);
             }
             else
             {
@@ -160,19 +229,6 @@ namespace Maven.Controllers
                         result.Children.Add(link.Attributes["href"].Value.Trim('/'));
                     }
                 }
-                /*if (idx.Group != null && idx.Group.Length > 0)
-                {
-                    result.Base = _properties.Host.TrimEnd('/') + "/" + repo.Prefix + "/" + string.Join("/", idx.Group);
-                    if (!string.IsNullOrWhiteSpace(idx.ArtifactId))
-                    {
-                        result.Base += "/" + idx.ArtifactId;
-                        if (!string.IsNullOrWhiteSpace(idx.Version))
-                        {
-                            var snap = idx.IsSnapshot ? "-SNAPSHOT" : "";
-                            result.Base += "/" + idx.Version + snap;
-                        }
-                    }
-                }*/
             }
             return result;
         }

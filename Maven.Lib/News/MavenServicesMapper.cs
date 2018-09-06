@@ -14,7 +14,7 @@ namespace Maven
     public class MavenServicesMapper : IServicesMapper, ISingleton
     {
         private IRepositoryEntitiesRepository _availableRepositories;
-        private AppProperties _appProperites;
+        private readonly AppProperties _appProperites;
         private ConcurrentDictionary<Guid, RepositoryEntity> _repositories =
             new ConcurrentDictionary<Guid, RepositoryEntity>();
         private ConcurrentDictionary<Guid, MavenSettings> _settings =
@@ -115,6 +115,11 @@ namespace Maven
                 }
             }
             return result;
+        }
+
+        public bool HasTimestampedSnapshot(Guid repoId)
+        {
+            return !_settings[repoId].IsSingleSnapshot;
         }
     }
 }

@@ -12,5 +12,8 @@ namespace Maven.News
         public string Build { get; set; }
         public string ArtifactId { get; internal set; }
         public bool IsSnapshot { get; internal set; }
+        public string Group { get; internal set; }
+        public string Md5 { get; internal set; }
+        public string Sha1 { get; internal set; }
     }
 }

@@ -3,5 +3,6 @@
   "registrationPageSize": 36,
   "queryPageSize": 36,
   "remoteAddress": "https://repo.maven.apache.org/maven2/",
-  "remoteSearchAddress": "https://repo.maven.apache.org/maven2/"
+  "remoteSearchAddress": "https://repo.maven.apache.org/maven2/",
+  "singleSnapshot": false
 }

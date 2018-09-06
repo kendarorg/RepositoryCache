@@ -10,8 +10,8 @@ namespace MavenProtocol.News
 {
     public class PomApiResult
     {
-        public object Md5 { get; set; }
-        public object Sha1 { get; set; }
+        public string Md5 { get; set; }
+        public string Sha1 { get; set; }
         public PomXml Xml { get; set; }
     }
     public interface IPomApi : IMavenApi

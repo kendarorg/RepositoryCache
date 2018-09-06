@@ -10,23 +10,27 @@ using System.IO;
 using Newtonsoft.Json;
 using MavenProtocol.Apis;
 using Maven.Services;
+using Maven.News;
+using MavenProtocol.News;
 
 namespace Maven.Controllers
 {
     public class Maven2_Push_Package : RestAPI
     {
-        private IMavenArtifactsService _interfaceService;
-        private readonly Guid repoId;
+        private IArtifactsApi _interfaceService;
+        private readonly IPomApi _pomApi;
+        private readonly Guid _repoId;
         private IRepositoryEntitiesRepository _repositoryEntitiesRepository;
         private readonly IRequestParser _requestParser;
 
         public Maven2_Push_Package(Guid repoId,
             IRepositoryEntitiesRepository repositoryEntitiesRepository, IRequestParser requestParser,
-            IMavenArtifactsService interfaceService, params string[] paths)
+            IArtifactsApi interfaceService, IPomApi pomApi, params string[] paths)
             : base(null, paths)
         {
             _interfaceService = interfaceService;
-            this.repoId = repoId;
+            this._pomApi = pomApi;
+            this._repoId = repoId;
             _repositoryEntitiesRepository = repositoryEntitiesRepository;
             this._requestParser = requestParser;
             SetHandler(Handler);
@@ -36,17 +40,17 @@ namespace Maven.Controllers
         {
 
             var idx = _requestParser.Parse(arg);
-            var repo = _repositoryEntitiesRepository.GetById(repoId);
+            idx.RepoId = _repoId;
 
-            if (!string.IsNullOrWhiteSpace(idx.Checksum))
+            if (_interfaceService.CanHandle(idx))
             {
-                var content = Encoding.UTF8.GetString(arg.Content);
-                _interfaceService.SetArtifactChecksums(repo.Id, idx, content);
+                _interfaceService.Generate(idx);
             }
-            else
+            else if (_pomApi.CanHandle(idx))
             {
-                _interfaceService.UploadArtifact(repo.Id, idx, arg.Content);
+                _pomApi.Generate(idx);
             }
+
             return new SerializableResponse();
         }
     }

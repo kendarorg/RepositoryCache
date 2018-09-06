@@ -14,7 +14,7 @@ namespace Maven.News
         public string Build { get; set; }
         public DateTime Timestamp { get; set; }
         public string Xml { get; set; }
-        public object Md5 { get; internal set; }
-        public object Sha1 { get; internal set; }
+        public string Md5 { get; internal set; }
+        public string Sha1 { get; internal set; }
     }
 }

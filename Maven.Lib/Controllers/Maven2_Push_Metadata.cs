@@ -10,19 +10,20 @@ using System.IO;
 using Newtonsoft.Json;
 using MavenProtocol.Apis;
 using Maven.Services;
+using MavenProtocol;
 
 namespace Maven.Controllers
 {
     public class Maven2_Push_Metadata : RestAPI
     {
-        private IMavenArtifactsService _interfaceService;
+        private IMetadataApi _interfaceService;
         private readonly Guid repoId;
         private IRepositoryEntitiesRepository _repositoryEntitiesRepository;
         private readonly IRequestParser _requestParser;
 
         public Maven2_Push_Metadata(Guid repoId,
             IRepositoryEntitiesRepository repositoryEntitiesRepository, IRequestParser requestParser,
-            IMavenArtifactsService interfaceService, params string[] paths)
+            IMetadataApi interfaceService, params string[] paths)
             : base(null, paths)
         {
             _interfaceService = interfaceService;
@@ -36,17 +37,8 @@ namespace Maven.Controllers
         {
 
             var idx = _requestParser.Parse(arg);
-            var repo = _repositoryEntitiesRepository.GetById(repoId);
-            var content = Encoding.UTF8.GetString(arg.Content);
-            if (!string.IsNullOrWhiteSpace(idx.Checksum))
-            {
-                _interfaceService.SetMetadataChecksums(repo.Id, idx, content);
-            }
-            else
-            {
-
-                _interfaceService.UpdateMetadata(repo.Id, idx, content);
-            }
+            idx.RepoId = _repoId;
+            _interfaceService.Generate(idx);
 
             return new SerializableResponse();
         }

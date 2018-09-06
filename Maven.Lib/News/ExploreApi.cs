@@ -17,18 +17,17 @@ namespace Maven.News
         private readonly IArtifactsStorage _artifactsStorage;
         private readonly IRepositoryEntitiesRepository _repositoriesRepository;
         private readonly IMetadataRepository _metadataRepository;
-        private readonly IArtifactVersionsRepository _artifactVersionsRepository;
         private readonly IArtifactsRepository _artifactsRepository;
 
         public ExploreApi(IServicesMapper servicesMapper, IArtifactsStorage artifactsStorage,
             IRepositoryEntitiesRepository repositoriesRepository,
-            IMetadataRepository metadataRepository, IArtifactVersionsRepository artifactVersionsRepository, IArtifactsRepository artifactsRepository)
+            IMetadataRepository metadataRepository, 
+            IArtifactsRepository artifactsRepository)
         {
             this._servicesMapper = servicesMapper;
             this._artifactsStorage = artifactsStorage;
             this._repositoriesRepository = repositoriesRepository;
             this._metadataRepository = metadataRepository;
-            this._artifactVersionsRepository = artifactVersionsRepository;
             this._artifactsRepository = artifactsRepository;
         }
         public ExploreResponse Retrieve(MavenIndex mi)
@@ -83,7 +82,6 @@ namespace Maven.News
                     }
                 }
             }
-            result.Children.Add("..");
 
             return result;
         }

@@ -13,7 +13,7 @@ namespace Maven.News
 
     public class ArtifactsApi : IArtifactsApi
     {
-        private readonly IArtifactVersionsRepository _artifactVersionsRepository;
+        private readonly IArtifactsRepository _artifactVersionsRepository;
         private readonly IArtifactsStorage _artifactsStorage;
         private readonly IRepositoryEntitiesRepository _repositoriesRepository;
         private readonly IServicesMapper _servicesMapper;
@@ -21,7 +21,7 @@ namespace Maven.News
         private readonly ITransactionManager _transactionManager;
         private readonly IPomApi _pomApi;
 
-        public ArtifactsApi(IArtifactVersionsRepository artifactVersionsRepository, IArtifactsStorage artifactsStorage,
+        public ArtifactsApi(IArtifactsRepository artifactVersionsRepository, IArtifactsStorage artifactsStorage,
             IRepositoryEntitiesRepository repositoriesRepository,
             IServicesMapper servicesMapper,
             IHashCalculator hashCalculator, ITransactionManager transactionManager,
@@ -79,7 +79,7 @@ namespace Maven.News
                     throw new Exception("Cannot duplicate release artifacts");
                 }
             }
-            artifact = new ArtifactVersion
+            artifact = new ArtifactEntity
             {
                 Build = mi.Build,
                 Timestamp = mi.Timestamp,
