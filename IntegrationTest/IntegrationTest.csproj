@@ -37,6 +37,7 @@
   </PropertyGroup>
   <ItemGroup>
     <None Include="MavenPush.bat" />
+    <None Include="MavenSnapsot.bat" />
     <None Include="maven_exes\bin\m2.conf" />
     <None Include="maven_exes\bin\mvn" />
     <None Include="maven_exes\bin\mvn.cmd" />
@@ -91,6 +92,8 @@
     <None Include="maven_exes\NOTICE" />
     <None Include="maven_exes\upload\api-common-1.6.0.pom" />
     <None Include="NugetPush.bat" />
+    <None Include="nuget_exes\nlog.4.3.0.nupkg" />
+    <None Include="testArchetype.zip" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="maven_exes\boot\plexus-classworlds-2.5.2.jar" />
@@ -146,6 +149,7 @@
     <Content Include="maven_exes\upload\api-common-1.6.0-javadoc.jar" />
     <Content Include="maven_exes\upload\api-common-1.6.0-sources.jar" />
     <Content Include="maven_exes\upload\api-common-1.6.0.jar" />
+    <Content Include="maven_exes\upload\test-1.0-SNAPSHOT.jar" />
     <Content Include="nuget_exes\NuGet.3.5.exe" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
