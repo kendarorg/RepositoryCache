@@ -135,6 +135,7 @@ namespace Maven.News
                 {
                     _pomApi.Generate(mi, remote);
                 }
+                _pomApi.UpdateClassifiers(mi);
                 if (!mi.IsSnapshot)
                 {
                     _metadataApi.GenerateNoSnapshot(mi);

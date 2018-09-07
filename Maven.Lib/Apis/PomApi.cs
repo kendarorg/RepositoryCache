@@ -15,15 +15,17 @@ namespace Maven.News
         private readonly ITransactionManager _transactionManager;
         private readonly IHashCalculator _hashCalculator;
         private readonly IMetadataApi _metadataApi;
+        private readonly IArtifactsRepository _artifactsRepository;
 
         public PomApi(IPomRepository pomRepository, ITransactionManager transactionManager,
             IHashCalculator hashCalculator,
-            IMetadataApi metadataApi)
+            IMetadataApi metadataApi, IArtifactsRepository artifactsRepository)
         {
             this._pomRepository = pomRepository;
             this._transactionManager = transactionManager;
             this._hashCalculator = hashCalculator;
             this._metadataApi = metadataApi;
+            this._artifactsRepository = artifactsRepository;
         }
         public bool CanHandle(MavenIndex mi)
         {
@@ -95,8 +97,10 @@ namespace Maven.News
                 }
                 if (metadata == null)
                 {
+                    
                     metadata = new PomEntity
                     {
+                        FreeText = string.Empty,
                         RepositoryId = mi.RepoId,
                         ArtifactId = mi.ArtifactId,
                         Group = string.Join(".", mi.Group),
@@ -104,9 +108,22 @@ namespace Maven.News
                         IsSnapshot = mi.IsSnapshot,
                         Build = mi.Build,
                         Timestamp = mi.Timestamp,
-                        OriginalXml = strPom
+                        OriginalXml = strPom,
                     };
                 }
+                var classifiers = "|";
+                var packaging = "|";
+                foreach (var art in _artifactsRepository.GetSnapshotBuildArtifacts(mi.RepoId,
+                    mi.Group, mi.ArtifactId, mi.Version, mi.Timestamp, mi.Build))
+                {
+                    packaging += art.Extension + "|";
+                    if (!string.IsNullOrWhiteSpace(art.Classifier))
+                    {
+                        classifiers += art.Classifier + "|";
+                    }
+                }
+                metadata.Packaging = packaging;
+                metadata.Classifiers = classifiers;
 
                 if (!remote)
                 {
@@ -125,6 +142,30 @@ namespace Maven.News
                 }
                 
             }
+        }
+
+        public void UpdateClassifiers(MavenIndex mi)
+        {
+            var metadata = _pomRepository.GetSinglePom(mi.RepoId,
+                    mi.Group, mi.ArtifactId, mi.Version, mi.IsSnapshot, mi.Timestamp, mi.Build);
+            if (metadata == null)
+            {
+                return;
+            }
+            var classifiers = "|";
+            var packaging = "|";
+            foreach (var art in _artifactsRepository.GetSnapshotBuildArtifacts(mi.RepoId,
+                mi.Group, mi.ArtifactId, mi.Version, mi.Timestamp, mi.Build))
+            {
+                packaging += art.Extension + "|";
+                if (!string.IsNullOrWhiteSpace(art.Classifier))
+                {
+                    classifiers += art.Classifier + "|";
+                }
+            }
+            metadata.Packaging = packaging;
+            metadata.Classifiers = classifiers;
+            _pomRepository.Update(metadata);
         }
     }
 }

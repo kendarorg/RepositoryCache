@@ -12,5 +12,6 @@ namespace MavenProtocol.News
     {
         PomApiResult Retrieve(MavenIndex mi);
         PomApiResult Generate(MavenIndex mi, bool remote);
+        void UpdateClassifiers(MavenIndex mi);
     }
 }

@@ -1,6 +1,6 @@
 @echo off
 SET APIKEY=E7446C12-BD80-4272-3332-09914BE6EBC8
-SET NUROOT=http://localhost:9088/local/v2/publish
+SET NUROOT=http://localhost:9088/nuget.local/v2/publish
 
 cd nuget_exes
 

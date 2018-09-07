@@ -35,8 +35,9 @@ namespace Maven.Repositories
         {
             return GetAll().Where(a =>
             {
+                var isSnapshot = !string.IsNullOrWhiteSpace(build);
                 var checkTimestamp = !string.IsNullOrWhiteSpace(a.Build) && timestamp.Year > 1 ? a.Timestamp.ToFileTime() == timestamp.ToFileTime() : true;
-                return a.Group == string.Join(".", group) && a.ArtifactId == artifactId && a.Version == version && a.IsSnapshot &&
+                return a.Group == string.Join(".", group) && a.ArtifactId == artifactId && a.Version == version && isSnapshot == a.IsSnapshot &&
                      a.Build == build && checkTimestamp;
             });
         }

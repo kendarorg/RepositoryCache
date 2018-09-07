@@ -1,4 +1,5 @@
 ﻿using Ioc;
+using Maven.News;
 using Maven.Repositories;
 //using Maven.Repositories;
 using Maven.Services;
@@ -19,7 +20,8 @@ namespace Maven.Lib.Mem
         {
             _queryBuilder = queryBuilder;
         }
-      /*  public IEnumerable<MainArtifact> Query(IQueryable<MainArtifact> entities, Guid repoId, SearchParam query)
+
+        public IEnumerable<PomEntity> Query(IQueryable<PomEntity> entities, Guid repoId, SearchParam query)
         {
             ParsedQuery pq = _queryBuilder.ParseQuery(query.Query);
             var ents = Query(entities, repoId, pq);
@@ -33,34 +35,22 @@ namespace Maven.Lib.Mem
                 {
                     case ("version"):
                         ents = ents.Where(r =>
-                            ((MainArtifact)r).Version == item.Value);
+                            r.Version == item.Value);
                         break;
                     case ("timestamp"):
                         ents = ents.Where(r =>
-                            ((MainArtifact)r).Timestamp.ToFileTime().ToString() == item.Value);
+                            r.Timestamp.ToFileTime().ToString() == item.Value);
                         break;
                 }
             }
 
             foreach (var res in ents.Skip(query.Start).Take(query.Rows))
             {
-                yield return (MainArtifact)res;
+                yield return res;
             }
         }
 
-        public IEnumerable<ReleaseArtifactEntity> Query(IQueryable<ReleaseArtifactEntity> entities, Guid repoId, SearchParam query)
-        {
-            ParsedQuery pq = _queryBuilder.ParseQuery(query.Query);
-            var ents = Query(entities, repoId, pq);
-
-
-            foreach (var res in ents.Skip(query.Start).Take(query.Rows))
-            {
-                yield return (ReleaseArtifactEntity)res;
-            }
-        }
-
-        private IQueryable<SearchableArtifact> Query(IQueryable<SearchableArtifact> entities, Guid repoId, ParsedQuery pq)
+        private IQueryable<PomEntity> Query(IQueryable<PomEntity> entities, Guid repoId, ParsedQuery pq)
         {
             var result = entities.Where(a => a.RepositoryId == repoId).AsQueryable();
 
@@ -92,7 +82,7 @@ namespace Maven.Lib.Mem
                         result = result.Where(r => r.Classifiers.IndexOf("|" + item.Value + "|", StringComparison.CurrentCultureIgnoreCase) >= 0);
                         break;
                     case ("tags"):
-                        result = result.Where(r => r.Tags.IndexOf(item.Value, StringComparison.CurrentCultureIgnoreCase) >= 0);
+                        result = result.Where(r => r.Tags.IndexOf("|" + item.Value + "|", StringComparison.CurrentCultureIgnoreCase) >= 0);
                         break;
                     case ("timestamp"):
                         result = result.Where(r => r.Timestamp.ToFileTime().ToString() == item.Value);
@@ -102,6 +92,24 @@ namespace Maven.Lib.Mem
                 }
             }
             return result;
-        }*/
+        }
+        /*  public IEnumerable<MainArtifact> Query(IQueryable<MainArtifact> entities, Guid repoId, SearchParam query)
+ {
+     
+ }
+
+ public IEnumerable<ReleaseArtifactEntity> Query(IQueryable<ReleaseArtifactEntity> entities, Guid repoId, SearchParam query)
+ {
+     ParsedQuery pq = _queryBuilder.ParseQuery(query.Query);
+     var ents = Query(entities, repoId, pq);
+
+
+     foreach (var res in ents.Skip(query.Start).Take(query.Rows))
+     {
+         yield return (ReleaseArtifactEntity)res;
+     }
+ }
+
+ */
     }
 }

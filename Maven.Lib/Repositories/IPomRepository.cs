@@ -1,4 +1,5 @@
-﻿using Repositories;
+﻿using MavenProtocol.Apis;
+using Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +12,6 @@ namespace Maven.News
     {
         PomEntity GetSinglePom(Guid repoId, string[] group, string artifactId, string version, bool isSnapshot, 
             DateTime timestamp, string build, ITransaction transaction = null);
+        IEnumerable<PomEntity> Query(Guid repoId, SearchParam param);
     }
 }

@@ -1,4 +1,5 @@
 ﻿//using Maven.Repositories;
+using Maven.News;
 using MavenProtocol;
 using MavenProtocol.Apis;
 using MultiRepositories.Repositories;
@@ -14,20 +15,17 @@ namespace Maven.Apis
 
     public class MavenSearchService : IMavenSearch
     {
-        /*private readonly IRepositoryEntitiesRepository _repository;
+        private readonly IRepositoryEntitiesRepository _repository;
         private readonly IServicesMapper _servicesMapper;
-        private readonly IMainArtifactsRepository _mavenSearchRepository;
-        private readonly IReleaseArtifactsRepository _mavenSearchLastRepository;
+        private readonly IPomRepository _mavenSearchRepository;
 
         public MavenSearchService(IRepositoryEntitiesRepository repositoryEntitiesRepository,
             IServicesMapper servicesMapper,
-            IMainArtifactsRepository mavenSearchRepository,
-            IReleaseArtifactsRepository mavenSearchLastRepository)
+            IPomRepository mavenSearchRepository)
         {
             this._repository = repositoryEntitiesRepository;
             this._servicesMapper = servicesMapper;
             this._mavenSearchRepository = mavenSearchRepository;
-            this._mavenSearchLastRepository = mavenSearchLastRepository;
         }
         public SearchResult Search(Guid repoId, SearchParam param)
         {
@@ -51,7 +49,7 @@ namespace Maven.Apis
 
             if (param.Wt == "gav")
             {
-                var result = _mavenSearchRepository.Query(repoId, param);
+                /*var result = _mavenSearchRepository.Query(repoId, param);
                 foreach (var item in result)
                 {
                     if (max >= param.Rows)
@@ -60,11 +58,11 @@ namespace Maven.Apis
                     }
                     docs.Add(BuildResponse(item));
                     max++;
-                }
+                }*/
             }
             else
             {
-                var result = _mavenSearchLastRepository.Query(repoId, param);
+                var result = _mavenSearchRepository.Query(repoId, param);
                 foreach (var item in result)
                 {
                     if (max >= param.Rows)
@@ -94,7 +92,7 @@ namespace Maven.Apis
             }
         }
 
-        private ResponseDoc BuildResponse(ReleaseArtifactEntity item)
+        private ResponseDoc BuildResponse(PomEntity item)
         {
             var id = item.Group + ":" + item.ArtifactId + ":" + item.Version;
             List<string> typeAndExt = null;
@@ -114,32 +112,6 @@ namespace Maven.Apis
                 item.Timestamp.ToFileTime(),
                 typeAndExt,
                 tags);
-        }
-
-        private ResponseDoc BuildResponse(MainArtifact item)
-        {
-            var id = item.Group + ":" + item.ArtifactId + ":" + item.Version;
-            List<string> typeAndExt = null;
-            List<string> tags = null;
-            if (!string.IsNullOrWhiteSpace(item.Classifiers))
-            {
-                typeAndExt = item.Classifiers.Split('|').Select(a => a.Trim('|')).
-                    Where(b => !string.IsNullOrWhiteSpace(b)).ToList();
-            }
-            if (!string.IsNullOrWhiteSpace(item.Tags))
-            {
-                tags = item.Tags.Split('|').Select(a => a.Trim('|')).
-                    Where(b => !string.IsNullOrWhiteSpace(b)).ToList();
-            }
-            return new ResponseDoc(
-                id, item.Group, item.ArtifactId, item.Version,
-                item.Timestamp.ToFileTime(),
-                typeAndExt,
-                tags);
-        }*/
-        public SearchResult Search(Guid repoId, SearchParam param)
-        {
-            throw new NotImplementedException();
         }
     }
 }

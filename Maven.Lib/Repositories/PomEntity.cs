@@ -17,5 +17,9 @@ namespace Maven.News
         public string Md5 { get;  set; }
         public string Sha1 { get;  set; }
         public Guid RepositoryId { get; set; }
+        public string Packaging { get; set; }
+        public string Classifiers { get; set; }
+        public string Tags { get; set; }
+        public string FreeText { get; set; }
     }
 }

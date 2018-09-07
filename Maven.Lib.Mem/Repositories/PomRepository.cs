@@ -1,7 +1,10 @@
-﻿using Maven.News;
+﻿using Maven.Lib.Mem;
+using Maven.News;
+using MavenProtocol.Apis;
 using MultiRepositories;
 using Repositories;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,8 +13,11 @@ namespace Maven.Repositories
 {
     public class PomRepository : InMemoryRepository<PomEntity>, IPomRepository
     {
-        public PomRepository(AppProperties properties) : base(properties)
+        private readonly IQueryToLinq _queryToLinq;
+
+        public PomRepository(AppProperties properties, IQueryToLinq queryToLinq) : base(properties)
         {
+            this._queryToLinq = queryToLinq;
         }
 
         public PomEntity GetSinglePom(Guid repoId, string[] group, string artifactId, string version,  bool isSnapshot, DateTime timestamp, string build, ITransaction transaction = null)
@@ -22,6 +28,11 @@ namespace Maven.Repositories
                 return a.Group == string.Join(".", group) && a.ArtifactId == artifactId && a.Version == version && a.IsSnapshot == isSnapshot &&
                      a.Build == build && checkTimestamp;
             });
+        }
+
+        public IEnumerable<PomEntity> Query(Guid repoId, SearchParam param)
+        {
+            return _queryToLinq.Query(GetAll().AsQueryable(), repoId, param);
         }
     }
 }
