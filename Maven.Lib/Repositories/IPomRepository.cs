@@ -9,6 +9,7 @@ namespace Maven.News
 {
     public interface IPomRepository : IRepository<PomEntity>
     {
-        PomEntity GetSinglePom(Guid repoId, string[] group, string artifactId, string version, string classifier, string extension, bool isSnapshot, DateTime timestamp, string build,ITransaction transaction=null);
+        PomEntity GetSinglePom(Guid repoId, string[] group, string artifactId, string version, bool isSnapshot, 
+            DateTime timestamp, string build, ITransaction transaction = null);
     }
 }

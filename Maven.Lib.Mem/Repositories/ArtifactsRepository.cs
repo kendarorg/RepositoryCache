@@ -25,8 +25,9 @@ namespace Maven.Repositories
         {
             return GetAll().FirstOrDefault(a =>
             {
+                var checkTimestamp = !string.IsNullOrWhiteSpace(a.Build) && timestamp.Year>1? a.Timestamp.ToFileTime() == timestamp.ToFileTime() : true;
                 return a.Group == string.Join(".", group) && a.ArtifactId == artifactId && a.Version == version && a.IsSnapshot == isSnapshot &&
-                    a.Classifier == classifier && a.Extension == extension && a.Build == build && a.Timestamp.ToFileTime() == timestamp.ToFileTime();
+                    a.Classifier == classifier && a.Extension == extension && a.Build == build && checkTimestamp;
             });
         }
 
@@ -34,8 +35,9 @@ namespace Maven.Repositories
         {
             return GetAll().Where(a =>
             {
+                var checkTimestamp = !string.IsNullOrWhiteSpace(a.Build) && timestamp.Year > 1 ? a.Timestamp.ToFileTime() == timestamp.ToFileTime() : true;
                 return a.Group == string.Join(".", group) && a.ArtifactId == artifactId && a.Version == version && a.IsSnapshot &&
-                     a.Build == build && a.Timestamp.ToFileTime() == timestamp.ToFileTime();
+                     a.Build == build && checkTimestamp;
             });
         }
     }

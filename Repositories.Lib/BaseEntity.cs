@@ -10,7 +10,7 @@ namespace Repositories
     {
         public BaseEntity()
         {
-            Id = Guid.NewGuid();
+            Id = Guid.Empty;
         }
         public Guid Id { get; set; }
     }

@@ -75,8 +75,8 @@ namespace Nuget.Apis
                     packageEntity.PreVersion = firstPreListed.Version;
                     packageEntity.Listed = firstOffListed != null;
                     packageEntity.Version = firstOffListed.Version;
-                    _queryRepository.Update(packageEntity, transaction);
-                    _registrationRepository.Update(registrationEntity, transaction);
+                    _queryRepository.Save(packageEntity, transaction);
+                    _registrationRepository.Save(registrationEntity, transaction);
                     transaction.Commit();
                 }
                 catch (Exception)

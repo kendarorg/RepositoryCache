@@ -44,11 +44,11 @@ namespace Maven.Controllers
 
             if (_interfaceService.CanHandle(idx))
             {
-                _interfaceService.Generate(idx);
+                _interfaceService.Generate(idx, false);
             }
             else if (_pomApi.CanHandle(idx))
             {
-                _pomApi.Generate(idx);
+                _pomApi.Generate(idx, false);
             }
 
             return new SerializableResponse();

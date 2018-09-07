@@ -6,6 +6,6 @@ namespace Maven.News
     public interface IArtifactsApi : IMavenApi
     {
         ArtifactsApiResult Retrieve(MavenIndex mi);
-        ArtifactsApiResult Generate(MavenIndex mi);
+        ArtifactsApiResult Generate(MavenIndex mi,bool remote);
     }
 }

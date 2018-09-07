@@ -5,7 +5,7 @@ namespace Maven.News
 {
     public class PomEntity : BaseEntity
     {
-        internal string OriginalXml;
+        public string OriginalXml { get; set; }
 
         public string ArtifactId { get; set; }
         public string Group { get; set; }
@@ -14,7 +14,8 @@ namespace Maven.News
         public string Build { get; set; }
         public DateTime Timestamp { get; set; }
         public string Xml { get; set; }
-        public string Md5 { get; internal set; }
-        public string Sha1 { get; internal set; }
+        public string Md5 { get;  set; }
+        public string Sha1 { get;  set; }
+        public Guid RepositoryId { get; set; }
     }
 }

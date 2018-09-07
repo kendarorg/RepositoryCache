@@ -18,17 +18,20 @@ namespace Maven.News
         private readonly IRepositoryEntitiesRepository _repositoriesRepository;
         private readonly IMetadataRepository _metadataRepository;
         private readonly IArtifactsRepository _artifactsRepository;
+        private readonly IReleaseArtifactRepository _releaseArtifactRepository;
 
         public ExploreApi(IServicesMapper servicesMapper, IArtifactsStorage artifactsStorage,
             IRepositoryEntitiesRepository repositoriesRepository,
             IMetadataRepository metadataRepository, 
-            IArtifactsRepository artifactsRepository)
+            IArtifactsRepository artifactsRepository,
+            IReleaseArtifactRepository releaseArtifactRepository)
         {
             this._servicesMapper = servicesMapper;
             this._artifactsStorage = artifactsStorage;
             this._repositoriesRepository = repositoriesRepository;
             this._metadataRepository = metadataRepository;
             this._artifactsRepository = artifactsRepository;
+            this._releaseArtifactRepository = releaseArtifactRepository;
         }
         public ExploreResponse Retrieve(MavenIndex mi)
         {
@@ -49,10 +52,12 @@ namespace Maven.News
                 var timestampedSnapshot = _servicesMapper.HasTimestampedSnapshot(mi.RepoId);
                 foreach (var item in _artifactsRepository.GetAllArtifacts(mi.RepoId, mi.Group, mi.ArtifactId, mi.Version, mi.IsSnapshot))
                 {
-                    if (!timestampedSnapshot)
+                    if (timestampedSnapshot)
                     {
                         var classi = string.IsNullOrWhiteSpace(item.Classifier) ? "" : "-" + item.Classifier;
                         var build = string.IsNullOrWhiteSpace(item.Build) ? "" : "-" + item.Timestamp.ToString("yyyyMMdd.HHmmss") + "-" + item.Build;
+                        mi.Build = item.Build;
+                        mi.Timestamp = item.Timestamp;
                         var name = item.ArtifactId + "-" + item.Version + build + classi + "." + item.Extension;
                         result.Children.Add(name);
                         result.Children.Add(name + ".md5");
@@ -68,7 +73,7 @@ namespace Maven.News
                     }
 
                 }
-                AddPom(result);
+                AddPom(result,mi);
             }
             else if (string.IsNullOrWhiteSpace(mi.Version))
             {
@@ -86,11 +91,13 @@ namespace Maven.News
             return result;
         }
 
-        private void AddPom(ExploreResponse result)
+        private void AddPom(ExploreResponse result,MavenIndex mi)
         {
-            result.Children.Add("pom.xml");
-            result.Children.Add("pom.xml.md5");
-            result.Children.Add("pom.xml.sha1");
+            var build = string.IsNullOrWhiteSpace(mi.Build) ? "" : "-" + mi.Timestamp.ToString("yyyyMMdd.HHmmss") + "-" + mi.Build;
+            var name = mi.ArtifactId + "-" + mi.Version + build;
+            result.Children.Add(name + ".pom");
+            result.Children.Add(name + ".pom.md5");
+            result.Children.Add(name+".pom.sha1");
         }
 
         private string BuildFullVersion(string version, bool isSnapshot)

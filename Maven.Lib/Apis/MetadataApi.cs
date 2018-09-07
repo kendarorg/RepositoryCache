@@ -5,6 +5,7 @@ using Repositories;
 using SemVer;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
@@ -19,82 +20,96 @@ namespace MavenProtocol
         private readonly IServicesMapper _servicesMapper;
         private readonly IArtifactsRepository _artifactsRepository;
         private readonly IHashCalculator _hashCalculator;
-//        private readonly IReleaseArtifactRepository _artifactVersionsRepository;
+        private readonly IReleaseArtifactRepository _releaseArtifactRepository;
+        private readonly IPomRepository _pomRepository;
+
+        //        private readonly IReleaseArtifactRepository _artifactVersionsRepository;
 
         public MetadataApi(// IReleaseArtifactRepository artifactVersionsRepository,
             IMetadataRepository metadataRepository, ITransactionManager transactionManager,
             IServicesMapper servicesMapper,
             IArtifactsRepository artifactsRepository,
-            IHashCalculator hashCalculator)
+            IHashCalculator hashCalculator,
+            IReleaseArtifactRepository releaseArtifactRepository,IPomRepository pomRepository)
         {
             this._metadataRepository = metadataRepository;
             this._transactionManager = transactionManager;
             this._servicesMapper = servicesMapper;
             this._artifactsRepository = artifactsRepository;
             this._hashCalculator = hashCalculator;
+            this._releaseArtifactRepository = releaseArtifactRepository;
+            this._pomRepository = pomRepository;
             //this._artifactVersionsRepository = artifactVersionsRepository;
         }
 
-        public MetadataApiResult Generate(MavenIndex mi)
+        public MetadataApiResult Generate(MavenIndex mi, bool remote)
         {
             MetadataEntity metadata = null;
             if (string.IsNullOrWhiteSpace(mi.Version))
             {
-                if (_metadataRepository.GetArtifactMetadata(mi.RepoId, mi.Group, mi.ArtifactId) == null)
-                {
-                    metadata = GenerateArtifactMetadata(mi);
-                }
-
+                metadata = GenerateArtifactMetadata(mi, remote);
             }
             else
             {
-                
-                if (_metadataRepository.GetArtifactVersionMetadata(mi.RepoId, mi.Group, mi.ArtifactId, mi.Version, mi.IsSnapshot) == null)
-                {
-                    metadata = GenerateArtifactVersionMetadata(mi);
-                }
-                if (_metadataRepository.GetArtifactMetadata(mi.RepoId, mi.Group, mi.ArtifactId) == null)
-                {
-                    GenerateArtifactMetadata(mi);
-                }
+                metadata = GenerateArtifactVersionMetadata(mi, remote);
+                GenerateArtifactMetadata(mi, remote);
             }
             return CreateResponse(metadata, !string.IsNullOrWhiteSpace(mi.Checksum));
         }
 
-        private MetadataEntity GenerateArtifactVersionMetadata(MavenIndex mi)
+        private MetadataEntity GenerateArtifactVersionMetadata(MavenIndex mi, bool remote)
         {
             using (var transaction = _transactionManager.BeginTransaction())
             {
-                var metadata = new MetadataEntity
+                var metadata = _metadataRepository.GetArtifactVersionMetadata(mi.RepoId, mi.Group, mi.ArtifactId, mi.Version, mi.IsSnapshot);
+                if (metadata == null)
                 {
-                    ArtifactId = mi.ArtifactId,
-                    Group = string.Join(".", mi.Group),
-                    Version = mi.Version,
-                    IsSnapshot= mi.IsSnapshot
-                };
+                    metadata = new MetadataEntity
+                    {
+                        RepositoryId = mi.RepoId,
+                        ArtifactId = mi.ArtifactId,
+                        Group = string.Join(".", mi.Group),
+                        Version = mi.Version,
+                        IsSnapshot = mi.IsSnapshot
+                    };
+                }
+                if (!string.IsNullOrWhiteSpace(mi.Build))
+                {
+                    metadata.Timestamp = mi.Timestamp;
+                }
+                else
+                {
+                    metadata.Timestamp = DateTime.Now;
+                }
 
+                
                 var mavenMetadataXml = InitializeMavenMetadataXml(metadata, false);
                 FillSingleVersionData(mi, mavenMetadataXml, transaction);
                 SerializeMetadata(metadata, mavenMetadataXml, transaction);
-                throw new Exception("TODO SHOULD CONSIDER THE MODIFICATIONS");
                 return metadata;
             }
         }
 
-        private MetadataEntity GenerateArtifactMetadata(MavenIndex mi)
+        private MetadataEntity GenerateArtifactMetadata(MavenIndex mi, bool remote)
         {
             using (var transaction = _transactionManager.BeginTransaction())
             {
-                var metadata = new MetadataEntity
-                {
-                    ArtifactId = mi.ArtifactId,
-                    Group = string.Join(".", mi.Group)
-                };
+                var metadata = _metadataRepository.GetArtifactMetadata(mi.RepoId,
+                    mi.Group, mi.ArtifactId);
 
+                if (metadata == null)
+                {
+                    metadata = new MetadataEntity
+                    {
+                        RepositoryId = mi.RepoId,
+                        ArtifactId = mi.ArtifactId,
+                        Group = string.Join(".", mi.Group)
+                    };
+                }
+                
                 MavenMetadataXml mavenMetadataXml = InitializeMavenMetadataXml(metadata, true);
                 FillVersions(mi, mavenMetadataXml, transaction);
                 SerializeMetadata(metadata, mavenMetadataXml, transaction);
-                throw new Exception("TODO SHOULD CONSIDER THE MODIFICATIONS");
                 return metadata;
             }
         }
@@ -168,6 +183,7 @@ namespace MavenProtocol
             if (latest != null)
             {
                 result.Versioning.Latest = BuildFullVersion(latest.Version, latest.IsSnapshot);
+                result.Versioning.LastUpdated = latest.Timestamp.ToString("yyyyMMddHHmmss");
             }
             if (release != null)
             {
@@ -185,11 +201,11 @@ namespace MavenProtocol
             var result = new MavenMetadataXml
             {
                 ArtifactId = metadata.ArtifactId,
-                GroupId = metadata.Group,
-                Versioning = new MavenVersioning()
+                GroupId = metadata.Group
             };
             if (artifactMetadata)
             {
+                result.Versioning = new MavenVersioning();
                 result.Versioning.Versions = new MavenVersions
                 {
                     Version = new List<string>()
@@ -254,23 +270,27 @@ namespace MavenProtocol
         {
             //var version = _artifactVersionsRepository.GetSingleVersion(mi.RepoId, mi.Group, mi.ArtifactId, mi.Version, mi.IsSnapshot, transaction);
             var hasTimestampedSnapshot = _servicesMapper.HasTimestampedSnapshot(mi.RepoId);
-
+            var version = _releaseArtifactRepository.GetForArtifact(mi.RepoId, mi.Group, mi.ArtifactId, mi.IsSnapshot);
 
             mavenMetadataXml.Version = this.BuildFullVersion(mi.Version, mi.IsSnapshot);
             if (hasTimestampedSnapshot && mi.IsSnapshot)
             {
-                var fullBuildId = mi.Timestamp.ToString("yyyyMMdd.HHmmss") + "-" + mi.Build;
+                if (mavenMetadataXml.Versioning == null)
+                {
+                    mavenMetadataXml.Versioning = new MavenVersioning();
+                }
+                var fullBuildId = version.Timestamp.ToString("yyyyMMdd.HHmmss") + "-" + version.Build;
                 mavenMetadataXml.Versioning.Snapshot = new MavenSnapshot
                 {
-                    Timestamp = mi.Timestamp.ToString("yyyyMMdd.HHmmss"),
-                    BuildNumber = mi.Build
+                    Timestamp = version.Timestamp.ToString("yyyyMMdd.HHmmss"),
+                    BuildNumber = version.Build
                 };
-                mavenMetadataXml.Versioning.LastUpdated = mi.Timestamp.ToString("yyyyMMddHHmmss");
+                mavenMetadataXml.Versioning.LastUpdated = version.Timestamp.ToString("yyyyMMddHHmmss");
                 mavenMetadataXml.Versioning.SnapshotVersions = new MavenSnapshotVersions
                 {
                     Version = new List<MavenSnapshotVersion>()
                 };
-                foreach (var artifact in _artifactsRepository.GetSnapshotBuildArtifacts(mi.RepoId, mi.Group, mi.ArtifactId, mi.Version, mi.Timestamp, mi.Build))
+                foreach (var artifact in _artifactsRepository.GetSnapshotBuildArtifacts(mi.RepoId, mi.Group, mi.ArtifactId, mi.Version, version.Timestamp, version.Build))
                 {
                     mavenMetadataXml.Versioning.SnapshotVersions.Version.Add(new MavenSnapshotVersion
                     {
@@ -280,6 +300,13 @@ namespace MavenProtocol
                         Updated = artifact.Timestamp.ToString("yyyyMMddHHmmss")
                     });
                 }
+                var pom = _pomRepository.GetSinglePom(mi.RepoId, mi.Group, mi.ArtifactId, mi.Version,version.IsSnapshot, version.Timestamp, version.Build);
+                mavenMetadataXml.Versioning.SnapshotVersions.Version.Add(new MavenSnapshotVersion
+                {
+                    Extension = "pom",
+                    Value = pom.Version + "-" + pom.Timestamp.ToString("yyyyMMdd.HHmmss") + "-" + pom.Build,
+                    Updated = pom.Timestamp.ToString("yyyyMMddHHmmss")
+                });
             }
         }
 
@@ -298,6 +325,14 @@ namespace MavenProtocol
             metadata.Md5 = _hashCalculator.GetMd5(metadata.Xml);
             metadata.Sha1 = _hashCalculator.GetSha1(metadata.Xml);
             _metadataRepository.Save(metadata, transaction);
+        }
+
+        public void GenerateNoSnapshot(MavenIndex mi)
+        {
+            if (null == _metadataRepository.GetArtifactVersionMetadata(mi.RepoId, mi.Group, mi.ArtifactId, mi.Version, mi.IsSnapshot))
+            {
+                GenerateArtifactVersionMetadata(mi, false);
+            }
         }
     }
 }

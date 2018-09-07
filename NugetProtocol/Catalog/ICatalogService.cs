@@ -33,7 +33,7 @@ namespace NugetProtocol
         CatalogEntry GetPackageCatalog(Guid repoId,string timestamp, string packageIdVersionLower);
 
         /// <summary>
-        /// Internal usage
+        ///  usage
         /// </summary>
         /// <param name="lowerId"></param>
         /// <param name="withSemVer2"></param>

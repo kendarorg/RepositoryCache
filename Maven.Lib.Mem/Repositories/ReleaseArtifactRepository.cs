@@ -2,6 +2,7 @@
 using MultiRepositories;
 using Repositories;
 using System;
+using System.Linq;
 
 namespace Maven.Repositories
 {
@@ -11,9 +12,14 @@ namespace Maven.Repositories
         {
         }
 
-        public ReleaseVersion GetSingleVersion(Guid repoId, string[] group, string artifactId, string version, bool isSnapshot, ITransaction transaction = null)
+        public ReleaseVersion GetForArtifact(Guid repoId, string[] group, string artifactId, bool isSnapshot)
         {
-            throw new NotImplementedException();
+            return GetAll().FirstOrDefault(a =>
+            {
+                return a.RepositoryId == repoId && a.Group == string.Join(".", group) && 
+                a.ArtifactId == artifactId && a.IsSnapshot == isSnapshot;
+            }
+                );
         }
     }
 }

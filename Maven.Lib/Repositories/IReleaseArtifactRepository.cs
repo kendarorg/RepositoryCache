@@ -13,9 +13,8 @@ namespace Maven.News
     public interface IReleaseArtifactRepository : IRepository<ReleaseVersion>
     {
         //The list of release artifacts
-        
+
         ///ReleaseVersion GetReleaseVersion(Guid repoId, string[] group, string artifactId, bool isSnapshot, ITransaction transaction = null);
-        
-        
+        ReleaseVersion GetForArtifact(Guid repoId, string[] group, string artifactId, bool isSnapshot);
     }
 }

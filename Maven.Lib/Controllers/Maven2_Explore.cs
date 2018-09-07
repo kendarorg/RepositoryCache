@@ -29,12 +29,14 @@ namespace Maven.Controllers
         private readonly IPomApi _pomApi;
         private readonly IArtifactsApi _artifactsApi;
         private readonly IMetadataApi _metadataApi;
+        private readonly IMetadataRepository _metadataRepository;
         private readonly IServicesMapper _servicesMapper;
 
         public Maven2_Explore(Guid repoId, AppProperties properties,
-            IRepositoryEntitiesRepository repositoryEntitiesRepository,IServicesMapper servicesMapper,
+            IRepositoryEntitiesRepository repositoryEntitiesRepository, IServicesMapper servicesMapper,
             IRequestParser requestParser,
-            IExploreApi exploreApi,IPomApi pomApi,IArtifactsApi artifactsApi,IMetadataApi metadataApi,
+            IExploreApi exploreApi, IPomApi pomApi, IArtifactsApi artifactsApi, IMetadataApi metadataApi,
+            IMetadataRepository metadataRepository,
             params string[] paths)
             : base(properties, null, paths)
         {
@@ -45,6 +47,7 @@ namespace Maven.Controllers
             this._pomApi = pomApi;
             this._artifactsApi = artifactsApi;
             this._metadataApi = metadataApi;
+            this._metadataRepository = metadataRepository;
             this._servicesMapper = servicesMapper;
             SetHandler(Handler);
         }
@@ -56,6 +59,7 @@ namespace Maven.Controllers
                 var idx = _requestParser.Parse(arg);
                 idx.RepoId = _repoId;
                 var repo = _repositoryEntitiesRepository.GetById(_repoId);
+
                 ExploreResult result = null;
                 if (repo.Mirror)
                 {
@@ -81,8 +85,46 @@ namespace Maven.Controllers
                 }
                 if (result == null)
                 {
+                    if (idx.Group != null && idx.Group.Length > 1)
+                    {
+                        var supposedGroup = idx.Group.Take(idx.Group.Length - 1).Select(a=>a).ToArray();
+                        var supposedArtifact = idx.Group.Last();
+                        var meta = _metadataRepository.GetArtifactMetadata(repo.Id, supposedGroup, supposedArtifact);
+                        if (meta != null)
+                        {
+                            idx.Version = idx.ArtifactId;
+                            idx.Group = supposedGroup;
+                            idx.ArtifactId = supposedArtifact;
+                        }
+                }
+                    result = new ExploreResult();
+                    result.Base = "/" + repo.Prefix;
+                    if (idx.Group != null && idx.Group.Any())
+                    {
+                        result.Base += "/" + string.Join("/", idx.Group);
+                        if (idx.ArtifactId != null)
+                        {
+                            result.Base += "/" + idx.ArtifactId;
+                            if (idx.Version != null)
+                            {
+                                result.Base += "/" + idx.Version;
+                                if (idx.IsSnapshot)
+                                {
+                                    result.Base += "-SNAPSHOT";
+                                }
+                            }
+                        }
+                    }
                     ExploreLocal(idx, result);
-
+                    if( (result.Children==null ||result.Children.Count==0) && result.Content==null)
+                    {
+                        return new SerializableResponse
+                        {
+                            Content = Encoding.UTF8.GetBytes("Error page not found"),
+                            ContentType = "text/plain",
+                            HttpCode = 404
+                        };
+                    }
                 }
                 if (result.Content != null)
                 {
@@ -107,8 +149,17 @@ namespace Maven.Controllers
 
                     return HtmlResponse(result, path, repo.Prefix + " " + (repo.Mirror ? "Mirror" : "Local"));
                 }
+                if (result.Content == null && result.Children == null)
+                {
+                    return new SerializableResponse
+                    {
+                        Content = new byte[] { },
+                        HttpCode = 200
+                    };
+                }
                 return JsonResponse(result);
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 Console.WriteLine(ex);
                 throw new NotFoundException();
@@ -120,73 +171,84 @@ namespace Maven.Controllers
             if (_artifactsApi.CanHandle(idx))
             {
                 var re = _artifactsApi.Retrieve(idx);
-                if (re.Content != null)
+                if (re != null)
                 {
-                    result.Content = re.Content;
-                }
-                else if (idx.Checksum == "md5")
-                {
-                    result.Content = Encoding.UTF8.GetBytes(re.Md5);
-                }
-                else if (idx.Checksum == "sha1")
-                {
-                    result.Content = Encoding.UTF8.GetBytes(re.Sha1);
+                    if (re.Content != null)
+                    {
+                        result.Content = re.Content;
+                    }
+                    else if (idx.Checksum == "md5")
+                    {
+                        result.Content = Encoding.UTF8.GetBytes(re.Md5);
+                    }
+                    else if (idx.Checksum == "sha1")
+                    {
+                        result.Content = Encoding.UTF8.GetBytes(re.Sha1);
+                    }
                 }
             }
             else if (_metadataApi.CanHandle(idx))
             {
                 var re = _metadataApi.Retrieve(idx);
-                if (re.Xml != null)
+                if (re != null)
                 {
-                    var xsSubmit = new XmlSerializer(re.Xml.GetType());
-
-                    using (var sww = new StringWriter())
+                    if (re.Xml != null)
                     {
-                        using (var writer = XmlWriter.Create(sww))
+                        var xsSubmit = new XmlSerializer(re.Xml.GetType());
+
+                        using (var sww = new StringWriter())
                         {
-                            xsSubmit.Serialize(writer, re.Xml);
-                            result.Content = Encoding.UTF8.GetBytes(sww.ToString());
+                            using (var writer = XmlWriter.Create(sww))
+                            {
+                                xsSubmit.Serialize(writer, re.Xml);
+                                result.Content = Encoding.UTF8.GetBytes(sww.ToString());
+                            }
                         }
                     }
-                }
-                else if (idx.Checksum == "md5")
-                {
-                    result.Content = Encoding.UTF8.GetBytes(re.Md5);
-                }
-                else if (idx.Checksum == "sha1")
-                {
-                    result.Content = Encoding.UTF8.GetBytes(re.Sha1);
+                    else if (idx.Checksum == "md5")
+                    {
+                        result.Content = Encoding.UTF8.GetBytes(re.Md5);
+                    }
+                    else if (idx.Checksum == "sha1")
+                    {
+                        result.Content = Encoding.UTF8.GetBytes(re.Sha1);
+                    }
                 }
             }
             else if (_pomApi.CanHandle(idx))
             {
                 var re = _pomApi.Retrieve(idx);
-                if (re.Xml != null)
+                if (re != null)
                 {
-                    var xsSubmit = new XmlSerializer(re.Xml.GetType());
-
-                    using (var sww = new StringWriter())
+                    if (re.Xml != null)
                     {
-                        using (var writer = XmlWriter.Create(sww))
+                        /*var xsSubmit = new XmlSerializer(re.Xml.GetType());
+
+                        using (var sww = new StringWriter())
                         {
-                            xsSubmit.Serialize(writer, re.Xml);
-                            result.Content = Encoding.UTF8.GetBytes(sww.ToString());
-                        }
+                            using (var writer = XmlWriter.Create(sww))
+                            {
+                                xsSubmit.Serialize(writer, re.Xml);
+                                result.Content = Encoding.UTF8.GetBytes(sww.ToString());
+                            }
+                        }*/
+                        result.Content = Encoding.UTF8.GetBytes(re.Xml);
                     }
-                }
-                else if (idx.Checksum == "md5")
-                {
-                    result.Content = Encoding.UTF8.GetBytes(re.Md5);
-                }
-                else if (idx.Checksum == "sha1")
-                {
-                    result.Content = Encoding.UTF8.GetBytes(re.Sha1);
+                    else if (idx.Checksum == "md5")
+                    {
+                        result.Content = Encoding.UTF8.GetBytes(re.Md5);
+                    }
+                    else if (idx.Checksum == "sha1")
+                    {
+                        result.Content = Encoding.UTF8.GetBytes(re.Sha1);
+                    }
                 }
             }
             else
             {
                 var re = _exploreApi.Retrieve(idx);
-                re.Children = re.Children;
+
+                result.Children = re.Children;
             }
         }
 
@@ -204,15 +266,15 @@ namespace Maven.Controllers
 
             if (_artifactsApi.CanHandle(idx))
             {
-                _artifactsApi.Generate(idx);
+                _artifactsApi.Generate(idx, true);
             }
             else if (_metadataApi.CanHandle(idx))
             {
-                _metadataApi.Generate(idx);
+                _metadataApi.Generate(idx, true);
             }
             else if (_pomApi.CanHandle(idx))
             {
-                _pomApi.Generate(idx);
+                _pomApi.Generate(idx, true);
             }
             else
             {
@@ -250,10 +312,16 @@ namespace Maven.Controllers
 
 
             result += "<header><h1>" + path + "</h1></header><hr/><main><pre id='contents'>";
-            var spl = to.Base.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+            var spl = new string[] { };
+            if (to.Base == null)
+            {
+                to.Base = string.Empty;
+            }
+            spl = to.Base.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
             if (spl.Length > 1)
             {
                 result += "<a href='/" + string.Join("/", spl.Take(spl.Length - 1)) + "'>..</a>\r\n";
+                result += "\r\n";
             }
             foreach (var item in to.Children)
             {

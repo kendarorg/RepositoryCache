@@ -5,6 +5,7 @@ using MavenProtocol.Apis;
 using MavenProtocol.News;
 using MultiRepositories.Repositories;
 using Repositories;
+using SemVer;
 using System;
 
 namespace Maven.News
@@ -21,13 +22,14 @@ namespace Maven.News
         private readonly ITransactionManager _transactionManager;
         private readonly IReleaseArtifactRepository _releaseArtifactRepository;
         private readonly IPomApi _pomApi;
+        private readonly IMetadataApi _metadataApi;
 
         public ArtifactsApi(IArtifactsRepository artifactVersionsRepository, IArtifactsStorage artifactsStorage,
             IRepositoryEntitiesRepository repositoriesRepository,
             IServicesMapper servicesMapper,
             IHashCalculator hashCalculator, ITransactionManager transactionManager,
             IReleaseArtifactRepository releaseArtifactRepository,
-            IPomApi pomApi)
+            IPomApi pomApi,IMetadataApi metadataApi)
         {
             this._artifactVersionsRepository = artifactVersionsRepository;
             this._artifactsStorage = artifactsStorage;
@@ -37,6 +39,7 @@ namespace Maven.News
             this._transactionManager = transactionManager;
             this._releaseArtifactRepository = releaseArtifactRepository;
             this._pomApi = pomApi;
+            this._metadataApi = metadataApi;
         }
         public bool CanHandle(MavenIndex mi)
         {
@@ -56,20 +59,24 @@ namespace Maven.News
                 Md5 = artifact.Md5,
                 Sha1 = artifact.Sha1,
             };
-            if (!string.IsNullOrWhiteSpace(mi.Checksum))
+            if (string.IsNullOrWhiteSpace(mi.Checksum))
             {
                 result.Content = _artifactsStorage.Load(repo, mi);
             }
             return result;
         }
 
-        public ArtifactsApiResult Generate(MavenIndex mi)
+        public ArtifactsApiResult Generate(MavenIndex mi,bool remote)
         {
-            var artifact = _artifactVersionsRepository.GetSingleArtifact(mi.RepoId, mi.Group, mi.ArtifactId, mi.Version, mi.Classifier, mi.Extension, mi.IsSnapshot, mi.Timestamp, mi.Build);
-            var isNew = true;
+            if (!string.IsNullOrWhiteSpace(mi.Checksum))
+            {
+                return null;
+            }
+            var artifact = _artifactVersionsRepository.GetSingleArtifact(mi.RepoId, mi.Group, mi.ArtifactId,
+                mi.Version, mi.Classifier, mi.Extension, mi.IsSnapshot, mi.Timestamp, mi.Build);
+            
             if (artifact != null)
             {
-                isNew = false;
                 if (mi.IsSnapshot)
                 {
                     if (_servicesMapper.HasTimestampedSnapshot(mi.RepoId))
@@ -84,28 +91,54 @@ namespace Maven.News
             }
             artifact = new ArtifactEntity
             {
+                RepositoryId = mi.RepoId,
                 Build = mi.Build,
-                Timestamp = mi.Timestamp,
+                Timestamp = mi.Timestamp.Year>1?mi.Timestamp:DateTime.Now,
                 IsSnapshot = mi.IsSnapshot,
                 Version = mi.Version,
                 ArtifactId = mi.ArtifactId,
                 Group = string.Join(".", mi.Group),
                 Md5 = _hashCalculator.GetMd5(mi.Content),
-                Sha1 = _hashCalculator.GetSha1(mi.Content)
+                Sha1 = _hashCalculator.GetSha1(mi.Content),
+                Extension =mi.Extension,
+                Classifier = mi.Classifier
             };
             var repo = _repositoriesRepository.GetById(mi.RepoId);
             using (var transactin = _transactionManager.BeginTransaction())
             {
+                var release = _releaseArtifactRepository.GetForArtifact(
+                    mi.RepoId, mi.Group, mi.ArtifactId, mi.IsSnapshot);
+                if (release == null)
+                {
+                    release = new ReleaseVersion
+                    {
+                        ArtifactId = mi.ArtifactId,
+                        Group = string.Join(".", mi.Group),
+                        IsSnapshot = mi.IsSnapshot,
+                        RepositoryId = mi.RepoId,
+                        Version = "0",
+                        Timestamp = mi.Timestamp.Year > 1 ? mi.Timestamp : DateTime.Now,
+                    };
+                }
+                var prevVer = JavaSemVersion.Parse(release.Version);
+                var newVer = JavaSemVersion.Parse(artifact.Version);
+                if(newVer > prevVer)
+                {
+                    release.Timestamp = mi.Timestamp;
+                    release.Build = mi.Build;
+                    release.Version = mi.Version;
+                }
+                _releaseArtifactRepository.Save(release, transactin);
                 _artifactsStorage.Save(repo, mi, mi.Content);
-                if (isNew)
+                _artifactVersionsRepository.Save(artifact, transactin);
+                if (remote)
                 {
-                    _artifactVersionsRepository.Save(artifact, transactin);
+                    _pomApi.Generate(mi, remote);
                 }
-                else
+                if (!mi.IsSnapshot)
                 {
-                    _artifactVersionsRepository.Update(artifact, transactin);
+                    _metadataApi.GenerateNoSnapshot(mi);
                 }
-                _pomApi.Generate(mi);
             }
             var result = new ArtifactsApiResult
             {

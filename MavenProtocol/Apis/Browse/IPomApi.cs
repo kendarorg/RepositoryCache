@@ -11,6 +11,6 @@ namespace MavenProtocol.News
     public interface IPomApi : IMavenApi
     {
         PomApiResult Retrieve(MavenIndex mi);
-        PomApiResult Generate(MavenIndex mi);
+        PomApiResult Generate(MavenIndex mi, bool remote);
     }
 }

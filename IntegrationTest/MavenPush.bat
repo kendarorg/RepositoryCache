@@ -17,7 +17,7 @@ echo Maven.3.5.4, Upload of simple file
 
 REM mvn deploy:deploy-file --fn -DgroupId=%GROUPID% -DartifactId=%ARTIFACTID% -Dversion=%AVERSION% -DgeneratePom=true -Dpackaging=jar -DrepositoryId=local -Durl=%NUROOT% -Dfile=%ARTIPATH%.jar 
 
-start /WAIT /B mvn deploy:deploy-file  -DgroupId=%GROUPID% -DartifactId=%ARTIFACTID% -Dversion=%AVERSION% -DgeneratePom=true -Dpackaging=jar -DrepositoryId=local -Durl=%NUROOT% -Dfile=%ARTIPATH%.jar -Dfiles=%ARTIPATH%-javadoc.jar,%ARTIPATH%-sources.jar -Dclassifiers=javadoc,sources -Dtypes=jar,jar
+start /WAIT /B mvn deploy:deploy-file -DpomFile=%ARTIPATH%.pom  -DgroupId=%GROUPID% -DartifactId=%ARTIFACTID% -Dversion=%AVERSION% -DgeneratePom=false -Dpackaging=jar -DrepositoryId=local -Durl=%NUROOT% -Dfile=%ARTIPATH%.jar -Dfiles=%ARTIPATH%-javadoc.jar,%ARTIPATH%-sources.jar -Dclassifiers=javadoc,sources -Dtypes=jar,jar
 
 
 pause

@@ -23,7 +23,8 @@ namespace Repositories
         {
             _properties = properties;
 
-            if (!Directory.Exists(_properties.DbConnectionString)){
+            if (!Directory.Exists(_properties.DbConnectionString))
+            {
                 Directory.CreateDirectory(_properties.DbConnectionString);
             }
         }
@@ -64,12 +65,19 @@ namespace Repositories
         public virtual int Save(T be, ITransaction transaction = null)
         {
             var data = GetData();
-            if (data.ContainsKey(be.Id))
+            if (be.Id == Guid.Empty)
             {
-                Update(be, transaction);
-                return 1;
+                be.Id = Guid.NewGuid();
             }
-            var result = data.TryAdd(be.Id,Clone(be,new T()))?1:0;
+            else
+            {
+                if (data.ContainsKey(be.Id))
+                {
+                    Update(be, transaction);
+                    return 1;
+                }
+            }
+            var result = data.TryAdd(be.Id, Clone(be, new T())) ? 1 : 0;
             Save();
             return result;
         }
@@ -81,7 +89,7 @@ namespace Repositories
             {
                 return 0;
             }
-            data[be.Id]= Clone(be, new T());
+            data[be.Id] = Clone(be, new T());
             Save();
             return 1;
         }
@@ -118,7 +126,7 @@ namespace Repositories
         public virtual IEnumerable<T> GetAll(ITransaction transaction = null)
         {
             var data = GetData();
-            foreach(var item in data.Values)
+            foreach (var item in data.Values)
             {
                 yield return Clone((T)item, new T());
             }
@@ -134,7 +142,7 @@ namespace Repositories
         private void Save()
         {
             var allData = JsonConvert.SerializeObject(_data[_name]);
-            File.WriteAllText(Path.Combine(_properties.DbConnectionString,_name + ".dat"), allData);
+            File.WriteAllText(Path.Combine(_properties.DbConnectionString, _name + ".dat"), allData);
         }
 
         private void Load()
@@ -142,12 +150,12 @@ namespace Repositories
             if (File.Exists(Path.Combine(_properties.DbConnectionString, _name + ".dat")))
             {
                 var str = File.ReadAllText(Path.Combine(_properties.DbConnectionString, _name + ".dat"));
-                var data= JsonConvert.DeserializeObject<Dictionary<Guid, T>>(str);
-                foreach(var item in data)
+                var data = JsonConvert.DeserializeObject<Dictionary<Guid, T>>(str);
+                foreach (var item in data)
                 {
                     _data[_name][item.Key] = item.Value;
                 }
-                
+
             }
         }
     }

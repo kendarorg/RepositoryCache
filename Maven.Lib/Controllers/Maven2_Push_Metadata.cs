@@ -38,7 +38,7 @@ namespace Maven.Controllers
 
             var idx = _requestParser.Parse(arg);
             idx.RepoId = _repoId;
-            _interfaceService.Generate(idx);
+            _interfaceService.Generate(idx,false);
 
             return new SerializableResponse();
         }

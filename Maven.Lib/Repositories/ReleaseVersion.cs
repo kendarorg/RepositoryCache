@@ -11,5 +11,6 @@ namespace Maven.News
         public string Build { get; set; }
         public string ArtifactId { get; set; }
         public string Group { get; set; }
+        public Guid RepositoryId { get; set; }
     }
 }

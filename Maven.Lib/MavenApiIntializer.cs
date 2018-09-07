@@ -28,12 +28,14 @@ namespace Maven
         private readonly IPomApi _pomApi;
         private readonly IArtifactsApi _artifactsApi;
         private readonly IMetadataApi _metadataApi;
+        private readonly IMetadataRepository _metadataRepository;
 
         public MavenApiIntializer(AppProperties applicationPropertes,
             IAssemblyUtils assemblyUtils,
             IRepositoryEntitiesRepository repositoryEntitiesRepository,
             IRequestParser requestParser,
-            IServicesMapper servicesMapper, IExploreApi exploreApi, IPomApi pomApi, IArtifactsApi artifactsApi, IMetadataApi metadataApi)
+            IServicesMapper servicesMapper, IExploreApi exploreApi, IPomApi pomApi, IArtifactsApi artifactsApi, IMetadataApi metadataApi,
+            IMetadataRepository metadataRepository)
         {
             this._applicationPropertes = applicationPropertes;
             this._assemblyUtils = assemblyUtils;
@@ -44,6 +46,7 @@ namespace Maven
             this._pomApi = pomApi;
             this._artifactsApi = artifactsApi;
             this._metadataApi = metadataApi;
+            this._metadataRepository = metadataRepository;
         }
         public void Initialize(IRepositoryServiceProvider repositoryServiceProvider)
         {
@@ -85,7 +88,7 @@ namespace Maven
             {
                 repositoryServiceProvider.RegisterApi(new Maven2_Explore(
                     item.Id, _applicationPropertes, _repositoryEntitiesRepository, _servicesMapper, _requestParser,
-                    _exploreApi, _pomApi, _artifactsApi, _metadataApi,
+                    _exploreApi, _pomApi, _artifactsApi, _metadataApi, _metadataRepository,
                     "*GET",
                         MavenConstants.REGEX_SNAP_PACK.
                             Replace("{repo}", Regex.Escape(item.Prefix)),

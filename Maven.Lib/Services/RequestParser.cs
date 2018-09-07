@@ -71,14 +71,15 @@ namespace Maven.Services
                 IsSnapshot = isSnapshot,
                 Filename = filename,
                 Extension = extension,
-                Meta = meta
+                Meta = meta,
+                Content = arg.Content
             };
 
             if (!string.IsNullOrWhiteSpace(build))
             {
                 var splitted = build.Split('-');
                 result.Build = splitted.Last();
-                build = build.Substring(0, build.Length - result.Build.Length);
+                build = build.Substring(0, build.Length - result.Build.Length-1);
                 result.Timestamp = DateTime.ParseExact(build, "yyyyMMdd.HHmmss", CultureInfo.InvariantCulture);
             }
 

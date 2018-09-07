@@ -13,7 +13,7 @@ namespace MavenProtocol
         public void ISPToHandleArtifactLevelMetadata()
         {
             
-            IReleaseArtifactRepository artifactVersionsRepository = null;
+            //IReleaseArtifactRepository artifactVersionsRepository = null;
             /*IMetadataApi target = new MetadataApi(
                 dummyGenerator,
                 artifactVersionsRepository

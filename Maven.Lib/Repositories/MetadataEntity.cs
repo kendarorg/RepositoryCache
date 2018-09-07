@@ -1,4 +1,5 @@
-﻿using Repositories;
+﻿using System;
+using Repositories;
 
 namespace Maven.News
 {
@@ -12,6 +13,7 @@ namespace Maven.News
         public string Md5 { get; set; }
         public bool IsSnapshot { get; set; }
         public string Version { get; set; }
-        public int Timestamp { get; internal set; }
+        public DateTime Timestamp { get;  set; }
+        public Guid RepositoryId { get;  set; }
     }
 }

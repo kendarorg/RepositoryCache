@@ -277,14 +277,7 @@ namespace Nuget.Services
             p.Title = metadata.Title;
             p.Verified = data.Verified;
             p.RepositoryId = data.RepoId;
-            if (isNew)
-            {
-                _packagesRepository.Save(p, transaction);
-            }
-            else
-            {
-                _packagesRepository.Update(p, transaction);
-            }
+            _packagesRepository.Save(p, transaction);
         }
 
         public void InsertPackagesStorage(InsertData data, byte[] content)
@@ -317,14 +310,7 @@ namespace Nuget.Services
                 r.Extra = version.Extra;
             }
             r.Version = version.ToNormalizedVersion();
-            if (isNew)
-            {
-                _registrationRepository.Save(r, transaction);
-            }
-            else
-            {
-                _registrationRepository.Update(r, transaction);
-            }
+            _registrationRepository.Save(r, transaction);
         }
 
         public void InsertQuery(InsertData data, ITransaction transaction)
@@ -401,14 +387,7 @@ namespace Nuget.Services
                 }
             }
             p.FreeText = p.Title + " " + p.Description + " " + p.Summary;
-            if (isNew)
-            {
-                _queryRepository.Save(p, transaction);
-            }
-            else
-            {
-                _queryRepository.Update(p, transaction);
-            }
+             _queryRepository.Save(p, transaction);
         }
     }
 }

@@ -32,7 +32,7 @@ namespace Maven.News
 
         public PomApiResult Retrieve(MavenIndex mi)
         {
-            var metadata = _pomRepository.GetSinglePom(mi.RepoId, mi.Group, mi.ArtifactId, mi.Version, mi.Classifier, mi.Extension, mi.IsSnapshot, mi.Timestamp, mi.Build);
+            var metadata = _pomRepository.GetSinglePom(mi.RepoId, mi.Group, mi.ArtifactId, mi.Version, mi.IsSnapshot, mi.Timestamp, mi.Build);
             if (metadata == null)
             {
                 return null;
@@ -60,7 +60,7 @@ namespace Maven.News
             {
                 Md5 = metadata.Md5,
                 Sha1 = metadata.Sha1,
-                Xml = mavenMetadataXml
+                Xml = checksumsOnly?null:metadata.OriginalXml
             };
         }
 
@@ -76,34 +76,54 @@ namespace Maven.News
                     metadata.Xml = sww.ToString();
                 }
             }
-            metadata.Md5 = _hashCalculator.GetMd5(metadata.Xml);
-            metadata.Sha1 = _hashCalculator.GetSha1(metadata.Xml);
+            metadata.Md5 = _hashCalculator.GetMd5(metadata.OriginalXml);
+            metadata.Sha1 = _hashCalculator.GetSha1(metadata.OriginalXml);
             _pomRepository.Save(metadata, transaction);
-            throw new Exception("TODO SHOULD CONSIDER THE MODIFICATIONS");
         }
 
-        public PomApiResult Generate(MavenIndex mi)
+        public PomApiResult Generate(MavenIndex mi,bool remote)
         {
+            
             using (var transaction = _transactionManager.BeginTransaction())
             {
                 var strPom = Encoding.UTF8.GetString(mi.Content);
-                var metadata = new PomEntity
+                var metadata = _pomRepository.GetSinglePom(mi.RepoId,
+                    mi.Group, mi.ArtifactId, mi.Version, mi.IsSnapshot, mi.Timestamp, mi.Build);
+                if (!string.IsNullOrWhiteSpace(mi.Checksum))
                 {
-                    ArtifactId = mi.ArtifactId,
-                    Group = string.Join(".", mi.Group),
-                    Version = mi.Version,
-                    IsSnapshot = mi.IsSnapshot,
-                    Build = mi.Build,
-                    Timestamp = mi.Timestamp,
-                    OriginalXml = strPom
-                };
+                    return null;
+                }
+                if (metadata == null)
+                {
+                    metadata = new PomEntity
+                    {
+                        RepositoryId = mi.RepoId,
+                        ArtifactId = mi.ArtifactId,
+                        Group = string.Join(".", mi.Group),
+                        Version = mi.Version,
+                        IsSnapshot = mi.IsSnapshot,
+                        Build = mi.Build,
+                        Timestamp = mi.Timestamp,
+                        OriginalXml = strPom
+                    };
+                }
 
-
-                var pom = PomXml.Parse(strPom);
-                SerializePom(metadata, pom, transaction);
-                var result = CreateResponse(metadata, !string.IsNullOrWhiteSpace(mi.Checksum));
-                _metadataApi.Generate(mi);
-                return result;
+                if (!remote)
+                {
+                    var pom = PomXml.Parse(strPom);
+                    SerializePom(metadata, pom, transaction);
+                
+                    var result = CreateResponse(metadata, !string.IsNullOrWhiteSpace(mi.Checksum));
+                    //_metadataApi.Generate(mi,remote);
+                    return result;
+                }
+                else
+                {
+                    var result = CreateResponse(metadata, !string.IsNullOrWhiteSpace(mi.Checksum));
+                    _metadataApi.Generate(mi,remote);
+                    return result;
+                }
+                
             }
         }
     }
