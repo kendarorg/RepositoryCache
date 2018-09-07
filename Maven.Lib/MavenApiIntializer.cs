@@ -29,13 +29,14 @@ namespace Maven
         private readonly IArtifactsApi _artifactsApi;
         private readonly IMetadataApi _metadataApi;
         private readonly IMetadataRepository _metadataRepository;
+        private readonly IMavenSearch _mavenSearch;
 
         public MavenApiIntializer(AppProperties applicationPropertes,
             IAssemblyUtils assemblyUtils,
             IRepositoryEntitiesRepository repositoryEntitiesRepository,
             IRequestParser requestParser,
             IServicesMapper servicesMapper, IExploreApi exploreApi, IPomApi pomApi, IArtifactsApi artifactsApi, IMetadataApi metadataApi,
-            IMetadataRepository metadataRepository)
+            IMetadataRepository metadataRepository, IMavenSearch mavenSearch)
         {
             this._applicationPropertes = applicationPropertes;
             this._assemblyUtils = assemblyUtils;
@@ -47,6 +48,7 @@ namespace Maven
             this._artifactsApi = artifactsApi;
             this._metadataApi = metadataApi;
             this._metadataRepository = metadataRepository;
+            this._mavenSearch = mavenSearch;
         }
         public void Initialize(IRepositoryServiceProvider repositoryServiceProvider)
         {
@@ -86,6 +88,13 @@ namespace Maven
             _servicesMapper.Refresh();
             foreach (var item in _repositoryEntitiesRepository.GetByType("maven"))
             {
+
+                repositoryServiceProvider.RegisterApi(
+                    new Maven2_Search(item.Id, _repositoryEntitiesRepository, _requestParser, _metadataApi, _mavenSearch,
+                    "*GET",
+                         @"/{repo}/search".
+                            Replace("{repo}", item.Prefix)));
+
                 repositoryServiceProvider.RegisterApi(new Maven2_Explore(
                     item.Id, _applicationPropertes, _repositoryEntitiesRepository, _servicesMapper, _requestParser,
                     _exploreApi, _pomApi, _artifactsApi, _metadataApi, _metadataRepository,

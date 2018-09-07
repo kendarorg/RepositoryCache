@@ -53,6 +53,7 @@
     <Compile Include="Controllers\Maven2_Explore.cs" />
     <Compile Include="Controllers\Maven2_Push_Metadata.cs" />
     <Compile Include="Controllers\Maven2_Push_Package.cs" />
+    <Compile Include="Controllers\Maven2_Search.cs" />
     <Compile Include="InconsistentRemoteDataException.cs" />
     <Compile Include="MavenApiIntializer.cs" />
     <Compile Include="Repositories\ArtifactEntity.cs" />
