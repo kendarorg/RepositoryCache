@@ -49,6 +49,7 @@ namespace Maven.Apis
 
             if (param.Wt == "gav")
             {
+                throw new Exception("TODO SEARCH ONLY RELEASE");
                 /*var result = _mavenSearchRepository.Query(repoId, param);
                 foreach (var item in result)
                 {
