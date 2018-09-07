@@ -56,7 +56,7 @@ namespace Maven.Lib.Mem
 
             if (pq.FreeText.Any())
             {
-                result = result.Where(r => pq.FreeText.Any(a => r.FreeText.IndexOf(a, StringComparison.CurrentCultureIgnoreCase) >= 0));
+                result = result.Where(r => pq.FreeText.Any(a => r.OriginalXml.IndexOf(a, StringComparison.CurrentCultureIgnoreCase) >= 0));
             }
             foreach (var item in pq.Keys)
             {

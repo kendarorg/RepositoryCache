@@ -95,7 +95,8 @@ namespace Maven.Apis
 
         private ResponseDoc BuildResponse(PomEntity item)
         {
-            var id = item.Group + ":" + item.ArtifactId + ":" + item.Version;
+            var snap = item.IsSnapshot ? "-SNAPSHOT" : "";
+            var id = item.Group + ":" + item.ArtifactId + ":" + item.Version+ snap;
             List<string> typeAndExt = null;
             List<string> tags = null;
             if (!string.IsNullOrWhiteSpace(item.Classifiers))
@@ -109,8 +110,8 @@ namespace Maven.Apis
                     Where(b => !string.IsNullOrWhiteSpace(b)).ToList();
             }
             return new ResponseDoc(
-                id, item.Group, item.ArtifactId, item.Version,
-                item.Timestamp.ToFileTime(),
+                id, item.Group, item.ArtifactId, item.Version+snap,
+                item.Timestamp.Year>1?item.Timestamp.ToFileTime():0,
                 typeAndExt,
                 tags);
         }

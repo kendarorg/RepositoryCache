@@ -17,10 +17,10 @@ namespace Maven.Controllers
 {
     public class Maven2_Push_Package : RestAPI
     {
-        private IArtifactsApi _interfaceService;
+        private readonly IArtifactsApi _interfaceService;
         private readonly IPomApi _pomApi;
         private readonly Guid _repoId;
-        private IRepositoryEntitiesRepository _repositoryEntitiesRepository;
+        private readonly IRepositoryEntitiesRepository _repositoryEntitiesRepository;
         private readonly IRequestParser _requestParser;
 
         public Maven2_Push_Package(Guid repoId,

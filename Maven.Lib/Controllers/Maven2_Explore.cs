@@ -97,8 +97,10 @@ namespace Maven.Controllers
                             idx.ArtifactId = supposedArtifact;
                         }
                 }
-                    result = new ExploreResult();
-                    result.Base = "/" + repo.Prefix;
+                    result = new ExploreResult
+                    {
+                        Base = "/" + repo.Prefix
+                    };
                     if (idx.Group != null && idx.Group.Any())
                     {
                         result.Base += "/" + string.Join("/", idx.Group);

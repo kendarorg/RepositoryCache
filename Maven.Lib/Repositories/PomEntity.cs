@@ -20,6 +20,5 @@ namespace Maven.News
         public string Packaging { get; set; }
         public string Classifiers { get; set; }
         public string Tags { get; set; }
-        public string FreeText { get; set; }
     }
 }

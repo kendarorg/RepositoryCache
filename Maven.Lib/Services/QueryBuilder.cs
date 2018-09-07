@@ -51,7 +51,8 @@ namespace Maven.Services
         private void ParseKeyword(ParsedQuery pq, string[] splitted, ref int i, string item)
         {
             var keyword = GetKeyword(item);
-            var subItem = item.Substring(keyword.Length + 1);
+            var dd = item.IndexOf(":");
+            var subItem = item.Substring(dd + 1);
             if (subItem[0] == '\"' && subItem[subItem.Length - 1] == '\"' && subItem.Length > 1 && subItem[subItem.Length - 2] != '\\')
             {
                 pq.Keys.Add(keyword, subItem.Trim('\"'));

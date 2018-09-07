@@ -100,7 +100,6 @@ namespace Maven.News
                     
                     metadata = new PomEntity
                     {
-                        FreeText = string.Empty,
                         RepositoryId = mi.RepoId,
                         ArtifactId = mi.ArtifactId,
                         Group = string.Join(".", mi.Group),
