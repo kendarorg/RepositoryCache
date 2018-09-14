@@ -20,6 +20,14 @@ namespace Maven.Repositories
             this._queryToLinq = queryToLinq;
         }
 
+        public IEnumerable<PomEntity> GetPomForVersion(Guid repoId, string[] group, string artifactId, string version, bool isSnapshot)
+        {
+            return GetAll().Where(a =>
+            {
+                return a.Group == string.Join(".", group) && a.ArtifactId == artifactId && a.Version == version && a.IsSnapshot == isSnapshot;
+            });
+        }
+
         public PomEntity GetSinglePom(Guid repoId, string[] group, string artifactId, string version,  bool isSnapshot, DateTime timestamp, string build, ITransaction transaction = null)
         {
             return GetAll().FirstOrDefault(a =>

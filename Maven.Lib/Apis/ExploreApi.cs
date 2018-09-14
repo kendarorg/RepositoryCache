@@ -19,12 +19,13 @@ namespace Maven.News
         private readonly IMetadataRepository _metadataRepository;
         private readonly IArtifactsRepository _artifactsRepository;
         private readonly IReleaseArtifactRepository _releaseArtifactRepository;
+        private readonly IPomRepository _pomRepository;
 
         public ExploreApi(IServicesMapper servicesMapper, IArtifactsStorage artifactsStorage,
             IRepositoryEntitiesRepository repositoriesRepository,
             IMetadataRepository metadataRepository, 
             IArtifactsRepository artifactsRepository,
-            IReleaseArtifactRepository releaseArtifactRepository)
+            IReleaseArtifactRepository releaseArtifactRepository,IPomRepository pomRepository)
         {
             this._servicesMapper = servicesMapper;
             this._artifactsStorage = artifactsStorage;
@@ -32,6 +33,7 @@ namespace Maven.News
             this._metadataRepository = metadataRepository;
             this._artifactsRepository = artifactsRepository;
             this._releaseArtifactRepository = releaseArtifactRepository;
+            this._pomRepository = pomRepository;
         }
         public ExploreResponse Retrieve(MavenIndex mi)
         {
@@ -97,11 +99,14 @@ namespace Maven.News
 
         private void AddPom(ExploreResponse result,MavenIndex mi)
         {
-            var build = string.IsNullOrWhiteSpace(mi.Build) ? "" : "-" + mi.Timestamp.ToString("yyyyMMdd.HHmmss") + "-" + mi.Build;
-            var name = mi.ArtifactId + "-" + mi.Version + build;
-            result.Children.Add(name + ".pom");
-            result.Children.Add(name + ".pom.md5");
-            result.Children.Add(name+".pom.sha1");
+            foreach (var sipom in _pomRepository.GetPomForVersion(mi.RepoId, mi.Group, mi.ArtifactId, mi.Version, mi.IsSnapshot))
+            {
+                var build = string.IsNullOrWhiteSpace(sipom.Build) ? "" : "-" + sipom.Timestamp.ToString("yyyyMMdd.HHmmss") + "-" + sipom.Build;
+                var name = sipom.ArtifactId + "-" + sipom.Version + build;
+                result.Children.Add(name + ".pom");
+                result.Children.Add(name + ".pom.md5");
+                result.Children.Add(name + ".pom.sha1");
+            }
         }
 
         private string BuildFullVersion(string version, bool isSnapshot)

@@ -17,7 +17,7 @@ namespace Maven.Controllers
 {
     public class Maven2_Push_Package : RestAPI
     {
-        private readonly IArtifactsApi _interfaceService;
+        private readonly IArtifactsApi _artifactsApi;
         private readonly IPomApi _pomApi;
         private readonly Guid _repoId;
         private readonly IRepositoryEntitiesRepository _repositoryEntitiesRepository;
@@ -28,7 +28,7 @@ namespace Maven.Controllers
             IArtifactsApi interfaceService, IPomApi pomApi, params string[] paths)
             : base(null, paths)
         {
-            _interfaceService = interfaceService;
+            _artifactsApi = interfaceService;
             this._pomApi = pomApi;
             this._repoId = repoId;
             _repositoryEntitiesRepository = repositoryEntitiesRepository;
@@ -42,9 +42,9 @@ namespace Maven.Controllers
             var idx = _requestParser.Parse(arg);
             idx.RepoId = _repoId;
 
-            if (_interfaceService.CanHandle(idx))
+            if (_artifactsApi.CanHandle(idx))
             {
-                _interfaceService.Generate(idx, false);
+                _artifactsApi.Generate(idx, false);
             }
             else if (_pomApi.CanHandle(idx))
             {
