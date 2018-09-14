@@ -45,6 +45,10 @@ namespace Maven.Services
                     pq.FreeText.Add(res);
                 }
             }
+            if(pq.Keys.Any(a=>a.Key=="version" && a.Value.Contains("SNAPSHOT")))
+            {
+                throw new Exception("TODO UNSUPPORTED SNAPSHOT SEARCH");
+            }
             return pq;
         }
 
@@ -77,7 +81,11 @@ namespace Maven.Services
             if (litem.StartsWith("p:")) return "packaging";//jar war ear bundle
             if (litem.StartsWith("l:")) return "classifier";
             if (litem.StartsWith("a:")) return "packageid";//packageid
-            if (litem.StartsWith("c:")) return "class";
+            if (litem.StartsWith("c:"))
+            {
+                throw new Exception("TODO: unsupported class");
+                return "class";
+            }
             if (litem.StartsWith("1:")) return "sha1";
             if (litem.StartsWith("5:")) return "md5";
             if (litem.StartsWith("tags:")) return "tags";

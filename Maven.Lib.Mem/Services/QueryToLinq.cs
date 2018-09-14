@@ -39,7 +39,7 @@ namespace Maven.Lib.Mem
                         break;
                     case ("timestamp"):
                         ents = ents.Where(r =>
-                            r.Timestamp.ToFileTime().ToString() == item.Value);
+                            r.Timestamp.ToString("yyyyMMddHHmmss") == item.Value);
                         break;
                 }
             }

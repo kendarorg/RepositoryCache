@@ -18,11 +18,17 @@ namespace MavenProtocol.Apis
         public byte[] Content { get; set; }
         public DateTime Timestamp { get; set; }
 
-        public string ToLocalPath()
+        public string ToLocalPath(bool hasTimestampedBuild)
         {
             var snapshot = IsSnapshot ? "-SNAPSHOT" : "";
+            var snapshotBuild = snapshot;
+            if(IsSnapshot && hasTimestampedBuild)
+            {
+                snapshotBuild = "-" + Timestamp.ToString("yyyyMMdd.HHmmss") + "-" + Build;
+            }
             var classifier = string.IsNullOrWhiteSpace(Classifier) ? "" : "-" + Classifier;
-            return string.Join("\\", string.Join("\\", Group), ArtifactId, ArtifactId + "-" + Version + snapshot
+            return string.Join("\\", string.Join("\\", Group), ArtifactId, Version + snapshot, 
+                ArtifactId + "-" + Version + snapshotBuild
                 + classifier + "." + Extension);
         }
     }

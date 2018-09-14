@@ -30,7 +30,7 @@ namespace MavenProtocol
             IServicesMapper servicesMapper,
             IArtifactsRepository artifactsRepository,
             IHashCalculator hashCalculator,
-            IReleaseArtifactRepository releaseArtifactRepository,IPomRepository pomRepository)
+            IReleaseArtifactRepository releaseArtifactRepository, IPomRepository pomRepository)
         {
             this._metadataRepository = metadataRepository;
             this._transactionManager = transactionManager;
@@ -82,7 +82,7 @@ namespace MavenProtocol
                     metadata.Timestamp = DateTime.Now;
                 }
 
-                
+
                 var mavenMetadataXml = InitializeMavenMetadataXml(metadata, false);
                 FillSingleVersionData(mi, mavenMetadataXml, transaction);
                 SerializeMetadata(metadata, mavenMetadataXml, transaction);
@@ -106,7 +106,7 @@ namespace MavenProtocol
                         Group = string.Join(".", mi.Group)
                     };
                 }
-                
+
                 MavenMetadataXml mavenMetadataXml = InitializeMavenMetadataXml(metadata, true);
                 FillVersions(mi, mavenMetadataXml, transaction);
                 SerializeMetadata(metadata, mavenMetadataXml, transaction);
@@ -146,7 +146,6 @@ namespace MavenProtocol
             MavenMetadataXml mavenMetadataXml = null;
             if (!checksumsOnly)
             {
-
                 if (!string.IsNullOrWhiteSpace(metadata.Xml))
                 {
                     var serializer = new XmlSerializer(typeof(MavenMetadataXml));
@@ -300,7 +299,7 @@ namespace MavenProtocol
                         Updated = artifact.Timestamp.ToString("yyyyMMddHHmmss")
                     });
                 }
-                var pom = _pomRepository.GetSinglePom(mi.RepoId, mi.Group, mi.ArtifactId, mi.Version,version.IsSnapshot, version.Timestamp, version.Build);
+                var pom = _pomRepository.GetSinglePom(mi.RepoId, mi.Group, mi.ArtifactId, mi.Version, version.IsSnapshot, version.Timestamp, version.Build);
                 mavenMetadataXml.Versioning.SnapshotVersions.Version.Add(new MavenSnapshotVersion
                 {
                     Extension = "pom",
@@ -313,12 +312,13 @@ namespace MavenProtocol
         private void SerializeMetadata(MetadataEntity metadata, MavenMetadataXml mavenMetadataXml, ITransaction transaction)
         {
             var xsSubmit = new XmlSerializer(typeof(MavenMetadataXml));
-
+            var ns = new XmlSerializerNamespaces();
+            ns.Add("", "");
             using (var sww = new StringWriter())
             {
-                using (var writer = XmlWriter.Create(sww))
+                using (var writer = XmlWriter.Create(sww, new XmlWriterSettings() { OmitXmlDeclaration = true }))
                 {
-                    xsSubmit.Serialize(writer, mavenMetadataXml);
+                    xsSubmit.Serialize(writer, mavenMetadataXml, ns);
                     metadata.Xml = sww.ToString();
                 }
             }

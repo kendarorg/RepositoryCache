@@ -2,6 +2,7 @@
 using MavenProtocol.Apis;
 using MavenProtocol.News;
 using Repositories;
+using SemVer;
 using System.IO;
 using System.Text;
 using System.Xml;
@@ -16,16 +17,19 @@ namespace Maven.News
         private readonly IHashCalculator _hashCalculator;
         private readonly IMetadataApi _metadataApi;
         private readonly IArtifactsRepository _artifactsRepository;
+        private readonly IReleasePomRepository _releasePomRepository;
 
         public PomApi(IPomRepository pomRepository, ITransactionManager transactionManager,
             IHashCalculator hashCalculator,
-            IMetadataApi metadataApi, IArtifactsRepository artifactsRepository)
+            IMetadataApi metadataApi, IArtifactsRepository artifactsRepository,
+            IReleasePomRepository releasePomRepository)
         {
             this._pomRepository = pomRepository;
             this._transactionManager = transactionManager;
             this._hashCalculator = hashCalculator;
             this._metadataApi = metadataApi;
             this._artifactsRepository = artifactsRepository;
+            this._releasePomRepository = releasePomRepository;
         }
         public bool CanHandle(MavenIndex mi)
         {
@@ -66,7 +70,7 @@ namespace Maven.News
             };
         }
 
-        private void SerializePom(PomEntity metadata, PomXml mavenMetadataXml, ITransaction transaction)
+        private void SerializePom(PomEntity pomEntity, PomXml mavenMetadataXml, ITransaction transaction)
         {
             var xsSubmit = new XmlSerializer(typeof(PomXml));
 
@@ -75,12 +79,37 @@ namespace Maven.News
                 using (var writer = XmlWriter.Create(sww))
                 {
                     xsSubmit.Serialize(writer, mavenMetadataXml);
-                    metadata.Xml = sww.ToString();
+                    pomEntity.Xml = sww.ToString();
                 }
             }
-            metadata.Md5 = _hashCalculator.GetMd5(metadata.OriginalXml);
-            metadata.Sha1 = _hashCalculator.GetSha1(metadata.OriginalXml);
-            _pomRepository.Save(metadata, transaction);
+            pomEntity.Md5 = _hashCalculator.GetMd5(pomEntity.OriginalXml);
+            pomEntity.Sha1 = _hashCalculator.GetSha1(pomEntity.OriginalXml);
+            
+
+            _pomRepository.Save(pomEntity, transaction);
+
+            var release = _releasePomRepository.GetSinglePom(pomEntity.RepositoryId,
+                pomEntity.Group.Split('.'), pomEntity.ArtifactId, pomEntity.IsSnapshot,transaction);
+
+            if (release == null)
+            {
+                release = new PomEntity();
+                pomEntity.Clone(release);
+                _releasePomRepository.Save(release, transaction);
+            }
+            else
+            {
+                var oldp = JavaSemVersion.Parse(pomEntity.Version);
+                var relp = JavaSemVersion.Parse(release.Version);
+                if (oldp > relp)
+                {
+                    if (pomEntity.IsSnapshot == release.IsSnapshot)
+                    {
+                        pomEntity.Clone(release);
+                        _releasePomRepository.Save(release, transaction);
+                    }
+                }
+            }
         }
 
         public PomApiResult Generate(MavenIndex mi,bool remote)
@@ -91,7 +120,22 @@ namespace Maven.News
                 var strPom = Encoding.UTF8.GetString(mi.Content);
                 var metadata = _pomRepository.GetSinglePom(mi.RepoId,
                     mi.Group, mi.ArtifactId, mi.Version, mi.IsSnapshot, mi.Timestamp, mi.Build);
-                if (!string.IsNullOrWhiteSpace(mi.Checksum))
+
+                if (metadata != null && remote)
+                {
+                    var remoteResult = new PomApiResult
+                    {
+                        Md5 = metadata.Md5,
+                        Sha1 = metadata.Sha1,
+                    };
+                    if (string.IsNullOrWhiteSpace(mi.Checksum))
+                    {
+                        remoteResult.Xml = metadata.OriginalXml;
+                    }
+                    return remoteResult;
+                }
+
+                if (metadata != null && !string.IsNullOrWhiteSpace(mi.Checksum))
                 {
                     return null;
                 }

@@ -83,7 +83,11 @@ namespace Maven.News
                     AddMetadata(result);
                     foreach (var item in _metadataRepository.GetVersions(mi.RepoId, mi.Group, mi.ArtifactId))
                     {
-                        result.Children.Add(BuildFullVersion(item.Version, item.IsSnapshot));
+                        var ver = BuildFullVersion(item.Version, item.IsSnapshot);
+                        if (!result.Children.Contains(ver))
+                        {
+                            result.Children.Add(ver);
+                        }
                     }
                 }
             }

@@ -29,7 +29,7 @@ namespace Maven.News
             IServicesMapper servicesMapper,
             IHashCalculator hashCalculator, ITransactionManager transactionManager,
             IReleaseArtifactRepository releaseArtifactRepository,
-            IPomApi pomApi,IMetadataApi metadataApi)
+            IPomApi pomApi, IMetadataApi metadataApi)
         {
             this._artifactVersionsRepository = artifactVersionsRepository;
             this._artifactsStorage = artifactsStorage;
@@ -66,14 +66,28 @@ namespace Maven.News
             return result;
         }
 
-        public ArtifactsApiResult Generate(MavenIndex mi,bool remote)
+        public ArtifactsApiResult Generate(MavenIndex mi, bool remote)
         {
-            if (!string.IsNullOrWhiteSpace(mi.Checksum))
+            var artifact = _artifactVersionsRepository.GetSingleArtifact(mi.RepoId, mi.Group, mi.ArtifactId,
+                mi.Version, mi.Classifier, mi.Extension, mi.IsSnapshot, mi.Timestamp, mi.Build);
+
+            if (artifact != null && remote)
+            {
+                var remoteResult = new ArtifactsApiResult
+                {
+                    Md5 = artifact.Md5,
+                    Sha1 = artifact.Sha1,
+                };
+                if (string.IsNullOrWhiteSpace(mi.Checksum))
+                {
+                    remoteResult.Content = mi.Content;
+                }
+                return remoteResult;
+            }
+            if(artifact!=null && !string.IsNullOrWhiteSpace(mi.Checksum))
             {
                 return null;
             }
-            var artifact = _artifactVersionsRepository.GetSingleArtifact(mi.RepoId, mi.Group, mi.ArtifactId,
-                mi.Version, mi.Classifier, mi.Extension, mi.IsSnapshot, mi.Timestamp, mi.Build);
             
             if (artifact != null)
             {
@@ -93,14 +107,14 @@ namespace Maven.News
             {
                 RepositoryId = mi.RepoId,
                 Build = mi.Build,
-                Timestamp = mi.Timestamp.Year>1?mi.Timestamp:DateTime.Now,
+                Timestamp = mi.Timestamp.Year > 1 ? mi.Timestamp : DateTime.Now,
                 IsSnapshot = mi.IsSnapshot,
                 Version = mi.Version,
                 ArtifactId = mi.ArtifactId,
                 Group = string.Join(".", mi.Group),
                 Md5 = _hashCalculator.GetMd5(mi.Content),
                 Sha1 = _hashCalculator.GetSha1(mi.Content),
-                Extension =mi.Extension,
+                Extension = mi.Extension,
                 Classifier = mi.Classifier
             };
             var repo = _repositoriesRepository.GetById(mi.RepoId);
@@ -122,7 +136,7 @@ namespace Maven.News
                 }
                 var prevVer = JavaSemVersion.Parse(release.Version);
                 var newVer = JavaSemVersion.Parse(artifact.Version);
-                if(newVer > prevVer)
+                if (newVer > prevVer)
                 {
                     release.Timestamp = mi.Timestamp;
                     release.Build = mi.Build;
@@ -146,7 +160,7 @@ namespace Maven.News
                 Md5 = artifact.Md5,
                 Sha1 = artifact.Sha1,
             };
-            if (!string.IsNullOrWhiteSpace(mi.Checksum))
+            if (string.IsNullOrWhiteSpace(mi.Checksum))
             {
                 result.Content = mi.Content;
             }

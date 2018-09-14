@@ -87,7 +87,7 @@ namespace Maven.Controllers
                 {
                     if (idx.Group != null && idx.Group.Length > 1)
                     {
-                        var supposedGroup = idx.Group.Take(idx.Group.Length - 1).Select(a=>a).ToArray();
+                        var supposedGroup = idx.Group.Take(idx.Group.Length - 1).Select(a => a).ToArray();
                         var supposedArtifact = idx.Group.Last();
                         var meta = _metadataRepository.GetArtifactMetadata(repo.Id, supposedGroup, supposedArtifact);
                         if (meta != null)
@@ -96,7 +96,7 @@ namespace Maven.Controllers
                             idx.Group = supposedGroup;
                             idx.ArtifactId = supposedArtifact;
                         }
-                }
+                    }
                     result = new ExploreResult
                     {
                         Base = "/" + repo.Prefix
@@ -118,7 +118,7 @@ namespace Maven.Controllers
                         }
                     }
                     ExploreLocal(idx, result);
-                    if( (result.Children==null ||result.Children.Count==0) && result.Content==null)
+                    if ((result.Children == null || result.Children.Count == 0) && result.Content == null)
                     {
                         return new SerializableResponse
                         {
@@ -196,13 +196,16 @@ namespace Maven.Controllers
                 {
                     if (re.Xml != null)
                     {
+                        var ns = new XmlSerializerNamespaces();
+                        ns.Add("", "");
+
                         var xsSubmit = new XmlSerializer(re.Xml.GetType());
 
                         using (var sww = new StringWriter())
                         {
-                            using (var writer = XmlWriter.Create(sww))
+                            using (var writer = XmlWriter.Create(sww, new XmlWriterSettings() { OmitXmlDeclaration = true }))
                             {
-                                xsSubmit.Serialize(writer, re.Xml);
+                                xsSubmit.Serialize(writer, re.Xml,ns);
                                 result.Content = Encoding.UTF8.GetBytes(sww.ToString());
                             }
                         }

@@ -18,14 +18,16 @@ namespace Maven.Apis
         private readonly IRepositoryEntitiesRepository _repository;
         private readonly IServicesMapper _servicesMapper;
         private readonly IPomRepository _mavenSearchRepository;
+        private readonly IReleasePomRepository _releasePomRepository;
 
         public MavenSearchService(IRepositoryEntitiesRepository repositoryEntitiesRepository,
             IServicesMapper servicesMapper,
-            IPomRepository mavenSearchRepository)
+            IPomRepository mavenSearchRepository, IReleasePomRepository releasePomRepository)
         {
             this._repository = repositoryEntitiesRepository;
             this._servicesMapper = servicesMapper;
             this._mavenSearchRepository = mavenSearchRepository;
+            this._releasePomRepository = releasePomRepository;
         }
         public SearchResult Search(Guid repoId, SearchParam param)
         {
@@ -41,16 +43,16 @@ namespace Maven.Apis
             }
             AddIfPresent(reqHeader, "rows", param.Rows.ToString());
 
+
             var stopwatch = new Stopwatch();
-            stopwatch.Start();
             var docs = new List<ResponseDoc>();
+            stopwatch.Start();
 
             var max = 0;
 
             if (param.Wt == "gav")
             {
-                throw new Exception("TODO SEARCH ONLY RELEASE");
-                /*var result = _mavenSearchRepository.Query(repoId, param);
+                var result = _releasePomRepository.Query(repoId, param);
                 foreach (var item in result)
                 {
                     if (max >= param.Rows)
@@ -59,7 +61,7 @@ namespace Maven.Apis
                     }
                     docs.Add(BuildResponse(item));
                     max++;
-                }*/
+                }
             }
             else
             {
@@ -74,12 +76,8 @@ namespace Maven.Apis
                     max++;
                 }
             }
-
-            
-
-            var numfound = docs.Count;
             stopwatch.Stop();
-
+            var numfound = docs.Count;
             return new SearchResult(
                 new ResponseHeader(0, (int)stopwatch.ElapsedMilliseconds / 1000, reqHeader),
                 new ResponseContent(numfound, param.Start, docs));
@@ -96,7 +94,7 @@ namespace Maven.Apis
         private ResponseDoc BuildResponse(PomEntity item)
         {
             var snap = item.IsSnapshot ? "-SNAPSHOT" : "";
-            var id = item.Group + ":" + item.ArtifactId + ":" + item.Version+ snap;
+            var id = item.Group + ":" + item.ArtifactId + ":" + item.Version + snap;
             List<string> typeAndExt = null;
             List<string> tags = null;
             if (!string.IsNullOrWhiteSpace(item.Classifiers))
@@ -110,8 +108,8 @@ namespace Maven.Apis
                     Where(b => !string.IsNullOrWhiteSpace(b)).ToList();
             }
             return new ResponseDoc(
-                id, item.Group, item.ArtifactId, item.Version+snap,
-                item.Timestamp.Year>1?item.Timestamp.ToFileTime():0,
+                id, item.Group, item.ArtifactId, item.Version + snap,
+                item.Timestamp.Year > 1 ? item.Timestamp.ToFileTime() : 0,
                 typeAndExt,
                 tags);
         }

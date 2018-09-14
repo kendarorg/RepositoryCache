@@ -14,7 +14,7 @@ using MavenProtocol;
 
 namespace Maven.Controllers
 {
-    public class Maven2_Search : RestAPI
+    public class Maven2_Search : ForwardRestApi
     {
         private readonly IMetadataApi _interfaceService;
         private readonly IMavenSearch _mavenSearch;
@@ -23,10 +23,10 @@ namespace Maven.Controllers
         private readonly IRepositoryEntitiesRepository _repositoryEntitiesRepository;
         private readonly IRequestParser _requestParser;
 
-        public Maven2_Search(Guid repoId,
+        public Maven2_Search(Guid repoId, AppProperties properties,
             IRepositoryEntitiesRepository repositoryEntitiesRepository, IRequestParser requestParser,
             IMetadataApi interfaceService, IMavenSearch mavenSearch, IServicesMapper servicesMapper, params string[] paths)
-            : base(null, paths)
+            : base(properties, null, paths)
         {
             _interfaceService = interfaceService;
             this._mavenSearch = mavenSearch;
@@ -40,6 +40,7 @@ namespace Maven.Controllers
         private SerializableResponse Handler(SerializableRequest arg)
         {
             var idx = _requestParser.Parse(arg);
+            var repo = _repositoryEntitiesRepository.GetById(_repoId);
             idx.RepoId = _repoId;
             var sp = new SearchParam();
             if (arg.QueryParams.ContainsKey("q")) sp.Query = arg.QueryParams["q"];
@@ -51,8 +52,44 @@ namespace Maven.Controllers
             {
                 sp.Rows = _servicesMapper.MaxQueryPage(_repoId);
             }
-            var result = _mavenSearch.Search(_repoId, sp);
+            SearchResult result = null;
+            if (repo.Mirror)
+            {
+                try
+                {
+                    var baseStandard = "";
+                    var baseurls = arg.Url.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+                    if (baseurls.Length >= 1)
+                    {
+                        baseStandard = "/" + string.Join("/", baseurls.Take(baseurls.Length - 2));
+                    }
+                    result = ExploreRemote(arg, repo, idx, arg.Url);
+                    
+                }
+                catch (InconsistentRemoteDataException)
+                {
+                    throw;
+                }
+                catch (Exception)
+                {
+
+                }
+            }
+            if (result == null)
+            {
+                _mavenSearch.Search(_repoId, sp);
+            }
             return JsonResponse(result);
+        }
+
+        private SearchResult ExploreRemote(SerializableRequest localRequest, RepositoryEntity repo, MavenIndex idx, string url)
+        {
+            var remoteRequest = localRequest.Clone();
+            var convertedUrl = _servicesMapper.ToMaven(repo.Id, idx, false);
+            remoteRequest.Headers["Host"] = new Uri(convertedUrl).Host;
+
+            var remoteRes = RemoteRequest(convertedUrl, remoteRequest, 60000);
+            return JsonConvert.DeserializeObject<SearchResult>(Encoding.UTF8.GetString(remoteRes.Content));
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Ioc;
+using MavenProtocol;
 using MavenProtocol.Apis;
 using MultiRepositories.Repositories;
 using System.Collections.Generic;
@@ -9,6 +10,12 @@ namespace Maven.Services
 {
     public class ArtifactsStorage : IArtifactsStorage, ISingleton
     {
+        private readonly IServicesMapper _servicesMapper;
+
+        public ArtifactsStorage(IServicesMapper servicesMapper)
+        {
+            this._servicesMapper = servicesMapper;
+        }
         public List<string> GetSubDir(RepositoryEntity repo, MavenIndex index)
         {
             var path = GetPath(repo);
@@ -38,13 +45,13 @@ namespace Maven.Services
         public byte[] Load(RepositoryEntity repo, MavenIndex index)
         {
             
-            var path = Path.Combine(GetPath(repo), index.ToLocalPath());
+            var path = Path.Combine(GetPath(repo), index.ToLocalPath(_servicesMapper.HasTimestampedSnapshot(repo.Id)));
             return File.ReadAllBytes(path);
         }
 
         public void Save(RepositoryEntity repo, MavenIndex index, byte[] data)
         {
-            var path = Path.Combine(GetPath(repo), index.ToLocalPath());
+            var path = Path.Combine(GetPath(repo), index.ToLocalPath(_servicesMapper.HasTimestampedSnapshot(repo.Id)));
             var dir = Path.GetDirectoryName(path);
             if (!Directory.Exists(dir))
             {

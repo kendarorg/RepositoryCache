@@ -90,7 +90,7 @@ namespace Maven
             {
 
                 repositoryServiceProvider.RegisterApi(
-                    new Maven2_Search(item.Id, _repositoryEntitiesRepository, _requestParser, _metadataApi, _mavenSearch,_servicesMapper,
+                    new Maven2_Search(item.Id,_applicationPropertes, _repositoryEntitiesRepository, _requestParser, _metadataApi, _mavenSearch,_servicesMapper,
                     "*GET",
                          @"/{repo}/search".
                             Replace("{repo}", item.Prefix)));
