@@ -84,11 +84,11 @@ namespace Maven.News
                 }
                 return remoteResult;
             }
-            if(artifact!=null && !string.IsNullOrWhiteSpace(mi.Checksum))
+            if (artifact != null && !string.IsNullOrWhiteSpace(mi.Checksum))
             {
                 return null;
             }
-            
+
             if (artifact != null)
             {
                 if (mi.IsSnapshot)
@@ -137,6 +137,12 @@ namespace Maven.News
                 var prevVer = JavaSemVersion.Parse(release.Version);
                 var newVer = JavaSemVersion.Parse(artifact.Version);
                 if (newVer > prevVer)
+                {
+                    release.Timestamp = mi.Timestamp;
+                    release.Build = mi.Build;
+                    release.Version = mi.Version;
+                }
+                else if (newVer == prevVer && _servicesMapper.HasTimestampedSnapshot(mi.RepoId))
                 {
                     release.Timestamp = mi.Timestamp;
                     release.Build = mi.Build;
