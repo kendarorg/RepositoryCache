@@ -47,7 +47,7 @@ namespace Nuget.Controllers
 
             };
             
-            if (repo.Mirror)
+            if (repo.Mirror && _properties.IsOnline(localRequest))
             {
                 try
                 {

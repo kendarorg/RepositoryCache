@@ -70,6 +70,7 @@ namespace Maven.News
         {
             var artifact = _artifactVersionsRepository.GetSingleArtifact(mi.RepoId, mi.Group, mi.ArtifactId,
                 mi.Version, mi.Classifier, mi.Extension, mi.IsSnapshot, mi.Timestamp, mi.Build);
+            var repo = _repositoriesRepository.GetById(mi.RepoId);
 
             if (artifact != null && remote)
             {
@@ -81,6 +82,7 @@ namespace Maven.News
                 if (string.IsNullOrWhiteSpace(mi.Checksum))
                 {
                     remoteResult.Content = mi.Content;
+                    _artifactsStorage.Save(repo, mi, mi.Content);
                 }
                 return remoteResult;
             }
@@ -117,7 +119,7 @@ namespace Maven.News
                 Extension = mi.Extension,
                 Classifier = mi.Classifier
             };
-            var repo = _repositoriesRepository.GetById(mi.RepoId);
+            //var repo = _repositoriesRepository.GetById(mi.RepoId);
             using (var transactin = _transactionManager.BeginTransaction())
             {
                 var release = _releaseArtifactRepository.GetForArtifact(

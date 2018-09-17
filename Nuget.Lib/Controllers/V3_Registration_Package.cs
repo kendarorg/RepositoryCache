@@ -44,7 +44,7 @@ namespace Nuget.Controllers
             var repo = _reps.GetById(repoId);
             RegistrationIndex result = null;
             //Registration340Entry
-            if (repo.Mirror)
+            if (repo.Mirror && _properties.IsOnline(localRequest))
             {
                 try
                 {

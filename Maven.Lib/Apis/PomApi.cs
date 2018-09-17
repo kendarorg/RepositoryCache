@@ -168,7 +168,7 @@ namespace Maven.News
                 metadata.Packaging = packaging;
                 metadata.Classifiers = classifiers;
 
-                if (!remote)
+                //if (!remote)
                 {
                     var pom = PomXml.Parse(strPom);
                     SerializePom(metadata, pom, transaction);
@@ -177,12 +177,12 @@ namespace Maven.News
                     //_metadataApi.Generate(mi,remote);
                     return result;
                 }
-                else
+                /*else
                 {
                     var result = CreateResponse(metadata, !string.IsNullOrWhiteSpace(mi.Checksum));
                     _metadataApi.Generate(mi,remote);
                     return result;
-                }
+                }*/
                 
             }
         }

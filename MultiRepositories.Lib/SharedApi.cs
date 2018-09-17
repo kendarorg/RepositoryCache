@@ -27,7 +27,7 @@ namespace MultiRepositories
         {
             repositoryServiceProvider.RegisterApi(new ServicesIndexApi(
                 _applicationPropertes, _availableRepositories,
-                "/v1/index.json"));
+                "/global/index.json"));
 
         }
     }

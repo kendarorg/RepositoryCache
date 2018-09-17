@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace MavenProtocol.Apis
 {
@@ -30,6 +31,26 @@ namespace MavenProtocol.Apis
             return string.Join("\\", string.Join("\\", Group), ArtifactId, Version + snapshot, 
                 ArtifactId + "-" + Version + snapshotBuild
                 + classifier + "." + Extension);
+        }
+
+        public MavenIndex Clone()
+        {
+            return new MavenIndex
+            {
+                Group = Group.ToList().ToArray(),
+                ArtifactId = ArtifactId,
+                Version = Version,
+                Classifier = Classifier,
+                Extension = Extension,
+                Checksum = Checksum,
+                Filename = Filename,
+                IsSnapshot = IsSnapshot,
+                Meta = Meta,
+                Build = Build,
+                RepoId = RepoId,
+                Content = Content.ToList().ToArray(),
+                Timestamp = Timestamp
+            };
         }
     }
 }

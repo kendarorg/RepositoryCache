@@ -61,7 +61,7 @@ namespace Maven.Controllers
                 var repo = _repositoryEntitiesRepository.GetById(_repoId);
 
                 ExploreResult result = null;
-                if (repo.Mirror)
+                if (repo.Mirror && _properties.IsOnline(arg))
                 {
                     try
                     {
@@ -149,7 +149,8 @@ namespace Maven.Controllers
                         }
                     }
 
-                    return HtmlResponse(result, path, repo.Prefix + " " + (repo.Mirror ? "Mirror" : "Local"));
+                    var offline = ChangeOffline(arg, result);
+                    return HtmlResponse(result, path, repo.Prefix + " " + (repo.Mirror ? "Mirror" : "Local"), offline);
                 }
                 if (result.Content == null && result.Children == null)
                 {
@@ -159,6 +160,7 @@ namespace Maven.Controllers
                         HttpCode = 200
                     };
                 }
+                ChangeOffline(arg, result);
                 return JsonResponse(result);
             }
             catch (Exception ex)
@@ -166,6 +168,23 @@ namespace Maven.Controllers
                 Console.WriteLine(ex);
                 throw new NotFoundException();
             }
+        }
+
+        private static string ChangeOffline(SerializableRequest arg, ExploreResult result)
+        {
+            var isOffline = arg.QueryParams.ContainsKey("offline") ? "?offline=true" : "";
+            if (result.Children != null)
+            {
+                for (var i = 0; i < result.Children.Count; i++)
+                {
+                    var child = result.Children[i];
+                    if (!child.Contains("?"))
+                    {
+                        result.Children[i] += isOffline;
+                    }
+                }
+            }
+            return isOffline;
         }
 
         private void ExploreLocal(MavenIndex idx, ExploreResult result)
@@ -271,14 +290,22 @@ namespace Maven.Controllers
 
             if (_artifactsApi.CanHandle(idx))
             {
+                RetrieveArtifactRealData(idx,localRequest);
+                idx.Content = remoteRes.Content;
+                result.Content = remoteRes.Content;
                 _artifactsApi.Generate(idx, true);
+
             }
             else if (_metadataApi.CanHandle(idx))
             {
-                _metadataApi.Generate(idx, true);
+                result.Content = remoteRes.Content;
+                //_metadataApi.Generate(idx, true);
             }
             else if (_pomApi.CanHandle(idx))
             {
+                //RetrieveArtifactRealData(idx);
+                idx.Content = remoteRes.Content;
+                result.Content = remoteRes.Content;
                 _pomApi.Generate(idx, true);
             }
             else
@@ -288,21 +315,27 @@ namespace Maven.Controllers
 
                 result.Children = new List<string>();
                 htmlDoc.LoadHtml(htmlData);
+                
 
                 foreach (HtmlNode link in htmlDoc.DocumentNode.SelectNodes("//a[@href]"))
                 {
+                    if (link.InnerText == "..") continue;
                     if (!link.Attributes["href"].Value.Contains(".."))
                     {
-                        result.Children.Add(link.Attributes["href"].Value.Trim('/'));
+                        var remoteVal = link.Attributes["href"].Value.Trim('/');
+                        var last = remoteVal.Split('/').LastOrDefault();
+                        if (last != null)
+                        {
+                            result.Children.Add(last);
+                        }
                     }
                 }
             }
+            
             return result;
         }
 
-
-
-        private SerializableResponse HtmlResponse(ExploreResult to, string path, string repoName)
+        private SerializableResponse HtmlResponse(ExploreResult to, string path, string repoName,string isOffline)
         {
 
             if (string.IsNullOrWhiteSpace(path))
@@ -325,12 +358,19 @@ namespace Maven.Controllers
             spl = to.Base.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
             if (spl.Length > 1)
             {
-                result += "<a href='/" + string.Join("/", spl.Take(spl.Length - 1)) + "'>..</a>\r\n";
+                result += "<a href='/" + string.Join("/", spl.Take(spl.Length - 1)) + isOffline+ "'>..</a>\r\n";
                 result += "\r\n";
             }
             foreach (var item in to.Children)
             {
-                result += "<a href='" + to.Base.TrimEnd('/') + "/" + item + "'>" + item + "</a>\r\n";
+                if (isOffline != "")
+                {
+                    result += "<a href='" + to.Base.TrimEnd('/') + "/" + item + "'>" + item.Replace(isOffline, "") + "</a>\r\n";
+                }
+                else
+                {
+                    result += "<a href='" + to.Base.TrimEnd('/') + "/" + item + "'>" +item+ "</a>\r\n";
+                }
             }
             result += "</pre></main><hr/></body></html>";
             return new SerializableResponse
@@ -339,6 +379,24 @@ namespace Maven.Controllers
                 ContentType = "text/html",
                 HttpCode = 200
             };
+        }
+
+        private void RetrieveArtifactRealData(MavenIndex idx, SerializableRequest localRequest)
+        {
+            if (idx.Extension != "pom")
+            {
+                var pomIdx = idx.Clone();
+                pomIdx.Classifier = null;
+                pomIdx.Extension = "pom";
+                var remoteRequest = localRequest.Clone();
+                var convertedUrl = _servicesMapper.ToMaven(idx.RepoId, pomIdx, false);
+                remoteRequest.Headers["Host"] = new Uri(convertedUrl).Host;
+
+                var remoteRes = RemoteRequest(convertedUrl, remoteRequest, 60000);
+                pomIdx.Content = remoteRes.Content;
+                _pomApi.Generate(pomIdx, true);
+            }
+            //Retrieve the main artifact if not present
         }
     }
 }

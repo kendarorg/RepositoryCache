@@ -135,17 +135,21 @@ namespace MultiRepositories
             _local = "http://localhost:" + _port.ToString();
             _listener.Prefixes.Add("http://localhost:" + _port.ToString() + "/");
             _listener.Start();
+            
             while (true)
             {
-                try
+                HttpListenerContext context = _listener.GetContext();
+                new Thread(a =>
                 {
-                    HttpListenerContext context = _listener.GetContext();
-                    Process(context);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex);
-                }
+                    try
+                    {
+                        Process(context);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex);
+                    }
+                }).Start();
             }
         }
 

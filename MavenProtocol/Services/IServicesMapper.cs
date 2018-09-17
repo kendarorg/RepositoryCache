@@ -15,5 +15,6 @@ namespace MavenProtocol
         int MaxCatalogPages(Guid repoId);
         int MaxQueryPage(Guid repoId);
         string ToMaven(Guid id, MavenIndex idx, bool search);
+        string ToMavenSearch(Guid id, MavenIndex idx, bool search);
     }
 }

@@ -7,7 +7,7 @@ Nuget, Maven, NPM local cache server
 
 ## Common API
 
-* _GET /v1/index.json_ Retrieve all the existing databases and entry points
+* _GET /global/index.json_ Retrieve all the existing databases and entry points
 
 ## Maven API
 

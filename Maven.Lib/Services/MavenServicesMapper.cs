@@ -95,11 +95,15 @@ namespace Maven
                         if (!string.IsNullOrWhiteSpace(idx.Extension))
                         {
                             result += idx.ArtifactId;
-                            
+
                             result += "-" + idx.Version;
-                            if (idx.IsSnapshot)
+                            if (idx.IsSnapshot && !HasTimestampedSnapshot(idx.RepoId))
                             {
                                 result += "-SNAPSHOT";
+                            }
+                            else if (idx.IsSnapshot)
+                            {
+                                result += "-" + idx.Timestamp.ToString("yyyyMMdd.HHmmss") + "-" + idx.Build;
                             }
                             if (!string.IsNullOrWhiteSpace(idx.Classifier))
                             {
@@ -120,6 +124,11 @@ namespace Maven
         public bool HasTimestampedSnapshot(Guid repoId)
         {
             return !_settings[repoId].IsSingleSnapshot;
+        }
+
+        public string ToMavenSearch(Guid id, MavenIndex idx, bool search)
+        {
+            return _settings[id].RemoteSearchAddress;
         }
     }
 }

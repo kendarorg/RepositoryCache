@@ -53,7 +53,7 @@ namespace Maven.Controllers
                 sp.Rows = _servicesMapper.MaxQueryPage(_repoId);
             }
             SearchResult result = null;
-            if (repo.Mirror)
+            if (repo.Mirror && _properties.IsOnline(arg))
             {
                 try
                 {
@@ -77,7 +77,7 @@ namespace Maven.Controllers
             }
             if (result == null)
             {
-                _mavenSearch.Search(_repoId, sp);
+                result = _mavenSearch.Search(_repoId, sp);
             }
             return JsonResponse(result);
         }
@@ -85,11 +85,17 @@ namespace Maven.Controllers
         private SearchResult ExploreRemote(SerializableRequest localRequest, RepositoryEntity repo, MavenIndex idx, string url)
         {
             var remoteRequest = localRequest.Clone();
-            var convertedUrl = _servicesMapper.ToMaven(repo.Id, idx, false);
+            var convertedUrl = _servicesMapper.ToMavenSearch(repo.Id, idx, false);
             remoteRequest.Headers["Host"] = new Uri(convertedUrl).Host;
 
             var remoteRes = RemoteRequest(convertedUrl, remoteRequest, 60000);
-            return JsonConvert.DeserializeObject<SearchResult>(Encoding.UTF8.GetString(remoteRes.Content));
+            try
+            {
+                return JsonConvert.DeserializeObject<SearchResult>(Encoding.UTF8.GetString(remoteRes.Content));
+            }catch(Exception e)
+            {
+                throw new Exception(Encoding.UTF8.GetString(remoteRes.Content));
+            }
         }
     }
 }

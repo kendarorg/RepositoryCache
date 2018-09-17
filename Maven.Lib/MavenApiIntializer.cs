@@ -8,6 +8,7 @@ using MavenProtocol.Apis.Browse;
 using MavenProtocol.News;
 using MultiRepositories;
 using MultiRepositories.Repositories;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -85,6 +86,25 @@ namespace Maven
                 };
                 _repositoryEntitiesRepository.Save(local);
             };
+
+            /*var localMirror = _repositoryEntitiesRepository.GetAll().FirstOrDefault(a => a.Prefix == "maven.mirror");
+
+            if (localMirror == null)
+            {
+                var data = _assemblyUtils.ReadRes<MavenApiIntializer>("maven.org.settings.json");
+                var set = JsonConvert.DeserializeObject<MavenSettings>(data);
+                set.RemoteAddress = "http://localhost:9088/maven.local";
+                localMirror = new RepositoryEntity
+                {
+                    Mirror = true,
+                    Prefix = "maven.mirror",
+                    Type = "maven",
+                    Address = "/maven.mirror",
+                    PackagesPath = "maven.mirror",
+                    Settings = JsonConvert.SerializeObject(set)
+                };
+                _repositoryEntitiesRepository.Save(localMirror);
+            };*/
             _servicesMapper.Refresh();
             foreach (var item in _repositoryEntitiesRepository.GetByType("maven"))
             {
