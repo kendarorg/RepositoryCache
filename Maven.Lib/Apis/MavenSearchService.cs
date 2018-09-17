@@ -35,8 +35,15 @@ namespace Maven.Apis
             var maxSize = _servicesMapper.MaxQueryPage(repo.Id);
 
             var reqHeader = new Dictionary<string, string>();
+
             AddIfPresent(reqHeader, "q", param.Query);
             AddIfPresent(reqHeader, "wt", param.Wt);
+            AddIfPresent(reqHeader, "core", param.Core);
+            if (string.IsNullOrWhiteSpace(param.Wt) || (param.Wt != "json" && param.Wt != "xml"))
+            {
+                param.Wt = "json";
+            }
+
             if (param.Rows < 0 || param.Rows > maxSize)
             {
                 param.Rows = maxSize;
@@ -50,7 +57,7 @@ namespace Maven.Apis
 
             var max = 0;
 
-            if (param.Wt == "gav")
+            if (param.Core != "gav")
             {
                 var result = _releasePomRepository.Query(repoId, param);
                 foreach (var item in result)

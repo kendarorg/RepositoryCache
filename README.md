@@ -22,11 +22,12 @@ Support for timestamp based and single snapshot
 
 * _GET /{repo}/..._	Standard maven browse
 
-* _GET /{repo}/search Search according to [https://search.maven.org/]
+* _GET /{repo}/search Search according to [https://search.maven.org/classic/] on the [https://search.maven.org/solrsearch/select] api
 	* ?rows=1 number of rows
 	* ?skip=1 number of rows to skip
-	* ?wt=gav if present search only for latest artifacts
-	* ?q=
+	* ?core=gav "Get All Versions"
+	* ?wt=json Xml Version not supported
+	* ?q= (mandatory)
 		* g:text group exact (e.g. com.google.api)
 		* v:text version exact (e.g. 1.2) 
 		* l:text classifier exact (e.g. javadoc)

@@ -11,6 +11,8 @@ using Newtonsoft.Json;
 using MavenProtocol.Apis;
 using Maven.Services;
 using MavenProtocol;
+using System.Xml.Serialization;
+using System.Xml;
 
 namespace Maven.Controllers
 {
@@ -43,11 +45,13 @@ namespace Maven.Controllers
             var repo = _repositoryEntitiesRepository.GetById(_repoId);
             idx.RepoId = _repoId;
             var sp = new SearchParam();
+            sp.Wt = "json";
             if (arg.QueryParams.ContainsKey("q")) sp.Query = arg.QueryParams["q"];
             if (arg.QueryParams.ContainsKey("rows")) sp.Rows = int.Parse(arg.QueryParams["rows"]);
             if (arg.QueryParams.ContainsKey("skip")) sp.Start = int.Parse(arg.QueryParams["skip"]);
             if (arg.QueryParams.ContainsKey("core")) sp.Core = arg.QueryParams["core"];
-            if (arg.QueryParams.ContainsKey("wt")) sp.Core = arg.QueryParams["wt"];
+            if (arg.QueryParams.ContainsKey("wt")) sp.Wt = arg.QueryParams["wt"];
+            var reqWt = sp.Wt;
             if (sp.Rows == 0)
             {
                 sp.Rows = _servicesMapper.MaxQueryPage(_repoId);
@@ -63,6 +67,7 @@ namespace Maven.Controllers
                     {
                         baseStandard = "/" + string.Join("/", baseurls.Take(baseurls.Length - 2));
                     }
+                    arg.QueryParams["wt"] = "json";
                     result = ExploreRemote(arg, repo, idx, arg.Url);
                     
                 }
@@ -79,7 +84,27 @@ namespace Maven.Controllers
             {
                 result = _mavenSearch.Search(_repoId, sp);
             }
-            return JsonResponse(result);
+            //if (reqWt == "json")
+            {
+                return JsonResponse(result);
+            }
+            #if NOPE
+            else
+            {
+                var data =/* @"{
+  '?xml': {
+    '@version': '1.0',
+    '@standalone': 'no'
+  },"+*/JsonConvert.SerializeObject(result);// +"}";
+
+                XmlDocument doc = (XmlDocument)JsonConvert.DeserializeXmlNode(data, "XmlResult");
+                return new SerializableResponse
+                {
+                    Content = Encoding.UTF8.GetBytes(doc.InnerXml),
+                    ContentType = "application /xml"
+                };
+            }
+#endif
         }
 
         private SearchResult ExploreRemote(SerializableRequest localRequest, RepositoryEntity repo, MavenIndex idx, string url)
