@@ -179,20 +179,25 @@ namespace MavenProtocol
                     release = FindRelease(release, ref releaseVersion, version);
                 }
             }
-            if (latest != null)
-            {
-                result.Versioning.Latest = BuildFullVersion(latest.Version, latest.IsSnapshot);
-                result.Versioning.LastUpdated = latest.Timestamp.ToString("yyyyMMddHHmmss");
-            }
+            SetLatestVersion(result, latest);
+            SetReleaseVersion(result, release);
+        }
+
+        private void SetReleaseVersion(MavenMetadataXml result, MetadataEntity release)
+        {
             if (release != null)
             {
                 result.Versioning.Release = BuildFullVersion(release.Version, release.IsSnapshot);
             }
         }
 
-        private string BuildFullVersion(object version, object isSnapshot)
+        private void SetLatestVersion(MavenMetadataXml result, MetadataEntity latest)
         {
-            throw new NotImplementedException();
+            if (latest != null)
+            {
+                result.Versioning.Latest = BuildFullVersion(latest.Version, latest.IsSnapshot);
+                result.Versioning.LastUpdated = latest.Timestamp.ToString("yyyyMMddHHmmss");
+            }
         }
 
         private static MavenMetadataXml InitializeMavenMetadataXml(MetadataEntity metadata, bool artifactMetadata)
@@ -274,39 +279,54 @@ namespace MavenProtocol
             mavenMetadataXml.Version = this.BuildFullVersion(mi.Version, mi.IsSnapshot);
             if (hasTimestampedSnapshot && mi.IsSnapshot)
             {
-                if (mavenMetadataXml.Versioning == null)
-                {
-                    mavenMetadataXml.Versioning = new MavenVersioning();
-                }
-                var fullBuildId = version.Timestamp.ToString("yyyyMMdd.HHmmss") + "-" + version.Build;
-                mavenMetadataXml.Versioning.Snapshot = new MavenSnapshot
-                {
-                    Timestamp = version.Timestamp.ToString("yyyyMMdd.HHmmss"),
-                    BuildNumber = version.Build
-                };
-                mavenMetadataXml.Versioning.LastUpdated = version.Timestamp.ToString("yyyyMMddHHmmss");
-                mavenMetadataXml.Versioning.SnapshotVersions = new MavenSnapshotVersions
-                {
-                    Version = new List<MavenSnapshotVersion>()
-                };
-                foreach (var artifact in _artifactsRepository.GetSnapshotBuildArtifacts(mi.RepoId, mi.Group, mi.ArtifactId, mi.Version, version.Timestamp, version.Build))
-                {
-                    mavenMetadataXml.Versioning.SnapshotVersions.Version.Add(new MavenSnapshotVersion
-                    {
-                        Classifier = artifact.Classifier,
-                        Extension = artifact.Extension,
-                        Value = artifact.Version + "-" + artifact.Timestamp.ToString("yyyyMMdd.HHmmss") + "-" + artifact.Build,
-                        Updated = artifact.Timestamp.ToString("yyyyMMddHHmmss")
-                    });
-                }
-                var pom = _pomRepository.GetSinglePom(mi.RepoId, mi.Group, mi.ArtifactId, mi.Version, version.IsSnapshot, version.Timestamp, version.Build);
+                InitializeMavenMetadata(mavenMetadataXml, version);
+                SetTheSnapshotVersionClassifiers(mi, mavenMetadataXml, version);
+                SetTheSnapshotVersion(mi, mavenMetadataXml, version);
+            }
+        }
+
+        private void SetTheSnapshotVersionClassifiers(MavenIndex mi, MavenMetadataXml mavenMetadataXml, ReleaseVersion version)
+        {
+            foreach (var artifact in _artifactsRepository.GetSnapshotBuildArtifacts(mi.RepoId, mi.Group, mi.ArtifactId, mi.Version, version.Timestamp, version.Build))
+            {
                 mavenMetadataXml.Versioning.SnapshotVersions.Version.Add(new MavenSnapshotVersion
                 {
-                    Extension = "pom",
-                    Value = pom.Version + "-" + pom.Timestamp.ToString("yyyyMMdd.HHmmss") + "-" + pom.Build,
-                    Updated = pom.Timestamp.ToString("yyyyMMddHHmmss")
+                    Classifier = artifact.Classifier,
+                    Extension = artifact.Extension,
+                    Value = artifact.Version + "-" + artifact.Timestamp.ToString("yyyyMMdd.HHmmss") + "-" + artifact.Build,
+                    Updated = artifact.Timestamp.ToString("yyyyMMddHHmmss")
                 });
             }
+        }
+
+        private void SetTheSnapshotVersion(MavenIndex mi, MavenMetadataXml mavenMetadataXml, ReleaseVersion version)
+        {
+            var pom = _pomRepository.GetSinglePom(mi.RepoId, mi.Group, mi.ArtifactId, mi.Version, version.IsSnapshot, version.Timestamp, version.Build);
+            mavenMetadataXml.Versioning.SnapshotVersions.Version.Add(new MavenSnapshotVersion
+            {
+                Extension = "pom",
+                Value = pom.Version + "-" + pom.Timestamp.ToString("yyyyMMdd.HHmmss") + "-" + pom.Build,
+                Updated = pom.Timestamp.ToString("yyyyMMddHHmmss")
+            });
+        }
+
+        private static void InitializeMavenMetadata(MavenMetadataXml mavenMetadataXml, ReleaseVersion version)
+        {
+            if (mavenMetadataXml.Versioning == null)
+            {
+                mavenMetadataXml.Versioning = new MavenVersioning();
+            }
+
+            mavenMetadataXml.Versioning.Snapshot = new MavenSnapshot
+            {
+                Timestamp = version.Timestamp.ToString("yyyyMMdd.HHmmss"),
+                BuildNumber = version.Build
+            };
+            mavenMetadataXml.Versioning.LastUpdated = version.Timestamp.ToString("yyyyMMddHHmmss");
+            mavenMetadataXml.Versioning.SnapshotVersions = new MavenSnapshotVersions
+            {
+                Version = new List<MavenSnapshotVersion>()
+            };
         }
 
         private void SerializeMetadata(MetadataEntity metadata, MavenMetadataXml mavenMetadataXml, ITransaction transaction)

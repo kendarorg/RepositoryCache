@@ -34,6 +34,63 @@ namespace Maven.Apis
             var repo = _repository.GetById(repoId);
             var maxSize = _servicesMapper.MaxQueryPage(repo.Id);
 
+            var reqHeader = LoadParameters(param, maxSize);
+
+            var stopwatch = new Stopwatch();
+            var docs = new List<ResponseDoc>();
+            stopwatch.Start();
+
+            var max = 0;
+
+            if (param.Core != "gav")
+            {
+                max = GetAllVersions(repoId, param, docs, max);
+            }
+            else
+            {
+                max = GetReleasesOnly(repoId, param, docs, max);
+            }
+            stopwatch.Stop();
+            var numfound = docs.Count;
+            return new SearchResult(
+                new ResponseHeader(0, (int)stopwatch.ElapsedMilliseconds / 1000, reqHeader),
+                new ResponseContent(numfound, param.Start, docs));
+        }
+
+        private int GetReleasesOnly(Guid repoId, SearchParam param, List<ResponseDoc> docs, int max)
+        {
+            var result = _mavenSearchRepository.Query(repoId, param);
+            foreach (var item in result)
+            {
+                if (max >= param.Rows)
+                {
+                    break;
+                }
+                docs.Add(BuildResponse(item));
+                max++;
+            }
+
+            return max;
+        }
+
+        private int GetAllVersions(Guid repoId, SearchParam param, List<ResponseDoc> docs, int max)
+        {
+            var result = _releasePomRepository.Query(repoId, param);
+            foreach (var item in result)
+            {
+                if (max >= param.Rows)
+                {
+                    break;
+                }
+                docs.Add(BuildResponse(item));
+                max++;
+            }
+
+            return max;
+        }
+
+        private Dictionary<string, string> LoadParameters(SearchParam param, int maxSize)
+        {
             var reqHeader = new Dictionary<string, string>();
 
             AddIfPresent(reqHeader, "q", param.Query);
@@ -49,45 +106,7 @@ namespace Maven.Apis
                 param.Rows = maxSize;
             }
             AddIfPresent(reqHeader, "rows", param.Rows.ToString());
-
-
-            var stopwatch = new Stopwatch();
-            var docs = new List<ResponseDoc>();
-            stopwatch.Start();
-
-            var max = 0;
-
-            if (param.Core != "gav")
-            {
-                var result = _releasePomRepository.Query(repoId, param);
-                foreach (var item in result)
-                {
-                    if (max >= param.Rows)
-                    {
-                        break;
-                    }
-                    docs.Add(BuildResponse(item));
-                    max++;
-                }
-            }
-            else
-            {
-                var result = _mavenSearchRepository.Query(repoId, param);
-                foreach (var item in result)
-                {
-                    if (max >= param.Rows)
-                    {
-                        break;
-                    }
-                    docs.Add(BuildResponse(item));
-                    max++;
-                }
-            }
-            stopwatch.Stop();
-            var numfound = docs.Count;
-            return new SearchResult(
-                new ResponseHeader(0, (int)stopwatch.ElapsedMilliseconds / 1000, reqHeader),
-                new ResponseContent(numfound, param.Start, docs));
+            return reqHeader;
         }
 
         private void AddIfPresent(Dictionary<string, string> reqHeader, string id, string value)

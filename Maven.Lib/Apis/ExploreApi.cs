@@ -41,60 +41,98 @@ namespace Maven.News
             {
                 Children = new List<string>()
             };
+            AddPlainDirectories(mi, result);
+
+            if (IsInsideAnArtifactVersionDir(mi))
+            {
+                AddMetadata(result);
+                AddArtifacts(mi, result);
+                AddPom(result, mi);
+            }
+            else if (IsInsideAnArtifactVersion(mi))
+            {
+                if (IsPackageRootDir(mi))
+                {
+                    AddMetadata(result);
+                    AddListOfVerions(mi, result);
+                }
+            }
+
+            return result;
+        }
+
+        private static bool IsInsideAnArtifactVersion(MavenIndex mi)
+        {
+            return string.IsNullOrWhiteSpace(mi.Version);
+        }
+
+        private static bool IsInsideAnArtifactVersionDir(MavenIndex mi)
+        {
+            return !string.IsNullOrWhiteSpace(mi.Version) && !string.IsNullOrWhiteSpace(mi.ArtifactId);
+        }
+
+        private void AddPlainDirectories(MavenIndex mi, ExploreResponse result)
+        {
             var repo = _repositoriesRepository.GetById(mi.RepoId);
             foreach (var dir in _artifactsStorage.GetSubDir(repo, mi))
             {
                 result.Children.Add(dir);
             }
+        }
 
-            if (!string.IsNullOrWhiteSpace(mi.Version) && !string.IsNullOrWhiteSpace(mi.ArtifactId))
-            {
-                AddMetadata(result);
-                var poms = new HashSet<string>();
-                var timestampedSnapshot = _servicesMapper.HasTimestampedSnapshot(mi.RepoId);
-                foreach (var item in _artifactsRepository.GetAllArtifacts(mi.RepoId, mi.Group, mi.ArtifactId, mi.Version, mi.IsSnapshot))
-                {
-                    if (timestampedSnapshot)
-                    {
-                        var classi = string.IsNullOrWhiteSpace(item.Classifier) ? "" : "-" + item.Classifier;
-                        var build = string.IsNullOrWhiteSpace(item.Build) ? "" : "-" + item.Timestamp.ToString("yyyyMMdd.HHmmss") + "-" + item.Build;
-                        mi.Build = item.Build;
-                        mi.Timestamp = item.Timestamp;
-                        var name = item.ArtifactId + "-" + item.Version + build + classi + "." + item.Extension;
-                        result.Children.Add(name);
-                        result.Children.Add(name + ".md5");
-                        result.Children.Add(name + ".sha1");
-                    }
-                    else
-                    {
-                        var classi = string.IsNullOrWhiteSpace(item.Classifier) ? "" : "-" + item.Classifier;
-                        var name = item.ArtifactId + "-" + BuildFullVersion(item.Version, item.IsSnapshot) + classi + "." + item.Extension;
-                        result.Children.Add(name);
-                        result.Children.Add(name + ".md5");
-                        result.Children.Add(name + ".sha1");
-                    }
+        private bool IsPackageRootDir(MavenIndex mi)
+        {
+            return _metadataRepository.GetArtifactMetadata(mi.RepoId, mi.Group, mi.ArtifactId) != null;
+        }
 
-                }
-                AddPom(result,mi);
-            }
-            else if (string.IsNullOrWhiteSpace(mi.Version))
+        private void AddListOfVerions(MavenIndex mi, ExploreResponse result)
+        {
+            foreach (var item in _metadataRepository.GetVersions(mi.RepoId, mi.Group, mi.ArtifactId))
             {
-                var meta = _metadataRepository.GetArtifactMetadata(mi.RepoId, mi.Group, mi.ArtifactId);
-                if (meta != null)
+                var ver = BuildFullVersion(item.Version, item.IsSnapshot);
+                if (!result.Children.Contains(ver))
                 {
-                    AddMetadata(result);
-                    foreach (var item in _metadataRepository.GetVersions(mi.RepoId, mi.Group, mi.ArtifactId))
-                    {
-                        var ver = BuildFullVersion(item.Version, item.IsSnapshot);
-                        if (!result.Children.Contains(ver))
-                        {
-                            result.Children.Add(ver);
-                        }
-                    }
+                    result.Children.Add(ver);
                 }
             }
+        }
 
-            return result;
+        private void AddArtifacts(MavenIndex mi, ExploreResponse result)
+        {
+            var timestampedSnapshot = _servicesMapper.HasTimestampedSnapshot(mi.RepoId);
+            foreach (var item in _artifactsRepository.GetAllArtifacts(mi.RepoId, mi.Group, mi.ArtifactId, mi.Version, mi.IsSnapshot))
+            {
+                if (timestampedSnapshot)
+                {
+                    ListSingleFileAndChecksumForTimestampedSnapsot(mi, result, item);
+                }
+                else
+                {
+                    ListSingleFileAndChecksum(result, item);
+                }
+
+            }
+        }
+
+        private void ListSingleFileAndChecksum(ExploreResponse result, ArtifactEntity item)
+        {
+            var classi = string.IsNullOrWhiteSpace(item.Classifier) ? "" : "-" + item.Classifier;
+            var name = item.ArtifactId + "-" + BuildFullVersion(item.Version, item.IsSnapshot) + classi + "." + item.Extension;
+            result.Children.Add(name);
+            result.Children.Add(name + ".md5");
+            result.Children.Add(name + ".sha1");
+        }
+
+        private static void ListSingleFileAndChecksumForTimestampedSnapsot(MavenIndex mi, ExploreResponse result, ArtifactEntity item)
+        {
+            var classi = string.IsNullOrWhiteSpace(item.Classifier) ? "" : "-" + item.Classifier;
+            var build = string.IsNullOrWhiteSpace(item.Build) ? "" : "-" + item.Timestamp.ToString("yyyyMMdd.HHmmss") + "-" + item.Build;
+            mi.Build = item.Build;
+            mi.Timestamp = item.Timestamp;
+            var name = item.ArtifactId + "-" + item.Version + build + classi + "." + item.Extension;
+            result.Children.Add(name);
+            result.Children.Add(name + ".md5");
+            result.Children.Add(name + ".sha1");
         }
 
         private void AddPom(ExploreResponse result,MavenIndex mi)
