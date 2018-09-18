@@ -236,14 +236,14 @@ namespace Maven.Lib.Test.Api
 
             var result = _target.Generate(mi, false);
 
-            _releaseArtifactRepositoryMock.Verify(a => a.Save(It.IsAny<ReleaseVersion>(), It.IsAny<ITransaction>()), Times.Exactly(1));
-            _artifactsStorageMock.Verify(a => a.Save(It.IsAny<RepositoryEntity>(), It.IsAny<MavenIndex>(), It.IsAny<byte[]>()), Times.Exactly(1));
-            _artifactsRepositoryMock.Verify(a => a.Save(It.IsAny<ArtifactEntity>(), It.IsAny<ITransaction>()), Times.Exactly(1));
+            _releaseArtifactRepositoryMock.Verify(a => a.Save(It.IsAny<ReleaseVersion>(), It.IsAny<ITransaction>()), Times.Exactly(0));
+            _artifactsStorageMock.Verify(a => a.Save(It.IsAny<RepositoryEntity>(), It.IsAny<MavenIndex>(), It.IsAny<byte[]>()), Times.Exactly(0));
+            _artifactsRepositoryMock.Verify(a => a.Save(It.IsAny<ArtifactEntity>(), It.IsAny<ITransaction>()), Times.Exactly(0));
             _pomApiMock.Verify(a => a.Generate(It.IsAny<MavenIndex>(), It.IsAny<bool>()), Times.Exactly(0));
-            _pomApiMock.Verify(a => a.UpdateClassifiers(It.IsAny<MavenIndex>()), Times.Exactly(1));
-            _metadataApiMock.Verify(a => a.GenerateNoSnapshot(It.IsAny<MavenIndex>()), Times.Exactly(1));
+            _pomApiMock.Verify(a => a.UpdateClassifiers(It.IsAny<MavenIndex>()), Times.Exactly(0));
+            _metadataApiMock.Verify(a => a.GenerateNoSnapshot(It.IsAny<MavenIndex>()), Times.Exactly(0));
 
-            Assert.IsNotNull(result);
+            Assert.IsNull(result);
         }
 
 
