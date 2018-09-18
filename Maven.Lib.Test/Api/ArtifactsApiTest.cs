@@ -46,6 +46,8 @@ namespace Maven.Lib.Test.Api
             }
         }
 
+        private Mock<IArtifactsRepository> _artifactVersionsRepositoryMock;
+
         #region Additional test attributes
         //
         // You can use the following additional attributes as you write your tests:
@@ -61,23 +63,49 @@ namespace Maven.Lib.Test.Api
         // Use TestInitialize to run code before running each test 
 
         IArtifactsRepository _artifactVersionsRepository = null;
+        private Mock<IRepositoryEntitiesRepository> _repositoriesRepositoryMock;
+        IRepositoryEntitiesRepository _repositoriesRepository = null;
+        IArtifactsStorage _artifactsStorage = null;
+        Mock<IArtifactsStorage> _artifactsStorageMock = null;
+        IHashCalculator _hashCalculator = null;
+        Mock<IHashCalculator> _hashCalculatorMock = null;
+        ITransactionManager _transactionManager = null;
 
+        IReleaseArtifactRepository _releaseArtifactRepository = null;
+        Mock<IReleaseArtifactRepository> _releaseArtifactRepositoryMock = null;
+        IPomApi _pomApi = null;
+        Mock<IPomApi> _pomApiMock = null;
+        IMetadataApi _metadataApi = null;
+        Mock<IMetadataApi> _metadataApiMock = null;
         [TestInitialize()]
-         public void MyTestInitialize() {
+        public void MyTestInitialize()
+        {
 
             _artifactVersionsRepositoryMock = new Mock<IArtifactsRepository>();
-            IArtifactsStorage artifactsStorage = null;
-            IRepositoryEntitiesRepository repositoriesRepository = null;
+            _artifactVersionsRepository = _artifactVersionsRepositoryMock.Object;
+            _repositoriesRepositoryMock = new Mock<IRepositoryEntitiesRepository>();
+            _repositoriesRepository = _repositoriesRepositoryMock.Object;
+            _artifactsStorageMock = new Mock<IArtifactsStorage>();
+            _artifactsStorage = _artifactsStorageMock.Object;
+
+            _hashCalculatorMock = new Mock<IHashCalculator>();
+            _hashCalculator = _hashCalculatorMock.Object;
+            var transactionManagerMock = new Mock<ITransactionManager>();
+            transactionManagerMock.Setup(a => a.BeginTransaction()).Returns(new Mock<ITransaction>().Object);
+            _transactionManager = transactionManagerMock.Object;
+            _releaseArtifactRepositoryMock = new Mock<IReleaseArtifactRepository>();
+            _releaseArtifactRepository = _releaseArtifactRepositoryMock.Object;
+            _pomApiMock = new Mock<IPomApi>();
+            _pomApi = _pomApiMock.Object;
+            _metadataApiMock = new Mock<IMetadataApi>();
+            _metadataApi = _metadataApiMock.Object;
+
             IServicesMapper servicesMapper = null;
-            IHashCalculator hashCalculator = null;
-            ITransactionManager transactionManager = null;
-            IReleaseArtifactRepository releaseArtifactRepository = null;
-            IPomApi pomApi = null;
-            IMetadataApi metadataApi = null;
+
             _target = new ArtifactsApi(
-                _artifactVersionsRepository, artifactsStorage, repositoriesRepository, servicesMapper,
-                hashCalculator, transactionManager, releaseArtifactRepository,
-                pomApi, metadataApi);
+                _artifactVersionsRepository, _artifactsStorage, _repositoriesRepository, servicesMapper,
+                _hashCalculator, _transactionManager, _releaseArtifactRepository,
+                _pomApi, _metadataApi);
 
         }
         //
@@ -114,7 +142,7 @@ namespace Maven.Lib.Test.Api
             {
                 Version = "1",
                 Extension = "war",
-                Meta="metadata.xml"
+                Meta = "metadata.xml"
             };
             Assert.IsFalse(_target.CanHandle(mi));
         }
@@ -122,7 +150,7 @@ namespace Maven.Lib.Test.Api
 
 
         [TestMethod]
-        public void ISPTRetrieveFile()
+        public void ISNBPToRetrieveNotExistingPackage()
         {
             var mi = new MavenIndex
             {
@@ -130,7 +158,182 @@ namespace Maven.Lib.Test.Api
                 Extension = "jar"
             };
             var result = _target.Retrieve(mi);
+            Assert.IsNull(result);
+        }
+        [TestMethod]
+        public void ISBPToRetrievePackage()
+        {
+            var mi = new MavenIndex
+            {
+                Version = "1",
+                Extension = "jar",
+                RepoId = Guid.NewGuid()
+            };
+
+            var artifactVersion = new ArtifactEntity();
+            _artifactVersionsRepositoryMock.Setup(a => a.GetSingleArtifact(
+                It.Is<Guid>(b => b == mi.RepoId), It.IsAny<string[]>(), It.IsAny<string>(),
+                It.Is<string>(b => b == mi.Version), It.IsAny<string>(), It.Is<string>(b => b == mi.Extension),
+                It.IsAny<bool>(), It.IsAny<DateTime>(), It.IsAny<string>())).
+                Returns(artifactVersion);
+
+            var result = _target.Retrieve(mi);
+
+            _artifactsStorageMock.Verify(a => a.Load(It.IsAny<RepositoryEntity>(), It.IsAny<MavenIndex>()), Times.Exactly(1));
+            _artifactVersionsRepositoryMock.Verify(a => a.GetSingleArtifact(
+                It.Is<Guid>(b => b == mi.RepoId), It.IsAny<string[]>(), It.IsAny<string>(),
+                It.Is<string>(b => b == mi.Version), It.IsAny<string>(), It.Is<string>(b => b == mi.Extension),
+                It.IsAny<bool>(), It.IsAny<DateTime>(), It.IsAny<string>()), Times.Exactly(1));
             Assert.IsNotNull(result);
         }
+
+
+        [TestMethod]
+        public void ISBPToGeneratePackageLocally()
+        {
+            var mi = new MavenIndex
+            {
+                Version = "1",
+                Extension = "jar",
+                RepoId = Guid.NewGuid(),
+                Content = new byte[] { },
+                Group = new string[] { "org", "test" }
+            };
+
+
+
+            var result = _target.Generate(mi, false);
+
+            _releaseArtifactRepositoryMock.Verify(a => a.Save(It.IsAny<ReleaseVersion>(), It.IsAny<ITransaction>()), Times.Exactly(1));
+            _artifactsStorageMock.Verify(a => a.Save(It.IsAny<RepositoryEntity>(), It.IsAny<MavenIndex>(), It.IsAny<byte[]>()), Times.Exactly(1));
+            _artifactVersionsRepositoryMock.Verify(a => a.Save(It.IsAny<ArtifactEntity>(), It.IsAny<ITransaction>()), Times.Exactly(1));
+            _pomApiMock.Verify(a => a.Generate(It.IsAny<MavenIndex>(), It.IsAny<bool>()), Times.Exactly(0));
+            _pomApiMock.Verify(a => a.UpdateClassifiers(It.IsAny<MavenIndex>()), Times.Exactly(1));
+            _metadataApiMock.Verify(a => a.GenerateNoSnapshot(It.IsAny<MavenIndex>()), Times.Exactly(1));
+
+            Assert.IsNotNull(result);
+        }
+
+        [TestMethod]
+        public void ISBPToGeneratePackageLocallyChecksum()
+        {
+            var mi = new MavenIndex
+            {
+                Version = "1",
+                Extension = "jar",
+                Checksum  = "md5",
+                RepoId = Guid.NewGuid(),
+                Content = new byte[] { },
+                Group = new string[] { "org", "test" }
+            };
+
+
+
+            var result = _target.Generate(mi, false);
+
+            _releaseArtifactRepositoryMock.Verify(a => a.Save(It.IsAny<ReleaseVersion>(), It.IsAny<ITransaction>()), Times.Exactly(1));
+            _artifactsStorageMock.Verify(a => a.Save(It.IsAny<RepositoryEntity>(), It.IsAny<MavenIndex>(), It.IsAny<byte[]>()), Times.Exactly(1));
+            _artifactVersionsRepositoryMock.Verify(a => a.Save(It.IsAny<ArtifactEntity>(), It.IsAny<ITransaction>()), Times.Exactly(1));
+            _pomApiMock.Verify(a => a.Generate(It.IsAny<MavenIndex>(), It.IsAny<bool>()), Times.Exactly(0));
+            _pomApiMock.Verify(a => a.UpdateClassifiers(It.IsAny<MavenIndex>()), Times.Exactly(1));
+            _metadataApiMock.Verify(a => a.GenerateNoSnapshot(It.IsAny<MavenIndex>()), Times.Exactly(1));
+
+            Assert.IsNotNull(result);
+        }
+
+
+
+        [TestMethod]
+        public void ISBPToGenerateSnapshotPackageLocally()
+        {
+            var mi = new MavenIndex
+            {
+                Version = "1",
+                Extension = "jar",
+                IsSnapshot = true,
+                RepoId = Guid.NewGuid(),
+                Content = new byte[] { },
+                Group = new string[] { "org", "test" }
+            };
+
+
+
+            var result = _target.Generate(mi, false);
+
+            _releaseArtifactRepositoryMock.Verify(a => a.Save(It.IsAny<ReleaseVersion>(), It.IsAny<ITransaction>()), Times.Exactly(1));
+            _artifactsStorageMock.Verify(a => a.Save(It.IsAny<RepositoryEntity>(), It.IsAny<MavenIndex>(), It.IsAny<byte[]>()), Times.Exactly(1));
+            _artifactVersionsRepositoryMock.Verify(a => a.Save(It.IsAny<ArtifactEntity>(), It.IsAny<ITransaction>()), Times.Exactly(1));
+            _pomApiMock.Verify(a => a.Generate(It.IsAny<MavenIndex>(), It.IsAny<bool>()), Times.Exactly(0));
+            _pomApiMock.Verify(a => a.UpdateClassifiers(It.IsAny<MavenIndex>()), Times.Exactly(1));
+            _metadataApiMock.Verify(a => a.GenerateNoSnapshot(It.IsAny<MavenIndex>()), Times.Exactly(0));
+
+            Assert.IsNotNull(result);
+        }
+
+
+        [TestMethod]
+        public void ISBPToGeneratePackageRemote()
+        {
+            var mi = new MavenIndex
+            {
+                Version = "1",
+                Extension = "jar",
+                RepoId = Guid.NewGuid(),
+                Content = new byte[] { },
+                Group = new string[] { "org", "test" }
+            };
+
+
+
+            var result = _target.Generate(mi, true);
+
+            _releaseArtifactRepositoryMock.Verify(a => a.Save(It.IsAny<ReleaseVersion>(), It.IsAny<ITransaction>()), Times.Exactly(1));
+            _artifactsStorageMock.Verify(a => a.Save(It.IsAny<RepositoryEntity>(), It.IsAny<MavenIndex>(), It.IsAny<byte[]>()), Times.Exactly(1));
+            _artifactVersionsRepositoryMock.Verify(a => a.Save(It.IsAny<ArtifactEntity>(), It.IsAny<ITransaction>()), Times.Exactly(1));
+            _pomApiMock.Verify(a => a.Generate(It.IsAny<MavenIndex>(), It.IsAny<bool>()), Times.Exactly(1));
+            _pomApiMock.Verify(a => a.UpdateClassifiers(It.IsAny<MavenIndex>()), Times.Exactly(1));
+            _metadataApiMock.Verify(a => a.GenerateNoSnapshot(It.IsAny<MavenIndex>()), Times.Exactly(1));
+
+            Assert.IsNotNull(result);
+        }
+
+        [TestMethod]
+        public void ISBPToUpdateRemotePackage()
+        {
+            Assert.Inconclusive();
+        }
+
+        [TestMethod]
+        public void ISBPToUpdateTimestampedSnapshot()
+        {
+            Assert.Inconclusive();
+        }
+
+        [TestMethod]
+        public void ISBNotPToUpdateFixedSnapshot()
+        {
+            Assert.Inconclusive();
+        }
+
+        [TestMethod]
+        public void ISBPToGeneratePomWhenRemote()
+        {
+            Assert.Inconclusive();
+        }
+
+        [TestMethod]
+        public void ISBPToChangeTheReleaseArtifactsWhenAddingMoreRecentVersion()
+        {
+            Assert.Inconclusive();
+        }
+
+        [TestMethod]
+        public void ISBPToChangeTheTimestampedSnapshotArtifactsWhenAddingMoreRecentVersion()
+        {
+            Assert.Inconclusive();
+        }
     }
+
+
+
 }
