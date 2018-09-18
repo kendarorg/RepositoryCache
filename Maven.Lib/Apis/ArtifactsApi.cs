@@ -14,7 +14,7 @@ namespace Maven.News
 
     public class ArtifactsApi : IArtifactsApi
     {
-        private readonly IArtifactsRepository _artifactVersionsRepository;
+        private readonly IArtifactsRepository _artifactsRepository;
         private readonly IArtifactsStorage _artifactsStorage;
         private readonly IRepositoryEntitiesRepository _repositoriesRepository;
         private readonly IServicesMapper _servicesMapper;
@@ -31,7 +31,7 @@ namespace Maven.News
             IReleaseArtifactRepository releaseArtifactRepository,
             IPomApi pomApi, IMetadataApi metadataApi)
         {
-            this._artifactVersionsRepository = artifactVersionsRepository;
+            this._artifactsRepository = artifactVersionsRepository;
             this._artifactsStorage = artifactsStorage;
             this._repositoriesRepository = repositoriesRepository;
             this._servicesMapper = servicesMapper;
@@ -48,7 +48,7 @@ namespace Maven.News
 
         public ArtifactsApiResult Retrieve(MavenIndex mi)
         {
-            var artifact = _artifactVersionsRepository.GetSingleArtifact(mi.RepoId, mi.Group, mi.ArtifactId, mi.Version, mi.Classifier, mi.Extension, mi.IsSnapshot, mi.Timestamp, mi.Build);
+            var artifact = _artifactsRepository.GetSingleArtifact(mi.RepoId, mi.Group, mi.ArtifactId, mi.Version, mi.Classifier, mi.Extension, mi.IsSnapshot, mi.Timestamp, mi.Build);
             if (artifact == null)
             {
                 return null;
@@ -68,7 +68,7 @@ namespace Maven.News
 
         public ArtifactsApiResult Generate(MavenIndex mi, bool remote)
         {
-            var artifact = _artifactVersionsRepository.GetSingleArtifact(mi.RepoId, mi.Group, mi.ArtifactId,
+            var artifact = _artifactsRepository.GetSingleArtifact(mi.RepoId, mi.Group, mi.ArtifactId,
                 mi.Version, mi.Classifier, mi.Extension, mi.IsSnapshot, mi.Timestamp, mi.Build);
             var repo = _repositoriesRepository.GetById(mi.RepoId);
 
@@ -136,8 +136,8 @@ namespace Maven.News
                         Timestamp = mi.Timestamp.Year > 1 ? mi.Timestamp : DateTime.Now,
                     };
                 }
-                var prevVer = JavaSemVersion.Parse(release.Version);
-                var newVer = JavaSemVersion.Parse(artifact.Version);
+                var prevVer = SemVersion.Parse(release.Version);
+                var newVer = SemVersion.Parse(artifact.Version);
                 if (newVer > prevVer)
                 {
                     release.Timestamp = mi.Timestamp;
@@ -152,7 +152,7 @@ namespace Maven.News
                 }
                 _releaseArtifactRepository.Save(release, transactin);
                 _artifactsStorage.Save(repo, mi, mi.Content);
-                _artifactVersionsRepository.Save(artifact, transactin);
+                _artifactsRepository.Save(artifact, transactin);
                 if (remote)
                 {
                     _pomApi.Generate(mi, remote);

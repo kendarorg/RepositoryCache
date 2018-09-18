@@ -61,6 +61,8 @@ namespace Nuget.Lib.Test.Controllers
         [TestMethod]
         public void ISPToQueryRemote()
         {
+            var appProp = new AppProperties("XX", "XX");
+            
             var target = new V3_Query(Guid.NewGuid(),_nugetService, _properties, _reps, _servicesMapper,
                 "/{repo}/v3/query")
             {
@@ -78,6 +80,12 @@ namespace Nuget.Lib.Test.Controllers
                     {"repo","nuget.org" }
                 }
             };
+
+            if (!appProp.IsOnline(serializableRequest))
+            {
+                Assert.Inconclusive("Not online");
+                return;
+            }
 
             var result = target.HandleRequest(serializableRequest);
 

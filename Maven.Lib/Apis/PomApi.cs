@@ -99,8 +99,8 @@ namespace Maven.News
             }
             else
             {
-                var oldp = JavaSemVersion.Parse(pomEntity.Version);
-                var relp = JavaSemVersion.Parse(release.Version);
+                var oldp = SemVersion.Parse(pomEntity.Version);
+                var relp = SemVersion.Parse(release.Version);
                 if (oldp > relp)
                 {
                     if (pomEntity.IsSnapshot == release.IsSnapshot)
@@ -164,6 +164,10 @@ namespace Maven.News
                     {
                         classifiers += art.Classifier + "|";
                     }
+                    else
+                    {
+                        classifiers += "%" + "|";
+                    }
                 }
                 metadata.Packaging = packaging;
                 metadata.Classifiers = classifiers;
@@ -204,6 +208,10 @@ namespace Maven.News
                 if (!string.IsNullOrWhiteSpace(art.Classifier))
                 {
                     classifiers += art.Classifier + "|";
+                }
+                else
+                {
+                    classifiers += "%" + "|";
                 }
             }
             metadata.Packaging = packaging;

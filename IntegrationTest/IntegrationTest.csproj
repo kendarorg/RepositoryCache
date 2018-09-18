@@ -93,6 +93,7 @@
     <None Include="maven_exes\upload\api-common-1.6.0.pom" />
     <None Include="NugetPush.bat" />
     <None Include="nuget_exes\nlog.4.3.0.nupkg" />
+    <None Include="packages.config" />
     <None Include="testArchetype.zip" />
   </ItemGroup>
   <ItemGroup>
@@ -151,6 +152,11 @@
     <Content Include="maven_exes\upload\api-common-1.6.0.jar" />
     <Content Include="maven_exes\upload\test-1.0-SNAPSHOT.jar" />
     <Content Include="nuget_exes\NuGet.3.5.exe" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Moq, Version=4.9.0.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
+      <HintPath>..\packages\Moq.4.9.0\lib\net45\Moq.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

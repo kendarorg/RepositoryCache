@@ -168,7 +168,7 @@ namespace MavenProtocol
         {
             MetadataEntity latest = null;
             MetadataEntity release = null;
-            JavaSemVersion releaseVersion = JavaSemVersion.Parse("0");
+            SemVersion releaseVersion = SemVersion.Parse("0");
             foreach (var version in _metadataRepository.GetVersions(mi.RepoId, mi.Group, mi.ArtifactId, transaction))
             {
 
@@ -218,16 +218,16 @@ namespace MavenProtocol
             return version + (isSnapshot ? "-SNAPSHOT" : "");
         }
 
-        private static MetadataEntity FindRelease(MetadataEntity release, ref JavaSemVersion releaseVersion, MetadataEntity version)
+        private static MetadataEntity FindRelease(MetadataEntity release, ref SemVersion releaseVersion, MetadataEntity version)
         {
             if (release == null)
             {
                 release = version;
-                releaseVersion = JavaSemVersion.Parse(version.Version);
+                releaseVersion = SemVersion.Parse(version.Version);
             }
             else
             {
-                var possibleVersion = JavaSemVersion.Parse(version.Version);
+                var possibleVersion = SemVersion.Parse(version.Version);
                 if (possibleVersion > releaseVersion)
                 {
                     release = version;

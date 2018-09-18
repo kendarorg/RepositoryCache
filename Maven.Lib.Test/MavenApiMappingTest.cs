@@ -5,7 +5,7 @@ using MultiRepositories;
 namespace MavenProtocol
 {
     [TestClass]
-    public class MavenApiTest
+    public class MavenApiMappingTest
     {
 
 

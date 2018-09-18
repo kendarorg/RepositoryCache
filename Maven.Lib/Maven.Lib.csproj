@@ -60,9 +60,7 @@
     <Compile Include="Apis\ArtifactsApi.cs" />
     <Compile Include="Apis\ExploreApi.cs" />
     <Compile Include="Repositories\IReleasePomRepository.cs" />
-    <Compile Include="Services\HashCalculator.cs" />
     <Compile Include="Repositories\IArtifactsRepository.cs" />
-    <Compile Include="Services\IHashCalculator.cs" />
     <Compile Include="Repositories\IMetadataRepository.cs" />
     <Compile Include="Repositories\IPomRepository.cs" />
     <Compile Include="Repositories\IReleaseArtifactRepository.cs" />
