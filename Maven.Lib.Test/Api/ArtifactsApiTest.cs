@@ -382,7 +382,7 @@ namespace Maven.Lib.Test.Api
                 It.IsAny<bool>(), It.IsAny<DateTime>(), It.IsAny<string>())).
                 Returns(artifactVersion);
 
-            Assert.Throws<Exception>(()=>_target.Generate(mi, false));
+            Assert.Throws<Exception>(() => _target.Generate(mi, false));
         }
 
 
@@ -418,14 +418,14 @@ namespace Maven.Lib.Test.Api
                 RepoId = Guid.NewGuid(),
                 IsSnapshot = true,
                 Build = "2",
-                ArtifactId="test",
+                ArtifactId = "test",
                 Content = new byte[] { },
                 Group = new string[] { "org", "test" }
             };
             _servicesMapperMock.Setup(a => a.HasTimestampedSnapshot(It.IsAny<Guid>())).Returns(false);
             var artifactVersion = new ArtifactEntity
             {
-                Version="1",
+                Version = "1",
                 Build = "1",
                 IsSnapshot = true
             };
@@ -479,6 +479,8 @@ namespace Maven.Lib.Test.Api
         {
             Assert.Inconclusive();
         }
+
+
     }
 
 
