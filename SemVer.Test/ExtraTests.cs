@@ -1,12 +1,12 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace SemVer.Test
 {
-    [TestClass]
+    [TestFixture]
     public class ExtraTests
     {
-        [TestMethod]
+        [Test]
         public void SemVerAllowTrailingZeroes()
         {
             var version = SemVersion.Parse("01.02.045-alpha+nightly.23");
@@ -18,7 +18,7 @@ namespace SemVer.Test
             Assert.AreEqual("nightly.23", version.Build);
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerFillMissingParts()
         {
             var version = SemVersion.Parse("1-alpha+nightly.23");
@@ -30,7 +30,7 @@ namespace SemVer.Test
             Assert.AreEqual("nightly.23", version.Build);
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerShouldAccept4Parts()
         {
             var version = SemVersion.Parse("1.2.3.4-alpha+nightly.23");
@@ -43,7 +43,7 @@ namespace SemVer.Test
             Assert.AreEqual("nightly.23", version.Build);
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerShouldFillData()
         {
             var version = SemVersion.Parse("1.2.3.04-alpha+nightly.23");
@@ -57,14 +57,13 @@ namespace SemVer.Test
         }
 
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Test]
         public void SemVerShouldNotAccept4PartsOnStrict()
         {
-            var version = SemVersion.Parse("1.2.3.4-alpha+nightly.23", true);
+            Assert.Throws<InvalidOperationException>(() => SemVersion.Parse("1.2.3.4-alpha+nightly.23", true));
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerCompareTest1()
         {
             var v1 = SemVersion.Parse("1.0.0.1");
@@ -74,7 +73,7 @@ namespace SemVer.Test
             Assert.AreEqual(-1, r);
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerCompareTest2()
         {
             var v1 = SemVersion.Parse("1.0.0");
@@ -85,7 +84,7 @@ namespace SemVer.Test
         }
 
 
-        [TestMethod]
+        [Test]
         public void SemVerCompareTest3()
         {
             var v1 = SemVersion.Parse("1.0.0-alpha");
@@ -95,7 +94,7 @@ namespace SemVer.Test
             Assert.AreEqual(-1, r);
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerToStringTest()
         {
             var version = new SemVersion(1, 2, 0, "beta", "dev-mha.120", 2);

@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Text;
 using Ioc;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Nuget.Lib.Test.Utils;
 
 namespace MavenProtocol.Test
 {
-    [TestClass]
+    [TestFixture]
     public class PomXmlTest
     {
         private AssemblyUtils _au = new AssemblyUtils();
 
-        [TestMethod]
+        [Test]
         public void ITSPToParseSimplePom()
         {
             var pom = _au.ReadRes<JsonComp>("simplepom.xml");
@@ -20,7 +20,7 @@ namespace MavenProtocol.Test
             JsonComp.Equals("ITSPToParseSimplePom.json", target);
         }
 
-        [TestMethod]
+        [Test]
         public void ITSPToParseRealPom()
         {
             var pom = _au.ReadRes<JsonComp>("slf4j-api-1.7.25.pom");

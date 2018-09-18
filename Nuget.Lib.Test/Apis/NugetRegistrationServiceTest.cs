@@ -1,5 +1,5 @@
 ﻿using Ioc;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Moq;
 using MultiRepositories.Repositories;
 using Newtonsoft.Json;
@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace Nuget.Lib.Test
 {
-    [TestClass]
+    [TestFixture]
     public class NugetRegistrationServiceTest
     {
         private IRegistrationRepository _registrationRepository;
@@ -26,7 +26,7 @@ namespace Nuget.Lib.Test
         private IServicesMapper _servicesMapper;
         private Guid _repoId;
 
-        [TestInitialize]
+        [SetUp]
         public void Initialize()
         {
             _repoId = Guid.NewGuid();
@@ -143,7 +143,7 @@ namespace Nuget.Lib.Test
 
 
 
-        [TestMethod]
+        [Test]
         public void ISPTGetLeafNoSemVer()
         {
             var target = new NugetRegistrationService(_registrationRepository, _servicesMapper, _catalogService);
@@ -165,7 +165,7 @@ namespace Nuget.Lib.Test
             JsonComp.Equals("ISPTGetLeafNoSemVer.json", result);
         }
 
-        [TestMethod]
+        [Test]
         public void ISPTGetOnePageOnly()
         {
 
@@ -204,7 +204,7 @@ namespace Nuget.Lib.Test
             JsonComp.Equals("ISPTGetOnePageOnly.json", result);
         }
 
-        [TestMethod]
+        [Test]
         public void ISPTGetMultipage()
         {
 
@@ -228,7 +228,7 @@ namespace Nuget.Lib.Test
         }
 
 
-        [TestMethod]
+        [Test]
         public void ISPTGetSinglePage()
         {
 

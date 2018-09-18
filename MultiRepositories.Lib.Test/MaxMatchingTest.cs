@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MultiRepositories
 {
-    [TestClass]
+    [TestFixture]
     public class MaxMatchingTest
     {
         public const string REGEX_ONLY_PACK = @"^(?<repoId>{repo})/(?<path>[0-9A-Za-z\-\./]+)/" +
@@ -52,7 +52,7 @@ namespace MultiRepositories
                     @"(\.(?<subtype>(asc|md5|sha1)))?$";
 
 
-        [TestMethod]
+        [Test]
         public void ISBPToMatchRegexJarMd5Comp()
         {
             SerializableRequest request = null;

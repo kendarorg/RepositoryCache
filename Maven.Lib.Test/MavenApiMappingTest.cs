@@ -1,10 +1,10 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using MultiRepositories;
 
 namespace MavenProtocol
 {
-    [TestClass]
+    [TestFixture]
     public class MavenApiMappingTest
     {
 
@@ -18,7 +18,7 @@ namespace MavenProtocol
                 @"{pack#" + MavenConstants.PACKAGE_REGEXP + @"}/" +
                 @"{meta#" + MavenConstants.METADATA_AND_CHECHKSUMS_REGEXP + @"}";
 
-        [TestMethod]
+        [Test]
         public void ISBPToMatchRegexJarMd5()
         {
             SerializableRequest request = null;
@@ -52,7 +52,7 @@ namespace MavenProtocol
         }
 
 
-        [TestMethod]
+        [Test]
         public void ISBPToMatchRegexJar()
         {
             SerializableRequest request = null;
@@ -80,7 +80,7 @@ namespace MavenProtocol
         }
 
 
-        [TestMethod]
+        [Test]
         public void ISBPToMatchRegexPom()
         {
             SerializableRequest request = null;
@@ -108,7 +108,7 @@ namespace MavenProtocol
         }
 
 
-        [TestMethod]
+        [Test]
         public void ISBPToMatchRegexPomAsc()
         {
             SerializableRequest request = null;
@@ -136,7 +136,7 @@ namespace MavenProtocol
         }
 
 
-        [TestMethod]
+        [Test]
         public void ISBPToMatchRegexmetadataAsc()
         {
             SerializableRequest request = null;
@@ -162,7 +162,7 @@ namespace MavenProtocol
 
 
 
-        [TestMethod]
+        [Test]
         public void ISBPToMatchRegexmetadata()
         {
             SerializableRequest request = null;

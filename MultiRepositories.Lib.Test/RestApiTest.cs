@@ -1,12 +1,12 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace MultiRepositories
 {
-    [TestClass]
+    [TestFixture]
     public class RestApiTest
     {
-        [TestMethod]
+        [Test]
         public void ISBPToHandleSimpleUrls()
         {
             var viewed = false;
@@ -30,7 +30,7 @@ namespace MultiRepositories
         }
 
 
-        [TestMethod]
+        [Test]
         public void ISBPToHandleSimpleReplaceUrls()
         {
             var viewed = false;
@@ -56,7 +56,7 @@ namespace MultiRepositories
         }
 
 
-        [TestMethod]
+        [Test]
         public void ISBPToHandleMixedReplaceUrls()
         {
             var viewed = false;
@@ -82,7 +82,7 @@ namespace MultiRepositories
         }
 
 
-        [TestMethod]
+        [Test]
         public void ISBPToHandleStarUrls()
         {
             var viewed = false;
@@ -107,19 +107,18 @@ namespace MultiRepositories
             Assert.IsNotNull(result);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(Exception))]
+        [Test]
         public void ISBPToThrowOnduplicateStars()
         {
 
             var mockRest = new MockRestApi((a) => null, "test/{*first}/{*last}.json");
 
             var url = "test/test/item/index.json";
-            mockRest.CanHandleRequest(url);
+            Assert.Throws<Exception>(() => mockRest.CanHandleRequest(url));
         }
 
 
-        [TestMethod]
+        [Test]
         public void ISBPToHandleStarUrlsEnding()
         {
             var viewed = false;
@@ -145,7 +144,7 @@ namespace MultiRepositories
         }
 
 
-        [TestMethod]
+        [Test]
         public void ISBPToHandleStarUrlsStarting()
         {
             var viewed = false;
@@ -172,7 +171,7 @@ namespace MultiRepositories
 
 
 
-        [TestMethod]
+        [Test]
         public void ISBPShouldNotHandleMissing()
         {
             var mockRest = new MockRestApi((a) => null, "test/prova.json");
@@ -182,7 +181,7 @@ namespace MultiRepositories
             Assert.IsFalse(result);
         }
 
-        [TestMethod]
+        [Test]
         public void ISBPToHandleSimpleUrlWithMethod()
         {
             var viewed = false;
@@ -207,7 +206,7 @@ namespace MultiRepositories
         }
 
 
-        [TestMethod]
+        [Test]
         public void ISBPToIgnoreNotMatchingMethodInCanHandle()
         {
             var mockRest = new MockRestApi((a) =>
@@ -221,8 +220,7 @@ namespace MultiRepositories
         }
 
 
-        [TestMethod]
-        [ExpectedException(typeof(Exception))]
+        [Test]
         public void ISBPToIgnoreNotMatchingMethodInHandleRequest()
         {
             var mockRest = new MockRestApi((a) =>
@@ -236,11 +234,11 @@ namespace MultiRepositories
                 Url = url,
                 Method = "POST"
             };
-            mockRest.HandleRequest(req);
+            Assert.Throws<Exception>(() => mockRest.HandleRequest(req));
         }
 
 
-        [TestMethod]
+        [Test]
         public void ISBPToParseCorrectlyMavenUrl()
         {
             var mockRest = new MockRestApi((a) =>
@@ -253,7 +251,7 @@ namespace MultiRepositories
         }
 
 
-        [TestMethod]
+        [Test]
         public void ISBPToMatchRegex()
         {
             SerializableRequest request = null;
@@ -277,7 +275,7 @@ namespace MultiRepositories
         }
 
 
-        [TestMethod]
+        [Test]
         public void ISBPToMatchRegexMultiple()
         {
             SerializableRequest request = null;

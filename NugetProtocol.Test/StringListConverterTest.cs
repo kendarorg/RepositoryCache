@@ -1,15 +1,15 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Ioc;
 using Newtonsoft.Json;
 using Nuget.Lib.Test.Utils;
 
 namespace NugetProtocol.Test
 {
-    [TestClass]
+    [TestFixture]
     public class StringListConverterTest
     {
-        [TestMethod]
+        [Test]
         public void ShouldConvertStringAndArrays()
         {//[JsonConverter(typeof(StringListConverter))]
             var au = new AssemblyUtils();
@@ -22,7 +22,7 @@ namespace NugetProtocol.Test
         }
 
         //https://api.nuget.org/v3/catalog0/data/2018.05.02.13.34.24/ravendb.database.1.0.728-unstable.json
-        [TestMethod]
+        [Test]
         public void ShouldConvertObjecctAndArrays()
         {//[JsonConverter(typeof(StringListConverter))]
             var au = new AssemblyUtils();

@@ -1,5 +1,5 @@
 ﻿using Ioc;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using MultiRepositories;
 using Newtonsoft.Json;
 using Nuget.Lib.Test.Utils;

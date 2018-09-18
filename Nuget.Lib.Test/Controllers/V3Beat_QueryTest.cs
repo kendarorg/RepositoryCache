@@ -1,5 +1,5 @@
 ﻿using Ioc;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Moq;
 using MultiRepositories;
 using MultiRepositories.Repositories;
@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace Nuget.Lib.Test.Controllers
 {
-    [TestClass]
+    [TestFixture]
     public class V3Beat_QueryTest : BaseControllersTest
     {
         private Guid _repoId;
@@ -28,7 +28,7 @@ namespace Nuget.Lib.Test.Controllers
         private IServicesMapper _servicesMapper;
         private AssemblyUtils _assemblyUtils;
 
-        [TestInitialize]
+        [SetUp]
         public void Initialize()
         {
             _assemblyUtils = new AssemblyUtils();
@@ -58,7 +58,7 @@ namespace Nuget.Lib.Test.Controllers
             _servicesMapper = new NugetServicesMapper(_reps, _properties);
         }
 
-        [TestMethod]
+        [Test]
         public void ISPToQueryRemote()
         {
             var appProp = new AppProperties("XX", "XX");

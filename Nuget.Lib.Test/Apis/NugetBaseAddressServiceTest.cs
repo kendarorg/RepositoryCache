@@ -1,5 +1,5 @@
 ﻿using Ioc;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Moq;
 using MultiRepositories.Repositories;
 using Newtonsoft.Json;
@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace Nuget.Lib.Test
 {
-    [TestClass]
+    [TestFixture]
     public class NugetBaseAddressServiceTest
     {
         private IRegistrationRepository _registrationRepository;
@@ -30,7 +30,7 @@ namespace Nuget.Lib.Test
         private Mock<IPackagesRepository> _packagesRepositoryMock;
         private IPackagesRepository _packagesRepository;
 
-        [TestInitialize]
+        [SetUp]
         public void Initialize()
         {
             _repoId = Guid.NewGuid();
@@ -102,7 +102,7 @@ namespace Nuget.Lib.Test
 
 
 
-        [TestMethod]
+        [Test]
         public void ISPToGetNugetPackage()
         {
 
@@ -134,7 +134,7 @@ namespace Nuget.Lib.Test
         }
 
 
-        [TestMethod]
+        [Test]
         public void ISPToGetNugetVersion()
         {
 

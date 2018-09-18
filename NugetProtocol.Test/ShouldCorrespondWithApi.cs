@@ -1,15 +1,15 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Nuget.Lib.Test.Utils;
 using System.Net;
 using System.IO;
 
 namespace NugetProtocol.Test
 {
-    [TestClass]
+    [TestFixture]
     public class ShouldCorrespondWithApi
     {
-        [TestMethod]
+        [Test]
         public void ItShouldCompyWithNugetProtocol()
         {
             try

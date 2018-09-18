@@ -1,5 +1,5 @@
 ﻿using Ioc;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Moq;
 using MultiRepositories.Repositories;
 using Newtonsoft.Json;
@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace Nuget.Lib.Test
 {
-    [TestClass]
+    [TestFixture]
     public class NugetSearchQueryServiceTest
     {
         private IQueryRepository _queryRepository;
@@ -26,7 +26,7 @@ namespace Nuget.Lib.Test
         private Guid _repoId;
         private Mock<IQueryRepository> _queryRepositoryMock;
 
-        [TestInitialize]
+        [SetUp]
         public void Initialize()
         {
 
@@ -58,7 +58,7 @@ namespace Nuget.Lib.Test
             _servicesMapper = new ServicesMapperMock("nuget.org", _repoId, 5, 10, 3);
         }
 
-        [TestMethod]
+        [Test]
         public void ISPTogetEmptyResult()
         {
             var au = new AssemblyUtils();
@@ -70,7 +70,7 @@ namespace Nuget.Lib.Test
             Assert.AreEqual(0, result.Data.Count);
         }
 
-        [TestMethod]
+        [Test]
         public void ISPToGetReleases()
         {
             var au = new AssemblyUtils();
@@ -93,7 +93,7 @@ namespace Nuget.Lib.Test
             JsonComp.Equals("ISPToGetReleases.json", result);
         }
 
-        [TestMethod]
+        [Test]
         public void ISPToGetReleasesWithPrePresent()
         {
             var au = new AssemblyUtils();
@@ -119,7 +119,7 @@ namespace Nuget.Lib.Test
             JsonComp.Equals("ISPToGetReleases.json", result);
         }
 
-        [TestMethod]
+        [Test]
         public void ISPToGetPreReleases()
         {
             var au = new AssemblyUtils();
@@ -147,7 +147,7 @@ namespace Nuget.Lib.Test
 
 
 
-        [TestMethod]
+        [Test]
         public void ISPToGetTheReleaseWhenPreReleasesIsMissing()
         {
             var au = new AssemblyUtils();
@@ -175,7 +175,7 @@ namespace Nuget.Lib.Test
 
 
 
-        [TestMethod]
+        [Test]
         public void ISPToGetMajorWhenGreaterThanPreAskingForPre()
         {
             var au = new AssemblyUtils();
@@ -205,7 +205,7 @@ namespace Nuget.Lib.Test
         }
 
 
-        [TestMethod]
+        [Test]
         public void ISPToGetPreWhenGreaterThanMajorAskingForPre()
         {
             var au = new AssemblyUtils();

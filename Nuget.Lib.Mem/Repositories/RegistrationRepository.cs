@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MultiRepositories;
+using SemVer;
 
 namespace Nuget.Repositories
 {
@@ -34,11 +35,11 @@ namespace Nuget.Repositories
 
         public IEnumerable<RegistrationEntity> GetRange(Guid repoId, string lowerId, string versionFrom, string versionTo)
         {
-            var from = SemVerParser.Parse(versionFrom);
-            var to = SemVerParser.Parse(versionTo);
+            var from = SemVersion.Parse(versionFrom);
+            var to = SemVersion.Parse(versionTo);
             foreach (var item in GetAllByPackageId(repoId, lowerId))
             {
-                var currver = SemVerParser.Parse(item.Version);
+                var currver = SemVersion.Parse(item.Version);
                 if (currver >= from && currver <= to)
                 {
                     yield return item;

@@ -1,5 +1,5 @@
 ﻿using Ioc;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Moq;
 using Nuget.Repositories;
 using Nuget.Services;
@@ -17,7 +17,7 @@ using Repositories;
 
 namespace Nuget.Lib.Test.Apis
 {
-    [TestClass]
+    [TestFixture]
     public class NugetInsertServiceTest
     {
 /*        private IRegistrationRepository _registrationRepository;
@@ -41,7 +41,7 @@ namespace Nuget.Lib.Test.Apis
         private Mock<INugetAssembliesRepository> _nugetAssembliesMock;
         private Mock<INugetDependenciesRepository> _nugetDependenciesMock;
 
-        [TestInitialize]
+        [SetUp]
         public void Initialize()
         {
             _repoId = Guid.NewGuid();
@@ -106,7 +106,7 @@ namespace Nuget.Lib.Test.Apis
             }
         }
 
-        [TestMethod]
+        [Test]
         public void ISPToInsertQuery()
         {
 
@@ -118,7 +118,7 @@ namespace Nuget.Lib.Test.Apis
             target.InsertQuery(data, _tx);
         }
 
-        [TestMethod]
+        [Test]
         public void ISPToInsertRegistration()
         {
 
@@ -130,7 +130,7 @@ namespace Nuget.Lib.Test.Apis
             target.InsertRegistration(data_tx);
         }
 
-        [TestMethod]
+        [Test]
         public void ISPToInsertPackages()
         {
 
@@ -142,7 +142,7 @@ namespace Nuget.Lib.Test.Apis
             target.InsertPackages(data, _tx);
         }
 
-        [TestMethod]
+        [Test]
         public void ISPToInsertStorage()
         {
 
@@ -154,7 +154,7 @@ namespace Nuget.Lib.Test.Apis
             target.InsertPackagesStorage(data, new byte[] { });
         }
 
-        [TestMethod]
+        [Test]
         public void ISPToInsertDeps()
         {
 
@@ -166,7 +166,7 @@ namespace Nuget.Lib.Test.Apis
             target.InsertDependencies(data, _tx);
         }
 
-        [TestMethod]
+        [Test]
         public void ISPToInsertAsms()
         {
 

@@ -2,14 +2,14 @@
 using Maven.News;
 using MavenProtocol.Apis;
 using MavenProtocol.News;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace MavenProtocol
 {
-    [TestClass]
+    [TestFixture]
     public class MavenApiRewrite
     {
-        [TestMethod]
+        [Test]
         public void ISPToHandleArtifactLevelMetadata()
         {
             
@@ -31,7 +31,7 @@ namespace MavenProtocol
             MavenMetadataXml result = target.Retrieve(mi);*/
         }
 
-        [TestMethod]
+        [Test]
         public void ISPToCreateDummyMetadata()
         {
             /*IMetadataRepository metadataRepository = null;

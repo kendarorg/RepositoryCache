@@ -1,5 +1,5 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Ioc;
 using MultiRepositories.Repositories;
 using Repositories;
@@ -9,14 +9,14 @@ using MultiRepositories;
 
 namespace Nuget.Lib.Test
 {
-    [TestClass]
+    [TestFixture]
     public class NugetServicesMapperTest
     {
         private IRepositoryEntitiesRepository _repository;
         private AppProperties _properties;
         private Guid _repositoryId;
 
-        [TestInitialize]
+        [SetUp]
         public void Initialize()
         {
             var au = new AssemblyUtils();
@@ -47,7 +47,7 @@ namespace Nuget.Lib.Test
             _repository = repositoryEntitiesRepository.Object;
         }
 
-        [TestMethod]
+        [Test]
         public void ISPToLoadSimpleItemNoVersion()
         {
             var au = new AssemblyUtils();
@@ -59,7 +59,7 @@ namespace Nuget.Lib.Test
             Assert.AreEqual("http://localhost:9080/nuget.org/v2/publish", packagePublish);
         }
 
-        [TestMethod]
+        [Test]
         public void ISPToLoadRefItemNoVersion()
         {
             var au = new AssemblyUtils();
@@ -72,7 +72,7 @@ namespace Nuget.Lib.Test
                 "http://localhost:9080/nuget.org/v3/registrationsemver2" == packagePublish);
         }
 
-        [TestMethod]
+        [Test]
         public void ISPToLoadRefItemNullVersion()
         {
             var au = new AssemblyUtils();
@@ -84,7 +84,7 @@ namespace Nuget.Lib.Test
         }
 
 
-        [TestMethod]
+        [Test]
         public void ISPToLoadRefItemOneVersion()
         {
             var au = new AssemblyUtils();
@@ -97,7 +97,7 @@ namespace Nuget.Lib.Test
         }
 
 
-        [TestMethod]
+        [Test]
         public void ISPToLoadRefItemFakeVersion()
         {
             var au = new AssemblyUtils();
@@ -109,7 +109,7 @@ namespace Nuget.Lib.Test
             Assert.AreEqual("http://localhost:9080/nuget.org/v3/registrationsemver1", packagePublish);
         }
 
-        [TestMethod]
+        [Test]
         public void ISPToLoadRefItemReferencedVersion()
         {
             var au = new AssemblyUtils();
@@ -122,7 +122,7 @@ namespace Nuget.Lib.Test
         }
 
 
-        [TestMethod]
+        [Test]
         public void ISPToLoadVisibleItems()
         {
             var au = new AssemblyUtils();
@@ -134,7 +134,7 @@ namespace Nuget.Lib.Test
             Assert.AreEqual(22, visibles.Count);
         }
 
-        [TestMethod]
+        [Test]
         public void ISPToLoadFromNuget()
         {
             var au = new AssemblyUtils();
@@ -147,7 +147,7 @@ namespace Nuget.Lib.Test
         }
 
 
-        [TestMethod]
+        [Test]
         public void ISPToLoadToNuget()
         {
             var au = new AssemblyUtils();

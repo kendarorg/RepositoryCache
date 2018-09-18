@@ -1,9 +1,9 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace MultiRepositories
 {
-    [TestClass] 
+    [TestFixture] 
     public class ComplexApiTest
     {
 
@@ -25,7 +25,7 @@ namespace MultiRepositories
                 @"{pack#^(?<package>[0-9A-Za-z\-\.]+)$}/" +
                 @"{meta#^(?<filename>(maven-metadata.xml))(\.(?<subtype>(asc|md5|sha1)))?$}";
 
-        [TestMethod]
+        [Test]
         public void ISBPToMatchRegexJarMd5Comp()
         {
             SerializableRequest request = null;
@@ -59,7 +59,7 @@ namespace MultiRepositories
         }
 
 
-        [TestMethod]
+        [Test]
         public void ISBPToMatchRegexJarComp()
         {
             SerializableRequest request = null;
@@ -87,7 +87,7 @@ namespace MultiRepositories
         }
 
 
-        [TestMethod]
+        [Test]
         public void ISBPToMatchRegexPomComp()
         {
             SerializableRequest request = null;
@@ -115,7 +115,7 @@ namespace MultiRepositories
         }
 
 
-        [TestMethod]
+        [Test]
         public void ISBPToMatchRegexPomAscComp()
         {
             SerializableRequest request = null;
@@ -144,7 +144,7 @@ namespace MultiRepositories
         }
 
 
-        [TestMethod]
+        [Test]
         public void ISBPToMatchRegexmetadataAscComp()
         {
             SerializableRequest request = null;
@@ -169,7 +169,7 @@ namespace MultiRepositories
 
 
 
-        [TestMethod]
+        [Test]
         public void ISBPToMatchRegexmetadataComp()
         {
             SerializableRequest request = null;
@@ -199,7 +199,7 @@ namespace MultiRepositories
         const string REGEX_ONLY_META = @"^(?<repoId>[0-9A-Za-z\-\.]+)/(?<path>[0-9A-Za-z\-\./]+)/" +
             @"(?<package>[0-9A-Za-z\-\.]+)/maven-metadata.xml(\.(?<checksum>(asc|md5|sha1)))?$";
 
-        [TestMethod]
+        [Test]
         public void ISBPToMatchRegexPath()
         {
             SerializableRequest request = null;
@@ -225,7 +225,7 @@ namespace MultiRepositories
             Assert.AreEqual("md5", request.PathParams["checksum"]);
         }
 
-        [TestMethod]
+        [Test]
         public void ISBPToMatchRegexPathSpec()
         {
             SerializableRequest request = null;
@@ -257,7 +257,7 @@ namespace MultiRepositories
             Assert.AreEqual("sources", request.PathParams["specifier"]);
         }
 
-        [TestMethod]
+        [Test]
         public void ISBPToMatchRegexMetaSpec()
         {
             SerializableRequest request = null;

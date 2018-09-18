@@ -1,5 +1,5 @@
 ﻿using Ioc;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Moq;
 using MultiRepositories.Repositories;
 using Newtonsoft.Json;
@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace Nuget.Lib.Test
 {
-    [TestClass]
+    [TestFixture]
     public class NugetCatalogServiceTest
     {
         private IRegistrationRepository _registrationRepository;
@@ -34,7 +34,7 @@ namespace Nuget.Lib.Test
 
         private Mock<INugetAssembliesRepository> _nugetAssembliesMock;
         private Mock<INugetDependenciesRepository> _nugetDependenciesMock;
-        [TestInitialize]
+        [SetUp]
         public void Initialize()
         {
             _repoId = Guid.NewGuid();
@@ -95,7 +95,7 @@ namespace Nuget.Lib.Test
 
 
 
-        [TestMethod]
+        [Test]
         public void ISPToGetCatalog()
         {
 
@@ -125,7 +125,7 @@ namespace Nuget.Lib.Test
             JsonComp.Equals("ISPToGetCatalog.json", result);
         }
 
-        [TestMethod]
+        [Test]
         public void ISPToGetCatalogPage()
         {
 
@@ -159,7 +159,7 @@ namespace Nuget.Lib.Test
             JsonComp.Equals("ISPToGetCatalogPage.json", result);
         }
 
-        [TestMethod]
+        [Test]
         public void ISPToGetSimplePackageCatalog()
         {
 
@@ -193,7 +193,7 @@ namespace Nuget.Lib.Test
         }
 
 
-        [TestMethod]
+        [Test]
         public void ISPToGetPackageDepsCatalog()
         {
 
@@ -248,7 +248,7 @@ namespace Nuget.Lib.Test
 
         //https://api.nuget.org/v3/catalog0/data/2018.05.29.20.29.29/system.security.principal.windows.4.5.0.json
 
-        [TestMethod]
+        [Test]
         public void ISPToGetPackageFwDepsCatalog()
         {
 
@@ -300,7 +300,7 @@ namespace Nuget.Lib.Test
         }
 
 
-        [TestMethod]
+        [Test]
         public void ISPToGetPackageEmptyDepsCatalog()
         {
 
@@ -352,7 +352,7 @@ namespace Nuget.Lib.Test
         }
 
 
-        [TestMethod]
+        [Test]
         public void ISPToGetPackageListCatalogWithDeps()
         {
 

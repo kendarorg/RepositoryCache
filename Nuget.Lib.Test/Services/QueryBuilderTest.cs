@@ -1,13 +1,13 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Nuget.Services;
 
 namespace NugetProtocol
 {
-    [TestClass]
+    [TestFixture]
     public class QueryBuilderTest
     {
-        [TestMethod]
+        [Test]
         public void TestMethod1()
         {
             var target = new QueryBuilder();
@@ -18,7 +18,7 @@ namespace NugetProtocol
             Assert.AreEqual("a", result.FreeText[0]);
         }
 
-        [TestMethod]
+        [Test]
         public void TestMethod2()
         {
             var target = new QueryBuilder();
@@ -29,7 +29,7 @@ namespace NugetProtocol
             Assert.AreEqual("a b", result.FreeText[0]);
         }
 
-        [TestMethod]
+        [Test]
         public void TestMethod3()
         {
             var target = new QueryBuilder();
@@ -40,7 +40,7 @@ namespace NugetProtocol
             Assert.AreEqual("a b", result.FreeText[0]);
         }
 
-        [TestMethod]
+        [Test]
         public void TestMethod4()
         {
             var target = new QueryBuilder();
@@ -51,7 +51,7 @@ namespace NugetProtocol
             Assert.AreEqual("a+b", result.FreeText[0]);
         }
 
-        [TestMethod]
+        [Test]
         public void TestMethod5()
         {
             var target = new QueryBuilder();
@@ -63,7 +63,7 @@ namespace NugetProtocol
             Assert.AreEqual("a", result.Keys["id"]);
         }
 
-        [TestMethod]
+        [Test]
         public void TestMethod6()
         {
             var target = new QueryBuilder();
@@ -75,7 +75,7 @@ namespace NugetProtocol
             Assert.AreEqual("a+b", result.Keys["id"]);
         }
 
-        [TestMethod]
+        [Test]
         public void TestMethod7()
         {
             var target = new QueryBuilder();
@@ -87,7 +87,7 @@ namespace NugetProtocol
             Assert.AreEqual("a", result.Keys["id"]);
         }
 
-        [TestMethod]
+        [Test]
         public void TestMethod8()
         {
             var target = new QueryBuilder();
@@ -99,7 +99,7 @@ namespace NugetProtocol
             Assert.AreEqual("a b", result.Keys["id"]);
         }
 
-        [TestMethod]
+        [Test]
         public void TestMethod9()
         {
             var target = new QueryBuilder();
@@ -112,7 +112,7 @@ namespace NugetProtocol
             Assert.AreEqual("b", result.FreeText[0]);
         }
 
-        [TestMethod]
+        [Test]
         public void TestMethod10()
         {
             var target = new QueryBuilder();
@@ -124,7 +124,7 @@ namespace NugetProtocol
             Assert.AreEqual("a", result.Keys["id"]);
         }
 
-        [TestMethod]
+        [Test]
         public void TestMethod11()
         {
             var target = new QueryBuilder();

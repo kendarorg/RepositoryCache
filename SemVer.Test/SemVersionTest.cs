@@ -4,7 +4,7 @@ using SemVer;
 #if !NETSTANDARD
 using System.Runtime.Serialization.Formatters.Binary;
 #endif
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 
 namespace Semver.Test
@@ -12,30 +12,30 @@ namespace Semver.Test
     /// <summary>
     ///  Based on https://github.com/maxhauser/semver
     /// </summary>
-    [TestClass]
+    [TestFixture]
     public class SemverTests
     {
-        [TestMethod]
+        [Test]
         public void SemVerCompareTestWithStrings1()
         {
             Assert.IsTrue(SemVersion.Equals("1.0.0", "1"));
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerCompareTestWithStrings2()
         {
             var v = new SemVersion(1, 0, 0);
             Assert.IsTrue(v < "1.1");
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerCompareTestWithStrings3()
         {
             var v = new SemVersion(1, 2);
             Assert.IsTrue(v > "1.0.0");
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerCreateVersionTest()
         {
             var v = new SemVersion(1, 2, 3, "a", "b");
@@ -47,7 +47,7 @@ namespace Semver.Test
             Assert.AreEqual("b", v.Build);
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerCreateVersionTestWithNulls()
         {
             var v = new SemVersion(1, 2, 3, null, null);
@@ -59,7 +59,7 @@ namespace Semver.Test
             Assert.AreEqual("", v.Build);
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerCreateVersionTestWithSystemVersion1()
         {
             var nonSemanticVersion = new Version(0, 0);
@@ -72,14 +72,13 @@ namespace Semver.Test
             Assert.AreEqual("", v.Prerelease);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Test]
         public void SemVerCreateVersionTestWithSystemVersion2()
         {
-            var v = new SemVersion(null);
+            Assert.Throws<ArgumentNullException>(() => new SemVersion(null));
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerCreateVersionTestWithSystemVersion3()
         {
             var nonSemanticVersion = new Version(1, 2, 0, 3);
@@ -92,7 +91,7 @@ namespace Semver.Test
             Assert.AreEqual("", v.Prerelease);
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerCreateVersionTestWithSystemVersion4()
         {
             var nonSemanticVersion = new Version(1, 2, 4, 3);
@@ -105,7 +104,7 @@ namespace Semver.Test
             Assert.AreEqual("", v.Prerelease);
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerParseTest1()
         {
             var version = SemVersion.Parse("1.2.45-alpha+nightly.23");
@@ -117,7 +116,7 @@ namespace Semver.Test
             Assert.AreEqual("nightly.23", version.Build);
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerParseTest2()
         {
             var version = SemVersion.Parse("1");
@@ -129,7 +128,7 @@ namespace Semver.Test
             Assert.AreEqual("", version.Build);
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerParseTest3()
         {
             var version = SemVersion.Parse("1.2.45-alpha-beta+nightly.23.43-bla");
@@ -141,7 +140,7 @@ namespace Semver.Test
             Assert.AreEqual("nightly.23.43-bla", version.Build);
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerParseTest4()
         {
             var version = SemVersion.Parse("2.0.0+nightly.23.43-bla");
@@ -153,7 +152,7 @@ namespace Semver.Test
             Assert.AreEqual("nightly.23.43-bla", version.Build);
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerParseTest5()
         {
             var version = SemVersion.Parse("2.0+nightly.23.43-bla");
@@ -165,7 +164,7 @@ namespace Semver.Test
             Assert.AreEqual("nightly.23.43-bla", version.Build);
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerParseTest6()
         {
             var version = SemVersion.Parse("2.1-alpha");
@@ -177,14 +176,13 @@ namespace Semver.Test
             Assert.AreEqual("", version.Build);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Test]
         public void SemVerParseTest7()
         {
-            SemVersion.Parse("ui-2.1-alpha");
+            Assert.Throws<ArgumentException>(() => SemVersion.Parse("ui-2.1-alpha"));
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerParseTestStrict1()
         {
             var version = SemVersion.Parse("1.3.4", true);
@@ -196,64 +194,61 @@ namespace Semver.Test
             Assert.AreEqual("", version.Build);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Test]
         public void SemVerParseTestStrict2()
         {
-            SemVersion.Parse("1", true);
+            Assert.Throws<InvalidOperationException>(() => SemVersion.Parse("1", true));
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Test]
         public void SemVerParseTestStrict3()
         {
-            SemVersion.Parse("1.3", true);
+            Assert.Throws<InvalidOperationException>(() => SemVersion.Parse("1.3", true));
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Test]
         public void SemVerParseTestStrict4()
         {
-            SemVersion.Parse("1.3-alpha", true);
+            Assert.Throws<InvalidOperationException>(() => SemVersion.Parse("1.3-alpha", true));
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerTryParseTest1()
         {
             SemVersion.TryParse("1.2.45-alpha-beta+nightly.23.43-bla", out SemVersion v);
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerTryParseTest2()
         {
             Assert.IsFalse(SemVersion.TryParse("ui-2.1-alpha", out SemVersion v));
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerTryParseTest3()
         {
             Assert.IsFalse(SemVersion.TryParse("", out SemVersion v));
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerTryParseTest4()
         {
             Assert.IsFalse(SemVersion.TryParse(null, out SemVersion v));
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerTryParseTest5()
         {
             Assert.IsTrue(SemVersion.TryParse("1.2", out SemVersion v, false));
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerTryParseTest6()
         {
             Assert.IsFalse(SemVersion.TryParse("1.2", out SemVersion v, true));
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerToStringTest()
         {
             var version = new SemVersion(1, 2, 0, "beta", "dev-mha.120");
@@ -261,7 +256,7 @@ namespace Semver.Test
             Assert.AreEqual("1.2.0-beta+dev-mha.120", version.ToString());
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerEqualTest1()
         {
             var v1 = new SemVersion(1, 2, build: "nightly");
@@ -271,7 +266,7 @@ namespace Semver.Test
             Assert.IsTrue(r);
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerEqualTest2()
         {
             var v1 = new SemVersion(1, 2, prerelease: "alpha", build: "dev");
@@ -281,7 +276,7 @@ namespace Semver.Test
             Assert.IsTrue(r);
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerEqualTest3()
         {
             var v1 = SemVersion.Parse("1.2-nightly+dev");
@@ -291,7 +286,7 @@ namespace Semver.Test
             Assert.IsFalse(r);
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerEqualTest4()
         {
             var v1 = SemVersion.Parse("1.2-nightly");
@@ -301,7 +296,7 @@ namespace Semver.Test
             Assert.IsFalse(r);
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerEqualTest5()
         {
             var v1 = SemVersion.Parse("1.2.1");
@@ -311,7 +306,7 @@ namespace Semver.Test
             Assert.IsFalse(r);
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerEqualTest6()
         {
             var v1 = SemVersion.Parse("1.4.0");
@@ -321,7 +316,7 @@ namespace Semver.Test
             Assert.IsFalse(r);
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerEqualByReferenceTest()
         {
             var v1 = SemVersion.Parse("1.2-nightly");
@@ -330,7 +325,7 @@ namespace Semver.Test
             Assert.IsTrue(r);
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerCompareTest1()
         {
             var v1 = SemVersion.Parse("1.0.0");
@@ -340,7 +335,7 @@ namespace Semver.Test
             Assert.AreEqual(-1, r);
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerCompareTest2()
         {
             var v1 = SemVersion.Parse("1.0.0-beta+dev.123");
@@ -350,7 +345,7 @@ namespace Semver.Test
             Assert.AreEqual(0, r);
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerCompareTest3()
         {
             var v1 = SemVersion.Parse("1.0.0-alpha+dev.123");
@@ -360,7 +355,7 @@ namespace Semver.Test
             Assert.AreEqual(-1, r);
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerCompareTest4()
         {
             var v1 = SemVersion.Parse("1.0.0-alpha");
@@ -370,7 +365,7 @@ namespace Semver.Test
             Assert.AreEqual(-1, r);
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerCompareTest5()
         {
             var v1 = SemVersion.Parse("1.0.0");
@@ -380,7 +375,7 @@ namespace Semver.Test
             Assert.AreEqual(1, r);
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerCompareTest6()
         {
             var v1 = SemVersion.Parse("1.0.0");
@@ -390,7 +385,7 @@ namespace Semver.Test
             Assert.AreEqual(-1, r);
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerCompareTest7()
         {
             var v1 = SemVersion.Parse("0.0.1");
@@ -400,7 +395,7 @@ namespace Semver.Test
             Assert.AreEqual(-1, r);
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerCompareTest8()
         {
             var v1 = SemVersion.Parse("0.0.1+build.13");
@@ -410,7 +405,7 @@ namespace Semver.Test
             Assert.AreEqual(1, r);
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerCompareTest9()
         {
             var v1 = SemVersion.Parse("0.0.1-13");
@@ -420,7 +415,7 @@ namespace Semver.Test
             Assert.AreEqual(-1, r);
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerCompareTest10()
         {
             var v1 = SemVersion.Parse("0.0.1+uiui");
@@ -430,7 +425,7 @@ namespace Semver.Test
             Assert.AreEqual(1, r);
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerCompareTest11()
         {
             var v1 = SemVersion.Parse("0.0.1+bu");
@@ -440,7 +435,7 @@ namespace Semver.Test
             Assert.AreEqual(1, r);
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerCompareTest12()
         {
             var v1 = SemVersion.Parse("0.1.1+bu");
@@ -450,7 +445,7 @@ namespace Semver.Test
             Assert.AreEqual(-1, r);
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerCompareTest13()
         {
             var v1 = SemVersion.Parse("0.1.1-gamma.12.87");
@@ -460,7 +455,7 @@ namespace Semver.Test
             Assert.AreEqual(-1, r);
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerCompareTest14()
         {
             var v1 = SemVersion.Parse("0.1.1-gamma.12.87");
@@ -470,7 +465,7 @@ namespace Semver.Test
             Assert.AreEqual(-1, r);
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerCompareTest15()
         {
             var v1 = SemVersion.Parse("0.1.1-gamma.12.87.99");
@@ -480,7 +475,7 @@ namespace Semver.Test
             Assert.AreEqual(-1, r);
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerCompareTest16()
         {
             var v1 = SemVersion.Parse("0.1.1-gamma.12.87");
@@ -490,7 +485,7 @@ namespace Semver.Test
             Assert.AreEqual(-1, r);
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerCompareNullTest()
         {
             var v1 = SemVersion.Parse("0.0.1+bu");
@@ -498,7 +493,7 @@ namespace Semver.Test
             Assert.AreEqual(1, r);
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerTestHashCode()
         {
             var v1 = SemVersion.Parse("1.0.0-1+b");
@@ -510,14 +505,14 @@ namespace Semver.Test
             Assert.AreNotEqual(h1, h2);
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerTestStringConversion()
         {
             SemVersion v = "1.0.0";
             Assert.AreEqual(1, v.Major);
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerTestUntypedCompareTo()
         {
             var v1 = new SemVersion(1);
@@ -526,7 +521,7 @@ namespace Semver.Test
             Assert.AreEqual(0, c);
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerStaticEqualsTest1()
         {
             var v1 = new SemVersion(1, 2, 3);
@@ -536,14 +531,14 @@ namespace Semver.Test
             Assert.IsTrue(r);
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerStaticEqualsTest2()
         {
             var r = SemVersion.Equals(null, null);
             Assert.IsTrue(r);
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerStaticEqualsTest3()
         {
             var v1 = new SemVersion(1);
@@ -552,7 +547,7 @@ namespace Semver.Test
             Assert.IsFalse(r);
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerStaticCompareTest1()
         {
             var v1 = new SemVersion(1);
@@ -562,7 +557,7 @@ namespace Semver.Test
             Assert.AreEqual(-1, r);
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerStaticCompareTest2()
         {
             var v1 = new SemVersion(1);
@@ -571,7 +566,7 @@ namespace Semver.Test
             Assert.AreEqual(1, r);
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerStaticCompareTest3()
         {
             var v1 = new SemVersion(1);
@@ -580,14 +575,14 @@ namespace Semver.Test
             Assert.AreEqual(-1, r);
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerStaticCompareTest4()
         {
             var r = SemVersion.Compare(null, null);
             Assert.AreEqual(0, r);
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerEqualsOperatorTest()
         {
             var v1 = new SemVersion(1);
@@ -597,7 +592,7 @@ namespace Semver.Test
             Assert.IsTrue(r);
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerUnequalOperatorTest()
         {
             var v1 = new SemVersion(1);
@@ -607,7 +602,7 @@ namespace Semver.Test
             Assert.IsTrue(r);
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerGreaterOperatorTest()
         {
             var v1 = new SemVersion(1);
@@ -617,7 +612,7 @@ namespace Semver.Test
             Assert.IsTrue(r);
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerGreaterOperatorTest2()
         {
             var v1 = new SemVersion(1, 0, 0, "alpha");
@@ -627,7 +622,7 @@ namespace Semver.Test
             Assert.IsTrue(r);
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerGreaterOperatorTest3()
         {
             var v1 = new SemVersion(1, 0, 0, "-ci.1");
@@ -637,7 +632,7 @@ namespace Semver.Test
             Assert.IsTrue(r);
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerGreaterOrEqualOperatorTest1()
         {
             var v1 = new SemVersion(1);
@@ -647,7 +642,7 @@ namespace Semver.Test
             Assert.IsTrue(r);
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerGreaterOrEqualOperatorTest2()
         {
             var v1 = new SemVersion(2);
@@ -657,7 +652,7 @@ namespace Semver.Test
             Assert.IsTrue(r);
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerLessOperatorTest()
         {
             var v1 = new SemVersion(1);
@@ -667,7 +662,7 @@ namespace Semver.Test
             Assert.IsTrue(r);
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerLessOperatorTest2()
         {
             var v1 = new SemVersion(1, 0, 0, "alpha");
@@ -677,7 +672,7 @@ namespace Semver.Test
             Assert.IsTrue(r);
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerLessOperatorTest3()
         {
             var v1 = new SemVersion(1, 0, 0, "-ci.1");
@@ -687,7 +682,7 @@ namespace Semver.Test
             Assert.IsTrue(r);
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerLessOrEqualOperatorTest1()
         {
             var v1 = new SemVersion(1);
@@ -697,7 +692,7 @@ namespace Semver.Test
             Assert.IsTrue(r);
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerLessOrEqualOperatorTest2()
         {
             var v1 = new SemVersion(1);
@@ -707,7 +702,7 @@ namespace Semver.Test
             Assert.IsTrue(r);
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerTestChangeMajor()
         {
             var v1 = new SemVersion(1, 2, 3, "alpha", "dev");
@@ -720,7 +715,7 @@ namespace Semver.Test
             Assert.AreEqual("dev", v2.Build);
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerTestChangeMinor()
         {
             var v1 = new SemVersion(1, 2, 3, "alpha", "dev");
@@ -733,7 +728,7 @@ namespace Semver.Test
             Assert.AreEqual("dev", v2.Build);
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerTestChangePatch()
         {
             var v1 = new SemVersion(1, 2, 3, "alpha", "dev");
@@ -746,7 +741,7 @@ namespace Semver.Test
             Assert.AreEqual("dev", v2.Build);
         }
 
-        [TestMethod]
+        [Test]
         public void SemVerTestChangePrerelease()
         {
             var v1 = new SemVersion(1, 2, 3, "alpha", "dev");
@@ -760,7 +755,7 @@ namespace Semver.Test
         }
 
 #if !NETSTANDARD
-        [TestMethod]
+        [Test]
         public void SemVerTestSerialization()
         {
             var semVer = new SemVersion(1, 2, 3, "alpha", "dev");
