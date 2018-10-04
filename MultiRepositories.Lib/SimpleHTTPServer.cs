@@ -12,6 +12,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 
@@ -139,7 +140,7 @@ namespace MultiRepositories
             while (true)
             {
                 HttpListenerContext context = _listener.GetContext();
-                new Thread(a =>
+                Task.Run(() =>
                 {
                     try
                     {
@@ -149,7 +150,7 @@ namespace MultiRepositories
                     {
                         Console.WriteLine(ex);
                     }
-                }).Start();
+                });
             }
         }
 

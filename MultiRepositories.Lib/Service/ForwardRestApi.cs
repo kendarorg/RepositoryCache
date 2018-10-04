@@ -85,6 +85,7 @@ namespace MultiRepositories.Service
             {
                 Timeout = TimeSpan.FromMilliseconds(timeoutMs)
             };
+            client.Timeout = TimeSpan.FromMinutes(2);
             var result = client.SendAsync(requestMessage);
             result.Wait();
             var resh = result.Result;
