@@ -63,7 +63,7 @@ namespace Nuget.Lib.Test.Controllers
         {
             var appProp = new AppProperties("XX", "XX");
             
-            var target = new V3_Query(Guid.NewGuid(),_nugetService, _properties, _reps, _servicesMapper,
+            var target = new V3_Query(Guid.NewGuid(),null,_nugetService, _properties, _reps, _servicesMapper,
                 "/{repo}/v3/query")
             {
                 RequestData = (a, b) => HandleRequest("ISPToQuery", a, b)

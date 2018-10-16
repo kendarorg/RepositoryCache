@@ -24,5 +24,6 @@ namespace Nuget.Repositories
         public string PreRelease { get; set; }
         public int? Extra { get; set; }
         public bool Listed { get; set; }
+        public string Frameworks { get; set; }
     }
 }

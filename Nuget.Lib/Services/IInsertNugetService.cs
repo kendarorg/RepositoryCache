@@ -2,9 +2,19 @@
 using NugetProtocol;
 using Repositories;
 using System;
+using System.Collections.Generic;
 
 namespace Nuget.Services
 {
+    public class DeserializedPackage
+    {
+        public DeserializedPackage()
+        {
+            Frameworks = new List<string>();
+        }
+        public PackageXml Nuspec { get; set; }
+        public List<string> Frameworks { get; set; }
+    }
     public interface IInsertNugetService: ISingleton
     {
         void Insert(Guid repoId, string nugetApiKey, byte[] data);

@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Nuget.Framework;
 
 namespace Nuget
 {
@@ -26,8 +27,10 @@ namespace Nuget
         private readonly AppProperties _applicationPropertes;
         private readonly IRepositoryEntitiesRepository _repositoryEntitiesRepository;
         private readonly IAssemblyUtils _assemblyUtils;
+        private IFrameworkChecker _frameworkChecker;
 
         public NugetApiInitializer(
+            IFrameworkChecker frameworkChecker,
             ICatalogService catalogService,
             IRepositoryEntitiesRepository repositoryEntitiesRepository,
             AppProperties appProperties,
@@ -53,6 +56,7 @@ namespace Nuget
             _applicationPropertes = appProperties;
             _repositoryEntitiesRepository = repositoryEntitiesRepository;
             _assemblyUtils = assemblyUtils;
+            _frameworkChecker = frameworkChecker;
         }
 
         public void Initialize(IRepositoryServiceProvider repositoryServiceProvider)
@@ -104,6 +108,7 @@ namespace Nuget
                     "/{repo}/v3/index.json".Replace("{repo}", item.Prefix)));
 
                 repositoryServiceProvider.RegisterApi(new V3_Query(item.Id,
+                    _frameworkChecker,
                     _searchQueryService, _applicationPropertes, _repositoryEntitiesRepository, _servicesMapper,
                     "/{repo}/v3/query".Replace("{repo}", item.Prefix)));
 

@@ -70,3 +70,8 @@ Support for timestamp based and single snapshot
 * _GET /{repo}/v3/catalog/data/{date}/{fullPackage}.json_ Retrieve alla data included dependencies for package
 
 * _GET /{repo}/custom/load Load nupkg from an existing directory on the server
+
+## Thanks to:
+
+* https://docs.microsoft.com/en-us/nuget/reference/target-frameworks
+* https://github.com/joelverhagen/NuGetTools

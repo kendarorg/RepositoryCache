@@ -14,6 +14,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
+using Nuget.Framework;
 
 namespace Nuget.Services
 {
@@ -27,8 +28,10 @@ namespace Nuget.Services
         private readonly IPackagesStorage _packagesStorage;
         private readonly INugetDependenciesRepository _nugetDependencies;
         private readonly INugetAssembliesRepository _nugetAssemblies;
+        private IFrameworkChecker _frameworkChecker;
 
         public InsertNugetService(
+            IFrameworkChecker frameworkChecker,
             ITransactionManager transactionManager,
             IQueryRepository queryRepository,
             IRegistrationRepository registrationRepository,
@@ -38,6 +41,7 @@ namespace Nuget.Services
             INugetAssembliesRepository nugetAssemblies,
             IRepositoryEntitiesRepository repositoryEntitiesRepository)
         {
+            _frameworkChecker = frameworkChecker;
             _transactionManager = transactionManager;
             _repositoryEntitiesRepository = repositoryEntitiesRepository;
             this._queryRepository = queryRepository;
@@ -47,14 +51,30 @@ namespace Nuget.Services
             this._nugetDependencies = nugetDependencies;
             this._nugetAssemblies = nugetAssemblies;
         }
-
-        public PackageXml Deserialize(byte[] data, out DateTime timestamp)
+        
+        public DeserializedPackage Deserialize(byte[] data, out DateTime timestamp)
         {
+            var result = new DeserializedPackage();
             timestamp = DateTime.MinValue;
             using (ZipFile zip = ZipFile.Read(new MemoryStream(data)))
             {
                 foreach (var entry in zip)
                 {
+                    if (entry.FileName.ToLowerInvariant().StartsWith("lib/"))
+                    {
+                        var splitted = entry.FileName.Split('/');
+                        if (splitted.Length > 1)
+                        {
+                            if (_frameworkChecker.FrameworkExists(splitted[1]))
+                            {
+                                var shortFwName = _frameworkChecker.GetShortFolderName(splitted[1]);
+                                if (result.Frameworks.All(f => f != shortFwName))
+                                {
+                                    result.Frameworks.Add(shortFwName);
+                                }
+                            }
+                        }
+                    }
                     if (entry.FileName.ToLowerInvariant().EndsWith(".nuspec"))
                     {
                         timestamp = entry.ModifiedTime > entry.LastModified ? entry.ModifiedTime : entry.LastModified;
@@ -76,12 +96,43 @@ namespace Nuget.Services
 
                         using (var reader = XmlReader.Create(msx))
                         {
-                            return (PackageXml)serializer.Deserialize(reader);
+                            result.Nuspec = (PackageXml) serializer.Deserialize(reader);
+                            if (result.Nuspec.Metadata.FrameworkAssemblies != null)
+                            {
+                                if (result.Nuspec.Metadata.FrameworkAssemblies.FrameworkAssembly != null)
+                                {
+                                    foreach (var item in result.Nuspec.Metadata.FrameworkAssemblies.FrameworkAssembly)
+                                    {
+                                        var shortFwName = _frameworkChecker.GetShortFolderName(item.TargetFramework);
+                                        if (result.Frameworks.All(f => f != shortFwName))
+                                        {
+                                            result.Frameworks.Add(shortFwName);
+                                        }
+                                    }
+                                }
+
+                                if (result.Nuspec.Metadata.Dependencies?.Group != null)
+                                {
+                                    foreach (var item in result.Nuspec.Metadata.Dependencies.Group)
+                                    {
+                                        if (!string.IsNullOrWhiteSpace(item.TargetFramework))
+                                        {
+                                            var shortFwName =
+                                                _frameworkChecker.GetShortFolderName(item.TargetFramework);
+                                            if (result.Frameworks.All(f => f != shortFwName))
+                                            {
+                                                result.Frameworks.Add(shortFwName);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }
             }
-            return null;
+            
+            return result.Nuspec==null?null:result;
         }
 
         public string CalculateSha512(byte[] bytes)
@@ -104,11 +155,13 @@ namespace Nuget.Services
             //The commit timestamp for package should be taken by the nuspec file timestamp!
             var commitTimestamp = DateTime.UtcNow;
 
-
+            var packageContent = Deserialize(content, out commitTimestamp);
+            
             var data = new InsertData
             {
                 CommitId = Guid.NewGuid(),
-                Nuspec = Deserialize(content, out commitTimestamp),
+                Nuspec = packageContent.Nuspec,
+                Frameworks = packageContent.Frameworks,
                 HashKey = CalculateSha512(content),
                 HashAlgorithm = "SHA512",
                 Size = content.Length,
@@ -263,6 +316,7 @@ namespace Nuget.Services
             {
                 p.MinClientVersion = metadata.MinClientVersion.ToLowerInvariant();
             }
+            p.Frameworks = "|" + String.Join("|", data.Frameworks) + "|";
             p.Owners = metadata.Owners;
             p.ProjectUrl = metadata.ProjectUrl;
             p.ReleaseNotes = metadata.ReleaseNotes;
@@ -303,6 +357,7 @@ namespace Nuget.Services
             r.Minor = version.Minor;
             r.Patch = version.Patch;
             r.PreRelease = version.Prerelease;
+            r.Frameworks = "|" + String.Join("|", data.Frameworks) + "|";
             r.Listed = true;
             r.RepositoryId = data.RepoId;
             if (version.Extra != null)
@@ -328,7 +383,7 @@ namespace Nuget.Services
                 p = new QueryEntity();
             }
 
-            
+            p.Frameworks = "|" + String.Join("|", data.Frameworks) + "|";
             p.RepositoryId = data.RepoId;
             p.CommitId = data.CommitId;
             p.CommitTimestamp = data.Timestamp;

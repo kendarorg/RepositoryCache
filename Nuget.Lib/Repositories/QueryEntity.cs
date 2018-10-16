@@ -33,6 +33,8 @@ namespace Nuget.Repositories
         public long TotalDownloads { get; set; }
         public string PreCsvVersions { get;  set; }
         public string CsvVersions { get;  set; }
+
+        public string Frameworks { get; set; }
         /*
 public int Major { get; set; }
 public int Minor { get; set; }

@@ -39,7 +39,7 @@ namespace Nuget.Apis
                 {
                     break;
                 }
-                maxSize--;
+                
                 var queryVersions = new List<QueryVersion>();
                 var shownVersion = item.Version;
                 var isSet = false;
@@ -87,6 +87,7 @@ namespace Nuget.Apis
                                         item.Title,item.TotalDownloads,item.Verified);
                 //TODO: Add all the other package data
                 packages.Add(singleResult);
+                maxSize--;
             }
 
             return new QueryResult(

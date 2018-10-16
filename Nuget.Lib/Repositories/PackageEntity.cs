@@ -35,5 +35,6 @@ namespace Nuget.Repositories
         public string Copyright { get; set; }
         public int TotalDownloads { get; set; }
         public bool Verified { get; set; }
+        public string Frameworks { get; set; }
     }
 }

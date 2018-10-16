@@ -33,6 +33,9 @@
     <Reference Include="DotNetZip, Version=1.11.0.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
       <HintPath>..\packages\DotNetZip.1.11.0\lib\net20\DotNetZip.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Web.XmlTransform, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.Xdt.2.1.2\lib\net40\Microsoft.Web.XmlTransform.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -96,6 +99,10 @@
     <ProjectReference Include="..\MultiRepositories.Lib\MultiRepositories.Lib.csproj">
       <Project>{B20C279E-7034-4A46-9820-1D96296EB36B}</Project>
       <Name>MultiRepositories.Lib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Nuget.Framework\Nuget.Framework.csproj">
+      <Project>{78ef412b-d6af-4208-913d-0c0ef2e8bb17}</Project>
+      <Name>Nuget.Framework</Name>
     </ProjectReference>
     <ProjectReference Include="..\NugetProtocol\NugetProtocol.csproj">
       <Project>{a55022f2-7fe1-4c27-bf4e-3c0b3d77f7d0}</Project>

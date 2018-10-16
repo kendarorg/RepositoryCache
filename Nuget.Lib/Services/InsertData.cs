@@ -1,5 +1,6 @@
 ﻿using NugetProtocol;
 using System;
+using System.Collections.Generic;
 
 namespace Nuget.Services
 {
@@ -16,5 +17,6 @@ namespace Nuget.Services
         public Guid RepoId { get;  set; }
         public string OriginalVersion { get; set; }
         public bool Verified { get; set; }
+        public List<string> Frameworks { get; internal set; }
     }
 }

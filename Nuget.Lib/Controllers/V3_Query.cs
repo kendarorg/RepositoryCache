@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using MultiRepositories.Repositories;
 using MultiRepositories.Service;
 using MultiRepositories;
+using Nuget.Framework;
 using NugetProtocol;
 
 namespace Nuget.Controllers
@@ -20,14 +21,17 @@ namespace Nuget.Controllers
         private readonly Guid repoId;
         private ISearchQueryService _searchQueryService;
         private IServicesMapper _servicesMapper;
+        private IFrameworkChecker _frameworkChecker;
 
         public V3_Query(Guid repoId,
+            IFrameworkChecker frameworkChecker,
             ISearchQueryService searchQueryService, AppProperties properties, IRepositoryEntitiesRepository reps,
             IServicesMapper servicesMapper,params string[]paths) :
             base(properties,  null,paths)
         {
             _reps = reps;
             this.repoId = repoId;
+            _frameworkChecker = frameworkChecker;
             _searchQueryService = searchQueryService;
             _servicesMapper = servicesMapper;
             SetHandler(Handle);
@@ -37,14 +41,19 @@ namespace Nuget.Controllers
         {
             QueryResult result = null;
             var repo = _reps.GetById(repoId);
+            var supportedFramework = new List<string>();
+            if (localRequest.QueryParams.ContainsKey("supportedFramework"))
+            {
+                supportedFramework = _frameworkChecker.GetCompatibility(localRequest.QueryParams["supportedFramework"]).ToList();
+            }
             var qm = new QueryModel()
             {
                 Query = localRequest.QueryParams.ContainsKey("q") ? localRequest.QueryParams["q"] : "",
                 PreRelease = localRequest.QueryParams.ContainsKey("prerelease") ? bool.Parse(localRequest.QueryParams["prerelease"]) : false,
                 SemVerLevel = localRequest.QueryParams.ContainsKey("semverlevel") ? localRequest.QueryParams["semverlevel"] : "2.0.0",
                 Skip = localRequest.QueryParams.ContainsKey("skip") ? int.Parse(localRequest.QueryParams["skip"]) : 0,
-                Take = localRequest.QueryParams.ContainsKey("take") ? int.Parse(localRequest.QueryParams["take"]) : 26
-
+                Take = localRequest.QueryParams.ContainsKey("take") ? int.Parse(localRequest.QueryParams["take"]) : 26,
+                SupportedFrameworks = supportedFramework
             };
             
             if (repo.Mirror && _properties.IsOnline(localRequest))

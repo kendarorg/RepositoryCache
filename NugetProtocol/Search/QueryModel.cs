@@ -32,5 +32,7 @@ namespace NugetProtocol
         public bool PreRelease { get; set; }
         [JsonProperty("semverlevel")]
         public string SemVerLevel { get; set; }
+        [JsonProperty("supportedFramework")]
+        public List<string> SupportedFrameworks { get; set; }
     }
 }
