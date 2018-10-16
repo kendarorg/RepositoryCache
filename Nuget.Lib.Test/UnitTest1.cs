@@ -1,18 +1,18 @@
 using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using System;
 using System.Linq;
 using Nuget.Framework.FromNuget;
 using Nuget.Framework.FromNugetTools;
+using NUnit.Framework;
 
 namespace Nuget.Framework.Test
 {
-    [TestClass]
+    [TestFixture]
     public class UnitTest1
     {
        
-        [TestMethod]
+        [Test]
         public void TestMethod2()
         {
             var _fcc = DefaultCompatibilityProvider.Instance;

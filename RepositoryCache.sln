@@ -63,8 +63,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maven.Lib.Mem", "Maven.Lib.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nuget.Framework", "Nuget.Framework\Nuget.Framework.csproj", "{78EF412B-D6AF-4208-913D-0C0EF2E8BB17}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nuget.Framework.Test", "Nuget.Framework.Test\Nuget.Framework.Test.csproj", "{6B360A93-746F-4F54-8B50-D06354A053C6}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -155,10 +153,6 @@ Global
 		{78EF412B-D6AF-4208-913D-0C0EF2E8BB17}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{78EF412B-D6AF-4208-913D-0C0EF2E8BB17}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{78EF412B-D6AF-4208-913D-0C0EF2E8BB17}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6B360A93-746F-4F54-8B50-D06354A053C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6B360A93-746F-4F54-8B50-D06354A053C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6B360A93-746F-4F54-8B50-D06354A053C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6B360A93-746F-4F54-8B50-D06354A053C6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -188,7 +182,6 @@ Global
 		{A933812C-C8F5-49B4-AA7B-E39961093102} = {BE9C9E19-84E5-4844-B361-02A2116382D4}
 		{0DE32351-3EE8-404B-BF55-A7B2349F8A27} = {9162DC40-6922-4768-91BB-C0D13FC0E368}
 		{78EF412B-D6AF-4208-913D-0C0EF2E8BB17} = {1CCE30AE-4072-43F6-8B01-3185C469129D}
-		{6B360A93-746F-4F54-8B50-D06354A053C6} = {BE9C9E19-84E5-4844-B361-02A2116382D4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CE85B18F-DEB6-473C-A03F-D7EBA917086D}
