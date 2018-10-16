@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Knapcode.NuGetTools.Logic
+namespace Nuget.Framework.FromNugetTools
 {
     public class FrameworkListItem
     {

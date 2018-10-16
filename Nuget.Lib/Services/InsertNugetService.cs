@@ -15,6 +15,8 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
 using Nuget.Framework;
+using Nuget.Framework.FromNugetTools;
+using NuGet.Frameworks;
 
 namespace Nuget.Services
 {
@@ -103,10 +105,24 @@ namespace Nuget.Services
                                 {
                                     foreach (var item in result.Nuspec.Metadata.FrameworkAssemblies.FrameworkAssembly)
                                     {
-                                        var shortFwName = _frameworkChecker.GetShortFolderName(item.TargetFramework);
-                                        if (result.Frameworks.All(f => f != shortFwName))
+                                        foreach (var tf in item.TargetFramework.Split(',').Select(a => a.Trim()))
                                         {
-                                            result.Frameworks.Add(shortFwName);
+                                            if(string.IsNullOrWhiteSpace(tf))continue;
+                                            var shortFwName =
+                                                _frameworkChecker.GetShortFolderName(tf);
+                                            if (shortFwName == null)
+                                            {
+                                                var tt  = NuGetFramework.Parse(tf);
+                                                var nn = new Nuget.Framework.FromNuget.NuGetFramework(tt.Framework,
+                                                    tt.Version, tt.Profile);
+                                                _frameworkChecker.Add(nn,tf);
+                                                shortFwName = nn.GetShortFolderName();
+
+                                            }
+                                            if (result.Frameworks.All(f => f != shortFwName))
+                                            {
+                                                result.Frameworks.Add(shortFwName);
+                                            }
                                         }
                                     }
                                 }
@@ -117,11 +133,24 @@ namespace Nuget.Services
                                     {
                                         if (!string.IsNullOrWhiteSpace(item.TargetFramework))
                                         {
-                                            var shortFwName =
-                                                _frameworkChecker.GetShortFolderName(item.TargetFramework);
-                                            if (result.Frameworks.All(f => f != shortFwName))
+                                            foreach (var tf in item.TargetFramework.Split(',').Select(a => a.Trim()))
                                             {
-                                                result.Frameworks.Add(shortFwName);
+                                                if (string.IsNullOrWhiteSpace(tf)) continue;
+                                                var shortFwName =
+                                                    _frameworkChecker.GetShortFolderName(tf);
+                                                if (shortFwName == null)
+                                                {
+                                                    var tt = NuGetFramework.Parse(tf);
+                                                    var nn = new Nuget.Framework.FromNuget.NuGetFramework(tt.Framework,
+                                                        tt.Version, tt.Profile);
+                                                    _frameworkChecker.Add(nn, tf);
+                                                    shortFwName = nn.GetShortFolderName();
+
+                                                }
+                                                if (result.Frameworks.All(f => f != shortFwName))
+                                                {
+                                                    result.Frameworks.Add(shortFwName);
+                                                }
                                             }
                                         }
                                     }
@@ -161,7 +190,7 @@ namespace Nuget.Services
             {
                 CommitId = Guid.NewGuid(),
                 Nuspec = packageContent.Nuspec,
-                Frameworks = packageContent.Frameworks,
+                Frameworks = packageContent.Frameworks.Select(a=>a.Trim()).Where(b=>!string.IsNullOrWhiteSpace(b)).ToList(),
                 HashKey = CalculateSha512(content),
                 HashAlgorithm = "SHA512",
                 Size = content.Length,
@@ -316,7 +345,11 @@ namespace Nuget.Services
             {
                 p.MinClientVersion = metadata.MinClientVersion.ToLowerInvariant();
             }
-            p.Frameworks = "|" + String.Join("|", data.Frameworks) + "|";
+            if (data.Frameworks.Any())
+            {
+                p.Frameworks = "|" + String.Join("|", data.Frameworks) + "|";
+            }
+            
             p.Owners = metadata.Owners;
             p.ProjectUrl = metadata.ProjectUrl;
             p.ReleaseNotes = metadata.ReleaseNotes;
@@ -357,7 +390,11 @@ namespace Nuget.Services
             r.Minor = version.Minor;
             r.Patch = version.Patch;
             r.PreRelease = version.Prerelease;
-            r.Frameworks = "|" + String.Join("|", data.Frameworks) + "|";
+            if (data.Frameworks.Any())
+            {
+                r.Frameworks = "|" + String.Join("|", data.Frameworks) + "|";
+            }
+            
             r.Listed = true;
             r.RepositoryId = data.RepoId;
             if (version.Extra != null)
@@ -383,7 +420,11 @@ namespace Nuget.Services
                 p = new QueryEntity();
             }
 
-            p.Frameworks = "|" + String.Join("|", data.Frameworks) + "|";
+            if (data.Frameworks.Any())
+            {
+                p.Frameworks = "|" + String.Join("|", data.Frameworks) + "|";
+            }
+
             p.RepositoryId = data.RepoId;
             p.CommitId = data.CommitId;
             p.CommitTimestamp = data.Timestamp;
@@ -397,12 +438,12 @@ namespace Nuget.Services
             p.Title = metadata.Title;
             if (!string.IsNullOrWhiteSpace(metadata.Authors))
             {
-                p.Author = "|" + string.Join("|", metadata.Authors.Split(' ', ',').Where(a => a.Trim().Length > 0)) + "|";
+                p.Author = "|" + string.Join("|", metadata.Authors.Split( ',').Where(a => a.Trim().Length > 0)) + "|";
             }
             p.Description = metadata.Description;
             if (!string.IsNullOrWhiteSpace(metadata.Owners))
             {
-                p.Owner = "|" + string.Join("|", metadata.Owners.Split(' ', ',').Where(a => a.Trim().Length > 0)) + "|";
+                p.Owner = "|" + string.Join("|", metadata.Owners.Split( ',').Where(a => a.Trim().Length > 0)) + "|";
             }
 
             p.IconUrl = metadata.IconUrl;

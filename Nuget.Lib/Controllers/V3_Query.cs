@@ -12,6 +12,7 @@ using MultiRepositories.Service;
 using MultiRepositories;
 using Nuget.Framework;
 using NugetProtocol;
+using NuGet.Frameworks;
 
 namespace Nuget.Controllers
 {
@@ -44,7 +45,9 @@ namespace Nuget.Controllers
             var supportedFramework = new List<string>();
             if (localRequest.QueryParams.ContainsKey("supportedFramework"))
             {
-                supportedFramework = _frameworkChecker.GetCompatibility(localRequest.QueryParams["supportedFramework"]).ToList();
+                var fwstring = localRequest.QueryParams["supportedFramework"];
+                var tt = NuGetFramework.Parse(fwstring);
+                supportedFramework = _frameworkChecker.GetCompatibility(tt.DotNetFrameworkName).ToList();
             }
             var qm = new QueryModel()
             {

@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace Knapcode.NuGetTools.Logic.Wrappers.Reflection.Api
+namespace Nuget.Framework.FromNugetTools
 {
     public interface IFrameworkApi
     {

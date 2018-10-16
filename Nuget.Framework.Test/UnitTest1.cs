@@ -3,10 +3,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using System;
 using System.Linq;
-using Knapcode.NuGetTools.Logic;
-using Knapcode.NuGetTools.Logic.Direct;
-using Knapcode.NuGetTools.Logic.Direct.Wrappers;
-using NuGet.Frameworks;
+using Nuget.Framework.FromNuget;
+using Nuget.Framework.FromNugetTools;
 
 namespace Nuget.Framework.Test
 {
@@ -19,7 +17,7 @@ namespace Nuget.Framework.Test
         {
             var _fcc = DefaultCompatibilityProvider.Instance;
             var enumerator = new FrameworkEnumerator();
-            var frameworkList = new FrameworkList<Knapcode.NuGetTools.Logic.Direct.Wrappers.Framework>(enumerator);
+            var frameworkList = new FrameworkList<FromNugetTools.dd.Framework>(enumerator);
             var _identifiers = new Dictionary<string, NuGetFramework>();
             foreach (var item in frameworkList.GetItems())
             {

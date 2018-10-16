@@ -4,7 +4,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace NuGet.Frameworks
+namespace Nuget.Framework.FromNuget
 {
     /// <summary>
     /// A case insensitive compare of the framework name only

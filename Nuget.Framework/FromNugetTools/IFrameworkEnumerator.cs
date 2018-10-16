@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using Knapcode.NuGetTools.Logic.Wrappers;
 
-namespace Knapcode.NuGetTools.Logic
+namespace Nuget.Framework.FromNugetTools
 {
     public interface IFrameworkEnumerator<TFramework> where TFramework : IFramework
     {

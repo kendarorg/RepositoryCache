@@ -3,9 +3,8 @@
 
 using System;
 using System.Collections.Generic;
-using NuGet.Shared;
 
-namespace NuGet.Frameworks
+namespace Nuget.Framework.FromNuget
 {
 #if NUGET_FRAMEWORKS_INTERNAL
     internal

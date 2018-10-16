@@ -31,10 +31,10 @@ namespace Nuget.Lib.Mem
                 result = result.Where(a => a.HasRelease);
             }
 
-            if (query.SupportedFrameworks != null && !query.SupportedFrameworks.Any())
+            if (query.SupportedFrameworks != null && query.SupportedFrameworks.Any())
             {
-                result = result.Where(a => query.SupportedFrameworks.Any(s =>
-                    string.IsNullOrWhiteSpace(a.Frameworks) || a.Frameworks.Contains("|" + s + "|")));
+                result = result.Where(a => string.IsNullOrWhiteSpace(a.Frameworks)||
+                                           query.SupportedFrameworks.Any(s =>a.Frameworks.Contains("|" + s + "|")));
             }
             foreach (var item in pq.Keys)
             {

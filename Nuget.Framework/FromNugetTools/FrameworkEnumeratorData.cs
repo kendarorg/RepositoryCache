@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Globalization;
 using System.Text;
-using Knapcode.NuGetTools.Logic.Wrappers;
 
-namespace Knapcode.NuGetTools.Logic
+namespace Nuget.Framework.FromNugetTools
 {
     public class FrameworkEnumeratorData<TFramework> : IEquatable<FrameworkEnumeratorData<TFramework>>, IComparable<FrameworkEnumeratorData<TFramework>>
         where TFramework : IFramework

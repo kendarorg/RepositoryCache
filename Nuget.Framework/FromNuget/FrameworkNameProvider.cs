@@ -5,9 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using Nuget.Framework;
 
-namespace NuGet.Frameworks
+namespace Nuget.Framework.FromNuget
 {
 #if NUGET_FRAMEWORKS_INTERNAL
     internal

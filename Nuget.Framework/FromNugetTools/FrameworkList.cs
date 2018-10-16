@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Knapcode.NuGetTools.Logic.Wrappers;
 
-namespace Knapcode.NuGetTools.Logic
+namespace Nuget.Framework.FromNugetTools
 {
     public class FrameworkList<TFramework> : IFrameworkList where TFramework : IFramework
     {

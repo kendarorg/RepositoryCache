@@ -3,9 +3,8 @@
 
 using System;
 using System.Globalization;
-using NuGet.Shared;
 
-namespace NuGet.Frameworks
+namespace Nuget.Framework.FromNuget
 {
     /// <summary>
     /// Internal cache key used to store framework compatibility.

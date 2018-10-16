@@ -6,10 +6,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-using Nuget.Framework;
-using NuGet.Shared;
 
-namespace NuGet.Frameworks
+namespace Nuget.Framework.FromNuget
 {
     /// <summary>
     /// A portable implementation of the .NET FrameworkName type with added support for NuGet folder names.

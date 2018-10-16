@@ -1,4 +1,4 @@
-﻿namespace Knapcode.NuGetTools.Logic.Wrappers
+﻿namespace Nuget.Framework.FromNugetTools
 {
     public interface IFramework
     {

@@ -3,7 +3,7 @@
 
 using System.Collections.Generic;
 
-namespace NuGet.Frameworks
+namespace Nuget.Framework.FromNuget
 {
     /// <summary>
     /// A keyvalue pair specific to a framework identifier

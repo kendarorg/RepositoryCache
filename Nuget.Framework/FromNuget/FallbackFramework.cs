@@ -2,17 +2,14 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using NuGet.Shared;
-
 #if IS_NET40_CLIENT
 using FallbackList = System.Collections.Generic.IList<NuGet.Frameworks.NuGetFramework>;
 #else
-using FallbackList = System.Collections.Generic.IReadOnlyList<NuGet.Frameworks.NuGetFramework>;
+using FallbackList = System.Collections.Generic.IReadOnlyList<Nuget.Framework.FromNuget.NuGetFramework>;
 #endif
 
-namespace NuGet.Frameworks
+namespace Nuget.Framework.FromNuget
 {
 #if NUGET_FRAMEWORKS_INTERNAL
     internal

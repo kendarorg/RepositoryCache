@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace NuGet.Shared
+namespace Nuget.Framework.FromNuget
 {
     /// <summary>
     /// Hash code creator, based on the original NuGet hash code combiner/ASP hash code combiner implementations

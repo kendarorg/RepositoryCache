@@ -78,11 +78,11 @@ namespace Nuget.Apis
                                         item.PackageId, shownVersion,
                                         queryVersions.ToArray(),
                                         item.Description,
-                                        string.IsNullOrWhiteSpace(item.Author)?null:item.Author.Split(',').ToList(),
+                                        string.IsNullOrWhiteSpace(item.Author)?null:item.Author.Split(new []{',','|'},StringSplitOptions.RemoveEmptyEntries).ToList(),
                                         item.IconUrl,item.LicenseUrl,
-                                        string.IsNullOrWhiteSpace(item.Owner) ? null : item.Owner.Split(',').ToList(),
+                                        string.IsNullOrWhiteSpace(item.Owner) ? null : item.Owner.Split(new[] { ',', '|' }, StringSplitOptions.RemoveEmptyEntries).ToList(),
                                         item.ProjectUrl,item.Summary,
-                                        string.IsNullOrWhiteSpace(item.Tags) ? null : item.Tags.Split(',').ToList(),
+                                        string.IsNullOrWhiteSpace(item.Tags) ? null : item.Tags.Split(new[] { ',', '|' }, StringSplitOptions.RemoveEmptyEntries).ToList(),
 
                                         item.Title,item.TotalDownloads,item.Verified);
                 //TODO: Add all the other package data

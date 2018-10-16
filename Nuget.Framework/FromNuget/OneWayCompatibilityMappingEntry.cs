@@ -4,7 +4,7 @@
 using System;
 using System.Globalization;
 
-namespace NuGet.Frameworks
+namespace Nuget.Framework.FromNuget
 {
 #if NUGET_FRAMEWORKS_INTERNAL
     internal

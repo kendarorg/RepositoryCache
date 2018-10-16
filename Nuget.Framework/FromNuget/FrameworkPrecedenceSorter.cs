@@ -3,7 +3,7 @@
 
 using System.Collections.Generic;
 
-namespace NuGet.Frameworks
+namespace Nuget.Framework.FromNuget
 {
     /// <summary>
     /// Sorts frameworks according to the framework mappings

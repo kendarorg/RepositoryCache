@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Knapcode.NuGetTools.Logic;
-using Knapcode.NuGetTools.Logic.Direct;
-using NuGet.Frameworks;
+using Nuget.Framework.FromNuget;
+using Nuget.Framework.FromNugetTools;
 
 namespace Nuget.Framework
 {
@@ -15,23 +14,25 @@ namespace Nuget.Framework
         private readonly Dictionary<string, NuGetFramework> _shortFolderNames;
         private readonly Dictionary<string, List<NuGetFramework>> _compatibility;
         private Dictionary<string, NuGetFramework> _targetFrameworks;
+        private Dictionary<string, NuGetFramework> _profiles;
 
 
         public FrameworkChecker()
         {
             _dfm = DefaultFrameworkMappings.Instance;
             _fcc = DefaultCompatibilityProvider.Instance;
-            _netFrameworkNames = new Dictionary<string, NuGetFramework>();
-            _shortFolderNames = new Dictionary<string, NuGetFramework>();
-            _targetFrameworks = new Dictionary<string, NuGetFramework>();
-            _compatibility = new Dictionary<string, List<NuGetFramework>>();
+            _netFrameworkNames = new Dictionary<string, NuGetFramework>(StringComparer.InvariantCultureIgnoreCase);
+            _profiles = new Dictionary<string, NuGetFramework>(StringComparer.InvariantCultureIgnoreCase);
+            _shortFolderNames = new Dictionary<string, NuGetFramework>(StringComparer.InvariantCultureIgnoreCase);
+            _targetFrameworks = new Dictionary<string, NuGetFramework>(StringComparer.InvariantCultureIgnoreCase);
+            _compatibility = new Dictionary<string, List<NuGetFramework>>(StringComparer.InvariantCultureIgnoreCase);
             SetupCompatibilityMap();
         }
 
         private void SetupCompatibilityMap()
         {
             var enumerator = new FrameworkEnumerator();
-            var frameworkList = new FrameworkList<Knapcode.NuGetTools.Logic.Direct.Wrappers.Framework>(enumerator);
+            var frameworkList = new FrameworkList<FromNugetTools.dd.Framework>(enumerator);
 
             foreach (var item in frameworkList.GetItems())
             {
@@ -43,14 +44,18 @@ namespace Nuget.Framework
                     var shortName = fw.Framework + fw.Version.Major + "." + fw.Version.Minor;
                     if (fw.Version.Revision > 0 || fw.Version.Build > 0)
                     {
-                        shortName += "." + fw.Version.Revision;
-                        if (fw.Version.Build > 0)
+                        shortName += "." + fw.Version.Build;
+                        if (fw.Version.Revision > 0)
                         {
-                            shortName += "." + fw.Version.Build;
+                            shortName += "." + fw.Version.Revision;
                         }
                     }
 
                     _targetFrameworks[shortName] = fw;
+                }
+                else
+                {
+                    _profiles[fw.Profile] = fw;
                 }
             }
             foreach (var fwMain in _netFrameworkNames.Values.ToList())
@@ -68,8 +73,9 @@ namespace Nuget.Framework
 
         public bool FrameworkExists(string fwName)
         {
+            var profile = BuildProfile(fwName);
             return _netFrameworkNames.ContainsKey(fwName) || _shortFolderNames.ContainsKey(fwName)||
-                _targetFrameworks.ContainsKey(fwName);
+                _targetFrameworks.ContainsKey(fwName)||_profiles.ContainsKey(profile);
         }
 
         public string GetShortFolderName(string dotNetFrameworkName)
@@ -82,10 +88,20 @@ namespace Nuget.Framework
             {
                 return _shortFolderNames[dotNetFrameworkName].GetShortFolderName();
             }
-            else
+            else if (_targetFrameworks.ContainsKey(dotNetFrameworkName))
             {
                 return _targetFrameworks[dotNetFrameworkName].GetShortFolderName();
             }
+            else
+            {
+                var profile = BuildProfile(dotNetFrameworkName);
+                if (_profiles.ContainsKey(profile))
+                {
+                    return _profiles[profile].GetShortFolderName();
+                }
+            }
+
+            return null;
 
         }
 
@@ -100,10 +116,20 @@ namespace Nuget.Framework
             { 
                 return _shortFolderNames[dotNetFrameworkName].DotNetFrameworkName;
             }
-            else
+            else if (_targetFrameworks.ContainsKey(dotNetFrameworkName))
             {
                 return _targetFrameworks[dotNetFrameworkName].DotNetFrameworkName;
             }
+            else
+            {
+                var profile = BuildProfile(dotNetFrameworkName);
+                if (_profiles.ContainsKey(profile))
+                {
+                    return _profiles[profile].DotNetFrameworkName;
+                }
+            }
+
+            return null;
         }
 
         public IEnumerable<string> GetCompatibility(string dotNetFrameworkNames)
@@ -113,6 +139,45 @@ namespace Nuget.Framework
             {
                 yield return item.GetShortFolderName();
             }
+        }
+
+        public void Add(object nn, string tf)
+        {
+            var fw = (NuGetFramework) nn;
+            _netFrameworkNames[fw.DotNetFrameworkName] = fw;
+            _shortFolderNames[fw.GetShortFolderName()] = fw;
+            if (!fw.HasProfile)
+            {
+                var shortName = fw.Framework + fw.Version.Major + "." + fw.Version.Minor;
+                if (fw.Version.Revision > 0 || fw.Version.Build > 0)
+                {
+                    shortName += "." + fw.Version.Build;
+                    if (fw.Version.Revision > 0)
+                    {
+                        shortName += "." + fw.Version.Revision;
+                    }
+                }
+
+                _targetFrameworks[shortName] = fw;
+            }
+            else
+            {
+                _profiles[fw.Profile] = fw;
+            }
+        }
+
+        private string BuildProfile(string dotNetFrameworkName)
+        {
+            var spl = dotNetFrameworkName.Split('-').Select(a=>a.Trim());
+            foreach (var item in spl)
+            {
+                if (item.ToLowerInvariant().StartsWith("profile"))
+                {
+                    return item;
+                }
+            }
+
+            return "!NOTFOUND!";
         }
     }
 }

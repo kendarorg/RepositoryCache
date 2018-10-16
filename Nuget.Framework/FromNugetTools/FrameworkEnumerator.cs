@@ -1,13 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Knapcode.NuGetTools.Logic.Direct.Wrappers;
-using NuGet.Frameworks;
-using FrameworkEnumeratorData = Knapcode.NuGetTools.Logic.FrameworkEnumeratorData<Knapcode.NuGetTools.Logic.Direct.Wrappers.Framework>;
+using Nuget.Framework.FromNuget;
+using FrameworkEnumeratorData = Nuget.Framework.FromNugetTools.FrameworkEnumeratorData<Nuget.Framework.FromNugetTools.dd.Framework>;
 
-namespace Knapcode.NuGetTools.Logic.Direct
+namespace Nuget.Framework.FromNugetTools
 {
-    public class FrameworkEnumerator : IFrameworkEnumerator<Framework>
+    public class FrameworkEnumerator : IFrameworkEnumerator<dd.Framework>
     {
         public IEnumerable<FrameworkEnumeratorData> Expand(IEnumerable<FrameworkEnumeratorData> frameworks, FrameworkExpansionOptions options)
         {
@@ -234,9 +233,9 @@ namespace Knapcode.NuGetTools.Logic.Direct
             }
         }
 
-        private static FrameworkEnumeratorData<Framework> GetFrameworkEnumeratorData(NuGetFramework x)
+        private static FrameworkEnumeratorData<dd.Framework> GetFrameworkEnumeratorData(NuGetFramework x)
         {
-            return new FrameworkEnumeratorData(new Framework(x));
+            return new FrameworkEnumeratorData(new dd.Framework(x));
         }
 
         private static IEnumerable<FrameworkEnumeratorData> AddCommonFrameworks(HashSet<FrameworkEnumeratorData> existing)

@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace NuGet.Frameworks
+namespace Nuget.Framework.FromNuget
 {
 #if NUGET_FRAMEWORKS_INTERNAL
     internal

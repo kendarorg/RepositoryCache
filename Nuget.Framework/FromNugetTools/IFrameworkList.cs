@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Knapcode.NuGetTools.Logic
+namespace Nuget.Framework.FromNugetTools
 {
     public interface IFrameworkList
     {

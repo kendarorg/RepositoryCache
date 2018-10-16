@@ -3,7 +3,7 @@
 
 using System.Collections.Generic;
 
-namespace NuGet.Frameworks
+namespace Nuget.Framework.FromNuget
 {
     /// <summary>
     /// A raw list of framework mappings. These are indexed by the framework name provider and in most cases all

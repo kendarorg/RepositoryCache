@@ -3,9 +3,8 @@
 
 using System;
 using System.Collections.Generic;
-using NuGet.Shared;
 
-namespace NuGet.Frameworks
+namespace Nuget.Framework.FromNuget
 {
     /// <summary>
     /// A case insensitive compare of the framework, version, and profile

@@ -1,7 +1,6 @@
 ﻿using System;
-using Knapcode.NuGetTools.Logic.Wrappers.Reflection.Api;
 
-namespace Knapcode.NuGetTools.Logic.Wrappers.Reflection
+namespace Nuget.Framework.FromNugetTools
 {
     public class Framework : MarshalByRefObject, IFramework
     {

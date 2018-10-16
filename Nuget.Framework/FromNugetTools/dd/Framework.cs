@@ -1,7 +1,6 @@
-﻿using Knapcode.NuGetTools.Logic.Wrappers;
-using NuGet.Frameworks;
+﻿using Nuget.Framework.FromNuget;
 
-namespace Knapcode.NuGetTools.Logic.Direct.Wrappers
+namespace Nuget.Framework.FromNugetTools.dd
 {
     public class Framework : IFramework
     {

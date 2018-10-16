@@ -3,9 +3,8 @@
 
 using System;
 using System.Globalization;
-using Nuget.Framework;
 
-namespace NuGet.Frameworks
+namespace Nuget.Framework.FromNuget
 {
     /// <summary>
     /// An inclusive range of frameworks
