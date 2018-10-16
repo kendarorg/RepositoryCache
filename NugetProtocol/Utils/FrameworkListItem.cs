@@ -13,7 +13,7 @@ namespace Nuget.Framework.FromNugetTools
             ShortFolderName = shortFolderName;
         }
 
-        public string Identifier { get; }
+        public string Identifier { get;  }
         public Version Version { get; }
         public string Profile { get; }
         public string DotNetFrameworkName { get; }

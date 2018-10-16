@@ -61,6 +61,7 @@
     <Compile Include="Apis\NugetRegistrationService.cs" />
     <Compile Include="Apis\NugetSearchQueryService.cs" />
     <Compile Include="Apis\NugetCatalogService.cs" />
+    <Compile Include="Controllers\Custom_Compatible.cs" />
     <Compile Include="Controllers\Custom_Load.cs" />
     <Compile Include="Controllers\V2_Publish.cs" />
     <Compile Include="Controllers\V3_Catalog_PackageId.cs" />

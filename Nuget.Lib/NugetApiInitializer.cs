@@ -100,6 +100,7 @@ namespace Nuget
             foreach (var item in _repositoryEntitiesRepository.GetByType("nuget"))
             {
 
+
                 repositoryServiceProvider.RegisterApi(new V2_Publish(item.Id,_insertNugetService, _repositoryEntitiesRepository,
                     "/{repo}/v2/publish".Replace("{repo}",item.Prefix)));
 
@@ -107,6 +108,8 @@ namespace Nuget
                     _indexService, _applicationPropertes, _repositoryEntitiesRepository,
                     "/{repo}/v3/index.json".Replace("{repo}", item.Prefix)));
 
+
+                
                 repositoryServiceProvider.RegisterApi(new V3_Query(item.Id,
                     _frameworkChecker,
                     _searchQueryService, _applicationPropertes, _repositoryEntitiesRepository, _servicesMapper,
@@ -140,6 +143,11 @@ namespace Nuget
 
                 repositoryServiceProvider.RegisterApi(new Custom_Load(item.Id, _insertNugetService, _repositoryEntitiesRepository,
                     "/{repo}/custom/load".Replace("{repo}", item.Prefix)));
+
+
+                repositoryServiceProvider.RegisterApi(new Custom_Compatible(item.Id,
+                    _frameworkChecker,
+                    "/{repo}/custom/compatible".Replace("{repo}", item.Prefix)));
             }
             /*repositoryServiceProvider.RegisterApi(new V3_Catalog_PackageId(pr, de, ap, uc, reps));*/
         }

@@ -48,7 +48,6 @@
     <Compile Include="FromNugetTools\FrameworkEnumeratorData.cs" />
     <Compile Include="FromNugetTools\FrameworkExpansionOptions.cs" />
     <Compile Include="FromNugetTools\FrameworkList.cs" />
-    <Compile Include="FromNugetTools\FrameworkListItem.cs" />
     <Compile Include="FromNugetTools\IFramework.cs" />
     <Compile Include="FromNugetTools\IFrameworkApi.cs" />
     <Compile Include="FromNugetTools\IFrameworkEnumerator.cs" />

@@ -80,6 +80,7 @@
     <Compile Include="SingleOrArrayConverter.cs" />
     <Compile Include="StringListConverter.cs" />
     <Compile Include="Utils\EntryPointDescriptor.cs" />
+    <Compile Include="Utils\FrameworkListItem.cs" />
     <Compile Include="Utils\IFrameworkChecker.cs" />
     <Compile Include="Utils\IServicesMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

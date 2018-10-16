@@ -30,7 +30,7 @@ namespace Nuget.Services
         private readonly IPackagesStorage _packagesStorage;
         private readonly INugetDependenciesRepository _nugetDependencies;
         private readonly INugetAssembliesRepository _nugetAssemblies;
-        private IFrameworkChecker _frameworkChecker;
+        private readonly IFrameworkChecker _frameworkChecker;
 
         public InsertNugetService(
             IFrameworkChecker frameworkChecker,

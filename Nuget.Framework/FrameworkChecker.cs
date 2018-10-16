@@ -141,6 +141,44 @@ namespace Nuget.Framework
             }
         }
 
+        public FrameworkListItem GetFrameworkDescriptor(string dotNetFrameworkName)
+        {
+            var fw = GetFrameworkDescriptorInt(dotNetFrameworkName);
+            if (fw == null)
+            {
+                return null;
+            }
+            //item.Identifier, item.Version, item.Profile
+            return new FrameworkListItem(fw.Framework,fw.Version,fw.Profile,fw.DotNetFrameworkName,fw.GetShortFolderName());
+            
+        }
+
+        private NuGetFramework GetFrameworkDescriptorInt(string dotNetFrameworkName)
+        {
+            if (_netFrameworkNames.ContainsKey(dotNetFrameworkName))
+            {
+                return _netFrameworkNames[dotNetFrameworkName];
+            }
+            else if (_shortFolderNames.ContainsKey(dotNetFrameworkName))
+            {
+                return _shortFolderNames[dotNetFrameworkName];
+            }
+            else if (_targetFrameworks.ContainsKey(dotNetFrameworkName))
+            {
+                return _targetFrameworks[dotNetFrameworkName];
+            }
+            else
+            {
+                var profile = BuildProfile(dotNetFrameworkName);
+                if (_profiles.ContainsKey(profile))
+                {
+                    return _profiles[profile];
+                }
+            }
+
+            return null;
+        }
+
         public void Add(object nn, string tf)
         {
             var fw = (NuGetFramework) nn;

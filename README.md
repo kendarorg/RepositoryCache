@@ -70,7 +70,8 @@ Support for timestamp based and single snapshot
 * _GET /{repo}/v3/container/{packageid}/index.json_ List the versions for the package
 * _GET /{repo}/v3/catalog/data/{date}/{fullPackage}.json_ Retrieve alla data included dependencies for package
 
-* _GET /{repo}/custom/load Load nupkg from an existing directory on the server
+* _GET /{repo}/custom/load?dir=C:\DIR Load nupkg from an existing directory on the server
+* _GET /{repo}/custom/compatible/?framework=[framework] List compatible frameworks
 
 ## Thanks to:
 
