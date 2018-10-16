@@ -1,9 +1,9 @@
 # RepositoryCache
-Nuget, Maven, NPM local cache server
+Nuget, Maven local cache server
 
 * it is possible to push on remote repos
 * tree view only for maven
-* maven and npm search similar to nuget
+* maven search similar to nuget
 
 ## Common API
 
@@ -65,6 +65,7 @@ Support for timestamp based and single snapshot
 	* ?semverlevel=[2.0.0|1.0.0] the semantic version level to consider
 	* ?skip=1 the rows to skip
 	* ?take=1 the rows to return
+	* ?supportedFramework=.NetFramework,Version=v5.2.1 the  framework for which the user is searching package
 * _GET /{repo}/v3/container/{idLower}/{versionLower}/{fullversion}.nupkg_ Download the package
 * _GET /{repo}/v3/container/{packageid}/index.json_ List the versions for the package
 * _GET /{repo}/v3/catalog/data/{date}/{fullPackage}.json_ Retrieve alla data included dependencies for package
