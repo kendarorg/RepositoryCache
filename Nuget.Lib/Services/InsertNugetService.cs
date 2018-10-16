@@ -126,8 +126,9 @@ namespace Nuget.Services
                                         }
                                     }
                                 }
+                            }
 
-                                if (result.Nuspec.Metadata.Dependencies?.Group != null)
+                            if (result.Nuspec.Metadata.Dependencies?.Group != null)
                                 {
                                     foreach (var item in result.Nuspec.Metadata.Dependencies.Group)
                                     {
@@ -156,7 +157,6 @@ namespace Nuget.Services
                                     }
                                 }
                             }
-                        }
                     }
                 }
             }
