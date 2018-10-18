@@ -15,6 +15,6 @@ namespace NugetProtocol
         }
 
         [JsonProperty("versions")]
-        public List<string> Versions { get; }
+        public List<string> Versions { get; set; }
     }
 }
